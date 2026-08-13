@@ -15,10 +15,10 @@ WINDOW_DAYS = (5, 20, 60)
 FUTURE_HORIZONS = (5, 20, 60)
 
 COLS_PER_DAY = 3
-IMAGE_LAYOUT: dict[int, tuple[int, int, int]] = {
-    5: (25, 1, 6),
-    20: (51, 1, 12),
-    60: (76, 1, 19),
+# Paper: top 4/5 OHLC, bottom 1/5 volume; no gap row. Heights 32/64/96.
+IMAGE_HEIGHT: dict[int, int] = {5: 32, 20: 64, 60: 96}
+IMAGE_LAYOUT: dict[int, tuple[int, int]] = {
+    w: (h - int(round(h / 5)), int(round(h / 5))) for w, h in IMAGE_HEIGHT.items()
 }
 
 IMAGE_FREQ_DIR = {

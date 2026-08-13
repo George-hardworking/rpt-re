@@ -144,8 +144,8 @@ def main() -> None:
             permno=permno,
             window_days_list=tuple(args.windows),
         )
-        for window_days, _img, label, as_of in samples:
-            print(f"window={window_days} as_of={as_of} label={label}")
+        for window_days, _img, meta, as_of in samples:
+            print(f"window={window_days} as_of={as_of} {meta}")
         fig = plot_sample_windows(samples, permno)
 
     if args.show:

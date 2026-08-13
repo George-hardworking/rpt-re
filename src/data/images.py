@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 
 from config import COLS_PER_DAY, IMAGE_LAYOUT, PIXEL_OFF, PIXEL_ON
-from data.calendar import forward_calendar_days, window_calendar_days
+from data.calendar import window_calendar_days
 
 
 @dataclass(frozen=True)
@@ -173,30 +173,37 @@ def is_delist_in_window(
     return window_start <= last_date <= as_of
 
 
-def cumulative_return(rets: np.ndarray) -> float:
-    if len(rets) == 0:
-        return np.nan
-    if not np.all(_finite(rets)):
-        return np.nan
-    return float(np.prod(1.0 + rets) - 1.0)
-
-
-def _price_to_rows(values: np.ndarray, pmin: float, prange: float, price_rows: int) -> np.ndarray:
+def _price_to_rows(
+    values: np.ndarray,
+    pmin: float,
+    prange: float,
+    price_rows: int,
+    *,
+    clip: bool = True,
+) -> np.ndarray:
     norm = (values - pmin) / prange
-    norm = np.clip(np.nan_to_num(norm, nan=0.0), 0.0, 1.0)
+    if clip:
+        norm = np.clip(np.nan_to_num(norm, nan=0.0), 0.0, 1.0)
     return np.round((1.0 - norm) * (price_rows - 1)).astype(np.intp)
 
 
-def _draw_line(image: np.ndarray, r0: int, c0: int, r1: int, c1: int) -> None:
+def _draw_line(
+    image: np.ndarray,
+    r0: int,
+    c0: int,
+    r1: int,
+    c1: int,
+    row_hi: int,
+) -> None:
     dr = abs(r1 - r0)
     dc = abs(c1 - c0)
     sr = 1 if r0 < r1 else -1
     sc = 1 if c0 < c1 else -1
     err = dr - dc
     r, c = r0, c0
-    height, width = image.shape
+    _, width = image.shape
     while True:
-        if 0 <= r < height and 0 <= c < width:
+        if 0 <= r < row_hi and 0 <= c < width:
             image[r, c] = PIXEL_ON
         if r == r1 and c == c1:
             break
@@ -218,8 +225,8 @@ def render_image(
     volume: np.ndarray,
     window_days: int,
 ) -> Optional[np.ndarray]:
-    price_rows, gap_rows, volume_rows = IMAGE_LAYOUT[window_days]
-    height = price_rows + gap_rows + volume_rows
+    price_rows, volume_rows = IMAGE_LAYOUT[window_days]
+    height = price_rows + volume_rows
     width = window_days * COLS_PER_DAY
     image = np.zeros((height, width), dtype=np.uint8)
 
@@ -229,9 +236,6 @@ def render_image(
         m = fin(arr)
         if m.any():
             price_values.append(arr[m])
-    ma_finite = ma[fin(ma)]
-    if ma_finite.size:
-        price_values.append(ma_finite)
     if not price_values:
         return None
 
@@ -242,7 +246,7 @@ def render_image(
     if prange == 0.0:
         prange = 1e-6
 
-    vol_panel_start = price_rows + gap_rows
+    vol_panel_start = price_rows
     vol_valid = volume[fin(volume) & (volume > 0)]
     vmax = vol_valid.max() if vol_valid.size else 0.0
 
@@ -284,23 +288,29 @@ def render_image(
         end_row = np.maximum(vol_panel_start, start_row - vol_height + 1)
         vol_mask = vol_draw & (rows >= end_row) & (rows <= start_row)
         vr, vd = np.nonzero(vol_mask)
-        for off in range(COLS_PER_DAY):
-            image[vr, col_open[vd] + off] = PIXEL_ON
+        image[vr, col_bar[vd]] = PIXEL_ON
 
     ma_finite_mask = fin(ma)
     if ma_finite_mask.any():
         ma_days = np.nonzero(ma_finite_mask)[0]
-        ma_rows = _price_to_rows(ma[ma_days], pmin, prange, price_rows)
+        ma_rows = _price_to_rows(ma[ma_days], pmin, prange, price_rows, clip=False)
         ma_cols = ma_days * COLS_PER_DAY + 1
         for i in range(1, len(ma_days)):
-            _draw_line(image, int(ma_rows[i - 1]), int(ma_cols[i - 1]), int(ma_rows[i]), int(ma_cols[i]))
+            _draw_line(
+                image,
+                int(ma_rows[i - 1]),
+                int(ma_cols[i - 1]),
+                int(ma_rows[i]),
+                int(ma_cols[i]),
+                row_hi=price_rows,
+            )
 
     return image
 
 
 def image_shape(window_days: int) -> tuple[int, int]:
-    price_rows, gap_rows, volume_rows = IMAGE_LAYOUT[window_days]
-    height = price_rows + gap_rows + volume_rows
+    price_rows, volume_rows = IMAGE_LAYOUT[window_days]
+    height = price_rows + volume_rows
     width = window_days * COLS_PER_DAY
     return height, width
 
@@ -312,7 +322,6 @@ def try_build_window(
     window_days: int,
     calendar: pd.DatetimeIndex,
     calendar_last: pd.Timestamp,
-    future_horizons: tuple[int, ...] = (5, 20, 60),
 ) -> Optional[tuple[np.ndarray, dict]]:
     window_dates = window_calendar_days(as_of, window_days, calendar)
     window_start = window_dates[0]
@@ -342,20 +351,4 @@ def try_build_window(
     if image is None:
         return None
 
-    indexed = stock_df.set_index("DlyCalDt")
-    as_of_row = indexed.loc[as_of]
-    labels: dict = {
-        "Date": as_of,
-        "StockID": permno,
-        "MarketCap": float(as_of_row["DlyCap"]),
-    }
-    stock_rets = indexed["DlyRet"]
-    for h in future_horizons:
-        try:
-            fwd_dates = forward_calendar_days(as_of, h, calendar)
-            fwd_rets = stock_rets.reindex(fwd_dates).to_numpy(dtype=np.float64)
-            labels[f"Ret_{h}d"] = cumulative_return(fwd_rets)
-        except IndexError:
-            labels[f"Ret_{h}d"] = np.nan
-
-    return image, labels
+    return image, {"Date": as_of, "StockID": permno}
