@@ -181,10 +181,10 @@ def cumulative_return(rets: np.ndarray) -> float:
     return float(np.prod(1.0 + rets) - 1.0)
 
 
-def _price_to_row(value: float, pmin: float, prange: float, price_rows: int) -> int:
-    norm = (value - pmin) / prange
-    norm = max(0.0, min(1.0, norm))
-    return int(round((1.0 - norm) * (price_rows - 1)))
+def _price_to_rows(values: np.ndarray, pmin: float, prange: float, price_rows: int) -> np.ndarray:
+    norm = (values - pmin) / prange
+    norm = np.clip(np.nan_to_num(norm, nan=0.0), 0.0, 1.0)
+    return np.round((1.0 - norm) * (price_rows - 1)).astype(np.intp)
 
 
 def _draw_line(image: np.ndarray, r0: int, c0: int, r1: int, c1: int) -> None:
@@ -223,12 +223,13 @@ def render_image(
     width = window_days * COLS_PER_DAY
     image = np.zeros((height, width), dtype=np.uint8)
 
+    fin = _finite
     price_values = []
     for arr in (adj_open, adj_high, adj_low, adj_close):
-        mask = _finite(arr)
-        if mask.any():
-            price_values.append(arr[mask])
-    ma_finite = ma[_finite(ma)]
+        m = fin(arr)
+        if m.any():
+            price_values.append(arr[m])
+    ma_finite = ma[fin(ma)]
     if ma_finite.size:
         price_values.append(ma_finite)
     if not price_values:
@@ -242,52 +243,57 @@ def render_image(
         prange = 1e-6
 
     vol_panel_start = price_rows + gap_rows
-    vol_valid = volume[_finite(volume) & (volume > 0)]
+    vol_valid = volume[fin(volume) & (volume > 0)]
     vmax = vol_valid.max() if vol_valid.size else 0.0
 
-    for day in range(window_days):
-        col_start = day * COLS_PER_DAY
-        o, h, l, c = adj_open[day], adj_high[day], adj_low[day], adj_close[day]
+    days = np.arange(window_days)
+    col_open = days * COLS_PER_DAY
+    col_bar = col_open + 1
+    col_close = col_open + 2
+    rows = np.arange(height)[:, None]
 
-        has_high = _finite(h)
-        has_low = _finite(l)
-        has_open = _finite(o)
-        has_close = _finite(c)
+    has_high = fin(adj_high)
+    has_low = fin(adj_low)
+    has_open = fin(adj_open)
+    has_close = fin(adj_close)
+    bar_valid = has_high & has_low
 
-        if not has_high or not has_low:
-            pass
-        elif not has_open and not has_close:
-            high_row = _price_to_row(h, pmin, prange, price_rows)
-            low_row = _price_to_row(l, pmin, prange, price_rows)
-            top, bottom = min(high_row, low_row), max(high_row, low_row)
-            image[top : bottom + 1, col_start + 1] = PIXEL_ON
-        else:
-            high_row = _price_to_row(h, pmin, prange, price_rows)
-            low_row = _price_to_row(l, pmin, prange, price_rows)
-            top, bottom = min(high_row, low_row), max(high_row, low_row)
-            image[top : bottom + 1, col_start + 1] = PIXEL_ON
-            if has_open:
-                open_row = _price_to_row(o, pmin, prange, price_rows)
-                image[open_row, col_start] = PIXEL_ON
-            if has_close:
-                close_row = _price_to_row(c, pmin, prange, price_rows)
-                image[close_row, col_start + 2] = PIXEL_ON
+    high_rows = _price_to_rows(adj_high, pmin, prange, price_rows)
+    low_rows = _price_to_rows(adj_low, pmin, prange, price_rows)
+    top = np.minimum(high_rows, low_rows)
+    bottom = np.maximum(high_rows, low_rows)
+    bar_mask = bar_valid & (rows >= top) & (rows <= bottom)
+    rr, dd = np.nonzero(bar_mask)
+    image[rr, col_bar[dd]] = PIXEL_ON
 
-        vol = volume[day]
-        if vmax > 0.0 and _finite(vol) and vol > 0.0:
-            vol_norm = max(0.0, min(1.0, vol / vmax))
-            vol_height = max(1, int(round(vol_norm * (volume_rows - 1))))
-            start_row = height - 1
-            end_row = max(vol_panel_start, start_row - vol_height + 1)
-            image[end_row : start_row + 1, col_start : col_start + COLS_PER_DAY] = PIXEL_ON
+    open_draw = bar_valid & has_open
+    od = np.nonzero(open_draw)[0]
+    if od.size:
+        image[_price_to_rows(adj_open[od], pmin, prange, price_rows), col_open[od]] = PIXEL_ON
 
-    ma_points: list[tuple[int, int]] = []
-    for day in range(window_days):
-        if _finite(ma[day]):
-            ma_row = _price_to_row(ma[day], pmin, prange, price_rows)
-            ma_points.append((ma_row, day * COLS_PER_DAY + 1))
-    for i in range(1, len(ma_points)):
-        _draw_line(image, ma_points[i - 1][0], ma_points[i - 1][1], ma_points[i][0], ma_points[i][1])
+    close_draw = bar_valid & has_close
+    cd = np.nonzero(close_draw)[0]
+    if cd.size:
+        image[_price_to_rows(adj_close[cd], pmin, prange, price_rows), col_close[cd]] = PIXEL_ON
+
+    vol_draw = (vmax > 0.0) & fin(volume) & (volume > 0.0)
+    if vol_draw.any():
+        vol_norm = np.clip(volume / vmax, 0.0, 1.0)
+        vol_height = np.maximum(1, np.round(vol_norm * (volume_rows - 1)).astype(np.intp))
+        start_row = height - 1
+        end_row = np.maximum(vol_panel_start, start_row - vol_height + 1)
+        vol_mask = vol_draw & (rows >= end_row) & (rows <= start_row)
+        vr, vd = np.nonzero(vol_mask)
+        for off in range(COLS_PER_DAY):
+            image[vr, col_open[vd] + off] = PIXEL_ON
+
+    ma_finite_mask = fin(ma)
+    if ma_finite_mask.any():
+        ma_days = np.nonzero(ma_finite_mask)[0]
+        ma_rows = _price_to_rows(ma[ma_days], pmin, prange, price_rows)
+        ma_cols = ma_days * COLS_PER_DAY + 1
+        for i in range(1, len(ma_days)):
+            _draw_line(image, int(ma_rows[i - 1]), int(ma_cols[i - 1]), int(ma_rows[i]), int(ma_cols[i]))
 
     return image
 

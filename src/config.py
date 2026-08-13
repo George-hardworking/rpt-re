@@ -31,3 +31,31 @@ PIXEL_ON = 255
 PIXEL_OFF = 0
 
 CSV_CHUNKSIZE = 500_000
+
+OHLC_DTYPES: dict[str, str] = {
+    "PERMNO": "int64",
+    "HdrCUSIP": "string",
+    "Ticker": "string",
+    "PERMCO": "int64",
+    "DlyCalDt": "string",
+    "DlyCap": "float64",
+    "DlyRet": "float64",
+    "DlyRetx": "float64",
+    "DlyVol": "float64",
+    "DlyClose": "float64",
+    "DlyLow": "float64",
+    "DlyHigh": "float64",
+    "DlyOpen": "float64",
+}
+
+PREPARE_COLS = [
+    "PERMNO",
+    "DlyCalDt",
+    "DlyCap",
+    "DlyRet",
+    "DlyVol",
+    "DlyClose",
+    "DlyLow",
+    "DlyHigh",
+    "DlyOpen",
+]
