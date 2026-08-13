@@ -9,7 +9,6 @@ import numpy as np
 import pandas as pd
 
 from config import COLS_PER_DAY, IMAGE_LAYOUT, PIXEL_OFF, PIXEL_ON
-from data.calendar import window_calendar_days
 
 
 @dataclass(frozen=True)
@@ -33,55 +32,53 @@ def build_window_arrays(
 ) -> WindowArrays:
     indexed = stock_df.set_index("DlyCalDt")
     rows = indexed.reindex(window_dates)
+    # CRSP: negative price flags a bid/ask midpoint; magnitude is the price.
     return WindowArrays(
         dates=window_dates,
-        open_=rows["DlyOpen"].to_numpy(dtype=np.float64),
-        high=rows["DlyHigh"].to_numpy(dtype=np.float64),
-        low=rows["DlyLow"].to_numpy(dtype=np.float64),
-        close=rows["DlyClose"].to_numpy(dtype=np.float64),
+        open_=np.abs(rows["DlyOpen"].to_numpy(dtype=np.float64)),
+        high=np.abs(rows["DlyHigh"].to_numpy(dtype=np.float64)),
+        low=np.abs(rows["DlyLow"].to_numpy(dtype=np.float64)),
+        close=np.abs(rows["DlyClose"].to_numpy(dtype=np.float64)),
         ret=rows["DlyRet"].to_numpy(dtype=np.float64),
         volume=rows["DlyVol"].to_numpy(dtype=np.float64),
     )
 
 
-def history_arrays(
-    stock_df: pd.DataFrame,
-    history_dates: pd.DatetimeIndex,
-) -> tuple[np.ndarray, np.ndarray]:
-    indexed = stock_df.set_index("DlyCalDt")
-    rows = indexed.reindex(history_dates)
-    return (
-        rows["DlyClose"].to_numpy(dtype=np.float64),
-        rows["DlyRet"].to_numpy(dtype=np.float64),
-    )
+CHART_CLOSE_DECIMALS = 3
 
 
-def adjusted_close_window_scale(
-    history_close: np.ndarray,
-    history_ret: np.ndarray,
-    window_close: np.ndarray,
-    window_ret: np.ndarray,
-) -> np.ndarray:
-    combined_close = np.concatenate([history_close, window_close])
-    combined_ret = np.concatenate([history_ret, window_ret])
-    n_hist = len(history_close)
-    n = len(window_close)
-    total = n_hist + n
-    adj = np.full(total, np.nan, dtype=np.float64)
+def chain_adjust_from_first_day(series: WindowArrays) -> Optional[tuple[np.ndarray, ...]]:
+    """Author adjust_price: missing Ret leaves that day blank and keeps the last valid close."""
+    n = len(series.dates)
+    adj_open = np.full(n, np.nan, dtype=np.float64)
+    adj_high = np.full(n, np.nan, dtype=np.float64)
+    adj_low = np.full(n, np.nan, dtype=np.float64)
+    adj_close = np.full(n, np.nan, dtype=np.float64)
 
-    if not _finite(window_close[0]):
-        return adj[-n:]
+    first_close = series.close[0]
+    if not _finite(first_close) or first_close == 0.0:
+        return None
 
-    adj[n_hist] = 1.0
-    for i in range(n_hist + 1, total):
-        if _finite(combined_ret[i]) and _finite(adj[i - 1]):
-            adj[i] = adj[i - 1] * (1.0 + combined_ret[i])
+    adj_close[0] = 1.0
+    adj_open[0] = series.open_[0] / first_close
+    adj_high[0] = series.high[0] / first_close
+    adj_low[0] = series.low[0] / first_close
+    pre_close = 1.0
 
-    for i in range(n_hist - 1, -1, -1):
-        if _finite(combined_ret[i + 1]) and _finite(adj[i + 1]):
-            adj[i] = adj[i + 1] / (1.0 + combined_ret[i + 1])
+    for i in range(1, n):
+        today_ret = series.ret[i]
+        if np.isnan(today_ret):
+            continue
+        adj_close[i] = (1.0 + today_ret) * pre_close
+        today_closep = series.close[i]
+        with np.errstate(divide="ignore", invalid="ignore"):
+            adj_open[i] = adj_close[i] / today_closep * series.open_[i]
+            adj_high[i] = adj_close[i] / today_closep * series.high[i]
+            adj_low[i] = adj_close[i] / today_closep * series.low[i]
+        if not np.isnan(adj_close[i]):
+            pre_close = float(adj_close[i])
 
-    return adj[-n:]
+    return adj_open, adj_high, adj_low, adj_close
 
 
 def moving_average_window_scale(
@@ -103,51 +100,69 @@ def moving_average_window_scale(
 
 
 def adjusted_ohlc_for_window(
-    window: WindowArrays,
-    history_close: np.ndarray,
-    history_ret: np.ndarray,
-) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    n = len(window.dates)
-    window_days = n
-    adj_open = np.full(n, np.nan, dtype=np.float64)
-    adj_high = np.full(n, np.nan, dtype=np.float64)
-    adj_low = np.full(n, np.nan, dtype=np.float64)
-    adj_close = np.full(n, np.nan, dtype=np.float64)
+    series: WindowArrays,
+    n_hist: int,
+    draw_ma: bool,
+) -> Optional[tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]]:
+    """Chain from slice day 0, then divide by chart-window first close so that day is 1."""
+    chained = chain_adjust_from_first_day(series)
+    if chained is None:
+        return None
+    adj_open, adj_high, adj_low, adj_close = chained
 
-    if not _finite(window.close[0]):
-        return adj_open, adj_high, adj_low, adj_close, np.full(n, np.nan)
+    scale = adj_close[n_hist]
+    if not _finite(scale) or scale == 0.0:
+        return None
+    adj_open = adj_open / scale
+    adj_high = adj_high / scale
+    adj_low = adj_low / scale
+    adj_close = adj_close / scale
+    if np.around(adj_close[n_hist], decimals=CHART_CLOSE_DECIMALS) != 1.0:
+        return None
 
-    adj_close = adjusted_close_window_scale(
-        history_close, history_ret, window.close, window.ret
+    window_days = len(series.dates) - n_hist
+    if draw_ma:
+        ma = moving_average_window_scale(adj_close, n_hist, window_days)
+    else:
+        ma = np.full(window_days, np.nan, dtype=np.float64)
+
+    return (
+        adj_open[n_hist:],
+        adj_high[n_hist:],
+        adj_low[n_hist:],
+        adj_close[n_hist:],
+        ma,
     )
 
-    for i in range(n):
-        c_raw = window.close[i]
-        c_adj = adj_close[i]
-        if not _finite(c_raw) or not _finite(c_adj) or c_raw == 0.0:
-            continue
-        if _finite(window.open_[i]):
-            adj_open[i] = c_adj * (window.open_[i] / c_raw)
-        if _finite(window.high[i]):
-            adj_high[i] = c_adj * (window.high[i] / c_raw)
-        if _finite(window.low[i]):
-            adj_low[i] = c_adj * (window.low[i] / c_raw)
 
-    combined_close = np.concatenate([history_close, window.close])
-    combined_ret = np.concatenate([history_ret, window.ret])
-    n_hist = len(history_close)
-    adj_full = np.full(len(combined_close), np.nan, dtype=np.float64)
-    if _finite(window.close[0]):
-        adj_full[n_hist] = 1.0
-        for i in range(n_hist + 1, len(combined_close)):
-            if _finite(combined_ret[i]) and _finite(adj_full[i - 1]):
-                adj_full[i] = adj_full[i - 1] * (1.0 + combined_ret[i])
-        for i in range(n_hist - 1, -1, -1):
-            if _finite(combined_ret[i + 1]) and _finite(adj_full[i + 1]):
-                adj_full[i] = adj_full[i + 1] / (1.0 + combined_ret[i + 1])
+def observed_dates(stock_df: pd.DataFrame) -> pd.DatetimeIndex:
+    return pd.DatetimeIndex(stock_df["DlyCalDt"]).sort_values()
 
-    ma = moving_average_window_scale(adj_full, n_hist, window_days)
-    return adj_open, adj_high, adj_low, adj_close, ma
+
+def window_stock_days(
+    dates: pd.DatetimeIndex,
+    as_of: pd.Timestamp,
+    window_days: int,
+) -> Optional[pd.DatetimeIndex]:
+    loc = dates.get_indexer([as_of])[0]
+    if loc < 0:
+        return None
+    start = loc - window_days + 1
+    if start < 0:
+        return None
+    return dates[start : loc + 1]
+
+
+def history_stock_days(
+    dates: pd.DatetimeIndex,
+    window_start: pd.Timestamp,
+    n_hist: int,
+) -> pd.DatetimeIndex:
+    loc = dates.get_indexer([window_start])[0]
+    start = loc - n_hist
+    if start < 0:
+        return dates[:0]
+    return dates[start:loc]
 
 
 def stock_first_date(stock_df: pd.DataFrame) -> pd.Timestamp:
@@ -320,10 +335,13 @@ def try_build_window(
     permno: int,
     as_of: pd.Timestamp,
     window_days: int,
-    calendar: pd.DatetimeIndex,
     calendar_last: pd.Timestamp,
 ) -> Optional[tuple[np.ndarray, dict]]:
-    window_dates = window_calendar_days(as_of, window_days, calendar)
+    dates = observed_dates(stock_df)
+    window_dates = window_stock_days(dates, as_of, window_days)
+    if window_dates is None:
+        return None
+
     window_start = window_dates[0]
     first_date = stock_first_date(stock_df)
     last_date = stock_last_date(stock_df)
@@ -333,20 +351,23 @@ def try_build_window(
     if is_delist_in_window(last_date, window_start, as_of, calendar_last):
         return None
 
-    start_pos = calendar.searchsorted(window_start)
-    hist_start_pos = start_pos - (window_days - 1)
-    if hist_start_pos < 0:
+    ma_offset = window_days
+    history_dates = history_stock_days(dates, window_start, ma_offset)
+    draw_ma = len(history_dates) == ma_offset
+    if draw_ma:
+        all_dates = pd.DatetimeIndex(np.concatenate([history_dates, window_dates]))
+        n_hist = ma_offset
+    else:
+        all_dates = window_dates
+        n_hist = 0
+
+    series = build_window_arrays(stock_df, all_dates)
+    built_adj = adjusted_ohlc_for_window(series, n_hist, draw_ma)
+    if built_adj is None:
         return None
-    history_dates = calendar[hist_start_pos : start_pos]
-
-    window = build_window_arrays(stock_df, window_dates)
-    history_close, history_ret = history_arrays(stock_df, history_dates)
-
-    adj_open, adj_high, adj_low, adj_close, ma = adjusted_ohlc_for_window(
-        window, history_close, history_ret
-    )
+    adj_open, adj_high, adj_low, adj_close, ma = built_adj
     image = render_image(
-        adj_open, adj_high, adj_low, adj_close, ma, window.volume, window_days
+        adj_open, adj_high, adj_low, adj_close, ma, series.volume[n_hist:], window_days
     )
     if image is None:
         return None

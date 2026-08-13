@@ -11,6 +11,7 @@ import pandas as pd
 from config import IMAGE_FREQ_DIR, IMAGES_ROOT, OHLC_PARQUET, WINDOW_DAYS
 from data.calendar import as_of_dates_for_window
 from data.images import image_shape, try_build_window
+from data.labels import labels_for_as_of, stock_label_panel
 from data.parquet_io import load_calendar, read_stock
 
 
@@ -32,6 +33,7 @@ def build_sample_windows(
     calendar_last = calendar[-1]
     stock_id = permno if permno is not None else default_permno(parquet_path)
     stock_df = read_stock(parquet_path, stock_id)
+    label_panel = stock_label_panel(stock_df)
 
     built: list[tuple[int, np.ndarray, dict[str, Any], pd.Timestamp]] = []
     for window_days in window_days_list:
@@ -48,14 +50,14 @@ def build_sample_windows(
             permno=stock_id,
             as_of=as_of,
             window_days=window_days,
-            calendar=calendar,
             calendar_last=calendar_last,
         )
         if result is None:
             raise ValueError(
                 f"no image for PERMNO={stock_id} window={window_days} as_of={as_of}"
             )
-        image, label = result
+        image, _meta = result
+        label = labels_for_as_of(label_panel, as_of, stock_id, window_days)
         built.append((window_days, image, label, as_of))
     return built
 

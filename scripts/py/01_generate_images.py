@@ -39,6 +39,7 @@ from config import (
 )
 from data.calendar import as_of_dates_for_window
 from data.images import try_build_window
+from data.labels import labels_for_as_of, stock_label_panel
 from data.parquet_io import load_calendar, permno_list, read_stock
 from utils.workers import resolve_workers
 
@@ -98,16 +99,16 @@ def write_year_bundle(
     window_days: int,
     year: int,
     dat_path: Path,
-    index_rows: list[dict],
+    labels: list[dict],
 ) -> None:
-    if not index_rows:
+    if not labels:
         return
 
     output_dir.mkdir(parents=True, exist_ok=True)
-    index_df = pd.DataFrame(index_rows)
-    feather_path = output_dir / f"{window_days}d_{year}_index.feather"
-    index_df.to_feather(feather_path)
-    log(f"window={window_days} year={year} images={len(index_rows)} -> {dat_path}")
+    label_df = pd.DataFrame(labels)
+    feather_path = output_dir / f"{window_days}d_{year}_labels.feather"
+    label_df.to_feather(feather_path)
+    log(f"window={window_days} year={year} images={len(labels)} -> {dat_path}")
 
 
 def process_permno_chunk(task: tuple) -> tuple[dict, dict]:
@@ -125,7 +126,7 @@ def process_permno_chunk(task: tuple) -> tuple[dict, dict]:
 
     handles: dict[tuple[int, int], object] = {}
     shard_paths: dict[tuple[int, int], Path] = {}
-    index_rows: dict[tuple[int, int], list[dict]] = {}
+    labels: dict[tuple[int, int], list[dict]] = {}
 
     def shard(window_days: int, year: int):
         key = (window_days, year)
@@ -135,12 +136,13 @@ def process_permno_chunk(task: tuple) -> tuple[dict, dict]:
             path = freq_dir / f"{window_days}d_{year}_images.dat"
             shard_paths[key] = path
             handles[key] = open(path, "wb")
-            index_rows[key] = []
+            labels[key] = []
         return handles[key]
 
     for i, permno in enumerate(permno_chunk):
         stock_df = read_stock(parquet_path, int(permno))
         stock_dates = set(stock_df["DlyCalDt"])
+        label_panel = stock_label_panel(stock_df)
         for window_days in window_days_list:
             for as_of in as_of_per_window[window_days]:
                 if as_of not in stock_dates:
@@ -150,14 +152,15 @@ def process_permno_chunk(task: tuple) -> tuple[dict, dict]:
                     permno=int(permno),
                     as_of=as_of,
                     window_days=window_days,
-                    calendar=calendar,
                     calendar_last=calendar_last,
                 )
                 if built is None:
                     continue
-                image, meta = built
+                image, _meta = built
                 shard(window_days, as_of.year).write(image.astype(np.uint8).tobytes())
-                index_rows[(window_days, as_of.year)].append(meta)
+                labels[(window_days, as_of.year)].append(
+                    labels_for_as_of(label_panel, as_of, int(permno), window_days)
+                )
         with _PROGRESS.get_lock():
             _PROGRESS.value += 1
             done = _PROGRESS.value
@@ -170,7 +173,7 @@ def process_permno_chunk(task: tuple) -> tuple[dict, dict]:
 
     for h in handles.values():
         h.close()
-    return index_rows, shard_paths
+    return labels, shard_paths
 
 
 def build_window_images(
@@ -233,7 +236,7 @@ def build_window_images(
         for year in years_per_window[window_days]:
             key = (window_days, year)
             final_dat = freq_dir / f"{window_days}d_{year}_images.dat"
-            all_index: list[dict] = []
+            all_labels: list[dict] = []
             with open(final_dat, "wb") as out:
                 for rows, shard_paths in results:
                     shard = shard_paths.get(key)
@@ -241,8 +244,8 @@ def build_window_images(
                         continue
                     with open(shard, "rb") as f:
                         out.write(f.read())
-                    all_index.extend(rows[key])
-            write_year_bundle(freq_dir, window_days, year, final_dat, all_index)
+                    all_labels.extend(rows[key])
+            write_year_bundle(freq_dir, window_days, year, final_dat, all_labels)
 
     shutil.rmtree(tmp_root)
     log(f"done: n_workers={n_workers} -> {output_root}")
@@ -256,7 +259,7 @@ def main() -> None:
     p_prepare.add_argument("--raw", type=Path, default=RAW_OHLC_CSV)
     p_prepare.add_argument("--parquet", type=Path, default=OHLC_PARQUET)
 
-    p_build = sub.add_parser("build", help="parquet -> yearly image memmaps + index")
+    p_build = sub.add_parser("build", help="parquet -> yearly image memmaps + labels")
     p_build.add_argument("--parquet", type=Path, default=OHLC_PARQUET)
     p_build.add_argument("--output", type=Path, default=IMAGES_ROOT)
     p_build.add_argument("--windows", type=int, nargs="+", default=list(WINDOW_DAYS))

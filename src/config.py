@@ -13,6 +13,9 @@ SAMPLE_END = "2019-12-31"
 
 WINDOW_DAYS = (5, 20, 60)
 FUTURE_HORIZONS = (5, 20, 60)
+# Author GenerateStockData.ret_len_list
+LABEL_HORIZONS = (5, 20, 60, 65, 180, 250, 260)
+EWMA_VOL_SPAN = 60
 
 COLS_PER_DAY = 3
 # Paper: top 4/5 OHLC, bottom 1/5 volume; no gap row. Heights 32/64/96.
