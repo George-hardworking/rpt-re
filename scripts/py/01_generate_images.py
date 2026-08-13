@@ -11,7 +11,7 @@ import argparse
 import os
 import shutil
 import sys
-from multiprocessing import Pool
+from multiprocessing import Pool, Value
 from pathlib import Path
 
 import numpy as np
@@ -19,8 +19,12 @@ import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
+
+DEFAULT_RESERVE_GIB = 16.0
+MEM_PER_WORKER_GIB = 1.5
+PROGRESS_EVERY = 500
 
 from config import (
     CSV_CHUNKSIZE,
@@ -37,6 +41,20 @@ from config import (
 from data.calendar import as_of_dates_for_window
 from data.images import try_build_window
 from data.parquet_io import load_calendar, permno_list, read_stock
+from utils.workers import resolve_workers
+
+_PROGRESS = None
+_TOTAL_STOCKS = None
+
+
+def _init_progress(progress, total_stocks: int) -> None:
+    global _PROGRESS, _TOTAL_STOCKS
+    _PROGRESS = progress
+    _TOTAL_STOCKS = total_stocks
+
+
+def log(msg: str) -> None:
+    print(msg, flush=True)
 
 
 def prepare_ohlc_parquet(
@@ -53,7 +71,11 @@ def prepare_ohlc_parquet(
         shutil.rmtree(output_path)
     output_path.mkdir(parents=True)
 
+    n_rows = 0
+    n_chunks = 0
     for chunk in pd.read_csv(raw_path, chunksize=chunksize, dtype=OHLC_DTYPES):
+        n_chunks += 1
+        n_rows += len(chunk)
         chunk = chunk[PREPARE_COLS].copy()
         chunk["DlyCalDt"] = pd.to_datetime(chunk["DlyCalDt"])
         table = pa.Table.from_pandas(chunk, preserve_index=False)
@@ -62,6 +84,7 @@ def prepare_ohlc_parquet(
             root_path=str(output_path),
             partition_cols=["PERMNO"],
         )
+        log(f"prepare chunk={n_chunks} rows={n_rows:,} -> {output_path}")
 
     return output_path
 
@@ -85,7 +108,7 @@ def write_year_bundle(
     label_df = pd.DataFrame(labels)
     feather_path = output_dir / f"{window_days}d_{year}_labels.feather"
     label_df.to_feather(feather_path)
-    print(f"window={window_days} year={year} images={len(labels)} -> {dat_path}")
+    log(f"window={window_days} year={year} images={len(labels)} -> {dat_path}")
 
 
 def process_permno_chunk(task: tuple) -> tuple[dict, dict]:
@@ -137,8 +160,15 @@ def process_permno_chunk(task: tuple) -> tuple[dict, dict]:
                 image, label = built
                 shard(window_days, as_of.year).write(image.astype(np.uint8).tobytes())
                 labels[(window_days, as_of.year)].append(label)
-        if (i + 1) % 500 == 0:
-            print(f"worker={worker_id} processed {i + 1}/{len(permno_chunk)} stocks")
+        with _PROGRESS.get_lock():
+            _PROGRESS.value += 1
+            done = _PROGRESS.value
+        if done % PROGRESS_EVERY == 0 or done == _TOTAL_STOCKS:
+            pct = 100.0 * done / _TOTAL_STOCKS
+            log(
+                f"progress {pct:5.1f}%  stocks {done}/{_TOTAL_STOCKS}  "
+                f"worker={worker_id} chunk={i + 1}/{len(permno_chunk)}"
+            )
 
     for h in handles.values():
         h.close()
@@ -151,6 +181,7 @@ def build_window_images(
     window_days_list: tuple[int, ...] = WINDOW_DAYS,
     permno_limit: int | None = None,
     n_workers: int | None = None,
+    reserve_gib: float = DEFAULT_RESERVE_GIB,
 ) -> None:
     if not parquet_path.exists():
         raise FileNotFoundError(f"parquet not found: {parquet_path}; run prepare first")
@@ -165,15 +196,21 @@ def build_window_images(
         w: sorted({a.year for a in as_of_per_window[w]}) for w in window_days_list
     }
 
-    if n_workers is None:
-        n_workers = os.cpu_count() or 1
-    n_workers = max(1, min(n_workers, len(permnos))) if len(permnos) > 0 else 1
+    n_workers, diag = resolve_workers(
+        len(permnos),
+        override=n_workers,
+        reserve_gib=reserve_gib,
+        mem_per_worker_gib=MEM_PER_WORKER_GIB,
+    )
+    log(f"workers={n_workers} diag={diag}")
 
     tmp_root = output_root / ".tmp_workers"
     if tmp_root.exists():
         shutil.rmtree(tmp_root)
     tmp_root.mkdir(parents=True, exist_ok=True)
 
+    progress = Value("i", 0)
+    total_stocks = len(permnos)
     chunks = chunk_permnos(permnos, n_workers)
     tasks = [
         (chunk, parquet_path, calendar, window_days_list,
@@ -182,9 +219,14 @@ def build_window_images(
     ]
 
     if n_workers == 1:
+        _init_progress(progress, total_stocks)
         results = [process_permno_chunk(tasks[0])]
     else:
-        with Pool(n_workers) as pool:
+        with Pool(
+            n_workers,
+            initializer=_init_progress,
+            initargs=(progress, total_stocks),
+        ) as pool:
             results = pool.map(process_permno_chunk, tasks)
 
     for window_days in window_days_list:
@@ -205,7 +247,7 @@ def build_window_images(
             write_year_bundle(freq_dir, window_days, year, final_dat, all_labels)
 
     shutil.rmtree(tmp_root)
-    print(f"done: n_workers={n_workers} -> {output_root}")
+    log(f"done: n_workers={n_workers} -> {output_root}")
 
 
 def main() -> None:
@@ -221,7 +263,8 @@ def main() -> None:
     p_build.add_argument("--output", type=Path, default=IMAGES_ROOT)
     p_build.add_argument("--windows", type=int, nargs="+", default=list(WINDOW_DAYS))
     p_build.add_argument("--permno-limit", type=int, default=None)
-    p_build.add_argument("--workers", type=int, default=None, help="worker processes (default: cpu_count)")
+    p_build.add_argument("--workers", type=int, default=None, help="worker processes (default: memory-aware auto)")
+    p_build.add_argument("--reserve-gib", type=float, default=DEFAULT_RESERVE_GIB, help="RAM GiB to leave free when auto-sizing workers")
 
     p_all = sub.add_parser("all", help="prepare then build")
     p_all.add_argument("--raw", type=Path, default=RAW_OHLC_CSV)
@@ -229,13 +272,14 @@ def main() -> None:
     p_all.add_argument("--output", type=Path, default=IMAGES_ROOT)
     p_all.add_argument("--windows", type=int, nargs="+", default=list(WINDOW_DAYS))
     p_all.add_argument("--permno-limit", type=int, default=None)
-    p_all.add_argument("--workers", type=int, default=None, help="worker processes (default: cpu_count)")
+    p_all.add_argument("--workers", type=int, default=None, help="worker processes (default: memory-aware auto)")
+    p_all.add_argument("--reserve-gib", type=float, default=DEFAULT_RESERVE_GIB, help="RAM GiB to leave free when auto-sizing workers")
 
     args = parser.parse_args()
 
     if args.command == "prepare":
         path = prepare_ohlc_parquet(args.raw, args.parquet)
-        print(f"prepared {path}")
+        log(f"prepared {path}")
     elif args.command == "build":
         build_window_images(
             parquet_path=args.parquet,
@@ -243,16 +287,18 @@ def main() -> None:
             window_days_list=tuple(args.windows),
             permno_limit=args.permno_limit,
             n_workers=args.workers,
+            reserve_gib=args.reserve_gib,
         )
     elif args.command == "all":
         path = prepare_ohlc_parquet(args.raw, args.parquet)
-        print(f"prepared {path}")
+        log(f"prepared {path}")
         build_window_images(
             parquet_path=args.parquet,
             output_root=args.output,
             window_days_list=tuple(args.windows),
             permno_limit=args.permno_limit,
             n_workers=args.workers,
+            reserve_gib=args.reserve_gib,
         )
 
 
