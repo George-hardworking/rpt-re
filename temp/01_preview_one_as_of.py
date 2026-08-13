@@ -43,7 +43,6 @@ def main() -> None:
     stock_df = read_stock(args.parquet, permno)
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
-    samples: list[tuple[int, object]] = []
     for window_days in WINDOW_DAYS:
         built = try_build_window(
             stock_df=stock_df,
@@ -58,7 +57,6 @@ def main() -> None:
                 "(as_of must be a trading day on this stock with enough history)"
             )
         image, _meta = built
-        samples.append((window_days, image))
         path = args.out_dir / f"PERMNO{permno}_{as_of.date()}_I{window_days}.png"
         fig, ax = plt.subplots(figsize=(max(4, window_days * 0.12), 4))
         ax.imshow(image, cmap="gray", vmin=0, vmax=255, interpolation="nearest")
@@ -68,18 +66,6 @@ def main() -> None:
         fig.savefig(path, dpi=150, bbox_inches="tight")
         plt.close(fig)
         print(f"wrote {path} shape={image.shape}")
-
-    combo_path = args.out_dir / f"PERMNO{permno}_{as_of.date()}_I5_I20_I60.png"
-    fig, axes = plt.subplots(1, 3, figsize=(14, 4))
-    for ax, (window_days, image) in zip(axes, samples):
-        ax.imshow(image, cmap="gray", vmin=0, vmax=255, interpolation="nearest")
-        ax.set_title(f"I{window_days}  {image.shape}")
-        ax.axis("off")
-    fig.suptitle(f"PERMNO={permno}  as_of={as_of.date()}")
-    fig.tight_layout()
-    fig.savefig(combo_path, dpi=150, bbox_inches="tight")
-    plt.close(fig)
-    print(f"wrote {combo_path}")
 
 
 if __name__ == "__main__":
