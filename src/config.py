@@ -1,7 +1,9 @@
+import os
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DATA_ROOT = PROJECT_ROOT / "data"
+_DEFAULT_DATA_ROOT = Path("/data/kaibiao/data/projects/rpt-re")
+DATA_ROOT = Path(os.environ.get("RPT_DATA_ROOT", _DEFAULT_DATA_ROOT))
 
 RAW_OHLC_CSV = DATA_ROOT / "raw" / "OHLC_92_24.csv"
 PROCESSED_DIR = DATA_ROOT / "processed"

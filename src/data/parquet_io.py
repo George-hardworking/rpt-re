@@ -12,6 +12,7 @@ import pyarrow.parquet as pq
 
 from config import CSV_CHUNKSIZE, OHLC_DTYPES, OHLC_PARQUET, PREPARE_COLS, PROCESSED_DIR, RAW_OHLC_CSV
 from data.calendar import market_calendar
+from utils.checkpoint import mark_ohlc_complete, ohlc_is_complete
 
 
 def prepare_ohlc_parquet(
@@ -19,6 +20,7 @@ def prepare_ohlc_parquet(
     output_path: Path = OHLC_PARQUET,
     chunksize: int = CSV_CHUNKSIZE,
     *,
+    fresh: bool = False,
     log=print,
 ) -> Path:
     """Convert raw CRSP OHLC CSV to PERMNO-partitioned parquet without filling missing values."""
@@ -26,6 +28,11 @@ def prepare_ohlc_parquet(
         raise FileNotFoundError(f"raw OHLC CSV not found: {raw_path}")
 
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
+
+    if not fresh and ohlc_is_complete(output_path):
+        log(f"skip ohlc (checkpoint): {output_path}")
+        return output_path
+
     if output_path.exists():
         shutil.rmtree(output_path)
     output_path.mkdir(parents=True)
@@ -45,6 +52,7 @@ def prepare_ohlc_parquet(
         )
         log(f"prepare chunk={n_chunks} rows={n_rows:,} -> {output_path}")
 
+    mark_ohlc_complete(output_path)
     return output_path
 
 
