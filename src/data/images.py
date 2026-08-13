@@ -1,0 +1,355 @@
+"""Render OHLC + MA + volume images from point-in-time window data."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Optional
+
+import numpy as np
+import pandas as pd
+
+from config import COLS_PER_DAY, IMAGE_LAYOUT, PIXEL_OFF, PIXEL_ON
+from data.calendar import forward_calendar_days, window_calendar_days
+
+
+@dataclass(frozen=True)
+class WindowArrays:
+    dates: pd.DatetimeIndex
+    open_: np.ndarray
+    high: np.ndarray
+    low: np.ndarray
+    close: np.ndarray
+    ret: np.ndarray
+    volume: np.ndarray
+
+
+def _finite(values: np.ndarray) -> np.ndarray:
+    return np.isfinite(values)
+
+
+def build_window_arrays(
+    stock_df: pd.DataFrame,
+    window_dates: pd.DatetimeIndex,
+) -> WindowArrays:
+    indexed = stock_df.set_index("DlyCalDt")
+    rows = indexed.reindex(window_dates)
+    return WindowArrays(
+        dates=window_dates,
+        open_=rows["DlyOpen"].to_numpy(dtype=np.float64),
+        high=rows["DlyHigh"].to_numpy(dtype=np.float64),
+        low=rows["DlyLow"].to_numpy(dtype=np.float64),
+        close=rows["DlyClose"].to_numpy(dtype=np.float64),
+        ret=rows["DlyRet"].to_numpy(dtype=np.float64),
+        volume=rows["DlyVol"].to_numpy(dtype=np.float64),
+    )
+
+
+def history_arrays(
+    stock_df: pd.DataFrame,
+    history_dates: pd.DatetimeIndex,
+) -> tuple[np.ndarray, np.ndarray]:
+    indexed = stock_df.set_index("DlyCalDt")
+    rows = indexed.reindex(history_dates)
+    return (
+        rows["DlyClose"].to_numpy(dtype=np.float64),
+        rows["DlyRet"].to_numpy(dtype=np.float64),
+    )
+
+
+def adjusted_close_window_scale(
+    history_close: np.ndarray,
+    history_ret: np.ndarray,
+    window_close: np.ndarray,
+    window_ret: np.ndarray,
+) -> np.ndarray:
+    combined_close = np.concatenate([history_close, window_close])
+    combined_ret = np.concatenate([history_ret, window_ret])
+    n_hist = len(history_close)
+    n = len(window_close)
+    total = n_hist + n
+    adj = np.full(total, np.nan, dtype=np.float64)
+
+    if not _finite(window_close[0]):
+        return adj[-n:]
+
+    adj[n_hist] = 1.0
+    for i in range(n_hist + 1, total):
+        if _finite(combined_ret[i]) and _finite(adj[i - 1]):
+            adj[i] = adj[i - 1] * (1.0 + combined_ret[i])
+
+    for i in range(n_hist - 1, -1, -1):
+        if _finite(combined_ret[i + 1]) and _finite(adj[i + 1]):
+            adj[i] = adj[i + 1] / (1.0 + combined_ret[i + 1])
+
+    return adj[-n:]
+
+
+def moving_average_window_scale(
+    adj_full: np.ndarray,
+    n_hist: int,
+    window_days: int,
+) -> np.ndarray:
+    n = len(adj_full) - n_hist
+    ma = np.full(n, np.nan, dtype=np.float64)
+    for k in range(n):
+        i = n_hist + k
+        start = i - window_days + 1
+        if start < 0:
+            continue
+        segment = adj_full[start : i + 1]
+        if np.all(_finite(segment)):
+            ma[k] = segment.mean()
+    return ma
+
+
+def adjusted_ohlc_for_window(
+    window: WindowArrays,
+    history_close: np.ndarray,
+    history_ret: np.ndarray,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    n = len(window.dates)
+    window_days = n
+    adj_open = np.full(n, np.nan, dtype=np.float64)
+    adj_high = np.full(n, np.nan, dtype=np.float64)
+    adj_low = np.full(n, np.nan, dtype=np.float64)
+    adj_close = np.full(n, np.nan, dtype=np.float64)
+
+    if not _finite(window.close[0]):
+        return adj_open, adj_high, adj_low, adj_close, np.full(n, np.nan)
+
+    adj_close = adjusted_close_window_scale(
+        history_close, history_ret, window.close, window.ret
+    )
+
+    for i in range(n):
+        c_raw = window.close[i]
+        c_adj = adj_close[i]
+        if not _finite(c_raw) or not _finite(c_adj) or c_raw == 0.0:
+            continue
+        if _finite(window.open_[i]):
+            adj_open[i] = c_adj * (window.open_[i] / c_raw)
+        if _finite(window.high[i]):
+            adj_high[i] = c_adj * (window.high[i] / c_raw)
+        if _finite(window.low[i]):
+            adj_low[i] = c_adj * (window.low[i] / c_raw)
+
+    combined_close = np.concatenate([history_close, window.close])
+    combined_ret = np.concatenate([history_ret, window.ret])
+    n_hist = len(history_close)
+    adj_full = np.full(len(combined_close), np.nan, dtype=np.float64)
+    if _finite(window.close[0]):
+        adj_full[n_hist] = 1.0
+        for i in range(n_hist + 1, len(combined_close)):
+            if _finite(combined_ret[i]) and _finite(adj_full[i - 1]):
+                adj_full[i] = adj_full[i - 1] * (1.0 + combined_ret[i])
+        for i in range(n_hist - 1, -1, -1):
+            if _finite(combined_ret[i + 1]) and _finite(adj_full[i + 1]):
+                adj_full[i] = adj_full[i + 1] / (1.0 + combined_ret[i + 1])
+
+    ma = moving_average_window_scale(adj_full, n_hist, window_days)
+    return adj_open, adj_high, adj_low, adj_close, ma
+
+
+def stock_first_date(stock_df: pd.DataFrame) -> pd.Timestamp:
+    return stock_df["DlyCalDt"].min()
+
+
+def stock_last_date(stock_df: pd.DataFrame) -> pd.Timestamp:
+    return stock_df["DlyCalDt"].max()
+
+
+def is_ipo_in_window(first_date: pd.Timestamp, window_start: pd.Timestamp) -> bool:
+    return first_date > window_start
+
+
+def is_delist_in_window(
+    last_date: pd.Timestamp,
+    window_start: pd.Timestamp,
+    as_of: pd.Timestamp,
+    calendar_last: pd.Timestamp,
+) -> bool:
+    if last_date >= calendar_last:
+        return False
+    return window_start <= last_date <= as_of
+
+
+def cumulative_return(rets: np.ndarray) -> float:
+    if len(rets) == 0:
+        return np.nan
+    if not np.all(_finite(rets)):
+        return np.nan
+    return float(np.prod(1.0 + rets) - 1.0)
+
+
+def _price_to_row(value: float, pmin: float, prange: float, price_rows: int) -> int:
+    norm = (value - pmin) / prange
+    norm = max(0.0, min(1.0, norm))
+    return int(round((1.0 - norm) * (price_rows - 1)))
+
+
+def _draw_line(image: np.ndarray, r0: int, c0: int, r1: int, c1: int) -> None:
+    dr = abs(r1 - r0)
+    dc = abs(c1 - c0)
+    sr = 1 if r0 < r1 else -1
+    sc = 1 if c0 < c1 else -1
+    err = dr - dc
+    r, c = r0, c0
+    height, width = image.shape
+    while True:
+        if 0 <= r < height and 0 <= c < width:
+            image[r, c] = PIXEL_ON
+        if r == r1 and c == c1:
+            break
+        e2 = 2 * err
+        if e2 > -dc:
+            err -= dc
+            r += sr
+        if e2 < dr:
+            err += dr
+            c += sc
+
+
+def render_image(
+    adj_open: np.ndarray,
+    adj_high: np.ndarray,
+    adj_low: np.ndarray,
+    adj_close: np.ndarray,
+    ma: np.ndarray,
+    volume: np.ndarray,
+    window_days: int,
+) -> Optional[np.ndarray]:
+    price_rows, gap_rows, volume_rows = IMAGE_LAYOUT[window_days]
+    height = price_rows + gap_rows + volume_rows
+    width = window_days * COLS_PER_DAY
+    image = np.zeros((height, width), dtype=np.uint8)
+
+    price_values = []
+    for arr in (adj_open, adj_high, adj_low, adj_close):
+        mask = _finite(arr)
+        if mask.any():
+            price_values.append(arr[mask])
+    ma_finite = ma[_finite(ma)]
+    if ma_finite.size:
+        price_values.append(ma_finite)
+    if not price_values:
+        return None
+
+    stacked = np.concatenate(price_values)
+    pmin = stacked.min()
+    pmax = stacked.max()
+    prange = pmax - pmin
+    if prange == 0.0:
+        prange = 1e-6
+
+    vol_panel_start = price_rows + gap_rows
+    vol_valid = volume[_finite(volume) & (volume > 0)]
+    vmax = vol_valid.max() if vol_valid.size else 0.0
+
+    for day in range(window_days):
+        col_start = day * COLS_PER_DAY
+        o, h, l, c = adj_open[day], adj_high[day], adj_low[day], adj_close[day]
+
+        has_high = _finite(h)
+        has_low = _finite(l)
+        has_open = _finite(o)
+        has_close = _finite(c)
+
+        if not has_high or not has_low:
+            pass
+        elif not has_open and not has_close:
+            high_row = _price_to_row(h, pmin, prange, price_rows)
+            low_row = _price_to_row(l, pmin, prange, price_rows)
+            top, bottom = min(high_row, low_row), max(high_row, low_row)
+            image[top : bottom + 1, col_start + 1] = PIXEL_ON
+        else:
+            high_row = _price_to_row(h, pmin, prange, price_rows)
+            low_row = _price_to_row(l, pmin, prange, price_rows)
+            top, bottom = min(high_row, low_row), max(high_row, low_row)
+            image[top : bottom + 1, col_start + 1] = PIXEL_ON
+            if has_open:
+                open_row = _price_to_row(o, pmin, prange, price_rows)
+                image[open_row, col_start] = PIXEL_ON
+            if has_close:
+                close_row = _price_to_row(c, pmin, prange, price_rows)
+                image[close_row, col_start + 2] = PIXEL_ON
+
+        vol = volume[day]
+        if vmax > 0.0 and _finite(vol) and vol > 0.0:
+            vol_norm = max(0.0, min(1.0, vol / vmax))
+            vol_height = max(1, int(round(vol_norm * (volume_rows - 1))))
+            start_row = height - 1
+            end_row = max(vol_panel_start, start_row - vol_height + 1)
+            image[end_row : start_row + 1, col_start : col_start + COLS_PER_DAY] = PIXEL_ON
+
+    ma_points: list[tuple[int, int]] = []
+    for day in range(window_days):
+        if _finite(ma[day]):
+            ma_row = _price_to_row(ma[day], pmin, prange, price_rows)
+            ma_points.append((ma_row, day * COLS_PER_DAY + 1))
+    for i in range(1, len(ma_points)):
+        _draw_line(image, ma_points[i - 1][0], ma_points[i - 1][1], ma_points[i][0], ma_points[i][1])
+
+    return image
+
+
+def image_shape(window_days: int) -> tuple[int, int]:
+    price_rows, gap_rows, volume_rows = IMAGE_LAYOUT[window_days]
+    height = price_rows + gap_rows + volume_rows
+    width = window_days * COLS_PER_DAY
+    return height, width
+
+
+def try_build_window(
+    stock_df: pd.DataFrame,
+    permno: int,
+    as_of: pd.Timestamp,
+    window_days: int,
+    calendar: pd.DatetimeIndex,
+    calendar_last: pd.Timestamp,
+    future_horizons: tuple[int, ...] = (5, 20, 60),
+) -> Optional[tuple[np.ndarray, dict]]:
+    window_dates = window_calendar_days(as_of, window_days, calendar)
+    window_start = window_dates[0]
+    first_date = stock_first_date(stock_df)
+    last_date = stock_last_date(stock_df)
+
+    if is_ipo_in_window(first_date, window_start):
+        return None
+    if is_delist_in_window(last_date, window_start, as_of, calendar_last):
+        return None
+
+    start_pos = calendar.searchsorted(window_start)
+    hist_start_pos = start_pos - (window_days - 1)
+    if hist_start_pos < 0:
+        return None
+    history_dates = calendar[hist_start_pos : start_pos]
+
+    window = build_window_arrays(stock_df, window_dates)
+    history_close, history_ret = history_arrays(stock_df, history_dates)
+
+    adj_open, adj_high, adj_low, adj_close, ma = adjusted_ohlc_for_window(
+        window, history_close, history_ret
+    )
+    image = render_image(
+        adj_open, adj_high, adj_low, adj_close, ma, window.volume, window_days
+    )
+    if image is None:
+        return None
+
+    indexed = stock_df.set_index("DlyCalDt")
+    as_of_row = indexed.loc[as_of]
+    labels: dict = {
+        "Date": as_of,
+        "StockID": permno,
+        "MarketCap": float(as_of_row["DlyCap"]),
+    }
+    stock_rets = indexed["DlyRet"]
+    for h in future_horizons:
+        try:
+            fwd_dates = forward_calendar_days(as_of, h, calendar)
+            fwd_rets = stock_rets.reindex(fwd_dates).to_numpy(dtype=np.float64)
+            labels[f"Ret_{h}d"] = cumulative_return(fwd_rets)
+        except IndexError:
+            labels[f"Ret_{h}d"] = np.nan
+
+    return image, labels
