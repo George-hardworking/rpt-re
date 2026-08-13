@@ -1,37 +1,21 @@
-"""Orchestrate CSV → parquet → image dataset generation."""
+"""CLI: CSV → parquet → price trend image dataset (prepare / build / all)."""
 
 from __future__ import annotations
 
 import argparse
+import sys
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
 
 from config import IMAGES_ROOT, OHLC_PARQUET, RAW_OHLC_CSV, WINDOW_DAYS
 from data.build_images import build_window_images
 from data.prepare import prepare_ohlc_parquet
 
 
-def run_prepare(raw_path: Path = RAW_OHLC_CSV, parquet_path: Path = OHLC_PARQUET) -> Path:
-    path = prepare_ohlc_parquet(raw_path, parquet_path)
-    print(f"prepared {path}")
-    return path
-
-
-def run_build(
-    parquet_path: Path = OHLC_PARQUET,
-    output_root: Path = IMAGES_ROOT,
-    window_days_list: tuple[int, ...] = WINDOW_DAYS,
-    permno_limit: int | None = None,
-) -> None:
-    build_window_images(
-        parquet_path=parquet_path,
-        output_root=output_root,
-        window_days_list=window_days_list,
-        permno_limit=permno_limit,
-    )
-
-
 def main() -> None:
-    parser = argparse.ArgumentParser(description="OHLC data preparation and image build pipeline")
+    parser = argparse.ArgumentParser(description="OHLC data preparation and image generation")
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_prepare = sub.add_parser("prepare", help="CSV → partitioned parquet")
@@ -54,17 +38,19 @@ def main() -> None:
     args = parser.parse_args()
 
     if args.command == "prepare":
-        run_prepare(args.raw, args.parquet)
+        path = prepare_ohlc_parquet(args.raw, args.parquet)
+        print(f"prepared {path}")
     elif args.command == "build":
-        run_build(
+        build_window_images(
             parquet_path=args.parquet,
             output_root=args.output,
             window_days_list=tuple(args.windows),
             permno_limit=args.permno_limit,
         )
     elif args.command == "all":
-        run_prepare(args.raw, args.parquet)
-        run_build(
+        path = prepare_ohlc_parquet(args.raw, args.parquet)
+        print(f"prepared {path}")
+        build_window_images(
             parquet_path=args.parquet,
             output_root=args.output,
             window_days_list=tuple(args.windows),
