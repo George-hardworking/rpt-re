@@ -73,6 +73,14 @@ def stock_label_panel(stock_df: pd.DataFrame) -> pd.DataFrame:
     return panel
 
 
+def build_stock_features(stock_df: pd.DataFrame, permno: int) -> pd.DataFrame:
+    """Daily feature panel for one stock; one row per observed date."""
+    panel = stock_label_panel(stock_df)
+    out = panel.reset_index(names="DlyCalDt")
+    out.insert(0, "PERMNO", permno)
+    return out
+
+
 def labels_for_as_of(
     panel: pd.DataFrame,
     as_of: pd.Timestamp,

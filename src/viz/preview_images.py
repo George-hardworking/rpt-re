@@ -8,11 +8,11 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-from config import IMAGE_FREQ_DIR, IMAGES_ROOT, OHLC_PARQUET, WINDOW_DAYS
+from config import FEATURES_PARQUET, IMAGE_FREQ_DIR, IMAGES_ROOT, OHLC_PARQUET, WINDOW_DAYS
 from data.calendar import as_of_dates_for_window
 from data.images import image_shape, try_build_window
 from data.labels import labels_for_as_of, stock_label_panel
-from data.parquet_io import load_calendar, read_stock
+from data.parquet_io import load_calendar, read_stock, read_stock_features
 
 
 def default_permno(parquet_path: Path) -> int:
@@ -21,6 +21,7 @@ def default_permno(parquet_path: Path) -> int:
 
 def build_sample_windows(
     parquet_path: Path = OHLC_PARQUET,
+    features_path: Path = FEATURES_PARQUET,
     permno: int | None = None,
     window_days_list: tuple[int, ...] = WINDOW_DAYS,
     use_last_as_of: bool = True,
@@ -33,7 +34,10 @@ def build_sample_windows(
     calendar_last = calendar[-1]
     stock_id = permno if permno is not None else default_permno(parquet_path)
     stock_df = read_stock(parquet_path, stock_id)
-    label_panel = stock_label_panel(stock_df)
+    if features_path.exists():
+        label_panel = read_stock_features(features_path, stock_id)
+    else:
+        label_panel = stock_label_panel(stock_df)
 
     built: list[tuple[int, np.ndarray, dict[str, Any], pd.Timestamp]] = []
     for window_days in window_days_list:

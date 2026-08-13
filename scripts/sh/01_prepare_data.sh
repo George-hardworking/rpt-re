@@ -1,20 +1,11 @@
 #!/usr/bin/env bash
-# 01_generate_images: CSV -> parquet -> price-trend image dataset.
-#
-# - Auto-starts detached tmux when not already inside tmux
-# - Activates conda env 5020_env
-# - Logs to logs/01_generate_images/ with timestamps
-# - Forwards args to scripts/py/01_generate_images.py
-# - Auto-sizes workers from free RAM unless --workers is passed
+# 01_prepare_data: CSV -> OHLC parquet -> daily feature panel.
 #
 # Usage:
-#   ./scripts/sh/01_generate_images.sh all
-#   ./scripts/sh/01_generate_images.sh prepare
-#   ./scripts/sh/01_generate_images.sh build
-#   ./scripts/sh/01_generate_images.sh build --parquet data/processed/ohlc_daily.parquet
-#   ./scripts/sh/01_generate_images.sh build --workers 8
-#   ./scripts/sh/01_generate_images.sh build --permno-limit 50 --workers 2
-#   ./scripts/sh/01_generate_images.sh all --reserve-gib 32
+#   ./scripts/sh/01_prepare_data.sh all
+#   ./scripts/sh/01_prepare_data.sh ohlc
+#   ./scripts/sh/01_prepare_data.sh features
+#   ./scripts/sh/01_prepare_data.sh features --workers 8
 #
 set -euo pipefail
 
@@ -28,7 +19,7 @@ if [[ ! -f "$ROOT/pyproject.toml" ]]; then
   exit 1
 fi
 
-PY="$ROOT/scripts/py/01_generate_images.py"
+PY="$ROOT/scripts/py/01_prepare_data.py"
 if [[ ! -f "$PY" ]]; then
   echo "ERROR: missing Python entry: $PY" >&2
   exit 1
@@ -39,19 +30,21 @@ if [[ -z "${TMUX:-}" ]]; then
     echo "ERROR: tmux not installed; run inside tmux or install tmux" >&2
     exit 1
   fi
-  mkdir -p "$ROOT/logs/01_generate_images"
+  mkdir -p "$ROOT/logs/01_prepare_data"
   STAMP="$(date +%Y%m%d_%H%M%S)"
-  SESSION="rpt_01_images_${STAMP}"
-  MAIN_LOG="$ROOT/logs/01_generate_images/01_generate_images_${STAMP}.log"
+  SESSION="rpt_01_data_${STAMP}"
+  MAIN_LOG="$ROOT/logs/01_prepare_data/01_prepare_data_${STAMP}.log"
   echo "[INFO] Starting tmux session ${SESSION}"
   echo "[INFO] Log file: ${MAIN_LOG}"
   _quoted_args=""
   if (($# > 0)); then
     _quoted_args=$(printf ' %q' "$@")
+  else
+    _quoted_args=" all"
   fi
   tmux new-session -d -s "$SESSION" \
     env RPT_MAIN_LOG="$MAIN_LOG" RPT_STAMP="$STAMP" \
-    bash -lc "cd '$ROOT' && bash '$ROOT/scripts/sh/01_generate_images.sh'${_quoted_args}"
+    bash -lc "cd '$ROOT' && bash '$ROOT/scripts/sh/01_prepare_data.sh'${_quoted_args}"
   echo "[INFO] Attach:  tmux attach -t ${SESSION}"
   echo "[INFO] Tail log: tail -f ${MAIN_LOG}"
   exit 0
@@ -75,10 +68,10 @@ conda activate 5020_env
 
 cd "$ROOT"
 
-LOG_DIR="$ROOT/logs/01_generate_images"
+LOG_DIR="$ROOT/logs/01_prepare_data"
 mkdir -p "$LOG_DIR"
 STAMP="${RPT_STAMP:-$(date +%Y%m%d_%H%M%S)}"
-MAIN_LOG="${RPT_MAIN_LOG:-$LOG_DIR/01_generate_images_${STAMP}.log}"
+MAIN_LOG="${RPT_MAIN_LOG:-$LOG_DIR/01_prepare_data_${STAMP}.log}"
 
 log() { printf '[%s] %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*" | tee -a "$MAIN_LOG"; }
 
@@ -94,16 +87,20 @@ export MKL_NUM_THREADS="${MKL_NUM_THREADS:-1}"
 export NUMEXPR_NUM_THREADS="${NUMEXPR_NUM_THREADS:-1}"
 export PYTHONUNBUFFERED="${PYTHONUNBUFFERED:-1}"
 
+if (($# == 0)); then
+  set -- all
+fi
+
 RESERVE_GIB="${RPT_RESERVE_GIB:-16}"
 _cmd="${1:-}"
-if [[ "$_cmd" == "build" || "$_cmd" == "all" ]]; then
+if [[ "$_cmd" == "features" || "$_cmd" == "all" ]]; then
   if [[ "$*" != *"--reserve-gib"* ]]; then
     set -- "$@" --reserve-gib "$RESERVE_GIB"
   fi
 fi
 
 log "============================================================"
-log "01_generate_images"
+log "01_prepare_data"
 log "Conda: ${CONDA_DEFAULT_ENV:-unknown}"
 log "Python: $PY"
 log "Args:  $*"
@@ -116,7 +113,7 @@ ec="${PIPESTATUS[0]}"
 set -e
 
 if [[ "$ec" -ne 0 ]]; then
-  log "ERROR: 01_generate_images failed (exit ${ec}). See ${MAIN_LOG}"
+  log "ERROR: 01_prepare_data failed (exit ${ec}). See ${MAIN_LOG}"
   exit "$ec"
 fi
 
