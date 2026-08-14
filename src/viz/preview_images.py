@@ -14,10 +14,10 @@ from config import (
     OHLC_PARQUET,
     WINDOW_DAYS,
     WINDOW_DEFAULT_SAMPLE_FREQ,
-    image_bundle_dir,
 )
 from data.calendar import as_of_dates_for_freq, as_of_dates_for_window
-from data.images import image_shape, try_build_window
+from data.image_store import load_image_memmap, resolve_image_file
+from data.images import try_build_window
 from data.labels import labels_for_as_of, stock_label_panel
 from data.parquet_io import load_calendar, read_stock, read_stock_features
 
@@ -106,19 +106,17 @@ def memmap_image_path(
 ) -> Path:
     if sample_freq is None:
         sample_freq = WINDOW_DEFAULT_SAMPLE_FREQ[window_days]
-    freq_dir = output_root / image_bundle_dir(window_days, sample_freq)
-    return freq_dir / f"{window_days}d_{year}_images.dat"
+    return resolve_image_file(output_root, window_days, year, sample_freq=sample_freq)
 
 
 def load_memmap_images(
     dat_path: Path,
     window_days: int,
     mode: str = "r",
-) -> np.ndarray:
-    height, width = image_shape(window_days)
-    flat = np.memmap(dat_path, dtype=np.uint8, mode=mode)
-    n_images = flat.size // (height * width)
-    return flat.reshape(n_images, height, width)
+):
+    if mode != "r":
+        raise ValueError(f"images are read-only, got mode={mode}")
+    return load_image_memmap(dat_path, window_days)
 
 
 def plot_memmap_index(

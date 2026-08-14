@@ -22,6 +22,10 @@ from config import (
     image_bundle_dir,
     sample_freq_for_horizon,
 )
+from data.image_store import (
+    bytes_per_image_for,
+    list_image_years as _list_image_years,
+)
 from data.images import image_shape
 from viz.preview_images import load_memmap_images, memmap_image_path
 
@@ -64,12 +68,7 @@ def list_image_years(
     window_days: int,
     sample_freq: str,
 ) -> list[int]:
-    freq_dir = images_root / image_bundle_dir(window_days, sample_freq)
-    years: list[int] = []
-    for path in sorted(freq_dir.glob(f"{window_days}d_*_images.dat")):
-        parts = path.stem.split("_")
-        years.append(int(parts[1]))
-    return years
+    return _list_image_years(images_root, window_days, sample_freq)
 
 
 def label_column(horizon: int) -> str:
@@ -99,8 +98,7 @@ def build_year_table(
     dat_path = memmap_image_path(
         images_root, window_days, year, sample_freq=sample_freq
     )
-    height, width = image_shape(window_days)
-    n_images = Path(dat_path).stat().st_size // (height * width)
+    n_images = Path(dat_path).stat().st_size // bytes_per_image_for(dat_path, window_days)
     n_labels = len(labels)
     if n_labels < n_images:
         raise ValueError(

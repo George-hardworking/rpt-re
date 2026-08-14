@@ -35,7 +35,8 @@ from config import (
     windows_to_diagonal_bundles,
 )
 from data.calendar import as_of_dates_for_freq
-from data.images import image_shape, prepare_stock_ohlc, try_build_window_from_ohlc
+from data.image_store import IMAGES_EXT, pack_image, packed_bytes_per_image
+from data.images import prepare_stock_ohlc, try_build_window_from_ohlc
 from data.labels import labels_for_as_ofs
 from data.parquet_io import load_calendar, permno_list, read_stock, read_stock_features
 from utils.checkpoint import (
@@ -112,7 +113,7 @@ def process_permno_chunk(task: tuple) -> None:
         if key not in handles:
             bundle_dir = worker_dir / image_bundle_dir(window_days, sample_freq)
             bundle_dir.mkdir(parents=True, exist_ok=True)
-            path = bundle_dir / f"{window_days}d_{year}_images.dat"
+            path = bundle_dir / f"{window_days}d_{year}_images{IMAGES_EXT}"
             mode = "ab" if path.exists() else "wb"
             handles[key] = open(path, mode)
         return handles[key]
@@ -145,9 +146,7 @@ def process_permno_chunk(task: tuple) -> None:
                 if built is None:
                     continue
                 image, _meta = built
-                shard(window_days, sample_freq, as_of.year).write(
-                    image.astype(np.uint8).tobytes()
-                )
+                shard(window_days, sample_freq, as_of.year).write(pack_image(image))
                 built_as_ofs.append(as_of)
 
             if built_as_ofs:
@@ -291,7 +290,7 @@ def build_window_images(
         freq_dir = output_root / image_bundle_dir(window_days, sample_freq)
         freq_dir.mkdir(parents=True, exist_ok=True)
         for year in years_per_bundle[(window_days, sample_freq)]:
-            final_dat = freq_dir / f"{window_days}d_{year}_images.dat"
+            final_dat = freq_dir / f"{window_days}d_{year}_images{IMAGES_EXT}"
             log(
                 f"merge bundle={image_bundle_dir(window_days, sample_freq)} year={year}"
             )
@@ -303,13 +302,13 @@ def build_window_images(
                     shard = (
                         worker_dir
                         / image_bundle_dir(window_days, sample_freq)
-                        / f"{window_days}d_{year}_images.dat"
+                        / f"{window_days}d_{year}_images{IMAGES_EXT}"
                     )
                     if shard.is_file():
                         with open(shard, "rb") as f:
                             shutil.copyfileobj(f, out)
-            height, width = image_shape(window_days)
-            n_images = final_dat.stat().st_size // (height * width)
+            bytes_per_image = packed_bytes_per_image(window_days)
+            n_images = final_dat.stat().st_size // bytes_per_image
             if len(all_labels) > n_images:
                 log(
                     f"trim labels bundle={image_bundle_dir(window_days, sample_freq)} "
