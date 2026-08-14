@@ -129,13 +129,26 @@ def permno_list(parquet_path: Path) -> np.ndarray:
     return np.sort(permnos)
 
 
+def _read_permno_partition(root: Path, permno: int) -> pd.DataFrame:
+    """Read one hive partition by path. Does not scan sibling PERMNO=* directories."""
+    part = Path(root) / f"PERMNO={permno}"
+    files = sorted(part.glob("*.parquet"))
+    if not files:
+        raise FileNotFoundError(f"no parquet in {part}")
+    tables = [pq.ParquetFile(path).read() for path in files]
+    df = pa.concat_tables(tables).to_pandas()
+    if "PERMNO" not in df.columns:
+        df.insert(0, "PERMNO", np.int64(permno))
+    return df
+
+
 def read_stock(parquet_path: Path, permno: int) -> pd.DataFrame:
-    df = pd.read_parquet(parquet_path, filters=[("PERMNO", "==", permno)])
+    df = _read_permno_partition(parquet_path, permno)
     return df.sort_values("DlyCalDt").drop_duplicates(subset=["DlyCalDt"], keep="last")
 
 
 def read_stock_features(features_path: Path, permno: int) -> pd.DataFrame:
-    df = pd.read_parquet(features_path, filters=[("PERMNO", "==", permno)])
+    df = _read_permno_partition(features_path, permno)
     df["DlyCalDt"] = pd.to_datetime(df["DlyCalDt"])
     df = df.sort_values("DlyCalDt").drop_duplicates(subset=["DlyCalDt"], keep="last")
     return df.set_index("DlyCalDt")
@@ -143,10 +156,10 @@ def read_stock_features(features_path: Path, permno: int) -> pd.DataFrame:
 
 def read_feature_row(features_path: Path, permno: int, as_of: pd.Timestamp) -> dict:
     as_of = pd.Timestamp(as_of)
-    df = pd.read_parquet(
-        features_path,
-        filters=[("PERMNO", "==", permno), ("DlyCalDt", "==", as_of)],
-    )
-    if df.empty:
+    panel = read_stock_features(features_path, permno)
+    if as_of not in panel.index:
         raise KeyError(f"no feature row PERMNO={permno} DlyCalDt={as_of}")
-    return df.iloc[0].to_dict()
+    rec = panel.loc[as_of].to_dict()
+    rec["PERMNO"] = permno
+    rec["DlyCalDt"] = as_of
+    return rec

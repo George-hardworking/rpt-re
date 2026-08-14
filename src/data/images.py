@@ -340,8 +340,12 @@ def render_image(
 
     vol_draw = (vmax > 0.0) & fin(volume) & (volume > 0.0)
     if vol_draw.any():
-        vol_norm = np.clip(volume / vmax, 0.0, 1.0)
-        vol_height = np.maximum(1, np.round(vol_norm * (volume_rows - 1)).astype(np.intp))
+        vol_norm = np.zeros(window_days, dtype=np.float64)
+        vol_norm[vol_draw] = np.clip(volume[vol_draw] / vmax, 0.0, 1.0)
+        vol_height = np.zeros(window_days, dtype=np.intp)
+        vol_height[vol_draw] = np.maximum(
+            1, np.round(vol_norm[vol_draw] * (volume_rows - 1))
+        ).astype(np.intp)
         start_row = height - 1
         end_row = np.maximum(vol_panel_start, start_row - vol_height + 1)
         vol_mask = vol_draw & (rows >= end_row) & (rows <= start_row)
@@ -355,9 +359,10 @@ def render_image(
         ma_cols_mid = ma_days * COLS_PER_DAY + 1
         ma_cols_open = ma_days * COLS_PER_DAY
         ma_cols_close = ma_days * COLS_PER_DAY + 2
-        image[ma_rows, ma_cols_open] = PIXEL_ON
-        image[ma_rows, ma_cols_mid] = PIXEL_ON
-        image[ma_rows, ma_cols_close] = PIXEL_ON
+        in_panel = (ma_rows >= 0) & (ma_rows < price_rows)
+        image[ma_rows[in_panel], ma_cols_open[in_panel]] = PIXEL_ON
+        image[ma_rows[in_panel], ma_cols_mid[in_panel]] = PIXEL_ON
+        image[ma_rows[in_panel], ma_cols_close[in_panel]] = PIXEL_ON
         for i in range(1, len(ma_days)):
             _draw_line(
                 image,
