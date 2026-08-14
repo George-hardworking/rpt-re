@@ -6,10 +6,10 @@ import json
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader
 
 from config import ADAM_LR, BATCH_SIZE, EARLY_STOP_PATIENCE, MAX_EPOCHS
 from models.cnn import PriceTrendCNN, copy_conv_blocks_from, flatten_feature_size
@@ -17,13 +17,6 @@ from models.dataset import ImageLabelDataset, SampleRef
 
 LAST_CKPT = "last.pt"
 BEST_CKPT = "best.pt"
-
-
-def _collate_batch(
-    batch: list[tuple[torch.Tensor, torch.Tensor, SampleRef]],
-) -> tuple[torch.Tensor, torch.Tensor, list[SampleRef]]:
-    xs, ys, refs = zip(*batch)
-    return torch.stack(xs), torch.stack(ys), list(refs)
 
 
 @dataclass
@@ -76,12 +69,47 @@ def training_is_finished(ckpt_dir: Path) -> bool:
     return best_path.is_file()
 
 
+def iter_index_batches(n: int, batch_size: int, shuffle: bool):
+    """Index batches matching PyTorch DataLoader RandomSampler + BatchSampler.
+
+    DataLoader(num_workers=0) draws _base_seed when the iterator is created,
+    then RandomSampler draws its private generator seed on the first batch.
+    Dropout during training uses the global RNG after those draws, so this
+    order must stay the same.
+    """
+    torch.empty((), dtype=torch.int64).random_().item()
+    if shuffle:
+        seed = int(torch.empty((), dtype=torch.int64).random_().item())
+        generator = torch.Generator()
+        generator.manual_seed(seed)
+        perm = torch.randperm(n, generator=generator).numpy()
+        for start in range(0, n, batch_size):
+            yield perm[start : start + batch_size]
+        return
+    for start in range(0, n, batch_size):
+        yield np.arange(start, min(start + batch_size, n), dtype=np.int64)
+
+
+def _move_batch(
+    x: torch.Tensor,
+    y: torch.Tensor,
+    device: torch.device,
+    pin: bool,
+) -> tuple[torch.Tensor, torch.Tensor]:
+    if pin:
+        x = x.pin_memory()
+        y = y.pin_memory()
+    return x.to(device, non_blocking=pin), y.to(device, non_blocking=pin)
+
+
 def run_epoch(
     model: PriceTrendCNN,
-    loader: DataLoader,
+    dataset: ImageLabelDataset,
     criterion: nn.Module,
     optimizer: torch.optim.Optimizer | None,
     device: torch.device,
+    batch_size: int,
+    shuffle: bool,
 ) -> float:
     is_train = optimizer is not None
     if is_train:
@@ -89,20 +117,23 @@ def run_epoch(
     else:
         model.eval()
 
+    pin = device.type == "cuda"
     total_loss = 0.0
     n_batches = 0
-    for x, y, _ref in loader:
-        x = x.to(device)
-        y = y.to(device)
-        if is_train:
-            optimizer.zero_grad()
-        logits = model(x)
-        loss = criterion(logits, y)
-        if is_train:
-            loss.backward()
-            optimizer.step()
-        total_loss += float(loss.item())
-        n_batches += 1
+    ctx = torch.enable_grad() if is_train else torch.no_grad()
+    with ctx:
+        for indices in iter_index_batches(len(dataset), batch_size, shuffle):
+            x, y = dataset.batch_xy(indices)
+            x, y = _move_batch(x, y, device, pin)
+            if is_train:
+                optimizer.zero_grad(set_to_none=True)
+            logits = model(x)
+            loss = criterion(logits, y)
+            if is_train:
+                loss.backward()
+                optimizer.step()
+            total_loss += float(loss.item())
+            n_batches += 1
     return total_loss / max(n_batches, 1)
 
 
@@ -196,13 +227,6 @@ def train_model(
     dev = _device(device)
     last_path, best_path = ckpt_dir_paths(ckpt_dir)
 
-    train_loader = DataLoader(
-        train_ds, batch_size=batch_size, shuffle=True, collate_fn=_collate_batch
-    )
-    val_loader = DataLoader(
-        val_ds, batch_size=batch_size, shuffle=False, collate_fn=_collate_batch
-    )
-
     flat = flatten_feature_size(image_days)
     config = TrainConfig(
         image_days=image_days,
@@ -259,8 +283,12 @@ def train_model(
         stale_epochs = 0
 
     for epoch in range(start_epoch, max_epochs):
-        train_loss = run_epoch(model, train_loader, criterion, optimizer, dev)
-        val_loss = run_epoch(model, val_loader, criterion, None, dev)
+        train_loss = run_epoch(
+            model, train_ds, criterion, optimizer, dev, batch_size, True
+        )
+        val_loss = run_epoch(
+            model, val_ds, criterion, None, dev, batch_size, False
+        )
         epoch_num = epoch + 1
         log_fn(
             f"epoch={epoch_num} train_loss={train_loss:.6f} val_loss={val_loss:.6f}"
@@ -316,14 +344,14 @@ def predict_dataset(
 ) -> pd.DataFrame:
     dev = _device(device)
     model.eval()
-    loader = DataLoader(
-        dataset, batch_size=batch_size, shuffle=False, collate_fn=_collate_batch
-    )
+    pin = dev.type == "cuda"
     rows: list[dict] = []
-    for x, _y, refs in loader:
-        x = x.to(dev)
+    for indices in iter_index_batches(len(dataset), batch_size, False):
+        x, _y = dataset.batch_xy(indices)
+        x, _y = _move_batch(x, _y, dev, pin)
         logits = model(x)
         probs = torch.softmax(logits, dim=-1)[:, 1].cpu().numpy()
+        refs = dataset.batch_refs(indices)
         for prob, ref in zip(probs, refs):
             ref: SampleRef
             rows.append(

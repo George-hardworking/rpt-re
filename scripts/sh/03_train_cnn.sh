@@ -5,6 +5,8 @@
 #   ./scripts/sh/03_train_cnn.sh --image-days 5 --horizon 5 --seed 0
 #   ./scripts/sh/03_train_cnn.sh --image-days 20 --horizon 20 --all-seeds
 #   ./scripts/sh/03_train_cnn.sh --image-days 5 --horizon 5 --seed 0 --device cuda
+#   ./scripts/sh/03_train_cnn.sh --all-configs --all-seeds
+#   ./scripts/sh/03_train_cnn.sh --all-configs --all-seeds --gpu-ids 1,3
 #   # --seed: optimization only; 70/30 split uses --split-seed (default 0, shared by ensemble)
 #   ./scripts/sh/03_train_cnn.sh --image-days 20 --horizon 20 --all-seeds --init-from-image-days 5
 #
@@ -85,6 +87,12 @@ export OPENBLAS_NUM_THREADS="${OPENBLAS_NUM_THREADS:-1}"
 export MKL_NUM_THREADS="${MKL_NUM_THREADS:-1}"
 export NUMEXPR_NUM_THREADS="${NUMEXPR_NUM_THREADS:-1}"
 export PYTHONUNBUFFERED="${PYTHONUNBUFFERED:-1}"
+export CUDA_DEVICE_ORDER="${CUDA_DEVICE_ORDER:-PCI_BUS_ID}"
+
+RESERVE_GIB="${RPT_RESERVE_GIB:-16}"
+if [[ "$*" != *"--reserve-gib"* ]]; then
+  set -- "$@" --reserve-gib "$RESERVE_GIB"
+fi
 
 log "============================================================"
 log "03_train_cnn"

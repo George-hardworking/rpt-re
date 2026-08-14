@@ -26,6 +26,10 @@ BATCH_SIZE = 128
 EARLY_STOP_PATIENCE = 2
 TRAIN_VAL_FRAC = 0.7
 MAX_EPOCHS = 100
+# Independent (I, R, seed) processes packed onto remaining GPU memory.
+GPU_MIN_FREE_GIB = 16.0
+VRAM_PER_JOB_GIB = {5: 2.0, 20: 4.0, 60: 8.0}
+TRAIN_JOB_RAM_GIB = 10.0
 
 WINDOW_DAYS = (5, 20, 60)
 FUTURE_HORIZONS = (5, 20, 60)
