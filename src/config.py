@@ -8,6 +8,7 @@ DATA_ROOT = Path(os.environ.get("RPT_DATA_ROOT", _DEFAULT_DATA_ROOT))
 RAW_OHLC_CSV = DATA_ROOT / "raw" / "OHLC_92_24.csv"
 PROCESSED_DIR = DATA_ROOT / "processed"
 OHLC_PARQUET = PROCESSED_DIR / "ohlc_daily"
+OHLC_CALENDAR = PROCESSED_DIR / "ohlc_calendar.parquet"
 FEATURES_PARQUET = PROCESSED_DIR / "features"
 IMAGES_ROOT = PROCESSED_DIR / "images"
 

@@ -22,6 +22,46 @@ class WindowArrays:
     volume: np.ndarray
 
 
+@dataclass(frozen=True)
+class StockOHLC:
+    dates: pd.DatetimeIndex
+    first_date: pd.Timestamp
+    last_date: pd.Timestamp
+    open_: np.ndarray
+    high: np.ndarray
+    low: np.ndarray
+    close: np.ndarray
+    ret: np.ndarray
+    volume: np.ndarray
+
+
+def prepare_stock_ohlc(stock_df: pd.DataFrame) -> StockOHLC:
+    dates = pd.DatetimeIndex(stock_df["DlyCalDt"])
+    return StockOHLC(
+        dates=dates,
+        first_date=dates[0],
+        last_date=dates[-1],
+        open_=np.abs(stock_df["DlyOpen"].to_numpy(dtype=np.float64)),
+        high=np.abs(stock_df["DlyHigh"].to_numpy(dtype=np.float64)),
+        low=np.abs(stock_df["DlyLow"].to_numpy(dtype=np.float64)),
+        close=np.abs(stock_df["DlyClose"].to_numpy(dtype=np.float64)),
+        ret=stock_df["DlyRet"].to_numpy(dtype=np.float64),
+        volume=stock_df["DlyVol"].to_numpy(dtype=np.float64),
+    )
+
+
+def _window_arrays_from_slice(ohlc: StockOHLC, sl: slice) -> WindowArrays:
+    return WindowArrays(
+        dates=ohlc.dates[sl],
+        open_=ohlc.open_[sl],
+        high=ohlc.high[sl],
+        low=ohlc.low[sl],
+        close=ohlc.close[sl],
+        ret=ohlc.ret[sl],
+        volume=ohlc.volume[sl],
+    )
+
+
 def _finite(values: np.ndarray) -> np.ndarray:
     return np.isfinite(values)
 
@@ -209,6 +249,8 @@ def _draw_line(
     r1: int,
     c1: int,
     row_hi: int,
+    *,
+    middle_col_only: bool = False,
 ) -> None:
     dr = abs(r1 - r0)
     dc = abs(c1 - c0)
@@ -219,7 +261,8 @@ def _draw_line(
     _, width = image.shape
     while True:
         if 0 <= r < row_hi and 0 <= c < width:
-            image[r, c] = PIXEL_ON
+            if not middle_col_only or c % COLS_PER_DAY == 1:
+                image[r, c] = PIXEL_ON
         if r == r1 and c == c1:
             break
         e2 = 2 * err
@@ -309,15 +352,21 @@ def render_image(
     if ma_finite_mask.any():
         ma_days = np.nonzero(ma_finite_mask)[0]
         ma_rows = _price_to_rows(ma[ma_days], pmin, prange, price_rows, clip=False)
-        ma_cols = ma_days * COLS_PER_DAY + 1
+        ma_cols_mid = ma_days * COLS_PER_DAY + 1
+        ma_cols_open = ma_days * COLS_PER_DAY
+        ma_cols_close = ma_days * COLS_PER_DAY + 2
+        image[ma_rows, ma_cols_open] = PIXEL_ON
+        image[ma_rows, ma_cols_mid] = PIXEL_ON
+        image[ma_rows, ma_cols_close] = PIXEL_ON
         for i in range(1, len(ma_days)):
             _draw_line(
                 image,
                 int(ma_rows[i - 1]),
-                int(ma_cols[i - 1]),
+                int(ma_cols_mid[i - 1]),
                 int(ma_rows[i]),
-                int(ma_cols[i]),
+                int(ma_cols_mid[i]),
                 row_hi=price_rows,
+                middle_col_only=True,
             )
 
     return image
@@ -330,38 +379,41 @@ def image_shape(window_days: int) -> tuple[int, int]:
     return height, width
 
 
-def try_build_window(
-    stock_df: pd.DataFrame,
+def try_build_window_from_ohlc(
+    ohlc: StockOHLC,
     permno: int,
     as_of: pd.Timestamp,
     window_days: int,
     calendar_last: pd.Timestamp,
+    *,
+    loc: int | None = None,
 ) -> Optional[tuple[np.ndarray, dict]]:
-    dates = observed_dates(stock_df)
-    window_dates = window_stock_days(dates, as_of, window_days)
-    if window_dates is None:
+    if loc is None:
+        loc = ohlc.dates.get_indexer([as_of])[0]
+        if loc < 0:
+            return None
+
+    start = loc - window_days + 1
+    if start < 0:
         return None
 
-    window_start = window_dates[0]
-    first_date = stock_first_date(stock_df)
-    last_date = stock_last_date(stock_df)
-
-    if is_ipo_in_window(first_date, window_start):
+    window_start = ohlc.dates[start]
+    if is_ipo_in_window(ohlc.first_date, window_start):
         return None
-    if is_delist_in_window(last_date, window_start, as_of, calendar_last):
+    if is_delist_in_window(ohlc.last_date, window_start, as_of, calendar_last):
         return None
 
     ma_offset = window_days
-    history_dates = history_stock_days(dates, window_start, ma_offset)
-    draw_ma = len(history_dates) == ma_offset
+    hist_start = start - ma_offset
+    draw_ma = hist_start >= 0
     if draw_ma:
-        all_dates = pd.DatetimeIndex(np.concatenate([history_dates, window_dates]))
+        slice_start = hist_start
         n_hist = ma_offset
     else:
-        all_dates = window_dates
+        slice_start = start
         n_hist = 0
 
-    series = build_window_arrays(stock_df, all_dates)
+    series = _window_arrays_from_slice(ohlc, slice(slice_start, loc + 1))
     built_adj = adjusted_ohlc_for_window(series, n_hist, draw_ma)
     if built_adj is None:
         return None
@@ -373,3 +425,16 @@ def try_build_window(
         return None
 
     return image, {"Date": as_of, "StockID": permno}
+
+
+def try_build_window(
+    stock_df: pd.DataFrame,
+    permno: int,
+    as_of: pd.Timestamp,
+    window_days: int,
+    calendar_last: pd.Timestamp,
+) -> Optional[tuple[np.ndarray, dict]]:
+    ohlc = prepare_stock_ohlc(stock_df)
+    return try_build_window_from_ohlc(
+        ohlc, permno, as_of, window_days, calendar_last
+    )

@@ -92,3 +92,26 @@ def labels_for_as_of(
     rec["StockID"] = permno
     rec["window_size"] = np.uint8(window_days)
     return rec
+
+
+def labels_for_as_ofs(
+    panel: pd.DataFrame,
+    as_ofs: list[pd.Timestamp] | pd.DatetimeIndex,
+    permno: int,
+    window_days: int,
+) -> list[dict]:
+    if len(as_ofs) == 0:
+        return []
+
+    subset = panel.loc[as_ofs]
+    if isinstance(subset, pd.Series):
+        subset = subset.to_frame().T
+
+    out: list[dict] = []
+    for as_of, (_, row) in zip(as_ofs, subset.iterrows()):
+        rec = row.to_dict()
+        rec["Date"] = pd.Timestamp(as_of)
+        rec["StockID"] = permno
+        rec["window_size"] = np.uint8(window_days)
+        out.append(rec)
+    return out

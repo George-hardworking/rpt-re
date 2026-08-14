@@ -69,6 +69,36 @@ def append_image_labels(worker_dir: Path, window_days: int, year: int, rows: lis
         f.flush()
 
 
+class LabelJsonlWriter:
+    """Buffered jsonl sidecar writer; one open handle per (window_days, year)."""
+
+    def __init__(self, worker_dir: Path) -> None:
+        self.worker_dir = worker_dir
+        self._handles: dict[tuple[int, int], object] = {}
+
+    def append(self, window_days: int, year: int, rows: list[dict]) -> None:
+        if not rows:
+            return
+        key = (window_days, year)
+        if key not in self._handles:
+            path = self.worker_dir / f"{window_days}d_{year}_labels.jsonl"
+            mode = "a" if path.exists() else "w"
+            self._handles[key] = open(path, mode)
+        handle = self._handles[key]
+        for row in rows:
+            handle.write(json.dumps(row, default=str))
+            handle.write("\n")
+
+    def flush_all(self) -> None:
+        for handle in self._handles.values():
+            handle.flush()
+
+    def close(self) -> None:
+        for handle in self._handles.values():
+            handle.close()
+        self._handles.clear()
+
+
 def read_image_label_sidecars(tmp_root: Path, window_days: int, year: int) -> list[dict]:
     rows: list[dict] = []
     for worker_dir in sorted(tmp_root.glob("worker_*")):

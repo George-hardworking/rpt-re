@@ -19,15 +19,15 @@ sys.path.insert(0, str(ROOT / "src"))
 
 DEFAULT_RESERVE_GIB = 16.0
 MEM_PER_WORKER_GIB = 1.5
-PROGRESS_EVERY = 500
+PROGRESS_EVERY = 20
 
 from config import FEATURES_PARQUET, IMAGE_FREQ_DIR, IMAGES_ROOT, OHLC_PARQUET, WINDOW_DAYS
 from data.calendar import as_of_dates_for_window
-from data.images import try_build_window
-from data.labels import labels_for_as_of
+from data.images import prepare_stock_ohlc, try_build_window_from_ohlc
+from data.labels import labels_for_as_ofs
 from data.parquet_io import load_calendar, permno_list, read_stock, read_stock_features
 from utils.checkpoint import (
-    append_image_labels,
+    LabelJsonlWriter,
     append_permno_checkpoint,
     load_permno_checkpoint,
     read_image_label_sidecars,
@@ -72,7 +72,7 @@ def write_year_bundle(
     log(f"window={window_days} year={year} images={len(labels)} -> {dat_path}")
 
 
-def process_permno_chunk(task: tuple) -> tuple[dict, dict]:
+def process_permno_chunk(task: tuple) -> None:
     (permno_chunk, ohlc_path, features_path, calendar, window_days_list,
      as_of_per_window, worker_id, tmp_root, output_root) = task
 
@@ -81,8 +81,7 @@ def process_permno_chunk(task: tuple) -> tuple[dict, dict]:
     worker_dir.mkdir(parents=True, exist_ok=True)
 
     handles: dict[tuple[int, int], object] = {}
-    shard_paths: dict[tuple[int, int], Path] = {}
-    labels: dict[tuple[int, int], list[dict]] = {}
+    label_writer = LabelJsonlWriter(worker_dir)
 
     def shard(window_days: int, year: int):
         key = (window_days, year)
@@ -90,40 +89,53 @@ def process_permno_chunk(task: tuple) -> tuple[dict, dict]:
             freq_dir = worker_dir / IMAGE_FREQ_DIR[window_days]
             freq_dir.mkdir(parents=True, exist_ok=True)
             path = freq_dir / f"{window_days}d_{year}_images.dat"
-            shard_paths[key] = path
             mode = "ab" if path.exists() else "wb"
             handles[key] = open(path, mode)
-            labels[key] = []
         return handles[key]
 
     for i, permno in enumerate(permno_chunk):
         permno = int(permno)
         stock_df = read_stock(ohlc_path, permno)
-        stock_dates = set(stock_df["DlyCalDt"])
+        ohlc = prepare_stock_ohlc(stock_df)
         feature_panel = read_stock_features(features_path, permno)
+        pending_labels: dict[tuple[int, int], list[dict]] = {}
+
         for window_days in window_days_list:
-            for as_of in as_of_per_window[window_days]:
-                if as_of not in stock_dates:
+            as_ofs = as_of_per_window[window_days]
+            locs = ohlc.dates.get_indexer(as_ofs)
+            built_as_ofs: list[pd.Timestamp] = []
+
+            for as_of, loc in zip(as_ofs, locs):
+                if loc < 0:
                     continue
-                built = try_build_window(
-                    stock_df=stock_df,
+                built = try_build_window_from_ohlc(
+                    ohlc=ohlc,
                     permno=permno,
                     as_of=as_of,
                     window_days=window_days,
                     calendar_last=calendar_last,
+                    loc=int(loc),
                 )
                 if built is None:
                     continue
                 image, _meta = built
                 shard(window_days, as_of.year).write(image.astype(np.uint8).tobytes())
-                row = labels_for_as_of(feature_panel, as_of, permno, window_days)
-                labels[(window_days, as_of.year)].append(row)
-                append_image_labels(worker_dir, window_days, as_of.year, [row])
+                built_as_ofs.append(as_of)
+
+            if built_as_ofs:
+                rows = labels_for_as_ofs(feature_panel, built_as_ofs, permno, window_days)
+                for as_of, row in zip(built_as_ofs, rows):
+                    key = (window_days, as_of.year)
+                    pending_labels.setdefault(key, []).append(row)
+
+        for (window_days, year), rows in pending_labels.items():
+            label_writer.append(window_days, year, rows)
+        label_writer.flush_all()
         append_permno_checkpoint(output_root, permno)
         with _PROGRESS.get_lock():
             _PROGRESS.value += 1
             done = _PROGRESS.value
-        if done % PROGRESS_EVERY == 0 or done == _TOTAL_STOCKS:
+        if done == 1 or done % PROGRESS_EVERY == 0 or done == _TOTAL_STOCKS:
             pct = 100.0 * done / _TOTAL_STOCKS
             log(
                 f"progress {pct:5.1f}%  stocks {done}/{_TOTAL_STOCKS}  "
@@ -132,7 +144,7 @@ def process_permno_chunk(task: tuple) -> tuple[dict, dict]:
 
     for h in handles.values():
         h.close()
-    return labels, shard_paths
+    label_writer.close()
 
 
 def build_window_images(
@@ -145,6 +157,9 @@ def build_window_images(
     reserve_gib: float = DEFAULT_RESERVE_GIB,
     fresh: bool = False,
 ) -> None:
+    log(f"ohlc={ohlc_path}")
+    log(f"features={features_path}")
+    log(f"output={output_root}")
     if not ohlc_path.exists():
         raise FileNotFoundError(f"OHLC parquet not found: {ohlc_path}; run 01_prepare_data ohlc first")
     if not features_path.exists():
@@ -156,7 +171,7 @@ def build_window_images(
         shutil.rmtree(output_root)
     output_root.mkdir(parents=True, exist_ok=True)
 
-    calendar = load_calendar(ohlc_path)
+    calendar = load_calendar(ohlc_path, log=log)
     permnos = permno_list(ohlc_path)
     if permno_limit is not None:
         permnos = permnos[:permno_limit]
@@ -170,6 +185,8 @@ def build_window_images(
     years_per_window = {
         w: sorted({a.year for a in as_of_per_window[w]}) for w in window_days_list
     }
+    for window_days, as_ofs in as_of_per_window.items():
+        log(f"window={window_days} as_of_dates={len(as_ofs)}")
 
     tmp_root = output_root / ".tmp_workers"
     if len(pending) == 0:
@@ -197,6 +214,7 @@ def build_window_images(
             for wid, chunk in enumerate(chunks)
         ]
 
+        log(f"starting workers n={n_workers}")
         if n_workers == 1:
             _init_progress(progress, total_stocks, skip_stocks)
             process_permno_chunk(tasks[0])
@@ -207,19 +225,21 @@ def build_window_images(
                 initargs=(progress, total_stocks, skip_stocks),
             ) as pool:
                 pool.map(process_permno_chunk, tasks)
+        log("workers finished; merging year bundles")
 
     for window_days in window_days_list:
         freq_dir = output_root / IMAGE_FREQ_DIR[window_days]
         freq_dir.mkdir(parents=True, exist_ok=True)
         for year in years_per_window[window_days]:
             final_dat = freq_dir / f"{window_days}d_{year}_images.dat"
+            log(f"merge window={window_days} year={year}")
             all_labels = read_image_label_sidecars(tmp_root, window_days, year)
             with open(final_dat, "wb") as out:
                 for worker_dir in sorted(tmp_root.glob("worker_*")):
                     shard = worker_dir / IMAGE_FREQ_DIR[window_days] / f"{window_days}d_{year}_images.dat"
                     if shard.is_file():
                         with open(shard, "rb") as f:
-                            out.write(f.read())
+                            shutil.copyfileobj(f, out)
             write_year_bundle(freq_dir, window_days, year, final_dat, all_labels)
 
     if tmp_root.exists():

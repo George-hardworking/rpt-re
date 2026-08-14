@@ -96,6 +96,7 @@ log "Python: $PY"
 log "Args:  $*"
 log "Log:   ${MAIN_LOG}"
 log "============================================================"
+log "starting python"
 
 set +e
 python "$PY" "$@" 2>&1 | ts_pipe
