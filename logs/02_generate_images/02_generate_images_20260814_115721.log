@@ -1,0 +1,63 @@
+[2026-08-14 11:57:22] ============================================================
+[2026-08-14 11:57:22] 02_generate_images
+[2026-08-14 11:57:22] Conda: 5020_env
+[2026-08-14 11:57:22] Python: /home/zkb/rpt-re/scripts/py/02_generate_images.py
+[2026-08-14 11:57:22] Args:  --reserve-gib 16
+[2026-08-14 11:57:22] Log:   /home/zkb/rpt-re/logs/02_generate_images/02_generate_images_20260814_115721.log
+[2026-08-14 11:57:22] ============================================================
+[2026-08-14 11:57:22] starting python
+[2026-08-14 11:57:23] ohlc=/data/kaibiao/data/projects/rpt-re/processed/ohlc_daily
+[2026-08-14 11:57:23] features=/data/kaibiao/data/projects/rpt-re/processed/features
+[2026-08-14 11:57:23] output=/data/kaibiao/data/projects/rpt-re/processed/images
+[2026-08-14 11:57:23] building calendar from /data/kaibiao/data/projects/rpt-re/processed/ohlc_daily
+[2026-08-14 11:57:28] calendar scan 1000/29470 unique_dates=8311
+[2026-08-14 11:57:31] calendar scan 2000/29470 unique_dates=8311
+[2026-08-14 11:57:35] calendar scan 3000/29470 unique_dates=8311
+[2026-08-14 11:57:40] calendar scan 4000/29470 unique_dates=8311
+[2026-08-14 11:57:42] calendar scan 5000/29470 unique_dates=8311
+[2026-08-14 11:57:44] calendar scan 6000/29470 unique_dates=8311
+[2026-08-14 11:57:46] calendar scan 7000/29470 unique_dates=8311
+[2026-08-14 11:57:48] calendar scan 8000/29470 unique_dates=8311
+[2026-08-14 11:57:50] calendar scan 9000/29470 unique_dates=8311
+[2026-08-14 11:57:52] calendar scan 10000/29470 unique_dates=8311
+[2026-08-14 11:57:54] calendar scan 11000/29470 unique_dates=8311
+[2026-08-14 11:57:56] calendar scan 12000/29470 unique_dates=8311
+[2026-08-14 11:57:59] calendar scan 13000/29470 unique_dates=8311
+[2026-08-14 11:58:03] calendar scan 14000/29470 unique_dates=8311
+[2026-08-14 11:58:07] calendar scan 15000/29470 unique_dates=8311
+[2026-08-14 11:58:10] calendar scan 16000/29470 unique_dates=8311
+[2026-08-14 11:58:13] calendar scan 17000/29470 unique_dates=8311
+[2026-08-14 11:58:17] calendar scan 18000/29470 unique_dates=8311
+[2026-08-14 11:58:20] calendar scan 19000/29470 unique_dates=8311
+[2026-08-14 11:58:23] calendar scan 20000/29470 unique_dates=8311
+[2026-08-14 11:58:26] calendar scan 21000/29470 unique_dates=8311
+[2026-08-14 11:58:29] calendar scan 22000/29470 unique_dates=8311
+[2026-08-14 11:58:33] calendar scan 23000/29470 unique_dates=8311
+[2026-08-14 11:58:37] calendar scan 24000/29470 unique_dates=8311
+[2026-08-14 11:58:40] calendar scan 25000/29470 unique_dates=8311
+[2026-08-14 11:58:44] calendar scan 26000/29470 unique_dates=8311
+[2026-08-14 11:58:48] calendar scan 27000/29470 unique_dates=8311
+[2026-08-14 11:58:52] calendar scan 28000/29470 unique_dates=8311
+[2026-08-14 11:58:57] calendar scan 29000/29470 unique_dates=8311
+[2026-08-14 11:59:04] calendar scan 29470/29470 unique_dates=8311
+[2026-08-14 11:59:04] calendar dates=8311 [1992-01-02, 2024-12-31] -> /data/kaibiao/data/projects/rpt-re/processed/ohlc_calendar.parquet
+[2026-08-14 11:59:04] images resume: skip=0 pending=29342 total=29342
+[2026-08-14 11:59:04] window=5 as_of_dates=1360
+[2026-08-14 11:59:04] window=20 as_of_dates=324
+[2026-08-14 11:59:04] window=60 as_of_dates=108
+[2026-08-14 11:59:04] workers=112 diag={'source': 'memory_budget', 'avail_gib': 231.5, 'total_gib': 377.5, 'reserve_gib': 16.0, 'budget_gib': 215.5, 'mem_per_worker_gib': 1.5, 'mem_cap': 143, 'cpu_cap': 112, 'swap_percent': 100.0, 'n_tasks': 29342, 'resolved_workers': 112}
+[2026-08-14 11:59:04] starting workers n=112
+[2026-08-14 12:00:43] progress   0.0%  stocks 1/29342  skip=0  worker=52 chunk=1/262
+[2026-08-14 12:00:43] /home/zkb/rpt-re/src/data/images.py:344: RuntimeWarning: invalid value encountered in cast
+[2026-08-14 12:00:43]   vol_height = np.maximum(1, np.round(vol_norm * (volume_rows - 1)).astype(np.intp))
+[2026-08-14 12:00:45] progress   0.1%  stocks 20/29342  skip=0  worker=29 chunk=1/262
+[2026-08-14 12:01:14] progress   0.1%  stocks 40/29342  skip=0  worker=42 chunk=2/262
+[2026-08-14 12:01:43] progress   0.2%  stocks 60/29342  skip=0  worker=43 chunk=3/262
+[2026-08-14 12:02:29] progress   0.3%  stocks 80/29342  skip=0  worker=28 chunk=5/262
+[2026-08-14 12:02:59] progress   0.3%  stocks 100/29342  skip=0  worker=37 chunk=6/262
+[2026-08-14 12:03:31] progress   0.4%  stocks 120/29342  skip=0  worker=41 chunk=7/262
+[2026-08-14 12:04:25] progress   0.5%  stocks 140/29342  skip=0  worker=39 chunk=9/262
+[2026-08-14 12:05:37] progress   0.5%  stocks 160/29342  skip=0  worker=37 chunk=12/262
+[2026-08-14 12:06:43] progress   0.6%  stocks 180/29342  skip=0  worker=36 chunk=15/262
+[2026-08-14 12:07:57] progress   0.7%  stocks 200/29342  skip=0  worker=39 chunk=17/262
+[2026-08-14 12:10:22] progress   0.7%  stocks 220/29342  skip=0  worker=44 chunk=21/262

@@ -1,0 +1,150 @@
+[2026-08-14 02:03:49] ============================================================
+[2026-08-14 02:03:49] 01_prepare_data
+[2026-08-14 02:03:49] Conda: 5020_env
+[2026-08-14 02:03:49] Python: /home/zkb/rpt-re/scripts/py/01_prepare_data.py
+[2026-08-14 02:03:49] Args:  all --reserve-gib 16
+[2026-08-14 02:03:49] Log:   /home/zkb/rpt-re/logs/01_prepare_data/01_prepare_data_20260814_020348.log
+[2026-08-14 02:03:49] ============================================================
+[2026-08-14 02:03:50] prepare chunk=1 rows=500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:03:51] prepare chunk=2 rows=1,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:03:52] prepare chunk=3 rows=1,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:03:52] prepare chunk=4 rows=2,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:03:53] prepare chunk=5 rows=2,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:03:54] prepare chunk=6 rows=3,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:03:55] prepare chunk=7 rows=3,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:03:55] prepare chunk=8 rows=4,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:03:56] prepare chunk=9 rows=4,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:03:57] prepare chunk=10 rows=5,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:03:57] prepare chunk=11 rows=5,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:03:58] prepare chunk=12 rows=6,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:03:59] prepare chunk=13 rows=6,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:03:59] prepare chunk=14 rows=7,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:00] prepare chunk=15 rows=7,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:01] prepare chunk=16 rows=8,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:02] prepare chunk=17 rows=8,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:02] prepare chunk=18 rows=9,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:03] prepare chunk=19 rows=9,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:04] prepare chunk=20 rows=10,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:04] prepare chunk=21 rows=10,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:05] prepare chunk=22 rows=11,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:06] prepare chunk=23 rows=11,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:06] prepare chunk=24 rows=12,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:07] prepare chunk=25 rows=12,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:08] prepare chunk=26 rows=13,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:09] prepare chunk=27 rows=13,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:09] prepare chunk=28 rows=14,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:10] prepare chunk=29 rows=14,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:11] prepare chunk=30 rows=15,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:12] prepare chunk=31 rows=15,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:12] prepare chunk=32 rows=16,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:13] prepare chunk=33 rows=16,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:14] prepare chunk=34 rows=17,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:15] prepare chunk=35 rows=17,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:16] prepare chunk=36 rows=18,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:16] prepare chunk=37 rows=18,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:17] prepare chunk=38 rows=19,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:18] prepare chunk=39 rows=19,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:19] prepare chunk=40 rows=20,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:19] prepare chunk=41 rows=20,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:20] prepare chunk=42 rows=21,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:21] prepare chunk=43 rows=21,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:22] prepare chunk=44 rows=22,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:23] prepare chunk=45 rows=22,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:23] prepare chunk=46 rows=23,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:24] prepare chunk=47 rows=23,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:25] prepare chunk=48 rows=24,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:25] prepare chunk=49 rows=24,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:26] prepare chunk=50 rows=25,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:27] prepare chunk=51 rows=25,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:27] prepare chunk=52 rows=26,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:28] prepare chunk=53 rows=26,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:29] prepare chunk=54 rows=27,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:29] prepare chunk=55 rows=27,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:30] prepare chunk=56 rows=28,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:31] prepare chunk=57 rows=28,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:32] prepare chunk=58 rows=29,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:32] prepare chunk=59 rows=29,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:33] prepare chunk=60 rows=30,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:34] prepare chunk=61 rows=30,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:34] prepare chunk=62 rows=31,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:35] prepare chunk=63 rows=31,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:36] prepare chunk=64 rows=32,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:36] prepare chunk=65 rows=32,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:37] prepare chunk=66 rows=33,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:38] prepare chunk=67 rows=33,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:39] prepare chunk=68 rows=34,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:39] prepare chunk=69 rows=34,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:40] prepare chunk=70 rows=35,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:41] prepare chunk=71 rows=35,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:41] prepare chunk=72 rows=36,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:42] prepare chunk=73 rows=36,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:43] prepare chunk=74 rows=37,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:43] prepare chunk=75 rows=37,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:44] prepare chunk=76 rows=38,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:45] prepare chunk=77 rows=38,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:45] prepare chunk=78 rows=39,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:46] prepare chunk=79 rows=39,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:47] prepare chunk=80 rows=40,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:47] prepare chunk=81 rows=40,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:48] prepare chunk=82 rows=41,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:49] prepare chunk=83 rows=41,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:50] prepare chunk=84 rows=42,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:50] prepare chunk=85 rows=42,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:51] prepare chunk=86 rows=43,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:52] prepare chunk=87 rows=43,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:52] prepare chunk=88 rows=44,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:53] prepare chunk=89 rows=44,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:54] prepare chunk=90 rows=45,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:54] prepare chunk=91 rows=45,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:55] prepare chunk=92 rows=46,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:56] prepare chunk=93 rows=46,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:57] prepare chunk=94 rows=47,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:58] prepare chunk=95 rows=47,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:04:59] prepare chunk=96 rows=48,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:00] prepare chunk=97 rows=48,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:00] prepare chunk=98 rows=49,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:01] prepare chunk=99 rows=49,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:02] prepare chunk=100 rows=50,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:02] prepare chunk=101 rows=50,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:03] prepare chunk=102 rows=51,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:04] prepare chunk=103 rows=51,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:04] prepare chunk=104 rows=52,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:05] prepare chunk=105 rows=52,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:06] prepare chunk=106 rows=53,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:07] prepare chunk=107 rows=53,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:07] prepare chunk=108 rows=54,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:08] prepare chunk=109 rows=54,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:09] prepare chunk=110 rows=55,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:09] prepare chunk=111 rows=55,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:10] prepare chunk=112 rows=56,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:11] prepare chunk=113 rows=56,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:11] prepare chunk=114 rows=57,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:12] prepare chunk=115 rows=57,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:13] prepare chunk=116 rows=58,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:13] prepare chunk=117 rows=58,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:14] prepare chunk=118 rows=59,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:15] prepare chunk=119 rows=59,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:15] prepare chunk=120 rows=60,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:16] prepare chunk=121 rows=60,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:17] prepare chunk=122 rows=61,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:17] prepare chunk=123 rows=61,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:18] prepare chunk=124 rows=62,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:19] prepare chunk=125 rows=62,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:19] prepare chunk=126 rows=63,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:20] prepare chunk=127 rows=63,500,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:21] prepare chunk=128 rows=64,000,000 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:21] prepare chunk=129 rows=64,195,103 -> /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:21] prepared /home/zkb/rpt-re/data/processed/ohlc_daily
+[2026-08-14 02:05:21] workers=112 diag={'source': 'memory_budget', 'avail_gib': 311.5, 'total_gib': 377.5, 'reserve_gib': 16.0, 'budget_gib': 295.5, 'mem_per_worker_gib': 0.8, 'mem_cap': 369, 'cpu_cap': 112, 'swap_percent': 99.9, 'n_tasks': 29342, 'resolved_workers': 112}
+[2026-08-14 02:08:44] progress   1.7%  stocks 500/29342  worker=60 chunk=5/262
+[2026-08-14 02:11:51] progress   3.4%  stocks 1000/29342  worker=37 chunk=9/262
+[2026-08-14 02:13:17] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 02:13:17]   log1p = np.log1p(ret)
+[2026-08-14 02:13:55] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 02:13:55]   log1p = np.log1p(ret)
+[2026-08-14 02:14:47] progress   5.1%  stocks 1500/29342  worker=37 chunk=13/262
+[2026-08-14 02:17:49] progress   6.8%  stocks 2000/29342  worker=103 chunk=19/262
+[2026-08-14 02:20:57] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 02:20:57]   log1p = np.log1p(ret)
+[2026-08-14 02:20:58] progress   8.5%  stocks 2500/29342  worker=108 chunk=24/262
+[2026-08-14 02:23:54] progress  10.2%  stocks 3000/29342  worker=11 chunk=26/262

@@ -242,6 +242,45 @@ def _price_to_rows(
     return np.round((1.0 - norm) * (price_rows - 1)).astype(np.intp)
 
 
+def _clip_line_to_rect(
+    r0: float,
+    c0: float,
+    r1: float,
+    c1: float,
+    rmin: float,
+    rmax: float,
+    cmin: float,
+    cmax: float,
+) -> tuple[float, float, float, float] | None:
+    """Liang–Barsky clip to inclusive rectangle [rmin, rmax] x [cmin, cmax]."""
+    dr = r1 - r0
+    dc = c1 - c0
+    t0 = 0.0
+    t1 = 1.0
+    for p, q in (
+        (-dc, c0 - cmin),
+        (dc, cmax - c0),
+        (-dr, r0 - rmin),
+        (dr, rmax - r0),
+    ):
+        if p == 0.0:
+            if q < 0.0:
+                return None
+            continue
+        t = q / p
+        if p < 0.0:
+            if t > t1:
+                return None
+            if t > t0:
+                t0 = t
+        else:
+            if t < t0:
+                return None
+            if t < t1:
+                t1 = t
+    return (r0 + t0 * dr, c0 + t0 * dc, r0 + t1 * dr, c0 + t1 * dc)
+
+
 def _draw_line(
     image: np.ndarray,
     r0: int,
@@ -252,13 +291,28 @@ def _draw_line(
     *,
     middle_col_only: bool = False,
 ) -> None:
+    _, width = image.shape
+    if row_hi <= 0 or width <= 0:
+        return
+    clipped = _clip_line_to_rect(
+        float(r0),
+        float(c0),
+        float(r1),
+        float(c1),
+        0.0,
+        float(row_hi - 1),
+        0.0,
+        float(width - 1),
+    )
+    if clipped is None:
+        return
+    r0, c0, r1, c1 = (int(round(v)) for v in clipped)
     dr = abs(r1 - r0)
     dc = abs(c1 - c0)
     sr = 1 if r0 < r1 else -1
     sc = 1 if c0 < c1 else -1
     err = dr - dc
     r, c = r0, c0
-    _, width = image.shape
     while True:
         if 0 <= r < row_hi and 0 <= c < width:
             if not middle_col_only or c % COLS_PER_DAY == 1:

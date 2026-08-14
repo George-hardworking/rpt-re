@@ -1,0 +1,176 @@
+[2026-08-14 02:35:09] ============================================================
+[2026-08-14 02:35:09] 01_prepare_data
+[2026-08-14 02:35:09] Conda: 5020_env
+[2026-08-14 02:35:09] Python: /home/zkb/rpt-re/scripts/py/01_prepare_data.py
+[2026-08-14 02:35:09] Args:  features --reserve-gib 16
+[2026-08-14 02:35:09] Log:   /home/zkb/rpt-re/logs/01_prepare_data/01_prepare_data_20260814_023508.log
+[2026-08-14 02:35:09] ============================================================
+[2026-08-14 02:35:11] features resume: skip=3034 pending=26308 total=29342
+[2026-08-14 02:35:11] workers=112 diag={'source': 'memory_budget', 'avail_gib': 293.4, 'total_gib': 377.5, 'reserve_gib': 16.0, 'budget_gib': 277.4, 'mem_per_worker_gib': 0.8, 'mem_cap': 346, 'cpu_cap': 112, 'swap_percent': 99.8, 'n_tasks': 29342, 'resolved_workers': 112}
+[2026-08-14 02:35:11] progress   1.7%  stocks 500/29342  skip=3034  worker=8 chunk=16/262
+[2026-08-14 02:35:11] progress   3.4%  stocks 1000/29342  skip=3034  worker=24 chunk=18/262
+[2026-08-14 02:35:11] progress   5.1%  stocks 1500/29342  skip=3034  worker=73 chunk=7/262
+[2026-08-14 02:35:11] progress   6.8%  stocks 2000/29342  skip=3034  worker=76 chunk=18/262
+[2026-08-14 02:35:11] progress   8.5%  stocks 2500/29342  skip=3034  worker=39 chunk=23/262
+[2026-08-14 02:35:11] progress  10.2%  stocks 3000/29342  skip=3034  worker=104 chunk=26/262
+[2026-08-14 02:36:03] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 02:36:03]   log1p = np.log1p(ret)
+[2026-08-14 02:39:14] progress  11.9%  stocks 3500/29342  skip=3034  worker=23 chunk=31/262
+[2026-08-14 02:39:43] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 02:39:43]   log1p = np.log1p(ret)
+[2026-08-14 02:41:27] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 02:41:27]   log1p = np.log1p(ret)
+[2026-08-14 02:42:32] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 02:42:32]   log1p = np.log1p(ret)
+[2026-08-14 02:43:08] progress  13.6%  stocks 4000/29342  skip=3034  worker=102 chunk=38/262
+[2026-08-14 02:43:59] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 02:43:59]   log1p = np.log1p(ret)
+[2026-08-14 02:46:39] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 02:46:39]   log1p = np.log1p(ret)
+[2026-08-14 02:46:47] progress  15.3%  stocks 4500/29342  skip=3034  worker=50 chunk=41/262
+[2026-08-14 02:49:57] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 02:49:57]   log1p = np.log1p(ret)
+[2026-08-14 02:50:37] progress  17.0%  stocks 5000/29342  skip=3034  worker=63 chunk=46/262
+[2026-08-14 02:52:28] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 02:52:28]   log1p = np.log1p(ret)
+[2026-08-14 02:52:38] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 02:52:38]   log1p = np.log1p(ret)
+[2026-08-14 02:54:15] progress  18.7%  stocks 5500/29342  skip=3034  worker=74 chunk=51/262
+[2026-08-14 02:58:01] progress  20.4%  stocks 6000/29342  skip=3034  worker=29 chunk=53/262
+[2026-08-14 02:59:25] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 02:59:25]   log1p = np.log1p(ret)
+[2026-08-14 03:02:09] progress  22.2%  stocks 6500/29342  skip=3034  worker=108 chunk=60/262
+[2026-08-14 03:06:04] progress  23.9%  stocks 7000/29342  skip=3034  worker=31 chunk=63/262
+[2026-08-14 03:09:55] progress  25.6%  stocks 7500/29342  skip=3034  worker=60 chunk=69/262
+[2026-08-14 03:09:59] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 03:09:59]   log1p = np.log1p(ret)
+[2026-08-14 03:10:43] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 03:10:43]   log1p = np.log1p(ret)
+[2026-08-14 03:13:37] progress  27.3%  stocks 8000/29342  skip=3034  worker=53 chunk=70/262
+[2026-08-14 03:16:17] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 03:16:17]   log1p = np.log1p(ret)
+[2026-08-14 03:17:27] progress  29.0%  stocks 8500/29342  skip=3034  worker=49 chunk=76/262
+[2026-08-14 03:21:08] progress  30.7%  stocks 9000/29342  skip=3034  worker=19 chunk=81/262
+[2026-08-14 03:24:48] progress  32.4%  stocks 9500/29342  skip=3034  worker=18 chunk=83/262
+[2026-08-14 03:28:31] progress  34.1%  stocks 10000/29342  skip=3034  worker=56 chunk=90/262
+[2026-08-14 03:32:02] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 03:32:02]   log1p = np.log1p(ret)
+[2026-08-14 03:32:14] progress  35.8%  stocks 10500/29342  skip=3034  worker=5 chunk=94/262
+[2026-08-14 03:34:08] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 03:34:08]   log1p = np.log1p(ret)
+[2026-08-14 03:34:17] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 03:34:17]   log1p = np.log1p(ret)
+[2026-08-14 03:35:46] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 03:35:46]   log1p = np.log1p(ret)
+[2026-08-14 03:35:57] progress  37.5%  stocks 11000/29342  skip=3034  worker=7 chunk=100/262
+[2026-08-14 03:39:31] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 03:39:31]   log1p = np.log1p(ret)
+[2026-08-14 03:39:38] progress  39.2%  stocks 11500/29342  skip=3034  worker=64 chunk=107/262
+[2026-08-14 03:41:34] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 03:41:34]   log1p = np.log1p(ret)
+[2026-08-14 03:41:43] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 03:41:43]   log1p = np.log1p(ret)
+[2026-08-14 03:42:51] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 03:42:51]   log1p = np.log1p(ret)
+[2026-08-14 03:43:10] progress  40.9%  stocks 12000/29342  skip=3034  worker=9 chunk=111/262
+[2026-08-14 03:46:48] progress  42.6%  stocks 12500/29342  skip=3034  worker=34 chunk=114/262
+[2026-08-14 03:48:49] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 03:48:49]   log1p = np.log1p(ret)
+[2026-08-14 03:50:20] progress  44.3%  stocks 13000/29342  skip=3034  worker=46 chunk=113/262
+[2026-08-14 03:51:39] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 03:51:39]   log1p = np.log1p(ret)
+[2026-08-14 03:53:53] progress  46.0%  stocks 13500/29342  skip=3034  worker=45 chunk=125/262
+[2026-08-14 03:57:22] progress  47.7%  stocks 14000/29342  skip=3034  worker=65 chunk=131/262
+[2026-08-14 04:00:51] progress  49.4%  stocks 14500/29342  skip=3034  worker=93 chunk=134/262
+[2026-08-14 04:04:17] progress  51.1%  stocks 15000/29342  skip=3034  worker=108 chunk=132/262
+[2026-08-14 04:07:50] progress  52.8%  stocks 15500/29342  skip=3034  worker=79 chunk=146/262
+[2026-08-14 04:10:08] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 04:10:08]   log1p = np.log1p(ret)
+[2026-08-14 04:11:21] progress  54.5%  stocks 16000/29342  skip=3034  worker=16 chunk=137/262
+[2026-08-14 04:12:24] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 04:12:25]   log1p = np.log1p(ret)
+[2026-08-14 04:14:18] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 04:14:18]   log1p = np.log1p(ret)
+[2026-08-14 04:14:51] progress  56.2%  stocks 16500/29342  skip=3034  worker=20 chunk=154/262
+[2026-08-14 04:15:01] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 04:15:01]   log1p = np.log1p(ret)
+[2026-08-14 04:18:10] progress  57.9%  stocks 17000/29342  skip=3034  worker=44 chunk=145/262
+[2026-08-14 04:19:45] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 04:19:45]   log1p = np.log1p(ret)
+[2026-08-14 04:21:42] progress  59.6%  stocks 17500/29342  skip=3034  worker=94 chunk=152/262
+[2026-08-14 04:22:36] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 04:22:36]   log1p = np.log1p(ret)
+[2026-08-14 04:23:07] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 04:23:07]   log1p = np.log1p(ret)
+[2026-08-14 04:25:12] progress  61.3%  stocks 18000/29342  skip=3034  worker=78 chunk=154/262
+[2026-08-14 04:28:39] progress  63.0%  stocks 18500/29342  skip=3034  worker=102 chunk=159/262
+[2026-08-14 04:32:10] progress  64.8%  stocks 19000/29342  skip=3034  worker=72 chunk=179/262
+[2026-08-14 04:35:42] progress  66.5%  stocks 19500/29342  skip=3034  worker=53 chunk=167/262
+[2026-08-14 04:36:43] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 04:36:43]   log1p = np.log1p(ret)
+[2026-08-14 04:39:15] progress  68.2%  stocks 20000/29342  skip=3034  worker=54 chunk=171/262
+[2026-08-14 04:42:46] progress  69.9%  stocks 20500/29342  skip=3034  worker=79 chunk=194/262
+[2026-08-14 04:46:25] progress  71.6%  stocks 21000/29342  skip=3034  worker=34 chunk=196/262
+[2026-08-14 04:47:43] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 04:47:43]   log1p = np.log1p(ret)
+[2026-08-14 04:48:30] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 04:48:30]   log1p = np.log1p(ret)
+[2026-08-14 04:49:11] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 04:49:11]   log1p = np.log1p(ret)
+[2026-08-14 04:50:08] progress  73.3%  stocks 21500/29342  skip=3034  worker=3 chunk=204/262
+[2026-08-14 04:53:54] progress  75.0%  stocks 22000/29342  skip=3034  worker=110 chunk=186/261
+[2026-08-14 04:55:09] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 04:55:09]   log1p = np.log1p(ret)
+[2026-08-14 04:56:24] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 04:56:24]   log1p = np.log1p(ret)
+[2026-08-14 04:57:25] progress  76.7%  stocks 22500/29342  skip=3034  worker=25 chunk=214/262
+[2026-08-14 04:58:18] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 04:58:18]   log1p = np.log1p(ret)
+[2026-08-14 04:59:56] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 04:59:56]   log1p = np.log1p(ret)
+[2026-08-14 05:01:02] progress  78.4%  stocks 23000/29342  skip=3034  worker=54 chunk=195/262
+[2026-08-14 05:01:22] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 05:01:22]   log1p = np.log1p(ret)
+[2026-08-14 05:01:35] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 05:01:35]   log1p = np.log1p(ret)
+[2026-08-14 05:02:32] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 05:02:32]   log1p = np.log1p(ret)
+[2026-08-14 05:05:11] progress  80.1%  stocks 23500/29342  skip=3034  worker=76 chunk=223/262
+[2026-08-14 05:05:56] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 05:05:56]   log1p = np.log1p(ret)
+[2026-08-14 05:08:49] progress  81.8%  stocks 24000/29342  skip=3034  worker=10 chunk=200/262
+[2026-08-14 05:08:55] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 05:08:55]   log1p = np.log1p(ret)
+[2026-08-14 05:09:48] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 05:09:48]   log1p = np.log1p(ret)
+[2026-08-14 05:12:20] progress  83.5%  stocks 24500/29342  skip=3034  worker=93 chunk=232/262
+[2026-08-14 05:12:29] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 05:12:29]   log1p = np.log1p(ret)
+[2026-08-14 05:15:49] progress  85.2%  stocks 25000/29342  skip=3034  worker=6 chunk=237/262
+[2026-08-14 05:16:32] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 05:16:32]   log1p = np.log1p(ret)
+[2026-08-14 05:17:44] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 05:17:44]   log1p = np.log1p(ret)
+[2026-08-14 05:19:22] progress  86.9%  stocks 25500/29342  skip=3034  worker=84 chunk=214/262
+[2026-08-14 05:20:18] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 05:20:18]   log1p = np.log1p(ret)
+[2026-08-14 05:21:24] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 05:21:24]   log1p = np.log1p(ret)
+[2026-08-14 05:22:53] progress  88.6%  stocks 26000/29342  skip=3034  worker=84 chunk=218/262
+[2026-08-14 05:26:24] progress  90.3%  stocks 26500/29342  skip=3034  worker=37 chunk=251/262
+[2026-08-14 05:29:54] progress  92.0%  stocks 27000/29342  skip=3034  worker=15 chunk=255/262
+[2026-08-14 05:31:45] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 05:31:45]   log1p = np.log1p(ret)
+[2026-08-14 05:33:19] progress  93.7%  stocks 27500/29342  skip=3034  worker=25 chunk=262/262
+[2026-08-14 05:36:05] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 05:36:05]   log1p = np.log1p(ret)
+[2026-08-14 05:36:08] progress  95.4%  stocks 28000/29342  skip=3034  worker=110 chunk=238/261
+[2026-08-14 05:38:35] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 05:38:35]   log1p = np.log1p(ret)
+[2026-08-14 05:38:52] progress  97.1%  stocks 28500/29342  skip=3034  worker=52 chunk=244/262
+[2026-08-14 05:40:43] /home/zkb/rpt-re/src/data/labels.py:43: RuntimeWarning: divide by zero encountered in log1p
+[2026-08-14 05:40:43]   log1p = np.log1p(ret)
+[2026-08-14 05:41:47] progress  98.8%  stocks 29000/29342  skip=3034  worker=58 chunk=262/262
+[2026-08-14 05:45:20] progress 100.0%  stocks 29342/29342  skip=3034  worker=88 chunk=262/262
+[2026-08-14 05:45:20] done: n_workers=112 stocks=29342 built=26308 skip=3034 -> /data/kaibiao/data/projects/rpt-re/processed/features
+[2026-08-14 05:45:20] Done.

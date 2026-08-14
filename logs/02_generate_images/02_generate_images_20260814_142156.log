@@ -1,0 +1,863 @@
+[2026-08-14 14:21:57] ============================================================
+[2026-08-14 14:21:57] 02_generate_images
+[2026-08-14 14:21:57] Conda: 5020_env
+[2026-08-14 14:21:57] Python: /home/zkb/rpt-re/scripts/py/02_generate_images.py
+[2026-08-14 14:21:57] Args:  --reserve-gib 16
+[2026-08-14 14:21:57] Log:   /home/zkb/rpt-re/logs/02_generate_images/02_generate_images_20260814_142156.log
+[2026-08-14 14:21:57] ============================================================
+[2026-08-14 14:21:57] starting python
+[2026-08-14 14:21:58] ohlc=/data/kaibiao/data/projects/rpt-re/processed/ohlc_daily
+[2026-08-14 14:21:58] features=/data/kaibiao/data/projects/rpt-re/processed/features
+[2026-08-14 14:21:58] output=/data/kaibiao/data/projects/rpt-re/processed/images
+[2026-08-14 14:21:58] calendar cache: /data/kaibiao/data/projects/rpt-re/processed/ohlc_calendar.parquet
+[2026-08-14 14:21:58] images resume: skip=15774 pending=13568 total=29342
+[2026-08-14 14:21:58] window=5 as_of_dates=1360
+[2026-08-14 14:21:58] window=20 as_of_dates=324
+[2026-08-14 14:21:58] window=60 as_of_dates=108
+[2026-08-14 14:21:58] workers=112 diag={'source': 'memory_budget', 'avail_gib': 204.3, 'total_gib': 377.5, 'reserve_gib': 16.0, 'budget_gib': 188.3, 'mem_per_worker_gib': 1.5, 'mem_cap': 125, 'cpu_cap': 112, 'swap_percent': 100.0, 'n_tasks': 13568, 'resolved_workers': 112}
+[2026-08-14 14:21:58] starting workers n=112
+[2026-08-14 14:21:59] progress   0.0%  stocks 1/13568  skip=15774  worker=20 chunk=1/121
+[2026-08-14 14:21:59] progress   0.1%  stocks 20/13568  skip=15774  worker=12 chunk=1/122
+[2026-08-14 14:22:00] progress   0.3%  stocks 40/13568  skip=15774  worker=15 chunk=1/122
+[2026-08-14 14:22:00] progress   0.4%  stocks 60/13568  skip=15774  worker=105 chunk=1/121
+[2026-08-14 14:22:01] progress   0.6%  stocks 80/13568  skip=15774  worker=28 chunk=1/121
+[2026-08-14 14:22:01] progress   0.7%  stocks 100/13568  skip=15774  worker=101 chunk=2/121
+[2026-08-14 14:22:01] progress   0.9%  stocks 120/13568  skip=15774  worker=83 chunk=2/121
+[2026-08-14 14:22:02] progress   1.0%  stocks 140/13568  skip=15774  worker=72 chunk=2/121
+[2026-08-14 14:22:02] progress   1.2%  stocks 160/13568  skip=15774  worker=43 chunk=1/121
+[2026-08-14 14:22:03] progress   1.3%  stocks 180/13568  skip=15774  worker=42 chunk=1/121
+[2026-08-14 14:22:03] progress   1.5%  stocks 200/13568  skip=15774  worker=19 chunk=1/121
+[2026-08-14 14:22:04] progress   1.6%  stocks 220/13568  skip=15774  worker=62 chunk=2/121
+[2026-08-14 14:22:04] progress   1.8%  stocks 240/13568  skip=15774  worker=2 chunk=3/122
+[2026-08-14 14:22:04] progress   1.9%  stocks 260/13568  skip=15774  worker=45 chunk=13/121
+[2026-08-14 14:22:05] progress   2.1%  stocks 280/13568  skip=15774  worker=47 chunk=3/121
+[2026-08-14 14:22:05] progress   2.2%  stocks 300/13568  skip=15774  worker=43 chunk=2/121
+[2026-08-14 14:22:06] progress   2.4%  stocks 320/13568  skip=15774  worker=91 chunk=1/121
+[2026-08-14 14:22:06] progress   2.5%  stocks 340/13568  skip=15774  worker=34 chunk=2/121
+[2026-08-14 14:22:06] progress   2.7%  stocks 360/13568  skip=15774  worker=80 chunk=3/121
+[2026-08-14 14:22:07] progress   2.8%  stocks 380/13568  skip=15774  worker=25 chunk=10/121
+[2026-08-14 14:22:07] progress   2.9%  stocks 400/13568  skip=15774  worker=53 chunk=4/121
+[2026-08-14 14:22:07] progress   3.1%  stocks 420/13568  skip=15774  worker=78 chunk=6/121
+[2026-08-14 14:22:08] progress   3.2%  stocks 440/13568  skip=15774  worker=62 chunk=6/121
+[2026-08-14 14:22:08] progress   3.4%  stocks 460/13568  skip=15774  worker=23 chunk=17/121
+[2026-08-14 14:22:08] progress   3.5%  stocks 480/13568  skip=15774  worker=65 chunk=5/121
+[2026-08-14 14:22:09] progress   3.7%  stocks 500/13568  skip=15774  worker=110 chunk=2/121
+[2026-08-14 14:22:09] progress   3.8%  stocks 520/13568  skip=15774  worker=51 chunk=7/121
+[2026-08-14 14:22:10] progress   4.0%  stocks 540/13568  skip=15774  worker=45 chunk=17/121
+[2026-08-14 14:22:10] progress   4.1%  stocks 560/13568  skip=15774  worker=88 chunk=8/121
+[2026-08-14 14:22:11] progress   4.3%  stocks 580/13568  skip=15774  worker=27 chunk=4/121
+[2026-08-14 14:22:11] progress   4.4%  stocks 600/13568  skip=15774  worker=24 chunk=11/121
+[2026-08-14 14:22:11] progress   4.6%  stocks 620/13568  skip=15774  worker=72 chunk=5/121
+[2026-08-14 14:22:12] progress   4.7%  stocks 640/13568  skip=15774  worker=31 chunk=7/121
+[2026-08-14 14:22:12] progress   4.9%  stocks 660/13568  skip=15774  worker=89 chunk=2/121
+[2026-08-14 14:22:12] progress   5.0%  stocks 680/13568  skip=15774  worker=107 chunk=7/121
+[2026-08-14 14:22:13] progress   5.2%  stocks 700/13568  skip=15774  worker=97 chunk=6/121
+[2026-08-14 14:22:13] progress   5.3%  stocks 720/13568  skip=15774  worker=109 chunk=7/121
+[2026-08-14 14:22:14] progress   5.5%  stocks 740/13568  skip=15774  worker=15 chunk=14/122
+[2026-08-14 14:22:14] progress   5.6%  stocks 760/13568  skip=15774  worker=90 chunk=10/121
+[2026-08-14 14:22:15] progress   5.7%  stocks 780/13568  skip=15774  worker=25 chunk=22/121
+[2026-08-14 14:22:15] progress   5.9%  stocks 800/13568  skip=15774  worker=19 chunk=12/121
+[2026-08-14 14:22:15] progress   6.0%  stocks 820/13568  skip=15774  worker=17 chunk=12/121
+[2026-08-14 14:22:16] progress   6.2%  stocks 840/13568  skip=15774  worker=92 chunk=2/121
+[2026-08-14 14:22:16] progress   6.3%  stocks 860/13568  skip=15774  worker=47 chunk=9/121
+[2026-08-14 14:22:16] progress   6.5%  stocks 880/13568  skip=15774  worker=39 chunk=11/121
+[2026-08-14 14:22:16] progress   6.6%  stocks 900/13568  skip=15774  worker=61 chunk=10/121
+[2026-08-14 14:22:17] progress   6.8%  stocks 920/13568  skip=15774  worker=66 chunk=10/121
+[2026-08-14 14:22:17] progress   6.9%  stocks 940/13568  skip=15774  worker=10 chunk=7/122
+[2026-08-14 14:22:17] progress   7.1%  stocks 960/13568  skip=15774  worker=52 chunk=12/121
+[2026-08-14 14:22:18] progress   7.2%  stocks 980/13568  skip=15774  worker=6 chunk=11/122
+[2026-08-14 14:22:18] progress   7.4%  stocks 1000/13568  skip=15774  worker=78 chunk=13/121
+[2026-08-14 14:22:18] progress   7.5%  stocks 1020/13568  skip=15774  worker=0 chunk=11/122
+[2026-08-14 14:22:19] progress   7.7%  stocks 1040/13568  skip=15774  worker=18 chunk=14/121
+[2026-08-14 14:22:19] progress   7.8%  stocks 1060/13568  skip=15774  worker=54 chunk=9/121
+[2026-08-14 14:22:20] progress   8.0%  stocks 1080/13568  skip=15774  worker=18 chunk=15/121
+[2026-08-14 14:22:20] progress   8.1%  stocks 1100/13568  skip=15774  worker=11 chunk=12/122
+[2026-08-14 14:22:20] progress   8.3%  stocks 1120/13568  skip=15774  worker=71 chunk=13/121
+[2026-08-14 14:22:20] progress   8.4%  stocks 1140/13568  skip=15774  worker=31 chunk=13/121
+[2026-08-14 14:22:21] progress   8.5%  stocks 1160/13568  skip=15774  worker=98 chunk=8/121
+[2026-08-14 14:22:21] progress   8.7%  stocks 1180/13568  skip=15774  worker=43 chunk=12/121
+[2026-08-14 14:22:22] progress   8.8%  stocks 1200/13568  skip=15774  worker=21 chunk=20/121
+[2026-08-14 14:22:22] progress   9.0%  stocks 1220/13568  skip=15774  worker=96 chunk=10/121
+[2026-08-14 14:22:22] progress   9.1%  stocks 1240/13568  skip=15774  worker=103 chunk=6/121
+[2026-08-14 14:22:23] progress   9.3%  stocks 1260/13568  skip=15774  worker=34 chunk=9/121
+[2026-08-14 14:22:23] progress   9.4%  stocks 1280/13568  skip=15774  worker=86 chunk=11/121
+[2026-08-14 14:22:24] progress   9.6%  stocks 1300/13568  skip=15774  worker=61 chunk=15/121
+[2026-08-14 14:22:24] progress   9.7%  stocks 1320/13568  skip=15774  worker=20 chunk=14/121
+[2026-08-14 14:22:25] progress   9.9%  stocks 1340/13568  skip=15774  worker=63 chunk=11/121
+[2026-08-14 14:22:25] progress  10.0%  stocks 1360/13568  skip=15774  worker=11 chunk=16/122
+[2026-08-14 14:22:25] progress  10.2%  stocks 1380/13568  skip=15774  worker=7 chunk=4/122
+[2026-08-14 14:22:26] progress  10.3%  stocks 1400/13568  skip=15774  worker=100 chunk=19/121
+[2026-08-14 14:22:26] progress  10.5%  stocks 1420/13568  skip=15774  worker=22 chunk=29/121
+[2026-08-14 14:22:26] progress  10.6%  stocks 1440/13568  skip=15774  worker=87 chunk=23/121
+[2026-08-14 14:22:27] progress  10.8%  stocks 1460/13568  skip=15774  worker=75 chunk=10/121
+[2026-08-14 14:22:27] progress  10.9%  stocks 1480/13568  skip=15774  worker=75 chunk=11/121
+[2026-08-14 14:22:27] progress  11.1%  stocks 1500/13568  skip=15774  worker=81 chunk=15/121
+[2026-08-14 14:22:28] progress  11.2%  stocks 1520/13568  skip=15774  worker=100 chunk=20/121
+[2026-08-14 14:22:28] progress  11.4%  stocks 1540/13568  skip=15774  worker=3 chunk=17/122
+[2026-08-14 14:22:28] progress  11.5%  stocks 1560/13568  skip=15774  worker=110 chunk=10/121
+[2026-08-14 14:22:28] progress  11.6%  stocks 1580/13568  skip=15774  worker=52 chunk=20/121
+[2026-08-14 14:22:29] progress  11.8%  stocks 1600/13568  skip=15774  worker=2 chunk=14/122
+[2026-08-14 14:22:29] progress  11.9%  stocks 1620/13568  skip=15774  worker=24 chunk=32/121
+[2026-08-14 14:22:30] progress  12.1%  stocks 1640/13568  skip=15774  worker=40 chunk=17/121
+[2026-08-14 14:22:30] progress  12.2%  stocks 1660/13568  skip=15774  worker=21 chunk=36/121
+[2026-08-14 14:22:31] progress  12.4%  stocks 1680/13568  skip=15774  worker=22 chunk=35/121
+[2026-08-14 14:22:31] progress  12.5%  stocks 1700/13568  skip=15774  worker=18 chunk=24/121
+[2026-08-14 14:22:31] progress  12.7%  stocks 1720/13568  skip=15774  worker=93 chunk=24/121
+[2026-08-14 14:22:31] progress  12.8%  stocks 1740/13568  skip=15774  worker=25 chunk=49/121
+[2026-08-14 14:22:32] progress  13.0%  stocks 1760/13568  skip=15774  worker=43 chunk=20/121
+[2026-08-14 14:22:32] progress  13.1%  stocks 1780/13568  skip=15774  worker=18 chunk=25/121
+[2026-08-14 14:22:32] progress  13.3%  stocks 1800/13568  skip=15774  worker=54 chunk=15/121
+[2026-08-14 14:22:33] progress  13.4%  stocks 1820/13568  skip=15774  worker=54 chunk=16/121
+[2026-08-14 14:22:33] progress  13.6%  stocks 1840/13568  skip=15774  worker=62 chunk=18/121
+[2026-08-14 14:22:33] progress  13.7%  stocks 1860/13568  skip=15774  worker=91 chunk=22/121
+[2026-08-14 14:22:34] progress  13.9%  stocks 1880/13568  skip=15774  worker=17 chunk=27/121
+[2026-08-14 14:22:34] progress  14.0%  stocks 1900/13568  skip=15774  worker=107 chunk=16/121
+[2026-08-14 14:22:35] progress  14.2%  stocks 1920/13568  skip=15774  worker=78 chunk=24/121
+[2026-08-14 14:22:35] progress  14.3%  stocks 1940/13568  skip=15774  worker=77 chunk=7/121
+[2026-08-14 14:22:35] progress  14.4%  stocks 1960/13568  skip=15774  worker=44 chunk=21/121
+[2026-08-14 14:22:36] progress  14.6%  stocks 1980/13568  skip=15774  worker=98 chunk=18/121
+[2026-08-14 14:22:36] progress  14.7%  stocks 2000/13568  skip=15774  worker=59 chunk=23/121
+[2026-08-14 14:22:36] progress  14.9%  stocks 2020/13568  skip=15774  worker=41 chunk=21/121
+[2026-08-14 14:22:37] progress  15.0%  stocks 2040/13568  skip=15774  worker=23 chunk=54/121
+[2026-08-14 14:22:37] progress  15.2%  stocks 2060/13568  skip=15774  worker=28 chunk=13/121
+[2026-08-14 14:22:38] progress  15.3%  stocks 2080/13568  skip=15774  worker=105 chunk=27/121
+[2026-08-14 14:22:38] progress  15.5%  stocks 2100/13568  skip=15774  worker=0 chunk=16/122
+[2026-08-14 14:22:38] progress  15.6%  stocks 2120/13568  skip=15774  worker=49 chunk=22/121
+[2026-08-14 14:22:39] progress  15.8%  stocks 2140/13568  skip=15774  worker=105 chunk=28/121
+[2026-08-14 14:22:40] progress  15.9%  stocks 2160/13568  skip=15774  worker=18 chunk=31/121
+[2026-08-14 14:22:40] progress  16.1%  stocks 2180/13568  skip=15774  worker=17 chunk=31/121
+[2026-08-14 14:22:40] progress  16.2%  stocks 2200/13568  skip=15774  worker=87 chunk=34/121
+[2026-08-14 14:22:41] progress  16.4%  stocks 2220/13568  skip=15774  worker=6 chunk=20/122
+[2026-08-14 14:22:41] progress  16.5%  stocks 2240/13568  skip=15774  worker=31 chunk=21/121
+[2026-08-14 14:22:41] progress  16.7%  stocks 2260/13568  skip=15774  worker=99 chunk=22/121
+[2026-08-14 14:22:42] progress  16.8%  stocks 2280/13568  skip=15774  worker=107 chunk=18/121
+[2026-08-14 14:22:42] progress  17.0%  stocks 2300/13568  skip=15774  worker=10 chunk=20/122
+[2026-08-14 14:22:42] progress  17.1%  stocks 2320/13568  skip=15774  worker=18 chunk=33/121
+[2026-08-14 14:22:43] progress  17.2%  stocks 2340/13568  skip=15774  worker=108 chunk=19/121
+[2026-08-14 14:22:43] progress  17.4%  stocks 2360/13568  skip=15774  worker=105 chunk=32/121
+[2026-08-14 14:22:44] progress  17.5%  stocks 2380/13568  skip=15774  worker=8 chunk=26/122
+[2026-08-14 14:22:44] progress  17.7%  stocks 2400/13568  skip=15774  worker=97 chunk=21/121
+[2026-08-14 14:22:44] progress  17.8%  stocks 2420/13568  skip=15774  worker=71 chunk=23/121
+[2026-08-14 14:22:45] progress  18.0%  stocks 2440/13568  skip=15774  worker=95 chunk=8/121
+[2026-08-14 14:22:45] progress  18.1%  stocks 2460/13568  skip=15774  worker=19 chunk=30/121
+[2026-08-14 14:22:45] progress  18.3%  stocks 2480/13568  skip=15774  worker=78 chunk=29/121
+[2026-08-14 14:22:46] progress  18.4%  stocks 2500/13568  skip=15774  worker=16 chunk=31/121
+[2026-08-14 14:22:46] progress  18.6%  stocks 2520/13568  skip=15774  worker=20 chunk=32/121
+[2026-08-14 14:22:47] progress  18.7%  stocks 2540/13568  skip=15774  worker=29 chunk=21/121
+[2026-08-14 14:22:47] progress  18.9%  stocks 2560/13568  skip=15774  worker=62 chunk=25/121
+[2026-08-14 14:22:47] progress  19.0%  stocks 2580/13568  skip=15774  worker=99 chunk=29/121
+[2026-08-14 14:22:48] progress  19.2%  stocks 2600/13568  skip=15774  worker=2 chunk=26/122
+[2026-08-14 14:22:48] progress  19.3%  stocks 2620/13568  skip=15774  worker=103 chunk=12/121
+[2026-08-14 14:22:48] progress  19.5%  stocks 2640/13568  skip=15774  worker=59 chunk=28/121
+[2026-08-14 14:22:49] progress  19.6%  stocks 2660/13568  skip=15774  worker=24 chunk=49/121
+[2026-08-14 14:22:49] progress  19.8%  stocks 2680/13568  skip=15774  worker=36 chunk=22/121
+[2026-08-14 14:22:49] progress  19.9%  stocks 2700/13568  skip=15774  worker=88 chunk=29/121
+[2026-08-14 14:22:50] progress  20.0%  stocks 2720/13568  skip=15774  worker=50 chunk=7/121
+[2026-08-14 14:22:50] progress  20.2%  stocks 2740/13568  skip=15774  worker=63 chunk=22/121
+[2026-08-14 14:22:50] progress  20.3%  stocks 2760/13568  skip=15774  worker=22 chunk=57/121
+[2026-08-14 14:22:51] progress  20.5%  stocks 2780/13568  skip=15774  worker=75 chunk=23/121
+[2026-08-14 14:22:51] progress  20.6%  stocks 2800/13568  skip=15774  worker=27 chunk=23/121
+[2026-08-14 14:22:51] progress  20.8%  stocks 2820/13568  skip=15774  worker=47 chunk=29/121
+[2026-08-14 14:22:51] progress  20.9%  stocks 2840/13568  skip=15774  worker=22 chunk=62/121
+[2026-08-14 14:22:52] progress  21.1%  stocks 2860/13568  skip=15774  worker=107 chunk=27/121
+[2026-08-14 14:22:52] progress  21.2%  stocks 2880/13568  skip=15774  worker=58 chunk=27/121
+[2026-08-14 14:22:52] progress  21.4%  stocks 2900/13568  skip=15774  worker=106 chunk=31/121
+[2026-08-14 14:22:53] progress  21.5%  stocks 2920/13568  skip=15774  worker=90 chunk=38/121
+[2026-08-14 14:22:53] progress  21.7%  stocks 2940/13568  skip=15774  worker=11 chunk=27/122
+[2026-08-14 14:22:53] progress  21.8%  stocks 2960/13568  skip=15774  worker=8 chunk=33/122
+[2026-08-14 14:22:54] progress  22.0%  stocks 2980/13568  skip=15774  worker=104 chunk=12/121
+[2026-08-14 14:22:54] progress  22.1%  stocks 3000/13568  skip=15774  worker=21 chunk=66/121
+[2026-08-14 14:22:55] progress  22.3%  stocks 3020/13568  skip=15774  worker=64 chunk=41/121
+[2026-08-14 14:22:55] progress  22.4%  stocks 3040/13568  skip=15774  worker=105 chunk=38/121
+[2026-08-14 14:22:55] progress  22.6%  stocks 3060/13568  skip=15774  worker=107 chunk=28/121
+[2026-08-14 14:22:56] progress  22.7%  stocks 3080/13568  skip=15774  worker=83 chunk=33/121
+[2026-08-14 14:22:56] progress  22.8%  stocks 3100/13568  skip=15774  worker=73 chunk=23/121
+[2026-08-14 14:22:56] progress  23.0%  stocks 3120/13568  skip=15774  worker=25 chunk=74/121
+[2026-08-14 14:22:57] progress  23.1%  stocks 3140/13568  skip=15774  worker=53 chunk=28/121
+[2026-08-14 14:22:57] progress  23.3%  stocks 3160/13568  skip=15774  worker=81 chunk=34/121
+[2026-08-14 14:22:57] progress  23.4%  stocks 3180/13568  skip=15774  worker=76 chunk=25/121
+[2026-08-14 14:22:57] progress  23.6%  stocks 3200/13568  skip=15774  worker=26 chunk=23/121
+[2026-08-14 14:22:58] progress  23.7%  stocks 3220/13568  skip=15774  worker=81 chunk=35/121
+[2026-08-14 14:22:58] progress  23.9%  stocks 3240/13568  skip=15774  worker=70 chunk=7/121
+[2026-08-14 14:22:58] progress  24.0%  stocks 3260/13568  skip=15774  worker=98 chunk=32/121
+[2026-08-14 14:22:58] progress  24.2%  stocks 3280/13568  skip=15774  worker=50 chunk=14/121
+[2026-08-14 14:22:59] progress  24.3%  stocks 3300/13568  skip=15774  worker=80 chunk=27/121
+[2026-08-14 14:22:59] progress  24.5%  stocks 3320/13568  skip=15774  worker=51 chunk=32/121
+[2026-08-14 14:22:59] progress  24.6%  stocks 3340/13568  skip=15774  worker=25 chunk=81/121
+[2026-08-14 14:23:00] progress  24.8%  stocks 3360/13568  skip=15774  worker=12 chunk=34/122
+[2026-08-14 14:23:00] progress  24.9%  stocks 3380/13568  skip=15774  worker=23 chunk=93/121
+[2026-08-14 14:23:00] progress  25.1%  stocks 3400/13568  skip=15774  worker=28 chunk=26/121
+[2026-08-14 14:23:00] progress  25.2%  stocks 3420/13568  skip=15774  worker=29 chunk=33/121
+[2026-08-14 14:23:00] progress  25.4%  stocks 3440/13568  skip=15774  worker=67 chunk=9/121
+[2026-08-14 14:23:01] progress  25.5%  stocks 3460/13568  skip=15774  worker=45 chunk=32/121
+[2026-08-14 14:23:01] progress  25.6%  stocks 3480/13568  skip=15774  worker=44 chunk=53/121
+[2026-08-14 14:23:01] progress  25.8%  stocks 3500/13568  skip=15774  worker=90 chunk=46/121
+[2026-08-14 14:23:02] progress  25.9%  stocks 3520/13568  skip=15774  worker=49 chunk=35/121
+[2026-08-14 14:23:02] progress  26.1%  stocks 3540/13568  skip=15774  worker=61 chunk=38/121
+[2026-08-14 14:23:02] progress  26.2%  stocks 3560/13568  skip=15774  worker=34 chunk=27/121
+[2026-08-14 14:23:02] progress  26.4%  stocks 3580/13568  skip=15774  worker=106 chunk=37/121
+[2026-08-14 14:23:03] progress  26.5%  stocks 3600/13568  skip=15774  worker=87 chunk=48/121
+[2026-08-14 14:23:03] progress  26.7%  stocks 3620/13568  skip=15774  worker=86 chunk=32/121
+[2026-08-14 14:23:03] progress  26.8%  stocks 3640/13568  skip=15774  worker=65 chunk=38/121
+[2026-08-14 14:23:04] progress  27.0%  stocks 3660/13568  skip=15774  worker=45 chunk=34/121
+[2026-08-14 14:23:05] progress  27.1%  stocks 3680/13568  skip=15774  worker=23 chunk=101/121
+[2026-08-14 14:23:05] progress  27.3%  stocks 3700/13568  skip=15774  worker=107 chunk=32/121
+[2026-08-14 14:23:05] progress  27.4%  stocks 3720/13568  skip=15774  worker=38 chunk=31/121
+[2026-08-14 14:23:05] progress  27.6%  stocks 3740/13568  skip=15774  worker=75 chunk=32/121
+[2026-08-14 14:23:06] progress  27.7%  stocks 3760/13568  skip=15774  worker=88 chunk=36/121
+[2026-08-14 14:23:06] progress  27.9%  stocks 3780/13568  skip=15774  worker=54 chunk=40/121
+[2026-08-14 14:23:06] progress  28.0%  stocks 3800/13568  skip=15774  worker=106 chunk=40/121
+[2026-08-14 14:23:07] progress  28.2%  stocks 3820/13568  skip=15774  worker=3 chunk=32/122
+[2026-08-14 14:23:07] progress  28.3%  stocks 3840/13568  skip=15774  worker=7 chunk=26/122
+[2026-08-14 14:23:07] progress  28.4%  stocks 3860/13568  skip=15774  worker=74 chunk=19/121
+[2026-08-14 14:23:07] progress  28.6%  stocks 3880/13568  skip=15774  worker=9 chunk=30/122
+[2026-08-14 14:23:08] progress  28.7%  stocks 3900/13568  skip=15774  worker=80 chunk=33/121
+[2026-08-14 14:23:08] progress  28.9%  stocks 3920/13568  skip=15774  worker=8 chunk=41/122
+[2026-08-14 14:23:08] progress  29.0%  stocks 3940/13568  skip=15774  worker=74 chunk=20/121
+[2026-08-14 14:23:09] progress  29.2%  stocks 3960/13568  skip=15774  worker=68 chunk=6/121
+[2026-08-14 14:23:09] progress  29.3%  stocks 3980/13568  skip=15774  worker=57 chunk=29/121
+[2026-08-14 14:23:09] progress  29.5%  stocks 4000/13568  skip=15774  worker=34 chunk=31/121
+[2026-08-14 14:23:10] progress  29.6%  stocks 4020/13568  skip=15774  worker=8 chunk=42/122
+[2026-08-14 14:23:10] progress  29.8%  stocks 4040/13568  skip=15774  worker=89 chunk=36/121
+[2026-08-14 14:23:10] progress  29.9%  stocks 4060/13568  skip=15774  worker=21 chunk=79/121
+[2026-08-14 14:23:10] progress  30.1%  stocks 4080/13568  skip=15774  worker=80 chunk=35/121
+[2026-08-14 14:23:11] progress  30.2%  stocks 4100/13568  skip=15774  worker=64 chunk=60/121
+[2026-08-14 14:23:11] progress  30.4%  stocks 4120/13568  skip=15774  worker=24 chunk=66/121
+[2026-08-14 14:23:11] progress  30.5%  stocks 4140/13568  skip=15774  worker=63 chunk=34/121
+[2026-08-14 14:23:11] progress  30.7%  stocks 4160/13568  skip=15774  worker=14 chunk=41/122
+[2026-08-14 14:23:12] progress  30.8%  stocks 4180/13568  skip=15774  worker=110 chunk=29/121
+[2026-08-14 14:23:12] progress  31.0%  stocks 4200/13568  skip=15774  worker=27 chunk=35/121
+[2026-08-14 14:23:12] progress  31.1%  stocks 4220/13568  skip=15774  worker=37 chunk=26/121
+[2026-08-14 14:23:13] progress  31.2%  stocks 4240/13568  skip=15774  worker=14 chunk=42/122
+[2026-08-14 14:23:13] progress  31.4%  stocks 4260/13568  skip=15774  worker=52 chunk=66/121
+[2026-08-14 14:23:13] progress  31.5%  stocks 4280/13568  skip=15774  worker=27 chunk=37/121
+[2026-08-14 14:23:14] progress  31.7%  stocks 4300/13568  skip=15774  worker=39 chunk=36/121
+[2026-08-14 14:23:14] progress  31.8%  stocks 4320/13568  skip=15774  worker=43 chunk=41/121
+[2026-08-14 14:23:14] progress  32.0%  stocks 4340/13568  skip=15774  worker=7 chunk=29/122
+[2026-08-14 14:23:15] progress  32.1%  stocks 4360/13568  skip=15774  worker=110 chunk=31/121
+[2026-08-14 14:23:15] progress  32.3%  stocks 4380/13568  skip=15774  worker=55 chunk=52/121
+[2026-08-14 14:23:15] progress  32.4%  stocks 4400/13568  skip=15774  worker=81 chunk=45/121
+[2026-08-14 14:23:15] progress  32.6%  stocks 4420/13568  skip=15774  worker=73 chunk=37/121
+[2026-08-14 14:23:15] progress  32.7%  stocks 4440/13568  skip=15774  worker=111 chunk=29/121
+[2026-08-14 14:23:16] progress  32.9%  stocks 4460/13568  skip=15774  worker=60 chunk=35/121
+[2026-08-14 14:23:16] progress  33.0%  stocks 4480/13568  skip=15774  worker=71 chunk=41/121
+[2026-08-14 14:23:16] progress  33.2%  stocks 4500/13568  skip=15774  worker=22 chunk=100/121
+[2026-08-14 14:23:16] progress  33.3%  stocks 4520/13568  skip=15774  worker=4 chunk=14/122
+[2026-08-14 14:23:17] progress  33.5%  stocks 4540/13568  skip=15774  worker=6 chunk=37/122
+[2026-08-14 14:23:17] progress  33.6%  stocks 4560/13568  skip=15774  worker=49 chunk=47/121
+[2026-08-14 14:23:17] progress  33.8%  stocks 4580/13568  skip=15774  worker=109 chunk=39/121
+[2026-08-14 14:23:18] progress  33.9%  stocks 4600/13568  skip=15774  worker=53 chunk=39/121
+[2026-08-14 14:23:18] progress  34.1%  stocks 4620/13568  skip=15774  worker=80 chunk=39/121
+[2026-08-14 14:23:18] progress  34.2%  stocks 4640/13568  skip=15774  worker=21 chunk=87/121
+[2026-08-14 14:23:18] progress  34.3%  stocks 4660/13568  skip=15774  worker=66 chunk=40/121
+[2026-08-14 14:23:19] progress  34.5%  stocks 4680/13568  skip=15774  worker=45 chunk=36/121
+[2026-08-14 14:23:19] progress  34.6%  stocks 4700/13568  skip=15774  worker=101 chunk=50/121
+[2026-08-14 14:23:20] progress  34.8%  stocks 4720/13568  skip=15774  worker=52 chunk=72/121
+[2026-08-14 14:23:20] progress  34.9%  stocks 4740/13568  skip=15774  worker=44 chunk=62/121
+[2026-08-14 14:23:20] progress  35.1%  stocks 4760/13568  skip=15774  worker=73 chunk=41/121
+[2026-08-14 14:23:20] progress  35.2%  stocks 4780/13568  skip=15774  worker=42 chunk=24/121
+[2026-08-14 14:23:21] progress  35.4%  stocks 4800/13568  skip=15774  worker=89 chunk=45/121
+[2026-08-14 14:23:21] progress  35.5%  stocks 4820/13568  skip=15774  worker=100 chunk=53/121
+[2026-08-14 14:23:21] progress  35.7%  stocks 4840/13568  skip=15774  worker=89 chunk=46/121
+[2026-08-14 14:23:22] progress  35.8%  stocks 4860/13568  skip=15774  worker=25 chunk=105/121
+[2026-08-14 14:23:22] progress  36.0%  stocks 4880/13568  skip=15774  worker=108 chunk=41/121
+[2026-08-14 14:23:22] progress  36.1%  stocks 4900/13568  skip=15774  worker=109 chunk=43/121
+[2026-08-14 14:23:22] progress  36.3%  stocks 4920/13568  skip=15774  worker=30 chunk=38/121
+[2026-08-14 14:23:23] progress  36.4%  stocks 4940/13568  skip=15774  worker=99 chunk=42/121
+[2026-08-14 14:23:23] progress  36.6%  stocks 4960/13568  skip=15774  worker=43 chunk=53/121
+[2026-08-14 14:23:23] progress  36.7%  stocks 4980/13568  skip=15774  worker=0 chunk=39/122
+[2026-08-14 14:23:24] progress  36.9%  stocks 5000/13568  skip=15774  worker=9 chunk=41/122
+[2026-08-14 14:23:24] progress  37.0%  stocks 5020/13568  skip=15774  worker=78 chunk=54/121
+[2026-08-14 14:23:24] progress  37.1%  stocks 5040/13568  skip=15774  worker=55 chunk=57/121
+[2026-08-14 14:23:25] progress  37.3%  stocks 5060/13568  skip=15774  worker=51 chunk=47/121
+[2026-08-14 14:23:25] progress  37.4%  stocks 5080/13568  skip=15774  worker=76 chunk=45/121
+[2026-08-14 14:23:25] progress  37.6%  stocks 5100/13568  skip=15774  worker=62 chunk=50/121
+[2026-08-14 14:23:26] progress  37.7%  stocks 5120/13568  skip=15774  worker=14 chunk=51/122
+[2026-08-14 14:23:26] progress  37.9%  stocks 5140/13568  skip=15774  worker=26 chunk=39/121
+[2026-08-14 14:23:26] progress  38.0%  stocks 5160/13568  skip=15774  worker=105 chunk=57/121
+[2026-08-14 14:23:26] progress  38.2%  stocks 5180/13568  skip=15774  worker=22 chunk=112/121
+[2026-08-14 14:23:27] progress  38.3%  stocks 5200/13568  skip=15774  worker=108 chunk=44/121
+[2026-08-14 14:23:27] progress  38.5%  stocks 5220/13568  skip=15774  worker=12 chunk=52/122
+[2026-08-14 14:23:27] progress  38.6%  stocks 5240/13568  skip=15774  worker=32 chunk=20/121
+[2026-08-14 14:23:27] progress  38.8%  stocks 5260/13568  skip=15774  worker=24 chunk=85/121
+[2026-08-14 14:23:28] progress  38.9%  stocks 5280/13568  skip=15774  worker=48 chunk=27/121
+[2026-08-14 14:23:28] progress  39.1%  stocks 5300/13568  skip=15774  worker=17 chunk=58/121
+[2026-08-14 14:23:28] progress  39.2%  stocks 5320/13568  skip=15774  worker=62 chunk=52/121
+[2026-08-14 14:23:28] progress  39.4%  stocks 5340/13568  skip=15774  worker=4 chunk=26/122
+[2026-08-14 14:23:29] progress  39.5%  stocks 5360/13568  skip=15774  worker=29 chunk=49/121
+[2026-08-14 14:23:29] progress  39.7%  stocks 5380/13568  skip=15774  worker=72 chunk=41/121
+[2026-08-14 14:23:30] progress  39.8%  stocks 5400/13568  skip=15774  worker=69 chunk=39/121
+[2026-08-14 14:23:30] progress  39.9%  stocks 5420/13568  skip=15774  worker=91 chunk=60/121
+[2026-08-14 14:23:30] progress  40.1%  stocks 5440/13568  skip=15774  worker=21 chunk=103/121
+[2026-08-14 14:23:30] progress  40.2%  stocks 5460/13568  skip=15774  worker=108 chunk=48/121
+[2026-08-14 14:23:30] progress  40.4%  stocks 5480/13568  skip=15774  worker=79 chunk=51/121
+[2026-08-14 14:23:31] progress  40.5%  stocks 5500/13568  skip=15774  worker=21 chunk=107/121
+[2026-08-14 14:23:31] progress  40.7%  stocks 5520/13568  skip=15774  worker=40 chunk=58/121
+[2026-08-14 14:23:31] progress  40.8%  stocks 5540/13568  skip=15774  worker=79 chunk=52/121
+[2026-08-14 14:23:31] progress  41.0%  stocks 5560/13568  skip=15774  worker=53 chunk=49/121
+[2026-08-14 14:23:32] progress  41.1%  stocks 5580/13568  skip=15774  worker=45 chunk=40/121
+[2026-08-14 14:23:32] progress  41.3%  stocks 5600/13568  skip=15774  worker=106 chunk=57/121
+[2026-08-14 14:23:32] progress  41.4%  stocks 5620/13568  skip=15774  worker=24 chunk=94/121
+[2026-08-14 14:23:33] progress  41.6%  stocks 5640/13568  skip=15774  worker=22 chunk=121/121
+[2026-08-14 14:23:33] progress  41.7%  stocks 5660/13568  skip=15774  worker=70 chunk=32/121
+[2026-08-14 14:23:33] progress  41.9%  stocks 5680/13568  skip=15774  worker=29 chunk=53/121
+[2026-08-14 14:23:33] progress  42.0%  stocks 5700/13568  skip=15774  worker=99 chunk=48/121
+[2026-08-14 14:23:34] progress  42.2%  stocks 5720/13568  skip=15774  worker=27 chunk=47/121
+[2026-08-14 14:23:34] progress  42.3%  stocks 5740/13568  skip=15774  worker=88 chunk=54/121
+[2026-08-14 14:23:34] progress  42.5%  stocks 5760/13568  skip=15774  worker=81 chunk=54/121
+[2026-08-14 14:23:35] progress  42.6%  stocks 5780/13568  skip=15774  worker=86 chunk=58/121
+[2026-08-14 14:23:35] progress  42.7%  stocks 5800/13568  skip=15774  worker=9 chunk=48/122
+[2026-08-14 14:23:35] progress  42.9%  stocks 5820/13568  skip=15774  worker=94 chunk=54/121
+[2026-08-14 14:23:36] progress  43.0%  stocks 5840/13568  skip=15774  worker=42 chunk=33/121
+[2026-08-14 14:23:36] progress  43.2%  stocks 5860/13568  skip=15774  worker=32 chunk=24/121
+[2026-08-14 14:23:36] progress  43.3%  stocks 5880/13568  skip=15774  worker=111 chunk=45/121
+[2026-08-14 14:23:36] progress  43.5%  stocks 5900/13568  skip=15774  worker=19 chunk=46/121
+[2026-08-14 14:23:37] progress  43.6%  stocks 5920/13568  skip=15774  worker=20 chunk=81/121
+[2026-08-14 14:23:37] progress  43.8%  stocks 5940/13568  skip=15774  worker=4 chunk=32/122
+[2026-08-14 14:23:37] progress  43.9%  stocks 5960/13568  skip=15774  worker=10 chunk=54/122
+[2026-08-14 14:23:38] progress  44.1%  stocks 5980/13568  skip=15774  worker=3 chunk=39/122
+[2026-08-14 14:23:38] progress  44.2%  stocks 6000/13568  skip=15774  worker=32 chunk=25/121
+[2026-08-14 14:23:38] progress  44.4%  stocks 6020/13568  skip=15774  worker=102 chunk=34/121
+[2026-08-14 14:23:39] progress  44.5%  stocks 6040/13568  skip=15774  worker=1 chunk=20/122
+[2026-08-14 14:23:39] progress  44.7%  stocks 6060/13568  skip=15774  worker=82 chunk=53/121
+[2026-08-14 14:23:39] progress  44.8%  stocks 6080/13568  skip=15774  worker=38 chunk=54/121
+[2026-08-14 14:23:39] progress  45.0%  stocks 6100/13568  skip=15774  worker=8 chunk=58/122
+[2026-08-14 14:23:40] progress  45.1%  stocks 6120/13568  skip=15774  worker=95 chunk=44/121
+[2026-08-14 14:23:40] progress  45.3%  stocks 6140/13568  skip=15774  worker=24 chunk=100/121
+[2026-08-14 14:23:40] progress  45.4%  stocks 6160/13568  skip=15774  worker=28 chunk=45/121
+[2026-08-14 14:23:40] progress  45.5%  stocks 6180/13568  skip=15774  worker=101 chunk=63/121
+[2026-08-14 14:23:41] progress  45.7%  stocks 6200/13568  skip=15774  worker=59 chunk=55/121
+[2026-08-14 14:23:41] progress  45.8%  stocks 6220/13568  skip=15774  worker=31 chunk=49/121
+[2026-08-14 14:23:41] progress  46.0%  stocks 6240/13568  skip=15774  worker=108 chunk=55/121
+[2026-08-14 14:23:42] progress  46.1%  stocks 6260/13568  skip=15774  worker=4 chunk=34/122
+[2026-08-14 14:23:42] progress  46.3%  stocks 6280/13568  skip=15774  worker=32 chunk=28/121
+[2026-08-14 14:23:42] progress  46.4%  stocks 6300/13568  skip=15774  worker=95 chunk=46/121
+[2026-08-14 14:23:42] progress  46.6%  stocks 6320/13568  skip=15774  worker=52 chunk=85/121
+[2026-08-14 14:23:43] progress  46.7%  stocks 6340/13568  skip=15774  worker=18 chunk=71/121
+[2026-08-14 14:23:43] progress  46.9%  stocks 6360/13568  skip=15774  worker=86 chunk=65/121
+[2026-08-14 14:23:43] progress  47.0%  stocks 6380/13568  skip=15774  worker=100 chunk=73/121
+[2026-08-14 14:23:44] progress  47.2%  stocks 6400/13568  skip=15774  worker=83 chunk=70/121
+[2026-08-14 14:23:44] progress  47.3%  stocks 6420/13568  skip=15774  worker=39 chunk=57/121
+[2026-08-14 14:23:44] progress  47.5%  stocks 6440/13568  skip=15774  worker=99 chunk=55/121
+[2026-08-14 14:23:45] progress  47.6%  stocks 6460/13568  skip=15774  worker=88 chunk=61/121
+[2026-08-14 14:23:45] progress  47.8%  stocks 6480/13568  skip=15774  worker=95 chunk=48/121
+[2026-08-14 14:23:45] progress  47.9%  stocks 6500/13568  skip=15774  worker=79 chunk=62/121
+[2026-08-14 14:23:45] progress  48.1%  stocks 6520/13568  skip=15774  worker=45 chunk=50/121
+[2026-08-14 14:23:46] progress  48.2%  stocks 6540/13568  skip=15774  worker=105 chunk=67/121
+[2026-08-14 14:23:46] progress  48.3%  stocks 6560/13568  skip=15774  worker=85 chunk=19/121
+[2026-08-14 14:23:46] progress  48.5%  stocks 6580/13568  skip=15774  worker=27 chunk=55/121
+[2026-08-14 14:23:46] progress  48.6%  stocks 6600/13568  skip=15774  worker=67 chunk=42/121
+[2026-08-14 14:23:47] progress  48.8%  stocks 6620/13568  skip=15774  worker=18 chunk=75/121
+[2026-08-14 14:23:47] progress  48.9%  stocks 6640/13568  skip=15774  worker=105 chunk=68/121
+[2026-08-14 14:23:47] progress  49.1%  stocks 6660/13568  skip=15774  worker=59 chunk=58/121
+[2026-08-14 14:23:47] progress  49.2%  stocks 6680/13568  skip=15774  worker=33 chunk=56/121
+[2026-08-14 14:23:48] progress  49.4%  stocks 6700/13568  skip=15774  worker=17 chunk=73/121
+[2026-08-14 14:23:48] progress  49.5%  stocks 6720/13568  skip=15774  worker=75 chunk=56/121
+[2026-08-14 14:23:48] progress  49.7%  stocks 6740/13568  skip=15774  worker=71 chunk=59/121
+[2026-08-14 14:23:49] progress  49.8%  stocks 6760/13568  skip=15774  worker=19 chunk=60/121
+[2026-08-14 14:23:49] progress  50.0%  stocks 6780/13568  skip=15774  worker=49 chunk=77/121
+[2026-08-14 14:23:50] progress  50.1%  stocks 6800/13568  skip=15774  worker=97 chunk=55/121
+[2026-08-14 14:23:50] progress  50.3%  stocks 6820/13568  skip=15774  worker=108 chunk=60/121
+[2026-08-14 14:23:50] progress  50.4%  stocks 6840/13568  skip=15774  worker=44 chunk=78/121
+[2026-08-14 14:23:50] progress  50.6%  stocks 6860/13568  skip=15774  worker=81 chunk=63/121
+[2026-08-14 14:23:51] progress  50.7%  stocks 6880/13568  skip=15774  worker=83 chunk=75/121
+[2026-08-14 14:23:51] progress  50.9%  stocks 6900/13568  skip=15774  worker=109 chunk=57/121
+[2026-08-14 14:23:51] progress  51.0%  stocks 6920/13568  skip=15774  worker=37 chunk=42/121
+[2026-08-14 14:23:51] progress  51.1%  stocks 6940/13568  skip=15774  worker=40 chunk=69/121
+[2026-08-14 14:23:52] progress  51.3%  stocks 6960/13568  skip=15774  worker=41 chunk=65/121
+[2026-08-14 14:23:52] progress  51.4%  stocks 6980/13568  skip=15774  worker=102 chunk=45/121
+[2026-08-14 14:23:52] progress  51.6%  stocks 7000/13568  skip=15774  worker=60 chunk=57/121
+[2026-08-14 14:23:53] progress  51.7%  stocks 7020/13568  skip=15774  worker=27 chunk=59/121
+[2026-08-14 14:23:53] progress  51.9%  stocks 7040/13568  skip=15774  worker=62 chunk=70/121
+[2026-08-14 14:23:53] progress  52.0%  stocks 7060/13568  skip=15774  worker=75 chunk=61/121
+[2026-08-14 14:23:53] progress  52.2%  stocks 7080/13568  skip=15774  worker=85 chunk=24/121
+[2026-08-14 14:23:54] progress  52.3%  stocks 7100/13568  skip=15774  worker=100 chunk=83/121
+[2026-08-14 14:23:54] progress  52.5%  stocks 7120/13568  skip=15774  worker=81 chunk=66/121
+[2026-08-14 14:23:54] progress  52.6%  stocks 7140/13568  skip=15774  worker=96 chunk=64/121
+[2026-08-14 14:23:55] progress  52.8%  stocks 7160/13568  skip=15774  worker=83 chunk=80/121
+[2026-08-14 14:23:55] progress  52.9%  stocks 7180/13568  skip=15774  worker=61 chunk=77/121
+[2026-08-14 14:23:55] progress  53.1%  stocks 7200/13568  skip=15774  worker=35 chunk=61/121
+[2026-08-14 14:23:55] progress  53.2%  stocks 7220/13568  skip=15774  worker=81 chunk=67/121
+[2026-08-14 14:23:56] progress  53.4%  stocks 7240/13568  skip=15774  worker=60 chunk=60/121
+[2026-08-14 14:23:56] progress  53.5%  stocks 7260/13568  skip=15774  worker=89 chunk=72/121
+[2026-08-14 14:23:56] progress  53.7%  stocks 7280/13568  skip=15774  worker=96 chunk=65/121
+[2026-08-14 14:23:56] progress  53.8%  stocks 7300/13568  skip=15774  worker=13 chunk=75/122
+[2026-08-14 14:23:57] progress  54.0%  stocks 7320/13568  skip=15774  worker=65 chunk=69/121
+[2026-08-14 14:23:57] progress  54.1%  stocks 7340/13568  skip=15774  worker=41 chunk=67/121
+[2026-08-14 14:23:57] progress  54.2%  stocks 7360/13568  skip=15774  worker=102 chunk=47/121
+[2026-08-14 14:23:58] progress  54.4%  stocks 7380/13568  skip=15774  worker=2 chunk=59/122
+[2026-08-14 14:23:58] progress  54.5%  stocks 7400/13568  skip=15774  worker=86 chunk=75/121
+[2026-08-14 14:23:58] progress  54.7%  stocks 7420/13568  skip=15774  worker=104 chunk=52/121
+[2026-08-14 14:23:59] progress  54.8%  stocks 7440/13568  skip=15774  worker=58 chunk=73/121
+[2026-08-14 14:23:59] progress  55.0%  stocks 7460/13568  skip=15774  worker=32 chunk=39/121
+[2026-08-14 14:23:59] progress  55.1%  stocks 7480/13568  skip=15774  worker=50 chunk=52/121
+[2026-08-14 14:24:00] progress  55.3%  stocks 7500/13568  skip=15774  worker=38 chunk=64/121
+[2026-08-14 14:24:00] progress  55.4%  stocks 7520/13568  skip=15774  worker=18 chunk=85/121
+[2026-08-14 14:24:00] progress  55.6%  stocks 7540/13568  skip=15774  worker=97 chunk=65/121
+[2026-08-14 14:24:00] progress  55.7%  stocks 7560/13568  skip=15774  worker=57 chunk=52/121
+[2026-08-14 14:24:01] progress  55.9%  stocks 7580/13568  skip=15774  worker=81 chunk=72/121
+[2026-08-14 14:24:01] progress  56.0%  stocks 7600/13568  skip=15774  worker=92 chunk=48/121
+[2026-08-14 14:24:01] progress  56.2%  stocks 7620/13568  skip=15774  worker=50 chunk=55/121
+[2026-08-14 14:24:02] progress  56.3%  stocks 7640/13568  skip=15774  worker=38 chunk=66/121
+[2026-08-14 14:24:02] progress  56.5%  stocks 7660/13568  skip=15774  worker=87 chunk=89/121
+[2026-08-14 14:24:02] progress  56.6%  stocks 7680/13568  skip=15774  worker=26 chunk=56/121
+[2026-08-14 14:24:03] progress  56.8%  stocks 7700/13568  skip=15774  worker=63 chunk=66/121
+[2026-08-14 14:24:03] progress  56.9%  stocks 7720/13568  skip=15774  worker=45 chunk=65/121
+[2026-08-14 14:24:03] progress  57.0%  stocks 7740/13568  skip=15774  worker=54 chunk=81/121
+[2026-08-14 14:24:04] progress  57.2%  stocks 7760/13568  skip=15774  worker=73 chunk=65/121
+[2026-08-14 14:24:04] progress  57.3%  stocks 7780/13568  skip=15774  worker=98 chunk=62/121
+[2026-08-14 14:24:04] progress  57.5%  stocks 7800/13568  skip=15774  worker=38 chunk=68/121
+[2026-08-14 14:24:04] progress  57.6%  stocks 7820/13568  skip=15774  worker=105 chunk=85/121
+[2026-08-14 14:24:05] progress  57.8%  stocks 7840/13568  skip=15774  worker=58 chunk=76/121
+[2026-08-14 14:24:05] progress  57.9%  stocks 7860/13568  skip=15774  worker=64 chunk=85/121
+[2026-08-14 14:24:05] progress  58.1%  stocks 7880/13568  skip=15774  worker=55 chunk=86/121
+[2026-08-14 14:24:06] progress  58.2%  stocks 7900/13568  skip=15774  worker=17 chunk=86/121
+[2026-08-14 14:24:06] progress  58.4%  stocks 7920/13568  skip=15774  worker=40 chunk=79/121
+[2026-08-14 14:24:06] progress  58.5%  stocks 7940/13568  skip=15774  worker=105 chunk=86/121
+[2026-08-14 14:24:06] progress  58.7%  stocks 7960/13568  skip=15774  worker=36 chunk=70/121
+[2026-08-14 14:24:07] progress  58.8%  stocks 7980/13568  skip=15774  worker=53 chunk=62/121
+[2026-08-14 14:24:07] progress  59.0%  stocks 8000/13568  skip=15774  worker=55 chunk=89/121
+[2026-08-14 14:24:07] progress  59.1%  stocks 8020/13568  skip=15774  worker=90 chunk=81/121
+[2026-08-14 14:24:08] progress  59.3%  stocks 8040/13568  skip=15774  worker=30 chunk=59/121
+[2026-08-14 14:24:08] progress  59.4%  stocks 8060/13568  skip=15774  worker=89 chunk=80/121
+[2026-08-14 14:24:08] progress  59.6%  stocks 8080/13568  skip=15774  worker=70 chunk=54/121
+[2026-08-14 14:24:09] progress  59.7%  stocks 8100/13568  skip=15774  worker=33 chunk=68/121
+[2026-08-14 14:24:09] progress  59.8%  stocks 8120/13568  skip=15774  worker=34 chunk=60/121
+[2026-08-14 14:24:09] progress  60.0%  stocks 8140/13568  skip=15774  worker=4 chunk=51/122
+[2026-08-14 14:24:10] progress  60.1%  stocks 8160/13568  skip=15774  worker=102 chunk=57/121
+[2026-08-14 14:24:10] progress  60.3%  stocks 8180/13568  skip=15774  worker=44 chunk=91/121
+[2026-08-14 14:24:10] progress  60.4%  stocks 8200/13568  skip=15774  worker=92 chunk=56/121
+[2026-08-14 14:24:10] progress  60.6%  stocks 8220/13568  skip=15774  worker=10 chunk=75/122
+[2026-08-14 14:24:11] progress  60.7%  stocks 8240/13568  skip=15774  worker=4 chunk=54/122
+[2026-08-14 14:24:11] progress  60.9%  stocks 8260/13568  skip=15774  worker=107 chunk=75/121
+[2026-08-14 14:24:11] progress  61.0%  stocks 8280/13568  skip=15774  worker=74 chunk=54/121
+[2026-08-14 14:24:11] progress  61.2%  stocks 8300/13568  skip=15774  worker=58 chunk=80/121
+[2026-08-14 14:24:12] progress  61.3%  stocks 8320/13568  skip=15774  worker=86 chunk=87/121
+[2026-08-14 14:24:12] progress  61.5%  stocks 8340/13568  skip=15774  worker=45 chunk=75/121
+[2026-08-14 14:24:13] progress  61.6%  stocks 8360/13568  skip=15774  worker=59 chunk=73/121
+[2026-08-14 14:24:13] progress  61.8%  stocks 8380/13568  skip=15774  worker=42 chunk=62/121
+[2026-08-14 14:24:13] progress  61.9%  stocks 8400/13568  skip=15774  worker=29 chunk=72/121
+[2026-08-14 14:24:13] progress  62.1%  stocks 8420/13568  skip=15774  worker=43 chunk=79/121
+[2026-08-14 14:24:14] progress  62.2%  stocks 8440/13568  skip=15774  worker=0 chunk=66/122
+[2026-08-14 14:24:14] progress  62.4%  stocks 8460/13568  skip=15774  worker=62 chunk=82/121
+[2026-08-14 14:24:15] progress  62.5%  stocks 8480/13568  skip=15774  worker=51 chunk=85/121
+[2026-08-14 14:24:15] progress  62.6%  stocks 8500/13568  skip=15774  worker=8 chunk=76/122
+[2026-08-14 14:24:15] progress  62.8%  stocks 8520/13568  skip=15774  worker=0 chunk=68/122
+[2026-08-14 14:24:16] progress  62.9%  stocks 8540/13568  skip=15774  worker=99 chunk=71/121
+[2026-08-14 14:24:16] progress  63.1%  stocks 8560/13568  skip=15774  worker=88 chunk=75/121
+[2026-08-14 14:24:16] progress  63.2%  stocks 8580/13568  skip=15774  worker=92 chunk=60/121
+[2026-08-14 14:24:16] progress  63.4%  stocks 8600/13568  skip=15774  worker=94 chunk=87/121
+[2026-08-14 14:24:17] progress  63.5%  stocks 8620/13568  skip=15774  worker=78 chunk=78/121
+[2026-08-14 14:24:17] progress  63.7%  stocks 8640/13568  skip=15774  worker=73 chunk=74/121
+[2026-08-14 14:24:17] progress  63.8%  stocks 8660/13568  skip=15774  worker=108 chunk=72/121
+[2026-08-14 14:24:18] progress  64.0%  stocks 8680/13568  skip=15774  worker=51 chunk=91/121
+[2026-08-14 14:24:18] progress  64.1%  stocks 8700/13568  skip=15774  worker=80 chunk=76/121
+[2026-08-14 14:24:18] progress  64.3%  stocks 8720/13568  skip=15774  worker=74 chunk=58/121
+[2026-08-14 14:24:18] progress  64.4%  stocks 8740/13568  skip=15774  worker=84 chunk=42/121
+[2026-08-14 14:24:19] progress  64.6%  stocks 8760/13568  skip=15774  worker=104 chunk=66/121
+[2026-08-14 14:24:19] progress  64.7%  stocks 8780/13568  skip=15774  worker=102 chunk=66/121
+[2026-08-14 14:24:20] progress  64.9%  stocks 8800/13568  skip=15774  worker=0 chunk=71/122
+[2026-08-14 14:24:20] progress  65.0%  stocks 8820/13568  skip=15774  worker=16 chunk=97/121
+[2026-08-14 14:24:20] progress  65.2%  stocks 8840/13568  skip=15774  worker=87 chunk=97/121
+[2026-08-14 14:24:21] progress  65.3%  stocks 8860/13568  skip=15774  worker=34 chunk=67/121
+[2026-08-14 14:24:21] progress  65.4%  stocks 8880/13568  skip=15774  worker=62 chunk=84/121
+[2026-08-14 14:24:21] progress  65.6%  stocks 8900/13568  skip=15774  worker=107 chunk=82/121
+[2026-08-14 14:24:21] progress  65.7%  stocks 8920/13568  skip=15774  worker=15 chunk=116/122
+[2026-08-14 14:24:21] progress  65.9%  stocks 8940/13568  skip=15774  worker=37 chunk=56/121
+[2026-08-14 14:24:21] progress  66.0%  stocks 8960/13568  skip=15774  worker=107 chunk=84/121
+[2026-08-14 14:24:22] progress  66.2%  stocks 8980/13568  skip=15774  worker=97 chunk=79/121
+[2026-08-14 14:24:22] progress  66.3%  stocks 9000/13568  skip=15774  worker=55 chunk=95/121
+[2026-08-14 14:24:22] progress  66.5%  stocks 9020/13568  skip=15774  worker=49 chunk=108/121
+[2026-08-14 14:24:22] progress  66.6%  stocks 9040/13568  skip=15774  worker=106 chunk=87/121
+[2026-08-14 14:24:23] progress  66.8%  stocks 9060/13568  skip=15774  worker=17 chunk=102/121
+[2026-08-14 14:24:23] progress  66.9%  stocks 9080/13568  skip=15774  worker=77 chunk=56/121
+[2026-08-14 14:24:23] progress  67.1%  stocks 9100/13568  skip=15774  worker=86 chunk=95/121
+[2026-08-14 14:24:24] progress  67.2%  stocks 9120/13568  skip=15774  worker=101 chunk=96/121
+[2026-08-14 14:24:24] progress  67.4%  stocks 9140/13568  skip=15774  worker=7 chunk=69/122
+[2026-08-14 14:24:25] progress  67.5%  stocks 9160/13568  skip=15774  worker=94 chunk=94/121
+[2026-08-14 14:24:25] progress  67.7%  stocks 9180/13568  skip=15774  worker=66 chunk=82/121
+[2026-08-14 14:24:25] progress  67.8%  stocks 9200/13568  skip=15774  worker=90 chunk=88/121
+[2026-08-14 14:24:25] progress  68.0%  stocks 9220/13568  skip=15774  worker=50 chunk=68/121
+[2026-08-14 14:24:26] progress  68.1%  stocks 9240/13568  skip=15774  worker=52 chunk=121/121
+[2026-08-14 14:24:26] progress  68.2%  stocks 9260/13568  skip=15774  worker=86 chunk=96/121
+[2026-08-14 14:24:26] progress  68.4%  stocks 9280/13568  skip=15774  worker=8 chunk=84/122
+[2026-08-14 14:24:26] progress  68.5%  stocks 9300/13568  skip=15774  worker=109 chunk=77/121
+[2026-08-14 14:24:27] progress  68.7%  stocks 9320/13568  skip=15774  worker=58 chunk=89/121
+[2026-08-14 14:24:27] progress  68.8%  stocks 9340/13568  skip=15774  worker=96 chunk=82/121
+[2026-08-14 14:24:28] progress  69.0%  stocks 9360/13568  skip=15774  worker=18 chunk=107/121
+[2026-08-14 14:24:28] progress  69.1%  stocks 9380/13568  skip=15774  worker=58 chunk=90/121
+[2026-08-14 14:24:28] progress  69.3%  stocks 9400/13568  skip=15774  worker=28 chunk=73/121
+[2026-08-14 14:24:28] progress  69.4%  stocks 9420/13568  skip=15774  worker=71 chunk=82/121
+[2026-08-14 14:24:28] progress  69.6%  stocks 9440/13568  skip=15774  worker=38 chunk=81/121
+[2026-08-14 14:24:29] progress  69.7%  stocks 9460/13568  skip=15774  worker=36 chunk=84/121
+[2026-08-14 14:24:29] progress  69.9%  stocks 9480/13568  skip=15774  worker=8 chunk=86/122
+[2026-08-14 14:24:30] progress  70.0%  stocks 9500/13568  skip=15774  worker=82 chunk=83/121
+[2026-08-14 14:24:30] progress  70.2%  stocks 9520/13568  skip=15774  worker=95 chunk=79/121
+[2026-08-14 14:24:30] progress  70.3%  stocks 9540/13568  skip=15774  worker=65 chunk=88/121
+[2026-08-14 14:24:31] progress  70.5%  stocks 9560/13568  skip=15774  worker=48 chunk=76/121
+[2026-08-14 14:24:31] progress  70.6%  stocks 9580/13568  skip=15774  worker=8 chunk=87/122
+[2026-08-14 14:24:31] progress  70.8%  stocks 9600/13568  skip=15774  worker=6 chunk=79/122
+[2026-08-14 14:24:32] progress  70.9%  stocks 9620/13568  skip=15774  worker=44 chunk=100/121
+[2026-08-14 14:24:32] progress  71.0%  stocks 9640/13568  skip=15774  worker=16 chunk=112/121
+[2026-08-14 14:24:32] progress  71.2%  stocks 9660/13568  skip=15774  worker=86 chunk=102/121
+[2026-08-14 14:24:32] progress  71.3%  stocks 9680/13568  skip=15774  worker=59 chunk=81/121
+[2026-08-14 14:24:33] progress  71.5%  stocks 9700/13568  skip=15774  worker=106 chunk=93/121
+[2026-08-14 14:24:33] progress  71.6%  stocks 9720/13568  skip=15774  worker=67 chunk=64/121
+[2026-08-14 14:24:33] progress  71.8%  stocks 9740/13568  skip=15774  worker=53 chunk=78/121
+[2026-08-14 14:24:34] progress  71.9%  stocks 9760/13568  skip=15774  worker=91 chunk=102/121
+[2026-08-14 14:24:34] progress  72.1%  stocks 9780/13568  skip=15774  worker=90 chunk=96/121
+[2026-08-14 14:24:35] progress  72.2%  stocks 9800/13568  skip=15774  worker=63 chunk=85/121
+[2026-08-14 14:24:35] progress  72.4%  stocks 9820/13568  skip=15774  worker=76 chunk=82/121
+[2026-08-14 14:24:35] progress  72.5%  stocks 9840/13568  skip=15774  worker=88 chunk=92/121
+[2026-08-14 14:24:35] progress  72.7%  stocks 9860/13568  skip=15774  worker=45 chunk=86/121
+[2026-08-14 14:24:36] progress  72.8%  stocks 9880/13568  skip=15774  worker=103 chunk=95/121
+[2026-08-14 14:24:36] progress  73.0%  stocks 9900/13568  skip=15774  worker=84 chunk=50/121
+[2026-08-14 14:24:36] progress  73.1%  stocks 9920/13568  skip=15774  worker=70 chunk=70/121
+[2026-08-14 14:24:36] progress  73.3%  stocks 9940/13568  skip=15774  worker=71 chunk=89/121
+[2026-08-14 14:24:37] progress  73.4%  stocks 9960/13568  skip=15774  worker=63 chunk=89/121
+[2026-08-14 14:24:37] progress  73.6%  stocks 9980/13568  skip=15774  worker=76 chunk=83/121
+[2026-08-14 14:24:37] progress  73.7%  stocks 10000/13568  skip=15774  worker=1 chunk=51/122
+[2026-08-14 14:24:38] progress  73.9%  stocks 10020/13568  skip=15774  worker=54 chunk=106/121
+[2026-08-14 14:24:38] progress  74.0%  stocks 10040/13568  skip=15774  worker=71 chunk=90/121
+[2026-08-14 14:24:38] progress  74.1%  stocks 10060/13568  skip=15774  worker=61 chunk=101/121
+[2026-08-14 14:24:38] progress  74.3%  stocks 10080/13568  skip=15774  worker=46 chunk=83/121
+[2026-08-14 14:24:39] progress  74.4%  stocks 10100/13568  skip=15774  worker=110 chunk=85/121
+[2026-08-14 14:24:39] progress  74.6%  stocks 10120/13568  skip=15774  worker=48 chunk=82/121
+[2026-08-14 14:24:39] progress  74.7%  stocks 10140/13568  skip=15774  worker=6 chunk=88/122
+[2026-08-14 14:24:40] progress  74.9%  stocks 10160/13568  skip=15774  worker=6 chunk=89/122
+[2026-08-14 14:24:40] progress  75.0%  stocks 10180/13568  skip=15774  worker=28 chunk=81/121
+[2026-08-14 14:24:40] progress  75.2%  stocks 10200/13568  skip=15774  worker=111 chunk=86/121
+[2026-08-14 14:24:40] progress  75.3%  stocks 10220/13568  skip=15774  worker=41 chunk=100/121
+[2026-08-14 14:24:41] progress  75.5%  stocks 10240/13568  skip=15774  worker=100 chunk=117/121
+[2026-08-14 14:24:41] progress  75.6%  stocks 10260/13568  skip=15774  worker=8 chunk=95/122
+[2026-08-14 14:24:41] progress  75.8%  stocks 10280/13568  skip=15774  worker=110 chunk=87/121
+[2026-08-14 14:24:42] progress  75.9%  stocks 10300/13568  skip=15774  worker=56 chunk=87/121
+[2026-08-14 14:24:42] progress  76.1%  stocks 10320/13568  skip=15774  worker=46 chunk=85/121
+[2026-08-14 14:24:42] progress  76.2%  stocks 10340/13568  skip=15774  worker=44 chunk=107/121
+[2026-08-14 14:24:42] progress  76.4%  stocks 10360/13568  skip=15774  worker=78 chunk=94/121
+[2026-08-14 14:24:43] progress  76.5%  stocks 10380/13568  skip=15774  worker=107 chunk=102/121
+[2026-08-14 14:24:43] progress  76.7%  stocks 10400/13568  skip=15774  worker=54 chunk=111/121
+[2026-08-14 14:24:43] progress  76.8%  stocks 10420/13568  skip=15774  worker=18 chunk=119/121
+[2026-08-14 14:24:43] progress  76.9%  stocks 10440/13568  skip=15774  worker=46 chunk=86/121
+[2026-08-14 14:24:44] progress  77.1%  stocks 10460/13568  skip=15774  worker=58 chunk=99/121
+[2026-08-14 14:24:45] progress  77.2%  stocks 10480/13568  skip=15774  worker=32 chunk=64/121
+[2026-08-14 14:24:45] progress  77.4%  stocks 10500/13568  skip=15774  worker=96 chunk=91/121
+[2026-08-14 14:24:45] progress  77.5%  stocks 10520/13568  skip=15774  worker=39 chunk=93/121
+[2026-08-14 14:24:45] progress  77.7%  stocks 10540/13568  skip=15774  worker=91 chunk=107/121
+[2026-08-14 14:24:46] progress  77.8%  stocks 10560/13568  skip=15774  worker=47 chunk=102/121
+[2026-08-14 14:24:46] progress  78.0%  stocks 10580/13568  skip=15774  worker=40 chunk=109/121
+[2026-08-14 14:24:46] progress  78.1%  stocks 10600/13568  skip=15774  worker=45 chunk=93/121
+[2026-08-14 14:24:46] progress  78.3%  stocks 10620/13568  skip=15774  worker=87 chunk=113/121
+[2026-08-14 14:24:47] progress  78.4%  stocks 10640/13568  skip=15774  worker=3 chunk=81/122
+[2026-08-14 14:24:47] progress  78.6%  stocks 10660/13568  skip=15774  worker=93 chunk=113/121
+[2026-08-14 14:24:47] progress  78.7%  stocks 10680/13568  skip=15774  worker=90 chunk=106/121
+[2026-08-14 14:24:48] progress  78.9%  stocks 10700/13568  skip=15774  worker=27 chunk=97/121
+[2026-08-14 14:24:48] progress  79.0%  stocks 10720/13568  skip=15774  worker=29 chunk=88/121
+[2026-08-14 14:24:48] progress  79.2%  stocks 10740/13568  skip=15774  worker=110 chunk=92/121
+[2026-08-14 14:24:48] progress  79.3%  stocks 10760/13568  skip=15774  worker=47 chunk=104/121
+[2026-08-14 14:24:49] progress  79.5%  stocks 10780/13568  skip=15774  worker=77 chunk=67/121
+[2026-08-14 14:24:49] progress  79.6%  stocks 10800/13568  skip=15774  worker=55 chunk=120/121
+[2026-08-14 14:24:49] progress  79.7%  stocks 10820/13568  skip=15774  worker=64 chunk=118/121
+[2026-08-14 14:24:49] progress  79.9%  stocks 10840/13568  skip=15774  worker=10 chunk=100/122
+[2026-08-14 14:24:49] progress  80.0%  stocks 10860/13568  skip=15774  worker=91 chunk=109/121
+[2026-08-14 14:24:50] progress  80.2%  stocks 10880/13568  skip=15774  worker=107 chunk=111/121
+[2026-08-14 14:24:50] progress  80.3%  stocks 10900/13568  skip=15774  worker=38 chunk=99/121
+[2026-08-14 14:24:50] progress  80.5%  stocks 10920/13568  skip=15774  worker=63 chunk=99/121
+[2026-08-14 14:24:51] progress  80.6%  stocks 10940/13568  skip=15774  worker=34 chunk=86/121
+[2026-08-14 14:24:51] progress  80.8%  stocks 10960/13568  skip=15774  worker=8 chunk=102/122
+[2026-08-14 14:24:51] progress  80.9%  stocks 10980/13568  skip=15774  worker=7 chunk=87/122
+[2026-08-14 14:24:51] progress  81.1%  stocks 11000/13568  skip=15774  worker=111 chunk=98/121
+[2026-08-14 14:24:52] progress  81.2%  stocks 11020/13568  skip=15774  worker=34 chunk=87/121
+[2026-08-14 14:24:52] progress  81.4%  stocks 11040/13568  skip=15774  worker=75 chunk=101/121
+[2026-08-14 14:24:52] progress  81.5%  stocks 11060/13568  skip=15774  worker=43 chunk=111/121
+[2026-08-14 14:24:53] progress  81.7%  stocks 11080/13568  skip=15774  worker=69 chunk=79/121
+[2026-08-14 14:24:53] progress  81.8%  stocks 11100/13568  skip=15774  worker=29 chunk=93/121
+[2026-08-14 14:24:54] progress  82.0%  stocks 11120/13568  skip=15774  worker=86 chunk=118/121
+[2026-08-14 14:24:54] progress  82.1%  stocks 11140/13568  skip=15774  worker=42 chunk=90/121
+[2026-08-14 14:24:55] progress  82.3%  stocks 11160/13568  skip=15774  worker=44 chunk=112/121
+[2026-08-14 14:24:55] progress  82.4%  stocks 11180/13568  skip=15774  worker=8 chunk=105/122
+[2026-08-14 14:24:55] progress  82.5%  stocks 11200/13568  skip=15774  worker=76 chunk=94/121
+[2026-08-14 14:24:55] progress  82.7%  stocks 11220/13568  skip=15774  worker=28 chunk=89/121
+[2026-08-14 14:24:56] progress  82.8%  stocks 11240/13568  skip=15774  worker=106 chunk=108/121
+[2026-08-14 14:24:56] progress  83.0%  stocks 11260/13568  skip=15774  worker=48 chunk=91/121
+[2026-08-14 14:24:56] progress  83.1%  stocks 11280/13568  skip=15774  worker=8 chunk=106/122
+[2026-08-14 14:24:56] progress  83.3%  stocks 11300/13568  skip=15774  worker=82 chunk=103/121
+[2026-08-14 14:24:57] progress  83.4%  stocks 11320/13568  skip=15774  worker=35 chunk=98/121
+[2026-08-14 14:24:57] progress  83.6%  stocks 11340/13568  skip=15774  worker=96 chunk=97/121
+[2026-08-14 14:24:57] progress  83.7%  stocks 11360/13568  skip=15774  worker=110 chunk=101/121
+[2026-08-14 14:24:57] progress  83.9%  stocks 11380/13568  skip=15774  worker=11 chunk=104/122
+[2026-08-14 14:24:58] progress  84.0%  stocks 11400/13568  skip=15774  worker=9 chunk=96/122
+[2026-08-14 14:24:58] progress  84.2%  stocks 11420/13568  skip=15774  worker=58 chunk=113/121
+[2026-08-14 14:24:58] progress  84.3%  stocks 11440/13568  skip=15774  worker=3 chunk=89/122
+[2026-08-14 14:24:59] progress  84.5%  stocks 11460/13568  skip=15774  worker=50 chunk=85/121
+[2026-08-14 14:24:59] progress  84.6%  stocks 11480/13568  skip=15774  worker=29 chunk=100/121
+[2026-08-14 14:24:59] progress  84.8%  stocks 11500/13568  skip=15774  worker=104 chunk=102/121
+[2026-08-14 14:25:00] progress  84.9%  stocks 11520/13568  skip=15774  worker=101 chunk=120/121
+[2026-08-14 14:25:00] progress  85.1%  stocks 11540/13568  skip=15774  worker=54 chunk=121/121
+[2026-08-14 14:25:00] progress  85.2%  stocks 11560/13568  skip=15774  worker=97 chunk=107/121
+[2026-08-14 14:25:01] progress  85.3%  stocks 11580/13568  skip=15774  worker=63 chunk=108/121
+[2026-08-14 14:25:01] progress  85.5%  stocks 11600/13568  skip=15774  worker=69 chunk=85/121
+[2026-08-14 14:25:01] progress  85.6%  stocks 11620/13568  skip=15774  worker=98 chunk=93/121
+[2026-08-14 14:25:01] progress  85.8%  stocks 11640/13568  skip=15774  worker=46 chunk=100/121
+[2026-08-14 14:25:02] progress  85.9%  stocks 11660/13568  skip=15774  worker=28 chunk=94/121
+[2026-08-14 14:25:02] progress  86.1%  stocks 11680/13568  skip=15774  worker=65 chunk=105/121
+[2026-08-14 14:25:02] progress  86.2%  stocks 11700/13568  skip=15774  worker=47 chunk=115/121
+[2026-08-14 14:25:02] progress  86.4%  stocks 11720/13568  skip=15774  worker=53 chunk=94/121
+[2026-08-14 14:25:02] progress  86.5%  stocks 11740/13568  skip=15774  worker=73 chunk=97/121
+[2026-08-14 14:25:03] progress  86.7%  stocks 11760/13568  skip=15774  worker=12 chunk=113/122
+[2026-08-14 14:25:03] progress  86.8%  stocks 11780/13568  skip=15774  worker=76 chunk=99/121
+[2026-08-14 14:25:03] progress  87.0%  stocks 11800/13568  skip=15774  worker=59 chunk=101/121
+[2026-08-14 14:25:03] progress  87.1%  stocks 11820/13568  skip=15774  worker=78 chunk=113/121
+[2026-08-14 14:25:04] progress  87.3%  stocks 11840/13568  skip=15774  worker=12 chunk=115/122
+[2026-08-14 14:25:04] progress  87.4%  stocks 11860/13568  skip=15774  worker=41 chunk=118/121
+[2026-08-14 14:25:04] progress  87.6%  stocks 11880/13568  skip=15774  worker=110 chunk=106/121
+[2026-08-14 14:25:04] progress  87.7%  stocks 11900/13568  skip=15774  worker=90 chunk=121/121
+[2026-08-14 14:25:05] progress  87.9%  stocks 11920/13568  skip=15774  worker=103 chunk=115/121
+[2026-08-14 14:25:05] progress  88.0%  stocks 11940/13568  skip=15774  worker=39 chunk=104/121
+[2026-08-14 14:25:06] progress  88.1%  stocks 11960/13568  skip=15774  worker=88 chunk=108/121
+[2026-08-14 14:25:06] progress  88.3%  stocks 11980/13568  skip=15774  worker=111 chunk=112/121
+[2026-08-14 14:25:07] progress  88.4%  stocks 12000/13568  skip=15774  worker=63 chunk=116/121
+[2026-08-14 14:25:07] progress  88.6%  stocks 12020/13568  skip=15774  worker=75 chunk=110/121
+[2026-08-14 14:25:07] progress  88.7%  stocks 12040/13568  skip=15774  worker=29 chunk=105/121
+[2026-08-14 14:25:08] progress  88.9%  stocks 12060/13568  skip=15774  worker=69 chunk=91/121
+[2026-08-14 14:25:08] progress  89.0%  stocks 12080/13568  skip=15774  worker=79 chunk=111/121
+[2026-08-14 14:25:08] progress  89.2%  stocks 12100/13568  skip=15774  worker=109 chunk=108/121
+[2026-08-14 14:25:08] progress  89.3%  stocks 12120/13568  skip=15774  worker=7 chunk=106/122
+[2026-08-14 14:25:08] progress  89.5%  stocks 12140/13568  skip=15774  worker=70 chunk=92/121
+[2026-08-14 14:25:09] progress  89.6%  stocks 12160/13568  skip=15774  worker=7 chunk=107/122
+[2026-08-14 14:25:09] progress  89.8%  stocks 12180/13568  skip=15774  worker=60 chunk=101/121
+[2026-08-14 14:25:09] progress  89.9%  stocks 12200/13568  skip=15774  worker=103 chunk=119/121
+[2026-08-14 14:25:09] progress  90.1%  stocks 12220/13568  skip=15774  worker=48 chunk=101/121
+[2026-08-14 14:25:10] progress  90.2%  stocks 12240/13568  skip=15774  worker=57 chunk=96/121
+[2026-08-14 14:25:11] progress  90.4%  stocks 12260/13568  skip=15774  worker=104 chunk=115/121
+[2026-08-14 14:25:11] progress  90.5%  stocks 12280/13568  skip=15774  worker=85 chunk=83/121
+[2026-08-14 14:25:11] progress  90.7%  stocks 12300/13568  skip=15774  worker=50 chunk=104/121
+[2026-08-14 14:25:12] progress  90.8%  stocks 12320/13568  skip=15774  worker=10 chunk=117/122
+[2026-08-14 14:25:12] progress  90.9%  stocks 12340/13568  skip=15774  worker=98 chunk=103/121
+[2026-08-14 14:25:12] progress  91.1%  stocks 12360/13568  skip=15774  worker=76 chunk=108/121
+[2026-08-14 14:25:13] progress  91.2%  stocks 12380/13568  skip=15774  worker=28 chunk=104/121
+[2026-08-14 14:25:13] progress  91.4%  stocks 12400/13568  skip=15774  worker=44 chunk=121/121
+[2026-08-14 14:25:13] progress  91.5%  stocks 12420/13568  skip=15774  worker=11 chunk=118/122
+[2026-08-14 14:25:13] progress  91.7%  stocks 12440/13568  skip=15774  worker=96 chunk=109/121
+[2026-08-14 14:25:14] progress  91.8%  stocks 12460/13568  skip=15774  worker=8 chunk=122/122
+[2026-08-14 14:25:14] progress  92.0%  stocks 12480/13568  skip=15774  worker=57 chunk=99/121
+[2026-08-14 14:25:14] progress  92.1%  stocks 12500/13568  skip=15774  worker=84 chunk=89/121
+[2026-08-14 14:25:14] progress  92.3%  stocks 12520/13568  skip=15774  worker=60 chunk=108/121
+[2026-08-14 14:25:15] progress  92.4%  stocks 12540/13568  skip=15774  worker=3 chunk=99/122
+[2026-08-14 14:25:15] progress  92.6%  stocks 12560/13568  skip=15774  worker=108 chunk=108/121
+[2026-08-14 14:25:16] progress  92.7%  stocks 12580/13568  skip=15774  worker=82 chunk=118/121
+[2026-08-14 14:25:16] progress  92.9%  stocks 12600/13568  skip=15774  worker=10 chunk=122/122
+[2026-08-14 14:25:17] progress  93.0%  stocks 12620/13568  skip=15774  worker=39 chunk=114/121
+[2026-08-14 14:25:17] progress  93.2%  stocks 12640/13568  skip=15774  worker=5 chunk=79/122
+[2026-08-14 14:25:17] progress  93.3%  stocks 12660/13568  skip=15774  worker=2 chunk=113/122
+[2026-08-14 14:25:17] progress  93.5%  stocks 12680/13568  skip=15774  worker=85 chunk=89/121
+[2026-08-14 14:25:17] progress  93.6%  stocks 12700/13568  skip=15774  worker=27 chunk=114/121
+[2026-08-14 14:25:18] progress  93.8%  stocks 12720/13568  skip=15774  worker=29 chunk=110/121
+[2026-08-14 14:25:18] progress  93.9%  stocks 12740/13568  skip=15774  worker=48 chunk=108/121
+[2026-08-14 14:25:18] progress  94.0%  stocks 12760/13568  skip=15774  worker=95 chunk=113/121
+[2026-08-14 14:25:18] progress  94.2%  stocks 12780/13568  skip=15774  worker=109 chunk=116/121
+[2026-08-14 14:25:19] progress  94.3%  stocks 12800/13568  skip=15774  worker=36 chunk=115/121
+[2026-08-14 14:25:19] progress  94.5%  stocks 12820/13568  skip=15774  worker=68 chunk=74/121
+[2026-08-14 14:25:19] progress  94.6%  stocks 12840/13568  skip=15774  worker=7 chunk=115/122
+[2026-08-14 14:25:20] progress  94.8%  stocks 12860/13568  skip=15774  worker=5 chunk=85/122
+[2026-08-14 14:25:21] progress  94.9%  stocks 12880/13568  skip=15774  worker=50 chunk=115/121
+[2026-08-14 14:25:21] progress  95.1%  stocks 12900/13568  skip=15774  worker=73 chunk=114/121
+[2026-08-14 14:25:22] progress  95.2%  stocks 12920/13568  skip=15774  worker=31 chunk=115/121
+[2026-08-14 14:25:22] progress  95.4%  stocks 12940/13568  skip=15774  worker=30 chunk=105/121
+[2026-08-14 14:25:22] progress  95.5%  stocks 12960/13568  skip=15774  worker=96 chunk=117/121
+[2026-08-14 14:25:23] progress  95.7%  stocks 12980/13568  skip=15774  worker=85 chunk=98/121
+[2026-08-14 14:25:23] progress  95.8%  stocks 13000/13568  skip=15774  worker=42 chunk=111/121
+[2026-08-14 14:25:23] progress  96.0%  stocks 13020/13568  skip=15774  worker=31 chunk=116/121
+[2026-08-14 14:25:24] progress  96.1%  stocks 13040/13568  skip=15774  worker=31 chunk=118/121
+[2026-08-14 14:25:24] progress  96.3%  stocks 13060/13568  skip=15774  worker=74 chunk=108/121
+[2026-08-14 14:25:24] progress  96.4%  stocks 13080/13568  skip=15774  worker=28 chunk=118/121
+[2026-08-14 14:25:25] progress  96.6%  stocks 13100/13568  skip=15774  worker=36 chunk=120/121
+[2026-08-14 14:25:26] progress  96.7%  stocks 13120/13568  skip=15774  worker=59 chunk=118/121
+[2026-08-14 14:25:26] progress  96.8%  stocks 13140/13568  skip=15774  worker=48 chunk=114/121
+[2026-08-14 14:25:27] progress  97.0%  stocks 13160/13568  skip=15774  worker=68 chunk=83/121
+[2026-08-14 14:25:27] progress  97.1%  stocks 13180/13568  skip=15774  worker=85 chunk=105/121
+[2026-08-14 14:25:27] progress  97.3%  stocks 13200/13568  skip=15774  worker=68 chunk=85/121
+[2026-08-14 14:25:28] progress  97.4%  stocks 13220/13568  skip=15774  worker=69 chunk=114/121
+[2026-08-14 14:25:28] progress  97.6%  stocks 13240/13568  skip=15774  worker=98 chunk=118/121
+[2026-08-14 14:25:29] progress  97.7%  stocks 13260/13568  skip=15774  worker=37 chunk=104/121
+[2026-08-14 14:25:29] progress  97.9%  stocks 13280/13568  skip=15774  worker=1 chunk=90/122
+[2026-08-14 14:25:31] progress  98.0%  stocks 13300/13568  skip=15774  worker=74 chunk=116/121
+[2026-08-14 14:25:32] progress  98.2%  stocks 13320/13568  skip=15774  worker=85 chunk=108/121
+[2026-08-14 14:25:33] progress  98.3%  stocks 13340/13568  skip=15774  worker=34 chunk=117/121
+[2026-08-14 14:25:33] progress  98.5%  stocks 13360/13568  skip=15774  worker=77 chunk=105/121
+[2026-08-14 14:25:34] progress  98.6%  stocks 13380/13568  skip=15774  worker=92 chunk=116/121
+[2026-08-14 14:25:35] progress  98.8%  stocks 13400/13568  skip=15774  worker=3 chunk=118/122
+[2026-08-14 14:25:36] progress  98.9%  stocks 13420/13568  skip=15774  worker=92 chunk=119/121
+[2026-08-14 14:25:38] progress  99.1%  stocks 13440/13568  skip=15774  worker=37 chunk=111/121
+[2026-08-14 14:25:39] progress  99.2%  stocks 13460/13568  skip=15774  worker=84 chunk=115/121
+[2026-08-14 14:25:41] progress  99.4%  stocks 13480/13568  skip=15774  worker=85 chunk=120/121
+[2026-08-14 14:25:43] progress  99.5%  stocks 13500/13568  skip=15774  worker=32 chunk=117/121
+[2026-08-14 14:25:46] progress  99.6%  stocks 13520/13568  skip=15774  worker=37 chunk=117/121
+[2026-08-14 14:25:48] progress  99.8%  stocks 13540/13568  skip=15774  worker=68 chunk=109/121
+[2026-08-14 14:25:52] progress  99.9%  stocks 13560/13568  skip=15774  worker=1 chunk=121/122
+[2026-08-14 14:25:53] progress 100.0%  stocks 13568/13568  skip=15774  worker=68 chunk=121/121
+[2026-08-14 14:25:54] workers finished; merging year bundles
+[2026-08-14 14:25:54] merge window=5 year=1993
+[2026-08-14 14:26:16] window=5 year=1993 images=331296 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_1993_images.dat
+[2026-08-14 14:26:16] merge window=5 year=1994
+[2026-08-14 14:26:36] window=5 year=1994 images=358910 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_1994_images.dat
+[2026-08-14 14:26:36] merge window=5 year=1995
+[2026-08-14 14:26:55] window=5 year=1995 images=380129 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_1995_images.dat
+[2026-08-14 14:26:55] merge window=5 year=1996
+[2026-08-14 14:27:16] window=5 year=1996 images=407132 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_1996_images.dat
+[2026-08-14 14:27:16] merge window=5 year=1997
+[2026-08-14 14:27:38] window=5 year=1997 images=419365 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_1997_images.dat
+[2026-08-14 14:27:38] merge window=5 year=1998
+[2026-08-14 14:28:04] window=5 year=1998 images=427109 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_1998_images.dat
+[2026-08-14 14:28:04] merge window=5 year=1999
+[2026-08-14 14:28:29] window=5 year=1999 images=397466 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_1999_images.dat
+[2026-08-14 14:28:29] merge window=5 year=2000
+[2026-08-14 14:28:48] window=5 year=2000 images=390624 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_2000_images.dat
+[2026-08-14 14:28:48] merge window=5 year=2001
+[2026-08-14 14:29:13] window=5 year=2001 images=359240 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_2001_images.dat
+[2026-08-14 14:29:13] merge window=5 year=2002
+[2026-08-14 14:29:35] window=5 year=2002 images=337233 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_2002_images.dat
+[2026-08-14 14:29:35] merge window=5 year=2003
+[2026-08-14 14:29:54] window=5 year=2003 images=328918 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_2003_images.dat
+[2026-08-14 14:29:54] merge window=5 year=2004
+[2026-08-14 14:30:06] window=5 year=2004 images=323743 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_2004_images.dat
+[2026-08-14 14:30:06] merge window=5 year=2005
+[2026-08-14 14:30:18] window=5 year=2005 images=333272 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_2005_images.dat
+[2026-08-14 14:30:18] merge window=5 year=2006
+[2026-08-14 14:30:29] window=5 year=2006 images=329521 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_2006_images.dat
+[2026-08-14 14:30:29] merge window=5 year=2007
+[2026-08-14 14:30:40] window=5 year=2007 images=338263 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_2007_images.dat
+[2026-08-14 14:30:40] merge window=5 year=2008
+[2026-08-14 14:30:52] window=5 year=2008 images=342034 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_2008_images.dat
+[2026-08-14 14:30:52] merge window=5 year=2009
+[2026-08-14 14:31:01] window=5 year=2009 images=320290 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_2009_images.dat
+[2026-08-14 14:31:01] merge window=5 year=2010
+[2026-08-14 14:31:11] window=5 year=2010 images=320914 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_2010_images.dat
+[2026-08-14 14:31:11] merge window=5 year=2011
+[2026-08-14 14:31:23] window=5 year=2011 images=330757 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_2011_images.dat
+[2026-08-14 14:31:23] merge window=5 year=2012
+[2026-08-14 14:31:35] window=5 year=2012 images=323348 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_2012_images.dat
+[2026-08-14 14:31:35] merge window=5 year=2013
+[2026-08-14 14:31:49] window=5 year=2013 images=325523 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_2013_images.dat
+[2026-08-14 14:31:49] merge window=5 year=2014
+[2026-08-14 14:32:04] window=5 year=2014 images=344871 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_2014_images.dat
+[2026-08-14 14:32:04] merge window=5 year=2015
+[2026-08-14 14:32:18] window=5 year=2015 images=346037 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_2015_images.dat
+[2026-08-14 14:32:18] merge window=5 year=2016
+[2026-08-14 14:32:33] window=5 year=2016 images=344802 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_2016_images.dat
+[2026-08-14 14:32:33] merge window=5 year=2017
+[2026-08-14 14:32:47] window=5 year=2017 images=355283 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_2017_images.dat
+[2026-08-14 14:32:47] merge window=5 year=2018
+[2026-08-14 14:33:02] window=5 year=2018 images=356857 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_2018_images.dat
+[2026-08-14 14:33:02] merge window=5 year=2019
+[2026-08-14 14:33:16] window=5 year=2019 images=366658 -> /data/kaibiao/data/projects/rpt-re/processed/images/5d_week/5d_2019_images.dat
+[2026-08-14 14:33:16] merge window=20 year=1993
+[2026-08-14 14:33:21] window=20 year=1993 images=77703 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_1993_images.dat
+[2026-08-14 14:33:21] merge window=20 year=1994
+[2026-08-14 14:33:26] window=20 year=1994 images=85625 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_1994_images.dat
+[2026-08-14 14:33:26] merge window=20 year=1995
+[2026-08-14 14:33:31] window=20 year=1995 images=88850 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_1995_images.dat
+[2026-08-14 14:33:31] merge window=20 year=1996
+[2026-08-14 14:33:35] window=20 year=1996 images=95402 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_1996_images.dat
+[2026-08-14 14:33:35] merge window=20 year=1997
+[2026-08-14 14:33:41] window=20 year=1997 images=100341 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_1997_images.dat
+[2026-08-14 14:33:41] merge window=20 year=1998
+[2026-08-14 14:33:45] window=20 year=1998 images=100445 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_1998_images.dat
+[2026-08-14 14:33:45] merge window=20 year=1999
+[2026-08-14 14:33:51] window=20 year=1999 images=95010 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_1999_images.dat
+[2026-08-14 14:33:51] merge window=20 year=2000
+[2026-08-14 14:33:58] window=20 year=2000 images=93202 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_2000_images.dat
+[2026-08-14 14:33:58] merge window=20 year=2001
+[2026-08-14 14:34:05] window=20 year=2001 images=85546 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_2001_images.dat
+[2026-08-14 14:34:05] merge window=20 year=2002
+[2026-08-14 14:34:08] window=20 year=2002 images=80559 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_2002_images.dat
+[2026-08-14 14:34:08] merge window=20 year=2003
+[2026-08-14 14:34:16] window=20 year=2003 images=77354 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_2003_images.dat
+[2026-08-14 14:34:16] merge window=20 year=2004
+[2026-08-14 14:34:24] window=20 year=2004 images=77342 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_2004_images.dat
+[2026-08-14 14:34:24] merge window=20 year=2005
+[2026-08-14 14:34:28] window=20 year=2005 images=78079 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_2005_images.dat
+[2026-08-14 14:34:28] merge window=20 year=2006
+[2026-08-14 14:34:34] window=20 year=2006 images=78749 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_2006_images.dat
+[2026-08-14 14:34:34] merge window=20 year=2007
+[2026-08-14 14:34:42] window=20 year=2007 images=80639 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_2007_images.dat
+[2026-08-14 14:34:42] merge window=20 year=2008
+[2026-08-14 14:34:46] window=20 year=2008 images=80039 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_2008_images.dat
+[2026-08-14 14:34:46] merge window=20 year=2009
+[2026-08-14 14:34:54] window=20 year=2009 images=76742 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_2009_images.dat
+[2026-08-14 14:34:54] merge window=20 year=2010
+[2026-08-14 14:34:58] window=20 year=2010 images=76865 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_2010_images.dat
+[2026-08-14 14:34:58] merge window=20 year=2011
+[2026-08-14 14:35:04] window=20 year=2011 images=77741 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_2011_images.dat
+[2026-08-14 14:35:04] merge window=20 year=2012
+[2026-08-14 14:35:09] window=20 year=2012 images=77323 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_2012_images.dat
+[2026-08-14 14:35:09] merge window=20 year=2013
+[2026-08-14 14:35:15] window=20 year=2013 images=77898 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_2013_images.dat
+[2026-08-14 14:35:15] merge window=20 year=2014
+[2026-08-14 14:35:24] window=20 year=2014 images=80932 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_2014_images.dat
+[2026-08-14 14:35:24] merge window=20 year=2015
+[2026-08-14 14:35:29] window=20 year=2015 images=82837 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_2015_images.dat
+[2026-08-14 14:35:29] merge window=20 year=2016
+[2026-08-14 14:35:35] window=20 year=2016 images=82398 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_2016_images.dat
+[2026-08-14 14:35:35] merge window=20 year=2017
+[2026-08-14 14:35:41] window=20 year=2017 images=83238 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_2017_images.dat
+[2026-08-14 14:35:41] merge window=20 year=2018
+[2026-08-14 14:35:49] window=20 year=2018 images=85243 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_2018_images.dat
+[2026-08-14 14:35:49] merge window=20 year=2019
+[2026-08-14 14:35:56] window=20 year=2019 images=87664 -> /data/kaibiao/data/projects/rpt-re/processed/images/20d_month/20d_2019_images.dat
+[2026-08-14 14:35:56] merge window=60 year=1993
+[2026-08-14 14:35:59] window=60 year=1993 images=25189 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_1993_images.dat
+[2026-08-14 14:35:59] merge window=60 year=1994
+[2026-08-14 14:36:03] window=60 year=1994 images=28266 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_1994_images.dat
+[2026-08-14 14:36:03] merge window=60 year=1995
+[2026-08-14 14:36:05] window=60 year=1995 images=29259 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_1995_images.dat
+[2026-08-14 14:36:05] merge window=60 year=1996
+[2026-08-14 14:36:10] window=60 year=1996 images=31331 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_1996_images.dat
+[2026-08-14 14:36:10] merge window=60 year=1997
+[2026-08-14 14:36:12] window=60 year=1997 images=32826 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_1997_images.dat
+[2026-08-14 14:36:12] merge window=60 year=1998
+[2026-08-14 14:36:17] window=60 year=1998 images=33102 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_1998_images.dat
+[2026-08-14 14:36:17] merge window=60 year=1999
+[2026-08-14 14:36:20] window=60 year=1999 images=31416 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_1999_images.dat
+[2026-08-14 14:36:20] merge window=60 year=2000
+[2026-08-14 14:36:24] window=60 year=2000 images=30532 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_2000_images.dat
+[2026-08-14 14:36:24] merge window=60 year=2001
+[2026-08-14 14:36:27] window=60 year=2001 images=27925 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_2001_images.dat
+[2026-08-14 14:36:27] merge window=60 year=2002
+[2026-08-14 14:36:39] window=60 year=2002 images=26470 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_2002_images.dat
+[2026-08-14 14:36:39] merge window=60 year=2003
+[2026-08-14 14:36:42] window=60 year=2003 images=25276 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_2003_images.dat
+[2026-08-14 14:36:42] merge window=60 year=2004
+[2026-08-14 14:37:01] window=60 year=2004 images=25595 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_2004_images.dat
+[2026-08-14 14:37:01] merge window=60 year=2005
+[2026-08-14 14:37:04] window=60 year=2005 images=25710 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_2005_images.dat
+[2026-08-14 14:37:04] merge window=60 year=2006
+[2026-08-14 14:37:07] window=60 year=2006 images=25877 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_2006_images.dat
+[2026-08-14 14:37:07] merge window=60 year=2007
+[2026-08-14 14:37:10] window=60 year=2007 images=26441 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_2007_images.dat
+[2026-08-14 14:37:10] merge window=60 year=2008
+[2026-08-14 14:37:20] window=60 year=2008 images=26503 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_2008_images.dat
+[2026-08-14 14:37:20] merge window=60 year=2009
+[2026-08-14 14:37:23] window=60 year=2009 images=25310 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_2009_images.dat
+[2026-08-14 14:37:23] merge window=60 year=2010
+[2026-08-14 14:37:26] window=60 year=2010 images=25213 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_2010_images.dat
+[2026-08-14 14:37:26] merge window=60 year=2011
+[2026-08-14 14:37:29] window=60 year=2011 images=25644 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_2011_images.dat
+[2026-08-14 14:37:29] merge window=60 year=2012
+[2026-08-14 14:37:32] window=60 year=2012 images=25518 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_2012_images.dat
+[2026-08-14 14:37:32] merge window=60 year=2013
+[2026-08-14 14:37:42] window=60 year=2013 images=25509 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_2013_images.dat
+[2026-08-14 14:37:42] merge window=60 year=2014
+[2026-08-14 14:37:46] window=60 year=2014 images=26633 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_2014_images.dat
+[2026-08-14 14:37:46] merge window=60 year=2015
+[2026-08-14 14:37:49] window=60 year=2015 images=27345 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_2015_images.dat
+[2026-08-14 14:37:49] merge window=60 year=2016
+[2026-08-14 14:38:06] window=60 year=2016 images=27222 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_2016_images.dat
+[2026-08-14 14:38:06] merge window=60 year=2017
+[2026-08-14 14:38:10] window=60 year=2017 images=27330 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_2017_images.dat
+[2026-08-14 14:38:10] merge window=60 year=2018
+[2026-08-14 14:38:13] window=60 year=2018 images=28014 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_2018_images.dat
+[2026-08-14 14:38:13] merge window=60 year=2019
+[2026-08-14 14:38:25] window=60 year=2019 images=28844 -> /data/kaibiao/data/projects/rpt-re/processed/images/60d_quarter/60d_2019_images.dat
+[2026-08-14 14:38:32] done: stocks=29342 skip=15774 -> /data/kaibiao/data/projects/rpt-re/processed/images
+[2026-08-14 14:38:32] Done.
