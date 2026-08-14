@@ -8,8 +8,15 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-from config import FEATURES_PARQUET, IMAGE_FREQ_DIR, IMAGES_ROOT, OHLC_PARQUET, WINDOW_DAYS
-from data.calendar import as_of_dates_for_window
+from config import (
+    FEATURES_PARQUET,
+    IMAGES_ROOT,
+    OHLC_PARQUET,
+    WINDOW_DAYS,
+    WINDOW_DEFAULT_SAMPLE_FREQ,
+    image_bundle_dir,
+)
+from data.calendar import as_of_dates_for_freq, as_of_dates_for_window
 from data.images import image_shape, try_build_window
 from data.labels import labels_for_as_of, stock_label_panel
 from data.parquet_io import load_calendar, read_stock, read_stock_features
@@ -26,6 +33,7 @@ def build_sample_windows(
     window_days_list: tuple[int, ...] = WINDOW_DAYS,
     use_last_as_of: bool = True,
     as_of_map: dict[int, pd.Timestamp] | None = None,
+    sample_freq_map: dict[int, str] | None = None,
 ) -> list[tuple[int, np.ndarray, dict[str, Any], pd.Timestamp]]:
     if not parquet_path.exists():
         raise FileNotFoundError(f"parquet not found: {parquet_path}")
@@ -41,7 +49,12 @@ def build_sample_windows(
 
     built: list[tuple[int, np.ndarray, dict[str, Any], pd.Timestamp]] = []
     for window_days in window_days_list:
-        as_ofs = as_of_dates_for_window(window_days, calendar)
+        sample_freq = (
+            sample_freq_map.get(window_days, WINDOW_DEFAULT_SAMPLE_FREQ[window_days])
+            if sample_freq_map
+            else WINDOW_DEFAULT_SAMPLE_FREQ[window_days]
+        )
+        as_ofs = as_of_dates_for_freq(sample_freq, calendar)
         if as_of_map and window_days in as_of_map:
             as_of = as_of_map[window_days]
         elif use_last_as_of:
@@ -88,8 +101,12 @@ def memmap_image_path(
     output_root: Path,
     window_days: int,
     year: int,
+    *,
+    sample_freq: str | None = None,
 ) -> Path:
-    freq_dir = output_root / IMAGE_FREQ_DIR[window_days]
+    if sample_freq is None:
+        sample_freq = WINDOW_DEFAULT_SAMPLE_FREQ[window_days]
+    freq_dir = output_root / image_bundle_dir(window_days, sample_freq)
     return freq_dir / f"{window_days}d_{year}_images.dat"
 
 

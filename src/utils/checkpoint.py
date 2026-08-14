@@ -9,17 +9,50 @@ from pathlib import Path
 import pyarrow as pa
 import pyarrow.parquet as pq
 
+from config import (
+    IMAGES_CHECKPOINT_PAPER_CROSS,
+    PAPER_CROSS_BUNDLES,
+    WINDOW_DAYS,
+    diagonal_bundles,
+)
+
 OHLC_COMPLETE = ".complete"
 FEATURES_TMP_PREFIX = ".tmp_PERMNO="
 IMAGES_CHECKPOINT_PERMNOS = ".checkpoint_permnos"
 
+ImageBundle = tuple[int, str]
 
-def images_checkpoint_name(window_days_list: tuple[int, ...], all_windows: tuple[int, ...]) -> str:
-    """Shared permno list for a full 5/20/60 run; per-window file for a subset rebuild."""
-    if frozenset(window_days_list) == frozenset(all_windows):
+
+def _bundle_tag(window_days: int, sample_freq: str) -> str:
+    return f"{window_days}{sample_freq}"
+
+
+def images_checkpoint_name(
+    bundles: tuple[ImageBundle, ...],
+    *,
+    all_diagonal: tuple[ImageBundle, ...] | None = None,
+) -> str:
+    """Checkpoint file name for a bundle set; diagonal full run uses `.checkpoint_permnos`."""
+    if all_diagonal is None:
+        all_diagonal = diagonal_bundles()
+    if tuple(bundles) == all_diagonal:
         return IMAGES_CHECKPOINT_PERMNOS
-    tag = "_".join(str(w) for w in window_days_list)
+    if tuple(bundles) == PAPER_CROSS_BUNDLES:
+        return IMAGES_CHECKPOINT_PAPER_CROSS
+    tag = "_".join(_bundle_tag(w, f) for w, f in bundles)
     return f"{IMAGES_CHECKPOINT_PERMNOS}_{tag}"
+
+
+def images_checkpoint_name_windows(
+    window_days_list: tuple[int, ...],
+    all_windows: tuple[int, ...] = WINDOW_DAYS,
+) -> str:
+    """Legacy helper: diagonal bundles for the given window subset."""
+    from config import windows_to_diagonal_bundles
+
+    all_diag = windows_to_diagonal_bundles(all_windows)
+    bundles = windows_to_diagonal_bundles(window_days_list)
+    return images_checkpoint_name(bundles, all_diagonal=all_diag)
 
 
 def ohlc_is_complete(output_path: Path) -> bool:
@@ -72,30 +105,29 @@ def append_permno_checkpoint(
         f.flush()
 
 
-def append_image_labels(worker_dir: Path, window_days: int, year: int, rows: list[dict]) -> None:
-    if not rows:
-        return
-    path = worker_dir / f"{window_days}d_{year}_labels.jsonl"
-    with open(path, "a") as f:
-        for row in rows:
-            f.write(json.dumps(row, default=str))
-            f.write("\n")
-        f.flush()
-
-
 class LabelJsonlWriter:
-    """Buffered jsonl sidecar writer; one open handle per (window_days, year)."""
+    """Buffered jsonl sidecar writer; one open handle per (window_days, sample_freq, year)."""
 
     def __init__(self, worker_dir: Path) -> None:
         self.worker_dir = worker_dir
-        self._handles: dict[tuple[int, int], object] = {}
+        self._handles: dict[tuple[int, str, int], object] = {}
 
-    def append(self, window_days: int, year: int, rows: list[dict]) -> None:
+    def append(
+        self,
+        window_days: int,
+        sample_freq: str,
+        year: int,
+        rows: list[dict],
+    ) -> None:
         if not rows:
             return
-        key = (window_days, year)
+        key = (window_days, sample_freq, year)
         if key not in self._handles:
-            path = self.worker_dir / f"{window_days}d_{year}_labels.jsonl"
+            from config import image_bundle_dir
+
+            bundle_dir = self.worker_dir / image_bundle_dir(window_days, sample_freq)
+            bundle_dir.mkdir(parents=True, exist_ok=True)
+            path = bundle_dir / f"{window_days}d_{year}_labels.jsonl"
             mode = "a" if path.exists() else "w"
             self._handles[key] = open(path, mode)
         handle = self._handles[key]
@@ -113,10 +145,18 @@ class LabelJsonlWriter:
         self._handles.clear()
 
 
-def read_image_label_sidecars(tmp_root: Path, window_days: int, year: int) -> list[dict]:
+def read_image_label_sidecars(
+    tmp_root: Path,
+    window_days: int,
+    sample_freq: str,
+    year: int,
+) -> list[dict]:
+    from config import image_bundle_dir
+
+    bundle_name = image_bundle_dir(window_days, sample_freq)
     rows: list[dict] = []
     for worker_dir in sorted(tmp_root.glob("worker_*")):
-        path = worker_dir / f"{window_days}d_{year}_labels.jsonl"
+        path = worker_dir / bundle_name / f"{window_days}d_{year}_labels.jsonl"
         if not path.is_file():
             continue
         for line in path.read_text().splitlines():

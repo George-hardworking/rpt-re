@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 
 from backtest.markets import CN_SPEC, MarketSpec
-from config import BACKTEST_WEIGHT_SCHEMES, IMAGE_FREQ_DIR, TEST_START
+from config import BACKTEST_WEIGHT_SCHEMES, TEST_START, image_bundle_dir
 from models.dataset import model_run_tag
 
 
@@ -38,9 +38,10 @@ def ensemble_pred_path(
 def load_us_image_labels(
     images_root: Path,
     image_days: int,
+    sample_freq: str,
     horizons: tuple[int, ...],
 ) -> pd.DataFrame:
-    freq_dir = Path(images_root) / IMAGE_FREQ_DIR[image_days]
+    freq_dir = Path(images_root) / image_bundle_dir(image_days, sample_freq)
     paths = sorted(freq_dir.glob(f"{image_days}d_*_labels.feather"))
     if not paths:
         raise FileNotFoundError(f"no label feathers in {freq_dir}")
@@ -102,6 +103,7 @@ def load_us_oos_panel(
     images_root: Path,
     image_days: int,
     horizon: int,
+    sample_freq: str,
     init_from_image_days: int | None = None,
     start: str = TEST_START,
 ) -> pd.DataFrame:
@@ -112,7 +114,7 @@ def load_us_oos_panel(
         horizon,
         init_from_image_days=init_from_image_days,
     )
-    labels = load_us_image_labels(images_root, image_days, (horizon,))
+    labels = load_us_image_labels(images_root, image_days, sample_freq, (horizon,))
     return merge_us_panel(pred, labels, horizon=horizon, start=start)
 
 

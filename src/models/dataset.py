@@ -13,12 +13,13 @@ import torch
 from torch.utils.data import Dataset
 
 from config import (
-    IMAGE_FREQ_DIR,
     IMAGES_ROOT,
     SAMPLE_END,
     TEST_START,
     TRAIN_END,
     TRAIN_VAL_FRAC,
+    image_bundle_dir,
+    sample_freq_for_horizon,
 )
 from data.images import image_shape
 from viz.preview_images import load_memmap_images, memmap_image_path
@@ -54,8 +55,12 @@ class SampleTable:
         )
 
 
-def list_image_years(images_root: Path, window_days: int) -> list[int]:
-    freq_dir = images_root / IMAGE_FREQ_DIR[window_days]
+def list_image_years(
+    images_root: Path,
+    window_days: int,
+    sample_freq: str,
+) -> list[int]:
+    freq_dir = images_root / image_bundle_dir(window_days, sample_freq)
     years: list[int] = []
     for path in sorted(freq_dir.glob(f"{window_days}d_*_images.dat")):
         parts = path.stem.split("_")
@@ -67,8 +72,13 @@ def label_column(horizon: int) -> str:
     return f"Ret_{horizon}d_label"
 
 
-def load_year_labels(images_root: Path, window_days: int, year: int) -> pd.DataFrame:
-    freq_dir = images_root / IMAGE_FREQ_DIR[window_days]
+def load_year_labels(
+    images_root: Path,
+    window_days: int,
+    year: int,
+    sample_freq: str,
+) -> pd.DataFrame:
+    freq_dir = images_root / image_bundle_dir(window_days, sample_freq)
     feather_path = freq_dir / f"{window_days}d_{year}_labels.feather"
     return pd.read_feather(feather_path)
 
@@ -78,17 +88,20 @@ def build_year_table(
     window_days: int,
     horizon: int,
     year: int,
+    sample_freq: str,
 ) -> SampleTable:
-    labels = load_year_labels(images_root, window_days, year)
+    labels = load_year_labels(images_root, window_days, year, sample_freq)
     col = label_column(horizon)
-    dat_path = memmap_image_path(images_root, window_days, year)
+    dat_path = memmap_image_path(
+        images_root, window_days, year, sample_freq=sample_freq
+    )
     height, width = image_shape(window_days)
     n_images = Path(dat_path).stat().st_size // (height * width)
     n_labels = len(labels)
     if n_labels < n_images:
         raise ValueError(
-            f"label/image count mismatch window={window_days} year={year}: "
-            f"{n_labels} labels vs {n_images} images"
+            f"label/image count mismatch window={window_days} freq={sample_freq} "
+            f"year={year}: {n_labels} labels vs {n_images} images"
         )
     if n_labels > n_images:
         labels = labels.iloc[:n_images]
@@ -121,16 +134,18 @@ def collect_samples(
     window_days: int,
     horizon: int,
     *,
+    sample_freq: str | None = None,
     year_limit: int | None = None,
     max_samples: int | None = None,
 ) -> SampleTable:
-    years = list_image_years(images_root, window_days)
+    freq = sample_freq if sample_freq is not None else sample_freq_for_horizon(horizon)
+    years = list_image_years(images_root, window_days, freq)
     if year_limit is not None:
         years = years[:year_limit]
     parts: list[SampleTable] = []
     n = 0
     for year in years:
-        part = build_year_table(images_root, window_days, horizon, year)
+        part = build_year_table(images_root, window_days, horizon, year, freq)
         parts.append(part)
         n += len(part)
         if max_samples is not None and n >= max_samples:
@@ -166,6 +181,7 @@ def split_samples(
 def compute_pixel_mean_std(
     images_root: Path,
     window_days: int,
+    sample_freq: str,
     years: np.ndarray,
     row_idx: np.ndarray,
 ) -> tuple[float, float]:
@@ -178,7 +194,9 @@ def compute_pixel_mean_std(
     for year in np.unique(years):
         year_i = int(year)
         if year_i not in mmap_cache:
-            dat_path = memmap_image_path(images_root, window_days, year_i)
+            dat_path = memmap_image_path(
+                images_root, window_days, year_i, sample_freq=sample_freq
+            )
             mmap_cache[year_i] = load_memmap_images(dat_path, window_days)
         sel = years == year
         imgs = np.asarray(mmap_cache[year_i][row_idx[sel]], dtype=np.float64)
@@ -208,11 +226,14 @@ def load_or_compute_pixel_stats(
     horizon: int,
     train: SampleTable,
     *,
+    sample_freq: str,
     split_seed: int,
     cache_path: Path | None,
 ) -> tuple[float, float]:
     if cache_path is None:
-        return compute_pixel_mean_std(images_root, window_days, train.years, train.row_idx)
+        return compute_pixel_mean_std(
+            images_root, window_days, sample_freq, train.years, train.row_idx
+        )
 
     cache_path.parent.mkdir(parents=True, exist_ok=True)
     lock_path = cache_path.with_name(cache_path.name + ".lock")
@@ -227,7 +248,7 @@ def load_or_compute_pixel_stats(
                 )
             return float(payload["mean"]), float(payload["std"])
         mean, std = compute_pixel_mean_std(
-            images_root, window_days, train.years, train.row_idx
+            images_root, window_days, sample_freq, train.years, train.row_idx
         )
         tmp = cache_path.with_suffix(".tmp.npz")
         np.savez(
@@ -252,10 +273,12 @@ class ImageLabelDataset(Dataset):
         pixel_mean: float,
         pixel_std: float,
         *,
+        sample_freq: str,
         mmap_cache: dict[int, np.ndarray] | None = None,
     ) -> None:
         self.images_root = images_root
         self.window_days = window_days
+        self.sample_freq = sample_freq
         self.table = samples
         self.pixel_mean = float(pixel_mean)
         self.pixel_std = float(pixel_std)
@@ -268,7 +291,12 @@ class ImageLabelDataset(Dataset):
 
     def _get_year_mmap(self, year: int) -> np.ndarray:
         if year not in self._mmap_cache:
-            dat_path = memmap_image_path(self.images_root, self.window_days, year)
+            dat_path = memmap_image_path(
+                self.images_root,
+                self.window_days,
+                year,
+                sample_freq=self.sample_freq,
+            )
             self._mmap_cache[year] = load_memmap_images(dat_path, self.window_days)
         return self._mmap_cache[year]
 

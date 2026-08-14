@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pandas as pd
 
-from config import SAMPLE_END, SAMPLE_START
+from config import SAMPLE_END, SAMPLE_START, WINDOW_DEFAULT_SAMPLE_FREQ
 
 
 def market_calendar(dates: pd.Series) -> pd.DatetimeIndex:
@@ -26,7 +26,7 @@ def _sample_period_end_dates(calendar: pd.DatetimeIndex, freq: str) -> pd.Dateti
     return idx[(idx >= sample_start) & (idx <= sample_end)]
 
 
-def as_of_dates_5d(calendar: pd.DatetimeIndex) -> pd.DatetimeIndex:
+def as_of_dates_week(calendar: pd.DatetimeIndex) -> pd.DatetimeIndex:
     return _sample_period_end_dates(calendar, "W")
 
 
@@ -38,14 +38,19 @@ def as_of_dates_quarter_end(calendar: pd.DatetimeIndex) -> pd.DatetimeIndex:
     return _sample_period_end_dates(calendar, "Q")
 
 
-def as_of_dates_for_window(window_days: int, calendar: pd.DatetimeIndex) -> pd.DatetimeIndex:
-    if window_days == 5:
-        return as_of_dates_5d(calendar)
-    if window_days == 20:
+def as_of_dates_for_freq(sample_freq: str, calendar: pd.DatetimeIndex) -> pd.DatetimeIndex:
+    if sample_freq == "week":
+        return as_of_dates_week(calendar)
+    if sample_freq == "month":
         return as_of_dates_month_end(calendar)
-    if window_days == 60:
+    if sample_freq == "quarter":
         return as_of_dates_quarter_end(calendar)
-    raise ValueError(f"unsupported window_days={window_days}")
+    raise ValueError(f"unsupported sample_freq={sample_freq}")
+
+
+def as_of_dates_for_window(window_days: int, calendar: pd.DatetimeIndex) -> pd.DatetimeIndex:
+    """Legacy: sample dates tied to image window (diagonal bundles only)."""
+    return as_of_dates_for_freq(WINDOW_DEFAULT_SAMPLE_FREQ[window_days], calendar)
 
 
 def window_calendar_days(

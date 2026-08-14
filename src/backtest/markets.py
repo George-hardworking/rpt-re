@@ -40,7 +40,7 @@ def us_spec(image_days: int, horizon: int) -> MarketSpec:
         ret_col=f"Ret_{horizon}d",
         float_cap_col="MarketCap",
         total_cap_col="MarketCap",
-        periods_per_year=BACKTEST_PERIODS_PER_YEAR[image_days],
+        periods_per_year=BACKTEST_PERIODS_PER_YEAR[horizon],
     )
 
 
