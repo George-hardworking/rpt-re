@@ -12,29 +12,30 @@ def market_calendar(dates: pd.Series) -> pd.DatetimeIndex:
     return unique
 
 
-def as_of_dates_5d(calendar: pd.DatetimeIndex) -> pd.DatetimeIndex:
+def _sample_period_end_dates(calendar: pd.DatetimeIndex, freq: str) -> pd.DatetimeIndex:
+    """Last trading day in each pandas period, clipped to SAMPLE_START–SAMPLE_END.
+
+    freq 'W' is week ending Sunday (Mon–Sun). The last session is usually Friday;
+    a Thursday when Friday is a market holiday.
+    """
     sample_start = pd.Timestamp(SAMPLE_START)
     sample_end = pd.Timestamp(SAMPLE_END)
-    idx = calendar[4::5]
+    s = pd.Series(calendar, index=calendar)
+    ends = s.groupby(s.dt.to_period(freq)).max()
+    idx = pd.DatetimeIndex(ends.values).sort_values()
     return idx[(idx >= sample_start) & (idx <= sample_end)]
+
+
+def as_of_dates_5d(calendar: pd.DatetimeIndex) -> pd.DatetimeIndex:
+    return _sample_period_end_dates(calendar, "W")
 
 
 def as_of_dates_month_end(calendar: pd.DatetimeIndex) -> pd.DatetimeIndex:
-    sample_start = pd.Timestamp(SAMPLE_START)
-    sample_end = pd.Timestamp(SAMPLE_END)
-    s = pd.Series(calendar, index=calendar)
-    month_end = s.groupby(s.dt.to_period("M")).max()
-    idx = pd.DatetimeIndex(month_end.values).sort_values()
-    return idx[(idx >= sample_start) & (idx <= sample_end)]
+    return _sample_period_end_dates(calendar, "M")
 
 
 def as_of_dates_quarter_end(calendar: pd.DatetimeIndex) -> pd.DatetimeIndex:
-    sample_start = pd.Timestamp(SAMPLE_START)
-    sample_end = pd.Timestamp(SAMPLE_END)
-    s = pd.Series(calendar, index=calendar)
-    quarter_end = s.groupby(s.dt.to_period("Q")).max()
-    idx = pd.DatetimeIndex(quarter_end.values).sort_values()
-    return idx[(idx >= sample_start) & (idx <= sample_end)]
+    return _sample_period_end_dates(calendar, "Q")
 
 
 def as_of_dates_for_window(window_days: int, calendar: pd.DatetimeIndex) -> pd.DatetimeIndex:

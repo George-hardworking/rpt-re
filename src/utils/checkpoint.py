@@ -14,6 +14,14 @@ FEATURES_TMP_PREFIX = ".tmp_PERMNO="
 IMAGES_CHECKPOINT_PERMNOS = ".checkpoint_permnos"
 
 
+def images_checkpoint_name(window_days_list: tuple[int, ...], all_windows: tuple[int, ...]) -> str:
+    """Shared permno list for a full 5/20/60 run; per-window file for a subset rebuild."""
+    if frozenset(window_days_list) == frozenset(all_windows):
+        return IMAGES_CHECKPOINT_PERMNOS
+    tag = "_".join(str(w) for w in window_days_list)
+    return f"{IMAGES_CHECKPOINT_PERMNOS}_{tag}"
+
+
 def ohlc_is_complete(output_path: Path) -> bool:
     return (output_path / OHLC_COMPLETE).is_file()
 
@@ -44,15 +52,21 @@ def write_features_partition(root: Path, table: pa.Table, permno: int) -> None:
     shutil.rmtree(tmp_root)
 
 
-def load_permno_checkpoint(output_root: Path) -> set[int]:
-    path = output_root / IMAGES_CHECKPOINT_PERMNOS
+def load_permno_checkpoint(
+    output_root: Path, filename: str = IMAGES_CHECKPOINT_PERMNOS
+) -> set[int]:
+    path = output_root / filename
     if not path.is_file():
         return set()
     return {int(line.strip()) for line in path.read_text().splitlines() if line.strip()}
 
 
-def append_permno_checkpoint(output_root: Path, permno: int) -> None:
-    path = output_root / IMAGES_CHECKPOINT_PERMNOS
+def append_permno_checkpoint(
+    output_root: Path,
+    permno: int,
+    filename: str = IMAGES_CHECKPOINT_PERMNOS,
+) -> None:
+    path = output_root / filename
     with open(path, "a") as f:
         f.write(f"{permno}\n")
         f.flush()

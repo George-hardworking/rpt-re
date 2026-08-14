@@ -20,6 +20,7 @@ TEST_START = "2001-01-01"
 
 # CNN training (Jiang–Kelly–Xiu JF 2023, Section II.C)
 N_ENSEMBLE = 5
+TRAIN_VAL_SPLIT_SEED = 0  # fixed 70/30 split per Ix/Ry; ensemble seeds only affect optimization
 ADAM_LR = 1e-5
 BATCH_SIZE = 128
 EARLY_STOP_PATIENCE = 2

@@ -5,6 +5,7 @@
 #   ./scripts/sh/03_train_cnn.sh --image-days 5 --horizon 5 --seed 0
 #   ./scripts/sh/03_train_cnn.sh --image-days 20 --horizon 20 --all-seeds
 #   ./scripts/sh/03_train_cnn.sh --image-days 5 --horizon 5 --seed 0 --device cuda
+#   # --seed: optimization only; 70/30 split uses --split-seed (default 0, shared by ensemble)
 #
 set -euo pipefail
 
