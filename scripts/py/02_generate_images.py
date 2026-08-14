@@ -29,6 +29,7 @@ from data.parquet_io import load_calendar, permno_list, read_stock, read_stock_f
 from utils.checkpoint import (
     LabelJsonlWriter,
     append_permno_checkpoint,
+    images_checkpoint_name,
     load_permno_checkpoint,
     read_image_label_sidecars,
 )
@@ -74,7 +75,7 @@ def write_year_bundle(
 
 def process_permno_chunk(task: tuple) -> None:
     (permno_chunk, ohlc_path, features_path, calendar, window_days_list,
-     as_of_per_window, worker_id, tmp_root, output_root) = task
+     as_of_per_window, worker_id, tmp_root, output_root, ckpt_filename) = task
 
     calendar_last = calendar[-1]
     worker_dir = tmp_root / f"worker_{worker_id}"
@@ -131,7 +132,7 @@ def process_permno_chunk(task: tuple) -> None:
         for (window_days, year), rows in pending_labels.items():
             label_writer.append(window_days, year, rows)
         label_writer.flush_all()
-        append_permno_checkpoint(output_root, permno)
+        append_permno_checkpoint(output_root, permno, filename=ckpt_filename)
         with _PROGRESS.get_lock():
             _PROGRESS.value += 1
             done = _PROGRESS.value
@@ -167,8 +168,23 @@ def build_window_images(
             f"features parquet not found: {features_path}; run 01_prepare_data features first"
         )
 
-    if fresh and output_root.exists():
-        shutil.rmtree(output_root)
+    ckpt_filename = images_checkpoint_name(window_days_list, WINDOW_DAYS)
+    tmp_root = output_root / ".tmp_workers"
+    full_run = frozenset(window_days_list) == frozenset(WINDOW_DAYS)
+    if fresh:
+        if full_run and output_root.exists():
+            shutil.rmtree(output_root)
+        else:
+            for window_days in window_days_list:
+                freq_dir = output_root / IMAGE_FREQ_DIR[window_days]
+                if freq_dir.exists():
+                    shutil.rmtree(freq_dir)
+                    log(f"fresh: removed {freq_dir}")
+            ckpt_path = output_root / ckpt_filename
+            if ckpt_path.exists():
+                ckpt_path.unlink()
+            if tmp_root.exists():
+                shutil.rmtree(tmp_root)
     output_root.mkdir(parents=True, exist_ok=True)
 
     calendar = load_calendar(ohlc_path, log=log)
@@ -176,10 +192,13 @@ def build_window_images(
     if permno_limit is not None:
         permnos = permnos[:permno_limit]
 
-    done_permnos = load_permno_checkpoint(output_root)
+    done_permnos = load_permno_checkpoint(output_root, filename=ckpt_filename)
     pending = np.array([p for p in permnos if int(p) not in done_permnos], dtype=np.int64)
     skip_stocks = len(permnos) - len(pending)
-    log(f"images resume: skip={skip_stocks} pending={len(pending)} total={len(permnos)}")
+    log(
+        f"images resume: checkpoint={ckpt_filename} "
+        f"skip={skip_stocks} pending={len(pending)} total={len(permnos)}"
+    )
 
     as_of_per_window = {w: as_of_dates_for_window(w, calendar) for w in window_days_list}
     years_per_window = {
@@ -188,7 +207,6 @@ def build_window_images(
     for window_days, as_ofs in as_of_per_window.items():
         log(f"window={window_days} as_of_dates={len(as_ofs)}")
 
-    tmp_root = output_root / ".tmp_workers"
     if len(pending) == 0:
         if not tmp_root.exists():
             log(f"skip images (checkpoint): {output_root}")
@@ -210,7 +228,7 @@ def build_window_images(
         chunks = chunk_permnos(pending, n_workers)
         tasks = [
             (chunk, ohlc_path, features_path, calendar, window_days_list,
-             as_of_per_window, wid, tmp_root, output_root)
+             as_of_per_window, wid, tmp_root, output_root, ckpt_filename)
             for wid, chunk in enumerate(chunks)
         ]
 
@@ -252,7 +270,14 @@ def main() -> None:
     parser.add_argument("--parquet", type=Path, default=OHLC_PARQUET)
     parser.add_argument("--features", type=Path, default=FEATURES_PARQUET)
     parser.add_argument("--output", type=Path, default=IMAGES_ROOT)
-    parser.add_argument("--windows", type=int, nargs="+", default=list(WINDOW_DAYS))
+    parser.add_argument(
+        "--windows",
+        type=int,
+        nargs="+",
+        default=list(WINDOW_DAYS),
+        choices=WINDOW_DAYS,
+        help="image windows to build; --fresh with a subset only deletes those freq dirs",
+    )
     parser.add_argument("--permno-limit", type=int, default=None)
     parser.add_argument("--workers", type=int, default=None)
     parser.add_argument("--reserve-gib", type=float, default=DEFAULT_RESERVE_GIB)
