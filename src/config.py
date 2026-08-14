@@ -12,6 +12,12 @@ OHLC_CALENDAR = PROCESSED_DIR / "ohlc_calendar.parquet"
 FEATURES_PARQUET = PROCESSED_DIR / "features"
 IMAGES_ROOT = PROCESSED_DIR / "images"
 MODELS_ROOT = PROCESSED_DIR / "models"
+BACKTEST_ROOT = PROCESSED_DIR / "backtest"
+
+BACKTEST_N_GROUP = 10
+BACKTEST_WEIGHT_SCHEMES = ("equal", "float", "total")
+# I5 weekly / I20 monthly / I60 quarterly rebalance.
+BACKTEST_PERIODS_PER_YEAR = {5: 52, 20: 12, 60: 4}
 
 SAMPLE_START = "1993-01-01"
 SAMPLE_END = "2019-12-31"
