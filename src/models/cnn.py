@@ -128,3 +128,29 @@ class PriceTrendCNN(nn.Module):
     def predict_proba_up(self, x: torch.Tensor) -> torch.Tensor:
         logits = self.forward(x)
         return torch.softmax(logits, dim=-1)[:, 1]
+
+
+def copy_conv_blocks_from(
+    target: PriceTrendCNN,
+    source_state: dict[str, torch.Tensor],
+    source_window_days: int,
+) -> None:
+    """Copy conv+BN weights for all blocks in a shallower source network."""
+    n_blocks = cnn_num_blocks(source_window_days)
+    target_state = target.state_dict()
+    for block_idx in range(n_blocks):
+        prefix = f"blocks.{block_idx}"
+        for suffix in (
+            "conv.weight",
+            "conv.bias",
+            "bn.weight",
+            "bn.bias",
+            "bn.running_mean",
+            "bn.running_var",
+            "bn.num_batches_tracked",
+        ):
+            key = f"{prefix}.{suffix}"
+            if key not in source_state:
+                raise KeyError(f"missing {key} in source checkpoint")
+            target_state[key] = source_state[key].clone()
+    target.load_state_dict(target_state)

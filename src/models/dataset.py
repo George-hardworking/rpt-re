@@ -189,13 +189,29 @@ class ImageLabelDataset(Dataset):
         return x, y, ref
 
 
+def model_run_tag(
+    image_days: int,
+    horizon: int,
+    *,
+    init_from_image_days: int | None = None,
+) -> str:
+    tag = f"I{image_days}_R{horizon}"
+    if init_from_image_days is not None:
+        tag = f"{tag}_fromI{init_from_image_days}"
+    return tag
+
+
 def model_run_dir(
     models_root: Path,
     image_days: int,
     horizon: int,
     seed: int,
+    *,
+    init_from_image_days: int | None = None,
 ) -> Path:
-    return models_root / f"I{image_days}_R{horizon}" / f"seed{seed}"
+    return models_root / model_run_tag(
+        image_days, horizon, init_from_image_days=init_from_image_days
+    ) / f"seed{seed}"
 
 
 def default_images_root() -> Path:

@@ -12,8 +12,11 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 
 from config import ADAM_LR, BATCH_SIZE, EARLY_STOP_PATIENCE, MAX_EPOCHS
-from models.cnn import PriceTrendCNN, flatten_feature_size
+from models.cnn import PriceTrendCNN, copy_conv_blocks_from, flatten_feature_size
 from models.dataset import ImageLabelDataset, SampleRef
+
+LAST_CKPT = "last.pt"
+BEST_CKPT = "best.pt"
 
 
 def _collate_batch(
@@ -34,6 +37,7 @@ class TrainConfig:
     n_train: int
     n_val: int
     n_test: int
+    init_from_image_days: int | None = None
 
 
 def _device(device: str | None) -> torch.device:
@@ -42,6 +46,34 @@ def _device(device: str | None) -> torch.device:
     if torch.cuda.is_available():
         return torch.device("cuda")
     return torch.device("cpu")
+
+
+def ckpt_dir_paths(ckpt_dir: Path) -> tuple[Path, Path]:
+    return ckpt_dir / LAST_CKPT, ckpt_dir / BEST_CKPT
+
+
+def _atomic_torch_save(payload: dict, path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(".tmp")
+    torch.save(payload, tmp)
+    tmp.replace(path)
+
+
+def _write_meta(path: Path, payload: dict) -> None:
+    meta = {k: v for k, v in payload.items() if k not in ("model_state", "optimizer_state")}
+    if "config" in meta and isinstance(meta["config"], dict):
+        pass
+    else:
+        meta = dict(meta)
+    path.with_suffix(".json").write_text(json.dumps(meta, indent=2, default=str))
+
+
+def training_is_finished(ckpt_dir: Path) -> bool:
+    last_path, best_path = ckpt_dir_paths(ckpt_dir)
+    if last_path.is_file():
+        payload = torch.load(last_path, map_location="cpu", weights_only=False)
+        return bool(payload.get("finished", False))
+    return best_path.is_file()
 
 
 def run_epoch(
@@ -74,34 +106,52 @@ def run_epoch(
     return total_loss / max(n_batches, 1)
 
 
-def save_checkpoint(
+def save_best_checkpoint(
     path: Path,
     model: PriceTrendCNN,
     config: TrainConfig,
     val_loss: float,
     epoch: int,
 ) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    torch.save(
-        {
-            "model_state": model.state_dict(),
-            "config": asdict(config),
-            "val_loss": val_loss,
-            "epoch": epoch,
-        },
-        path,
-    )
-    meta_path = path.with_suffix(".json")
-    meta_path.write_text(
-        json.dumps(
-            {
-                **asdict(config),
-                "val_loss": val_loss,
-                "epoch": epoch,
-            },
-            indent=2,
-        )
-    )
+    payload = {
+        "model_state": model.state_dict(),
+        "config": asdict(config),
+        "val_loss": val_loss,
+        "epoch": epoch,
+        "finished": True,
+    }
+    _atomic_torch_save(payload, path)
+    _write_meta(path, payload)
+
+
+def save_training_state(
+    path: Path,
+    *,
+    model: PriceTrendCNN,
+    optimizer: torch.optim.Optimizer,
+    config: TrainConfig,
+    epoch: int,
+    train_loss: float,
+    val_loss: float,
+    best_val: float,
+    best_epoch: int,
+    stale_epochs: int,
+    finished: bool,
+) -> None:
+    payload = {
+        "model_state": model.state_dict(),
+        "optimizer_state": optimizer.state_dict(),
+        "config": asdict(config),
+        "epoch": epoch,
+        "train_loss": train_loss,
+        "val_loss": val_loss,
+        "best_val": best_val,
+        "best_epoch": best_epoch,
+        "stale_epochs": stale_epochs,
+        "finished": finished,
+    }
+    _atomic_torch_save(payload, path)
+    _write_meta(path, payload)
 
 
 def load_checkpoint(path: Path, device: torch.device) -> tuple[PriceTrendCNN, TrainConfig]:
@@ -111,6 +161,16 @@ def load_checkpoint(path: Path, device: torch.device) -> tuple[PriceTrendCNN, Tr
     model.load_state_dict(payload["model_state"])
     model.to(device)
     return model, config
+
+
+def init_model_from_transfer(
+    model: PriceTrendCNN,
+    init_checkpoint: Path,
+    device: torch.device,
+) -> None:
+    payload = torch.load(init_checkpoint, map_location=device, weights_only=False)
+    source_config = TrainConfig(**payload["config"])
+    copy_conv_blocks_from(model, payload["model_state"], source_config.image_days)
 
 
 def train_model(
@@ -123,7 +183,9 @@ def train_model(
     pixel_mean: float,
     pixel_std: float,
     n_test: int,
-    checkpoint_path: Path,
+    ckpt_dir: Path,
+    init_from_checkpoint: Path | None = None,
+    init_from_image_days: int | None = None,
     device: str | None = None,
     batch_size: int = BATCH_SIZE,
     lr: float = ADAM_LR,
@@ -132,7 +194,7 @@ def train_model(
     log_fn=print,
 ) -> PriceTrendCNN:
     dev = _device(device)
-    torch.manual_seed(seed)
+    last_path, best_path = ckpt_dir_paths(ckpt_dir)
 
     train_loader = DataLoader(
         train_ds, batch_size=batch_size, shuffle=True, collate_fn=_collate_batch
@@ -141,15 +203,7 @@ def train_model(
         val_ds, batch_size=batch_size, shuffle=False, collate_fn=_collate_batch
     )
 
-    model = PriceTrendCNN(image_days).to(dev)
     flat = flatten_feature_size(image_days)
-    log_fn(
-        f"model I{image_days} flatten={flat} params={sum(p.numel() for p in model.parameters())}"
-    )
-
-    criterion = nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
-
     config = TrainConfig(
         image_days=image_days,
         horizon=horizon,
@@ -160,34 +214,96 @@ def train_model(
         n_train=len(train_ds),
         n_val=len(val_ds),
         n_test=n_test,
+        init_from_image_days=init_from_image_days,
     )
 
-    best_val = float("inf")
-    best_epoch = -1
-    stale_epochs = 0
-    best_state = None
+    resume_payload: dict | None = None
+    if last_path.is_file():
+        resume_payload = torch.load(last_path, map_location=dev, weights_only=False)
+        if resume_payload.get("finished", False):
+            log_fn(f"training finished; load {best_path}")
+            model, _ = load_checkpoint(best_path, dev)
+            return model
 
-    for epoch in range(max_epochs):
+    if resume_payload is not None:
+        log_fn(f"resume training from {last_path} epoch={resume_payload['epoch']}")
+        model = PriceTrendCNN(image_days).to(dev)
+        model.load_state_dict(resume_payload["model_state"])
+        criterion = nn.CrossEntropyLoss()
+        optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+        optimizer.load_state_dict(resume_payload["optimizer_state"])
+        start_epoch = int(resume_payload["epoch"])
+        best_val = float(resume_payload["best_val"])
+        best_epoch = int(resume_payload["best_epoch"])
+        stale_epochs = int(resume_payload["stale_epochs"])
+    else:
+        if best_path.is_file():
+            log_fn(f"checkpoint exists, skip training: {best_path}")
+            model, _ = load_checkpoint(best_path, dev)
+            return model
+
+        torch.manual_seed(seed)
+        model = PriceTrendCNN(image_days).to(dev)
+        log_fn(
+            f"model I{image_days} flatten={flat} "
+            f"params={sum(p.numel() for p in model.parameters())}"
+        )
+        if init_from_checkpoint is not None:
+            log_fn(f"init conv blocks from {init_from_checkpoint}")
+            init_model_from_transfer(model, init_from_checkpoint, dev)
+        criterion = nn.CrossEntropyLoss()
+        optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+        start_epoch = 0
+        best_val = float("inf")
+        best_epoch = -1
+        stale_epochs = 0
+
+    for epoch in range(start_epoch, max_epochs):
         train_loss = run_epoch(model, train_loader, criterion, optimizer, dev)
         val_loss = run_epoch(model, val_loader, criterion, None, dev)
+        epoch_num = epoch + 1
         log_fn(
-            f"epoch={epoch + 1} train_loss={train_loss:.6f} val_loss={val_loss:.6f}"
+            f"epoch={epoch_num} train_loss={train_loss:.6f} val_loss={val_loss:.6f}"
         )
+
         if val_loss < best_val:
             best_val = val_loss
-            best_epoch = epoch + 1
+            best_epoch = epoch_num
             stale_epochs = 0
-            best_state = {k: v.detach().cpu().clone() for k, v in model.state_dict().items()}
+            save_best_checkpoint(best_path, model, config, best_val, best_epoch)
+            log_fn(f"new best epoch={best_epoch} val_loss={best_val:.6f} -> {best_path}")
         else:
             stale_epochs += 1
-            if stale_epochs >= patience:
-                log_fn(f"early stop at epoch={epoch + 1} best_epoch={best_epoch}")
-                break
 
-    assert best_state is not None
-    model.load_state_dict(best_state)
-    save_checkpoint(checkpoint_path, model, config, best_val, best_epoch)
-    log_fn(f"saved checkpoint epoch={best_epoch} val_loss={best_val:.6f} -> {checkpoint_path}")
+        finished = False
+        if stale_epochs >= patience:
+            log_fn(f"early stop at epoch={epoch_num} best_epoch={best_epoch}")
+            finished = True
+        elif epoch_num >= max_epochs:
+            finished = True
+
+        save_training_state(
+            last_path,
+            model=model,
+            optimizer=optimizer,
+            config=config,
+            epoch=epoch_num,
+            train_loss=train_loss,
+            val_loss=val_loss,
+            best_val=best_val,
+            best_epoch=best_epoch,
+            stale_epochs=stale_epochs,
+            finished=finished,
+        )
+
+        if finished:
+            break
+
+    if best_epoch < 0:
+        raise RuntimeError("training finished without any validation epoch")
+
+    model, _ = load_checkpoint(best_path, dev)
+    log_fn(f"training done best_epoch={best_epoch} val_loss={best_val:.6f}")
     return model
 
 
