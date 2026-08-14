@@ -84,11 +84,14 @@ def build_year_table(
     dat_path = memmap_image_path(images_root, window_days, year)
     height, width = image_shape(window_days)
     n_images = Path(dat_path).stat().st_size // (height * width)
-    if len(labels) != n_images:
+    n_labels = len(labels)
+    if n_labels < n_images:
         raise ValueError(
             f"label/image count mismatch window={window_days} year={year}: "
-            f"{len(labels)} labels vs {n_images} images"
+            f"{n_labels} labels vs {n_images} images"
         )
+    if n_labels > n_images:
+        labels = labels.iloc[:n_images]
     # Missing forward return is label 2; keep original memmap row index.
     mask = labels[col].isin((0, 1)).to_numpy()
     row_idx = np.flatnonzero(mask).astype(np.int32)

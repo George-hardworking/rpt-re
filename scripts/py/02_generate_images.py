@@ -23,7 +23,7 @@ PROGRESS_EVERY = 20
 
 from config import FEATURES_PARQUET, IMAGE_FREQ_DIR, IMAGES_ROOT, OHLC_PARQUET, WINDOW_DAYS
 from data.calendar import as_of_dates_for_window
-from data.images import prepare_stock_ohlc, try_build_window_from_ohlc
+from data.images import image_shape, prepare_stock_ohlc, try_build_window_from_ohlc
 from data.labels import labels_for_as_ofs
 from data.parquet_io import load_calendar, permno_list, read_stock, read_stock_features
 from utils.checkpoint import (
@@ -258,6 +258,19 @@ def build_window_images(
                     if shard.is_file():
                         with open(shard, "rb") as f:
                             shutil.copyfileobj(f, out)
+            height, width = image_shape(window_days)
+            n_images = final_dat.stat().st_size // (height * width)
+            if len(all_labels) > n_images:
+                log(
+                    f"trim labels window={window_days} year={year} "
+                    f"{len(all_labels)} -> {n_images}"
+                )
+                all_labels = all_labels[:n_images]
+            if len(all_labels) != n_images:
+                raise ValueError(
+                    f"label/image count mismatch window={window_days} year={year}: "
+                    f"{len(all_labels)} labels vs {n_images} images"
+                )
             write_year_bundle(freq_dir, window_days, year, final_dat, all_labels)
 
     if tmp_root.exists():

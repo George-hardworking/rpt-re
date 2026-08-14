@@ -22,6 +22,7 @@ from config import (
     MODELS_ROOT,
     N_ENSEMBLE,
     TRAIN_JOB_RAM_GIB,
+    TRAIN_JOBS_PER_GPU,
     TRAIN_VAL_SPLIT_SEED,
     VRAM_PER_JOB_GIB,
     WINDOW_DAYS,
@@ -434,8 +435,12 @@ def launch_parallel_jobs(
     )
     min_need = min(vram_need_mib(d, args.vram_per_job_gb) for d, _h, _s in jobs)
     max_gpu_slots = sum(free // min_need for free in remaining.values())
-    n_conc = min(n_conc, max(1, max_gpu_slots), len(jobs))
-    log(f"parallel jobs={len(jobs)} n_conc={n_conc} gpu_free={gpu_free} ram_diag={diag}")
+    per_gpu_cap = len(remaining) * TRAIN_JOBS_PER_GPU
+    n_conc = min(n_conc, max(1, max_gpu_slots), per_gpu_cap, len(jobs))
+    log(
+        f"parallel jobs={len(jobs)} n_conc={n_conc} gpu_free={gpu_free} "
+        f"per_gpu_cap={per_gpu_cap} ram_diag={diag}"
+    )
 
     lock = threading.Lock()
     gpu_cv = threading.Condition(lock)
