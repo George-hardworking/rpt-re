@@ -201,6 +201,7 @@ def prepare_datasets(
         sample_freq=sample_freq,
         split_seed=split_seed,
         cache_path=cache_path,
+        log_fn=log,
     )
     log(f"pixel_mean={pixel_mean:.6f} pixel_std={pixel_std:.6f}")
 

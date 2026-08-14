@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import fcntl
 import math
+from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -23,6 +24,9 @@ from config import (
 )
 from data.images import image_shape
 from viz.preview_images import load_memmap_images, memmap_image_path
+
+
+PIXEL_STATS_CHUNK = 4096
 
 
 @dataclass(frozen=True)
@@ -184,14 +188,18 @@ def compute_pixel_mean_std(
     sample_freq: str,
     years: np.ndarray,
     row_idx: np.ndarray,
+    *,
+    log_fn: Callable[[str], None] | None = None,
 ) -> tuple[float, float]:
     if len(years) == 0:
         raise ValueError("cannot compute pixel stats on empty sample list")
     mmap_cache: dict[int, np.ndarray] = {}
-    total_sum = 0.0
-    total_sq = 0.0
-    count = 0
-    for year in np.unique(years):
+    total_sum = np.int64(0)
+    total_sq = np.int64(0)
+    count = np.int64(0)
+    unique_years = np.unique(years)
+    n_years = len(unique_years)
+    for year_idx, year in enumerate(unique_years):
         year_i = int(year)
         if year_i not in mmap_cache:
             dat_path = memmap_image_path(
@@ -199,12 +207,29 @@ def compute_pixel_mean_std(
             )
             mmap_cache[year_i] = load_memmap_images(dat_path, window_days)
         sel = years == year
-        imgs = np.asarray(mmap_cache[year_i][row_idx[sel]], dtype=np.float64)
-        total_sum += float(imgs.sum())
-        total_sq += float(np.square(imgs).sum())
-        count += int(imgs.size)
-    mean = total_sum / count
-    var = total_sq / count - mean * mean
+        year_rows = row_idx[sel]
+        n_rows = len(year_rows)
+        for start in range(0, n_rows, PIXEL_STATS_CHUNK):
+            end = min(start + PIXEL_STATS_CHUNK, n_rows)
+            chunk_rows = year_rows[start:end]
+            imgs = mmap_cache[year_i][chunk_rows]
+            imgs_i64 = imgs.astype(np.int64)
+            total_sum += imgs_i64.sum(dtype=np.int64)
+            total_sq += np.square(imgs_i64, dtype=np.int64).sum(dtype=np.int64)
+            count += np.int64(imgs.size)
+            if log_fn is not None and n_rows > PIXEL_STATS_CHUNK:
+                pct = 100.0 * end / n_rows
+                log_fn(
+                    f"pixel stats: year={year_i} {pct:.0f}% "
+                    f"({year_idx + 1}/{n_years} years)"
+                )
+        if log_fn is not None:
+            log_fn(f"pixel stats: year={year_i} done ({year_idx + 1}/{n_years} years)")
+    count_f = float(count)
+    mean = float(total_sum) / count_f
+    var = float(total_sq) / count_f - mean * mean
+    if var < 0.0:
+        var = 0.0
     std = math.sqrt(var)
     if std == 0.0:
         std = 1.0
@@ -229,10 +254,16 @@ def load_or_compute_pixel_stats(
     sample_freq: str,
     split_seed: int,
     cache_path: Path | None,
+    log_fn: Callable[[str], None] | None = None,
 ) -> tuple[float, float]:
     if cache_path is None:
         return compute_pixel_mean_std(
-            images_root, window_days, sample_freq, train.years, train.row_idx
+            images_root,
+            window_days,
+            sample_freq,
+            train.years,
+            train.row_idx,
+            log_fn=log_fn,
         )
 
     cache_path.parent.mkdir(parents=True, exist_ok=True)
@@ -248,7 +279,12 @@ def load_or_compute_pixel_stats(
                 )
             return float(payload["mean"]), float(payload["std"])
         mean, std = compute_pixel_mean_std(
-            images_root, window_days, sample_freq, train.years, train.row_idx
+            images_root,
+            window_days,
+            sample_freq,
+            train.years,
+            train.row_idx,
+            log_fn=log_fn,
         )
         tmp = cache_path.with_suffix(".tmp.npz")
         np.savez(
