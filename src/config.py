@@ -1,4 +1,5 @@
 import os
+from dataclasses import dataclass
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -37,6 +38,41 @@ SAMPLE_START = "1993-01-01"
 SAMPLE_END = "2019-12-31"
 TRAIN_END = "2000-12-31"
 TEST_START = "2001-01-01"
+
+# China A-share (dsf + allstk); modeling window ends 2019 like US.
+CN_DSF_PATH = Path("/data/haifeng/Projects/cna/data/return/dsf.parquet.gzip")
+CN_UNIV_PATH = Path("/data/haifeng/Projects/cna/data/univ/allstk/allstk.parquet.gzip")
+CN_OHLC_HISTORY_START = "2000-01-01"
+
+
+@dataclass(frozen=True)
+class MarketSampleConfig:
+    sample_start: str
+    sample_end: str
+    train_end: str
+    test_start: str
+
+
+MARKET_SAMPLE: dict[str, MarketSampleConfig] = {
+    MARKET_US: MarketSampleConfig(
+        sample_start=SAMPLE_START,
+        sample_end=SAMPLE_END,
+        train_end=TRAIN_END,
+        test_start=TEST_START,
+    ),
+    MARKET_CN: MarketSampleConfig(
+        sample_start="2007-01-01",
+        sample_end="2019-12-31",
+        train_end="2014-12-31",
+        test_start="2015-01-01",
+    ),
+}
+
+
+def market_sample_config(market: str) -> MarketSampleConfig:
+    if market not in MARKET_SAMPLE:
+        raise ValueError(f"unsupported market={market}")
+    return MARKET_SAMPLE[market]
 
 # CNN training (Jiang–Kelly–Xiu JF 2023, Section II.C)
 N_ENSEMBLE = 5

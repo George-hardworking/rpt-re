@@ -44,6 +44,19 @@ def us_spec(image_days: int, horizon: int) -> MarketSpec:
     )
 
 
+def cn_cnn_spec(horizon: int) -> MarketSpec:
+    """CNN image-label backtest: PERMNO/Date columns with separate float/total caps."""
+    return MarketSpec(
+        name="cn",
+        id_col="PERMNO",
+        date_col="Date",
+        ret_col=f"Ret_{horizon}d",
+        float_cap_col="FloatCap",
+        total_cap_col="TotalCap",
+        periods_per_year=BACKTEST_PERIODS_PER_YEAR[horizon],
+    )
+
+
 CN_SPEC = MarketSpec(
     name="cn",
     id_col="SecuCode",

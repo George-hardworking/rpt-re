@@ -132,6 +132,8 @@ def process_permno_chunk(task: tuple) -> None:
             for as_of, loc in zip(as_ofs, locs):
                 if loc < 0:
                     continue
+                if as_of not in feature_panel.index:
+                    continue
                 built = try_build_window_from_ohlc(
                     ohlc=ohlc,
                     permno=permno,
@@ -182,6 +184,8 @@ def build_window_images(
     n_workers: int | None = None,
     reserve_gib: float = DEFAULT_RESERVE_GIB,
     fresh: bool = False,
+    *,
+    market: str = MARKET_US,
 ) -> None:
     log(f"ohlc={ohlc_path}")
     log(f"features={features_path}")
@@ -223,7 +227,7 @@ def build_window_images(
     )
 
     as_of_per_bundle = {
-        (w, f): as_of_dates_for_freq(f, calendar) for w, f in bundles
+        (w, f): as_of_dates_for_freq(f, calendar, market=market) for w, f in bundles
     }
     years_per_bundle = {
         (w, f): sorted({a.year for a in as_of_per_bundle[(w, f)]}) for w, f in bundles
@@ -385,6 +389,7 @@ def main() -> None:
         n_workers=args.workers,
         reserve_gib=args.reserve_gib,
         fresh=args.fresh,
+        market=args.market,
     )
 
 

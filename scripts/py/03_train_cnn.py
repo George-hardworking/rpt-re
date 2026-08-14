@@ -29,6 +29,7 @@ from config import (
     VRAM_PER_JOB_GIB,
     WINDOW_DAYS,
     market_processed_dir,
+    market_sample_config,
     sample_freq_for_horizon,
 )
 from models.cnn import cnn_num_blocks
@@ -163,6 +164,7 @@ def prepare_datasets(
     year_limit: int | None,
     max_samples: int | None,
     models_root: Path,
+    market: str = MARKET_US,
 ) -> tuple[ImageLabelDataset, ImageLabelDataset, ImageLabelDataset, int]:
     sample_freq = sample_freq_for_horizon(horizon)
     samples = collect_samples(
@@ -173,7 +175,14 @@ def prepare_datasets(
         year_limit=year_limit,
         max_samples=max_samples,
     )
-    train_samples, val_samples, test_samples = split_samples(samples, seed=split_seed)
+    cfg = market_sample_config(market)
+    train_samples, val_samples, test_samples = split_samples(
+        samples,
+        seed=split_seed,
+        train_end=cfg.train_end,
+        test_start=cfg.test_start,
+        sample_end=cfg.sample_end,
+    )
     log(
         f"I{image_days}/R{horizon} freq={sample_freq} split_seed={split_seed} samples "
         f"train={len(train_samples)} val={len(val_samples)} test={len(test_samples)}"
@@ -548,6 +557,7 @@ def run_local_jobs(
             year_limit=args.year_limit,
             max_samples=args.max_samples,
             models_root=models_root,
+            market=args.market,
         )
         for seed in seeds:
             train_one_seed(

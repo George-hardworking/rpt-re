@@ -35,7 +35,7 @@ def ensemble_pred_path(
     return Path(models_root) / tag / "ensemble_pred.feather"
 
 
-def load_us_image_labels(
+def load_image_labels(
     images_root: Path,
     image_days: int,
     sample_freq: str,
@@ -47,13 +47,25 @@ def load_us_image_labels(
         raise FileNotFoundError(f"no label feathers in {freq_dir}")
     ret_cols = [f"Ret_{h}d" for h in horizons]
     cols = ["StockID", "Date", "MarketCap"] + ret_cols
-    labels = pd.concat([pd.read_feather(p, columns=cols) for p in paths], ignore_index=True)
+    labels = pd.concat([pd.read_feather(p) for p in paths], ignore_index=True)
+    extra = [c for c in ("FloatCap", "TotalCap") if c in labels.columns]
+    keep = cols + extra
+    labels = labels[keep]
     labels["PERMNO"] = labels["StockID"].astype("int64")
     labels["Date"] = pd.to_datetime(labels["Date"])
     labels = labels.drop(columns=["StockID"])
     if labels.duplicated(["PERMNO", "Date"]).any():
         raise ValueError(f"duplicate PERMNO+Date in image labels under {freq_dir}")
     return labels
+
+
+def load_us_image_labels(
+    images_root: Path,
+    image_days: int,
+    sample_freq: str,
+    horizons: tuple[int, ...],
+) -> pd.DataFrame:
+    return load_image_labels(images_root, image_days, sample_freq, horizons)
 
 
 def load_us_predictions(
@@ -79,6 +91,28 @@ def load_us_predictions(
     return pred
 
 
+def merge_cnn_panel(
+    pred: pd.DataFrame,
+    labels: pd.DataFrame,
+    *,
+    horizon: int,
+    spec: MarketSpec,
+    start: str = TEST_START,
+) -> pd.DataFrame:
+    ret_col = f"Ret_{horizon}d"
+    label_cols = ["PERMNO", "Date", ret_col]
+    if "FloatCap" in labels.columns and "TotalCap" in labels.columns:
+        label_cols.extend(["FloatCap", "TotalCap"])
+    else:
+        label_cols.append("MarketCap")
+    panel = pred.merge(labels[label_cols], on=["PERMNO", "Date"], how="inner")
+    panel = panel[panel["Date"] >= pd.Timestamp(start)]
+    assert len(panel) > 0, (
+        f"empty {spec.name} panel after merging predictions and labels R{horizon}"
+    )
+    return panel
+
+
 def merge_us_panel(
     pred: pd.DataFrame,
     labels: pd.DataFrame,
@@ -86,15 +120,15 @@ def merge_us_panel(
     horizon: int,
     start: str = TEST_START,
 ) -> pd.DataFrame:
-    ret_col = f"Ret_{horizon}d"
-    panel = pred.merge(
-        labels[["PERMNO", "Date", "MarketCap", ret_col]],
-        on=["PERMNO", "Date"],
-        how="inner",
+    from backtest.markets import us_spec
+
+    return merge_cnn_panel(
+        pred,
+        labels,
+        horizon=horizon,
+        spec=us_spec(horizon, horizon),
+        start=start,
     )
-    panel = panel[panel["Date"] >= pd.Timestamp(start)]
-    assert len(panel) > 0, f"empty US panel after merging predictions and labels R{horizon}"
-    return panel
 
 
 def load_us_oos_panel(

@@ -58,6 +58,10 @@ def stock_label_panel(stock_df: pd.DataFrame) -> pd.DataFrame:
     panel["EWMA_vol"] = vol.astype(np.float32)
     panel["Ret"] = ret.astype(np.float32)
     panel["MarketCap"] = df["DlyCap"].to_numpy(dtype=np.float32)
+    if "DlyFloatCap" in df.columns:
+        panel["FloatCap"] = df["DlyFloatCap"].to_numpy(dtype=np.float32)
+    if "DlyTotalCap" in df.columns:
+        panel["TotalCap"] = df["DlyTotalCap"].to_numpy(dtype=np.float32)
     panel["Ret_tstat"] = _tstat(ret, vol)
 
     for h in LABEL_HORIZONS:
