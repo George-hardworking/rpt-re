@@ -24,7 +24,7 @@ from config import (
     N_ENSEMBLE,
     PAPER_CROSS_CONFIGS,
     TRAIN_JOB_RAM_GIB,
-    TRAIN_JOBS_PER_GPU,
+    TRAIN_JOBS_PER_GPU_MAX,
     TRAIN_VAL_SPLIT_SEED,
     VRAM_PER_JOB_GIB,
     WINDOW_DAYS,
@@ -49,7 +49,12 @@ from models.train_loop import (
     train_model,
     training_is_finished,
 )
-from utils.gpu import nvidia_smi_gpus, select_gpu_free_mib, vram_mib_from_gib
+from utils.gpu import (
+    gpu_concurrent_slot_budget,
+    nvidia_smi_gpus,
+    select_gpu_free_mib,
+    vram_mib_from_gib,
+)
 from utils.workers import resolve_workers
 
 DEFAULT_RESERVE_GIB = 16.0
@@ -358,9 +363,14 @@ def gpu_ids_from_device(device: str | None) -> list[int] | None:
     raise ValueError(f"unsupported --device={device}")
 
 
-def vram_need_mib(image_days: int, override_gib: float | None) -> int:
+def vram_need_mib(
+    image_days: int,
+    override_gib: float | None,
+    batch_size: int,
+) -> int:
     gib = override_gib if override_gib is not None else VRAM_PER_JOB_GIB[image_days]
-    return vram_mib_from_gib(gib)
+    scale = batch_size / BATCH_SIZE
+    return vram_mib_from_gib(gib * scale)
 
 
 def build_child_cmd(args: argparse.Namespace, image_days: int, horizon: int, seed: int) -> list[str]:
@@ -448,7 +458,7 @@ def launch_parallel_jobs(
     if not remaining:
         raise RuntimeError("no GPU with enough free memory to host a training job")
     for image_days, _horizon, _seed in jobs:
-        need = vram_need_mib(image_days, args.vram_per_job_gb)
+        need = vram_need_mib(image_days, args.vram_per_job_gb, args.batch_size)
         if not any(free >= need for free in remaining.values()):
             raise RuntimeError(
                 f"I{image_days} needs {need} MiB VRAM but max free among selected GPUs "
@@ -460,37 +470,51 @@ def launch_parallel_jobs(
         mem_per_worker_gib=TRAIN_JOB_RAM_GIB,
         override=args.workers,
     )
-    min_need = min(vram_need_mib(d, args.vram_per_job_gb) for d, _h, _s in jobs)
-    max_gpu_slots = sum(free // min_need for free in remaining.values())
-    per_gpu_cap = len(remaining) * TRAIN_JOBS_PER_GPU
-    n_conc = min(n_conc, max(1, max_gpu_slots), per_gpu_cap, len(jobs))
+    min_need = min(
+        vram_need_mib(d, args.vram_per_job_gb, args.batch_size) for d, _h, _s in jobs
+    )
+    max_gpu_slots, per_gpu_slots = gpu_concurrent_slot_budget(
+        gpu_free,
+        min_vram_mib=min_need,
+        jobs_per_gpu_max=args.jobs_per_gpu_max,
+    )
+    n_conc = min(n_conc, max(1, max_gpu_slots), len(jobs))
     log(
         f"parallel jobs={len(jobs)} n_conc={n_conc} gpu_free={gpu_free} "
-        f"per_gpu_cap={per_gpu_cap} ram_diag={diag}"
+        f"gpu_slots={max_gpu_slots} per_gpu_slots={per_gpu_slots} "
+        f"jobs_per_gpu_max={args.jobs_per_gpu_max} batch_size={args.batch_size} "
+        f"ram_diag={diag}"
     )
 
     lock = threading.Lock()
     gpu_cv = threading.Condition(lock)
+    active_on_gpu = {idx: 0 for idx in remaining}
 
     def acquire_gpu(image_days: int) -> int:
-        need = vram_need_mib(image_days, args.vram_per_job_gb)
+        need = vram_need_mib(image_days, args.vram_per_job_gb, args.batch_size)
         with gpu_cv:
             while True:
-                candidates = [idx for idx, free in remaining.items() if free >= need]
+                candidates = [
+                    idx
+                    for idx, free in remaining.items()
+                    if free >= need and active_on_gpu[idx] < args.jobs_per_gpu_max
+                ]
                 if candidates:
                     gpu_id = max(candidates, key=lambda idx: remaining[idx])
                     remaining[gpu_id] -= need
+                    active_on_gpu[gpu_id] += 1
                     log(
                         f"acquire gpu={gpu_id} need_mib={need} "
-                        f"remaining={dict(remaining)}"
+                        f"active={dict(active_on_gpu)} remaining={dict(remaining)}"
                     )
                     return gpu_id
                 gpu_cv.wait()
 
     def release_gpu(gpu_id: int, image_days: int) -> None:
-        need = vram_need_mib(image_days, args.vram_per_job_gb)
+        need = vram_need_mib(image_days, args.vram_per_job_gb, args.batch_size)
         with gpu_cv:
             remaining[gpu_id] += need
+            active_on_gpu[gpu_id] -= 1
             gpu_cv.notify_all()
 
     def run_job(job: tuple[int, int, int]) -> None:
@@ -639,6 +663,12 @@ def main() -> None:
         help="override per-job VRAM reserve (default depends on image-days)",
     )
     parser.add_argument("--workers", type=int, default=None, help="max concurrent train processes")
+    parser.add_argument(
+        "--jobs-per-gpu-max",
+        type=int,
+        default=TRAIN_JOBS_PER_GPU_MAX,
+        help="per-GPU cap on concurrent train processes (VRAM may bind lower)",
+    )
     parser.add_argument("--reserve-gib", type=float, default=DEFAULT_RESERVE_GIB)
     parser.add_argument("--batch-size", type=int, default=BATCH_SIZE)
     parser.add_argument("--fresh", action="store_true")
@@ -647,6 +677,8 @@ def main() -> None:
     parser.add_argument("--skip-train", action="store_true")
     parser.add_argument("--skip-predict", action="store_true")
     args = parser.parse_args()
+    if args.jobs_per_gpu_max <= 0:
+        raise ValueError("--jobs-per-gpu-max must be positive")
 
     market_root = market_processed_dir(args.market)
     if args.models is None:

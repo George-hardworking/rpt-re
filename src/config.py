@@ -48,9 +48,11 @@ TRAIN_VAL_FRAC = 0.7
 MAX_EPOCHS = 100
 # Independent (I, R, seed) processes packed onto remaining GPU memory.
 GPU_MIN_FREE_GIB = 16.0
+# Per-job VRAM reserve at BATCH_SIZE (scaled linearly for larger --batch-size).
 VRAM_PER_JOB_GIB = {5: 2.0, 20: 4.0, 60: 8.0}
 TRAIN_JOB_RAM_GIB = 10.0
-TRAIN_JOBS_PER_GPU = 4
+# Per-GPU ceiling on concurrent train processes (VRAM scheduler may bind lower).
+TRAIN_JOBS_PER_GPU_MAX = 32
 
 WINDOW_DAYS = (5, 20, 60)
 FUTURE_HORIZONS = (5, 20, 60)

@@ -42,3 +42,19 @@ def select_gpu_free_mib(
 
 def vram_mib_from_gib(vram_gib: float) -> int:
     return int(round(float(vram_gib) * 1024))
+
+
+def gpu_concurrent_slot_budget(
+    gpu_free: list[tuple[int, int]],
+    *,
+    min_vram_mib: int,
+    jobs_per_gpu_max: int,
+) -> tuple[int, list[int]]:
+    """Sum of per-GPU slots: min(jobs_per_gpu_max, free // min_vram_mib)."""
+    if min_vram_mib <= 0:
+        raise ValueError(f"min_vram_mib must be positive, got {min_vram_mib}")
+    per_gpu = [
+        min(jobs_per_gpu_max, max(0, free // min_vram_mib))
+        for _, free in gpu_free
+    ]
+    return sum(per_gpu), per_gpu

@@ -94,6 +94,9 @@ RESERVE_GIB="${RPT_RESERVE_GIB:-16}"
 if [[ "$*" != *"--reserve-gib"* ]]; then
   set -- "$@" --reserve-gib "$RESERVE_GIB"
 fi
+if [[ "$*" != *"--batch-size"* ]]; then
+  set -- "$@" --batch-size 128
+fi
 
 log "============================================================"
 log "03_train_cnn"
