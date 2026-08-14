@@ -12,6 +12,7 @@ dependencies = [
     "pandas",
     "pyarrow",
     "matplotlib",
+    "torch",
 ]
 
 [tool.setuptools]
