@@ -1,0 +1,18 @@
+load dsf /data/haifeng/Projects/cna/data/return/dsf.parquet.gzip
+apply universe filter for PIT membership
+eligible stocks after universe=3277
+universe PIT rows=5,555,928 -> /data/kaibiao/data/projects/rpt-re/processed/cn/universe_pit.parquet
+write ohlc partitions stocks=3277 rows=8,235,814
+calendar dates=4734 [2000-06-29, 2019-12-31] -> /data/kaibiao/data/projects/rpt-re/processed/cn/ohlc_calendar.parquet
+prepared cn ohlc n_rows=8,235,814 -> /data/kaibiao/data/projects/rpt-re/processed/cn/ohlc_daily
+prepared /data/kaibiao/data/projects/rpt-re/processed/cn/ohlc_daily
+features resume: skip=0 pending=3277 total=3277
+workers=112 diag={'source': 'memory_budget', 'avail_gib': 342.5, 'total_gib': 377.5, 'reserve_gib': 16.0, 'budget_gib': 326.5, 'mem_per_worker_gib': 0.8, 'mem_cap': 408, 'cpu_cap': 112, 'swap_percent': 100.0, 'n_tasks': 3277, 'resolved_workers': 112}
+progress  15.3%  stocks 500/3277  skip=0  worker=88 chunk=4/29
+progress  30.5%  stocks 1000/3277  skip=0  worker=37 chunk=11/29
+progress  45.8%  stocks 1500/3277  skip=0  worker=33 chunk=16/29
+progress  61.0%  stocks 2000/3277  skip=0  worker=66 chunk=23/29
+progress  76.3%  stocks 2500/3277  skip=0  worker=24 chunk=20/30
+progress  91.5%  stocks 3000/3277  skip=0  worker=103 chunk=28/29
+progress 100.0%  stocks 3277/3277  skip=0  worker=91 chunk=29/29
+done: n_workers=112 stocks=3277 built=3277 skip=0 -> /data/kaibiao/data/projects/rpt-re/processed/cn/features
