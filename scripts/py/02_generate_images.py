@@ -21,12 +21,25 @@ DEFAULT_RESERVE_GIB = 16.0
 MEM_PER_WORKER_GIB = 1.5
 PROGRESS_EVERY = 20
 
-from config import FEATURES_PARQUET, IMAGE_FREQ_DIR, IMAGES_ROOT, OHLC_PARQUET, WINDOW_DAYS
-from data.calendar import as_of_dates_for_window
+from config import (
+    FEATURES_PARQUET,
+    IMAGES_ROOT,
+    MARKET_CN,
+    MARKET_US,
+    OHLC_PARQUET,
+    PAPER_CROSS_BUNDLES,
+    WINDOW_DAYS,
+    diagonal_bundles,
+    image_bundle_dir,
+    market_processed_dir,
+    windows_to_diagonal_bundles,
+)
+from data.calendar import as_of_dates_for_freq
 from data.images import image_shape, prepare_stock_ohlc, try_build_window_from_ohlc
 from data.labels import labels_for_as_ofs
 from data.parquet_io import load_calendar, permno_list, read_stock, read_stock_features
 from utils.checkpoint import (
+    ImageBundle,
     LabelJsonlWriter,
     append_permno_checkpoint,
     images_checkpoint_name,
@@ -74,22 +87,32 @@ def write_year_bundle(
 
 
 def process_permno_chunk(task: tuple) -> None:
-    (permno_chunk, ohlc_path, features_path, calendar, window_days_list,
-     as_of_per_window, worker_id, tmp_root, output_root, ckpt_filename) = task
+    (
+        permno_chunk,
+        ohlc_path,
+        features_path,
+        calendar,
+        bundles,
+        as_of_per_bundle,
+        worker_id,
+        tmp_root,
+        output_root,
+        ckpt_filename,
+    ) = task
 
     calendar_last = calendar[-1]
     worker_dir = tmp_root / f"worker_{worker_id}"
     worker_dir.mkdir(parents=True, exist_ok=True)
 
-    handles: dict[tuple[int, int], object] = {}
+    handles: dict[tuple[int, str, int], object] = {}
     label_writer = LabelJsonlWriter(worker_dir)
 
-    def shard(window_days: int, year: int):
-        key = (window_days, year)
+    def shard(window_days: int, sample_freq: str, year: int):
+        key = (window_days, sample_freq, year)
         if key not in handles:
-            freq_dir = worker_dir / IMAGE_FREQ_DIR[window_days]
-            freq_dir.mkdir(parents=True, exist_ok=True)
-            path = freq_dir / f"{window_days}d_{year}_images.dat"
+            bundle_dir = worker_dir / image_bundle_dir(window_days, sample_freq)
+            bundle_dir.mkdir(parents=True, exist_ok=True)
+            path = bundle_dir / f"{window_days}d_{year}_images.dat"
             mode = "ab" if path.exists() else "wb"
             handles[key] = open(path, mode)
         return handles[key]
@@ -99,10 +122,10 @@ def process_permno_chunk(task: tuple) -> None:
         stock_df = read_stock(ohlc_path, permno)
         ohlc = prepare_stock_ohlc(stock_df)
         feature_panel = read_stock_features(features_path, permno)
-        pending_labels: dict[tuple[int, int], list[dict]] = {}
+        pending_labels: dict[tuple[int, str, int], list[dict]] = {}
 
-        for window_days in window_days_list:
-            as_ofs = as_of_per_window[window_days]
+        for window_days, sample_freq in bundles:
+            as_ofs = as_of_per_bundle[(window_days, sample_freq)]
             locs = ohlc.dates.get_indexer(as_ofs)
             built_as_ofs: list[pd.Timestamp] = []
 
@@ -120,17 +143,19 @@ def process_permno_chunk(task: tuple) -> None:
                 if built is None:
                     continue
                 image, _meta = built
-                shard(window_days, as_of.year).write(image.astype(np.uint8).tobytes())
+                shard(window_days, sample_freq, as_of.year).write(
+                    image.astype(np.uint8).tobytes()
+                )
                 built_as_ofs.append(as_of)
 
             if built_as_ofs:
                 rows = labels_for_as_ofs(feature_panel, built_as_ofs, permno, window_days)
                 for as_of, row in zip(built_as_ofs, rows):
-                    key = (window_days, as_of.year)
+                    key = (window_days, sample_freq, as_of.year)
                     pending_labels.setdefault(key, []).append(row)
 
-        for (window_days, year), rows in pending_labels.items():
-            label_writer.append(window_days, year, rows)
+        for (window_days, sample_freq, year), rows in pending_labels.items():
+            label_writer.append(window_days, sample_freq, year, rows)
         label_writer.flush_all()
         append_permno_checkpoint(output_root, permno, filename=ckpt_filename)
         with _PROGRESS.get_lock():
@@ -152,7 +177,7 @@ def build_window_images(
     ohlc_path: Path = OHLC_PARQUET,
     features_path: Path = FEATURES_PARQUET,
     output_root: Path = IMAGES_ROOT,
-    window_days_list: tuple[int, ...] = WINDOW_DAYS,
+    bundles: tuple[ImageBundle, ...] = diagonal_bundles(),
     permno_limit: int | None = None,
     n_workers: int | None = None,
     reserve_gib: float = DEFAULT_RESERVE_GIB,
@@ -161,6 +186,7 @@ def build_window_images(
     log(f"ohlc={ohlc_path}")
     log(f"features={features_path}")
     log(f"output={output_root}")
+    log(f"bundles={bundles}")
     if not ohlc_path.exists():
         raise FileNotFoundError(f"OHLC parquet not found: {ohlc_path}; run 01_prepare_data ohlc first")
     if not features_path.exists():
@@ -168,23 +194,19 @@ def build_window_images(
             f"features parquet not found: {features_path}; run 01_prepare_data features first"
         )
 
-    ckpt_filename = images_checkpoint_name(window_days_list, WINDOW_DAYS)
+    ckpt_filename = images_checkpoint_name(bundles)
     tmp_root = output_root / ".tmp_workers"
-    full_run = frozenset(window_days_list) == frozenset(WINDOW_DAYS)
     if fresh:
-        if full_run and output_root.exists():
-            shutil.rmtree(output_root)
-        else:
-            for window_days in window_days_list:
-                freq_dir = output_root / IMAGE_FREQ_DIR[window_days]
-                if freq_dir.exists():
-                    shutil.rmtree(freq_dir)
-                    log(f"fresh: removed {freq_dir}")
-            ckpt_path = output_root / ckpt_filename
-            if ckpt_path.exists():
-                ckpt_path.unlink()
-            if tmp_root.exists():
-                shutil.rmtree(tmp_root)
+        for window_days, sample_freq in bundles:
+            bundle_path = output_root / image_bundle_dir(window_days, sample_freq)
+            if bundle_path.exists():
+                shutil.rmtree(bundle_path)
+                log(f"fresh: removed {bundle_path}")
+        ckpt_path = output_root / ckpt_filename
+        if ckpt_path.exists():
+            ckpt_path.unlink()
+        if tmp_root.exists():
+            shutil.rmtree(tmp_root)
     output_root.mkdir(parents=True, exist_ok=True)
 
     calendar = load_calendar(ohlc_path, log=log)
@@ -200,12 +222,18 @@ def build_window_images(
         f"skip={skip_stocks} pending={len(pending)} total={len(permnos)}"
     )
 
-    as_of_per_window = {w: as_of_dates_for_window(w, calendar) for w in window_days_list}
-    years_per_window = {
-        w: sorted({a.year for a in as_of_per_window[w]}) for w in window_days_list
+    as_of_per_bundle = {
+        (w, f): as_of_dates_for_freq(f, calendar) for w, f in bundles
     }
-    for window_days, as_ofs in as_of_per_window.items():
-        log(f"window={window_days} as_of_dates={len(as_ofs)}")
+    years_per_bundle = {
+        (w, f): sorted({a.year for a in as_of_per_bundle[(w, f)]}) for w, f in bundles
+    }
+    for window_days, sample_freq in bundles:
+        as_ofs = as_of_per_bundle[(window_days, sample_freq)]
+        log(
+            f"bundle={image_bundle_dir(window_days, sample_freq)} "
+            f"as_of_dates={len(as_ofs)}"
+        )
 
     if len(pending) == 0:
         if not tmp_root.exists():
@@ -227,8 +255,18 @@ def build_window_images(
         total_stocks = len(pending)
         chunks = chunk_permnos(pending, n_workers)
         tasks = [
-            (chunk, ohlc_path, features_path, calendar, window_days_list,
-             as_of_per_window, wid, tmp_root, output_root, ckpt_filename)
+            (
+                chunk,
+                ohlc_path,
+                features_path,
+                calendar,
+                bundles,
+                as_of_per_bundle,
+                wid,
+                tmp_root,
+                output_root,
+                ckpt_filename,
+            )
             for wid, chunk in enumerate(chunks)
         ]
 
@@ -245,16 +283,24 @@ def build_window_images(
                 pool.map(process_permno_chunk, tasks)
         log("workers finished; merging year bundles")
 
-    for window_days in window_days_list:
-        freq_dir = output_root / IMAGE_FREQ_DIR[window_days]
+    for window_days, sample_freq in bundles:
+        freq_dir = output_root / image_bundle_dir(window_days, sample_freq)
         freq_dir.mkdir(parents=True, exist_ok=True)
-        for year in years_per_window[window_days]:
+        for year in years_per_bundle[(window_days, sample_freq)]:
             final_dat = freq_dir / f"{window_days}d_{year}_images.dat"
-            log(f"merge window={window_days} year={year}")
-            all_labels = read_image_label_sidecars(tmp_root, window_days, year)
+            log(
+                f"merge bundle={image_bundle_dir(window_days, sample_freq)} year={year}"
+            )
+            all_labels = read_image_label_sidecars(
+                tmp_root, window_days, sample_freq, year
+            )
             with open(final_dat, "wb") as out:
                 for worker_dir in sorted(tmp_root.glob("worker_*")):
-                    shard = worker_dir / IMAGE_FREQ_DIR[window_days] / f"{window_days}d_{year}_images.dat"
+                    shard = (
+                        worker_dir
+                        / image_bundle_dir(window_days, sample_freq)
+                        / f"{window_days}d_{year}_images.dat"
+                    )
                     if shard.is_file():
                         with open(shard, "rb") as f:
                             shutil.copyfileobj(f, out)
@@ -262,13 +308,14 @@ def build_window_images(
             n_images = final_dat.stat().st_size // (height * width)
             if len(all_labels) > n_images:
                 log(
-                    f"trim labels window={window_days} year={year} "
-                    f"{len(all_labels)} -> {n_images}"
+                    f"trim labels bundle={image_bundle_dir(window_days, sample_freq)} "
+                    f"year={year} {len(all_labels)} -> {n_images}"
                 )
                 all_labels = all_labels[:n_images]
             if len(all_labels) != n_images:
                 raise ValueError(
-                    f"label/image count mismatch window={window_days} year={year}: "
+                    f"label/image count mismatch bundle="
+                    f"{image_bundle_dir(window_days, sample_freq)} year={year}: "
                     f"{len(all_labels)} labels vs {n_images} images"
                 )
             write_year_bundle(freq_dir, window_days, year, final_dat, all_labels)
@@ -278,30 +325,62 @@ def build_window_images(
     log(f"done: stocks={len(permnos)} skip={skip_stocks} -> {output_root}")
 
 
+def resolve_market_paths(market: str) -> tuple[Path, Path, Path]:
+    if market not in (MARKET_US, MARKET_CN):
+        raise ValueError(f"unsupported market={market}")
+    root = market_processed_dir(market)
+    return root / "ohlc_daily", root / "features", root / "images"
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate price-trend images and label feathers")
-    parser.add_argument("--parquet", type=Path, default=OHLC_PARQUET)
-    parser.add_argument("--features", type=Path, default=FEATURES_PARQUET)
-    parser.add_argument("--output", type=Path, default=IMAGES_ROOT)
+    parser.add_argument("--market", choices=(MARKET_US, MARKET_CN), default=MARKET_US)
+    parser.add_argument("--parquet", type=Path, default=None)
+    parser.add_argument("--features", type=Path, default=None)
+    parser.add_argument("--output", type=Path, default=None)
     parser.add_argument(
         "--windows",
         type=int,
         nargs="+",
-        default=list(WINDOW_DAYS),
+        default=None,
         choices=WINDOW_DAYS,
-        help="image windows to build; --fresh with a subset only deletes those freq dirs",
+        help="diagonal bundles only (window tied to default freq); use --paper-cross for cross bundles",
+    )
+    parser.add_argument(
+        "--paper-cross",
+        action="store_true",
+        help="generate 6 paper cross-frequency bundles only (20d_week, 60d_week, ...)",
     )
     parser.add_argument("--permno-limit", type=int, default=None)
     parser.add_argument("--workers", type=int, default=None)
     parser.add_argument("--reserve-gib", type=float, default=DEFAULT_RESERVE_GIB)
-    parser.add_argument("--fresh", action="store_true", help="delete images and rebuild")
+    parser.add_argument(
+        "--fresh",
+        action="store_true",
+        help="delete only the bundle dirs for this run, then rebuild",
+    )
     args = parser.parse_args()
 
+    if args.paper_cross and args.windows is not None:
+        raise ValueError("--paper-cross cannot be combined with --windows")
+
+    if args.paper_cross:
+        bundles = PAPER_CROSS_BUNDLES
+    elif args.windows is not None:
+        bundles = windows_to_diagonal_bundles(tuple(args.windows))
+    else:
+        bundles = diagonal_bundles()
+
+    ohlc_default, features_default, images_default = resolve_market_paths(args.market)
+    ohlc_path = args.parquet if args.parquet is not None else ohlc_default
+    features_path = args.features if args.features is not None else features_default
+    output_root = args.output if args.output is not None else images_default
+
     build_window_images(
-        ohlc_path=args.parquet,
-        features_path=args.features,
-        output_root=args.output,
-        window_days_list=tuple(args.windows),
+        ohlc_path=ohlc_path,
+        features_path=features_path,
+        output_root=output_root,
+        bundles=bundles,
         permno_limit=args.permno_limit,
         n_workers=args.workers,
         reserve_gib=args.reserve_gib,

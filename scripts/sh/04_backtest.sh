@@ -2,7 +2,8 @@
 # 04_backtest: OOS p_up (US) or China signals -> H1 Excel sheets equal/float/total.
 #
 # Usage:
-#   ./scripts/sh/04_backtest.sh --market us --image-days 5 --horizon 5
+#   ./scripts/sh/04_backtest.sh --market us --all-configs
+#   ./scripts/sh/04_backtest.sh --market us --paper-cross
 #   ./scripts/sh/04_backtest.sh --market us --all-configs
 #   ./scripts/sh/04_backtest.sh --market us --image-days 20 --horizon 20 --init-from-image-days 5
 #   ./scripts/sh/04_backtest.sh --market cn --signals PATH --returns PATH --sig-cols p_up

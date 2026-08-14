@@ -19,13 +19,17 @@ sys.path.insert(0, str(ROOT / "src"))
 from config import (
     BATCH_SIZE,
     GPU_MIN_FREE_GIB,
-    MODELS_ROOT,
+    MARKET_CN,
+    MARKET_US,
     N_ENSEMBLE,
+    PAPER_CROSS_CONFIGS,
     TRAIN_JOB_RAM_GIB,
     TRAIN_JOBS_PER_GPU,
     TRAIN_VAL_SPLIT_SEED,
     VRAM_PER_JOB_GIB,
     WINDOW_DAYS,
+    market_processed_dir,
+    sample_freq_for_horizon,
 )
 from models.cnn import cnn_num_blocks
 from models.dataset import (
@@ -155,16 +159,18 @@ def prepare_datasets(
     max_samples: int | None,
     models_root: Path,
 ) -> tuple[ImageLabelDataset, ImageLabelDataset, ImageLabelDataset, int]:
+    sample_freq = sample_freq_for_horizon(horizon)
     samples = collect_samples(
         images_root,
         image_days,
         horizon,
+        sample_freq=sample_freq,
         year_limit=year_limit,
         max_samples=max_samples,
     )
     train_samples, val_samples, test_samples = split_samples(samples, seed=split_seed)
     log(
-        f"I{image_days}/R{horizon} split_seed={split_seed} samples "
+        f"I{image_days}/R{horizon} freq={sample_freq} split_seed={split_seed} samples "
         f"train={len(train_samples)} val={len(val_samples)} test={len(test_samples)}"
     )
 
@@ -178,6 +184,7 @@ def prepare_datasets(
         image_days,
         horizon,
         train_samples,
+        sample_freq=sample_freq,
         split_seed=split_seed,
         cache_path=cache_path,
     )
@@ -185,13 +192,31 @@ def prepare_datasets(
 
     mmap_cache: dict = {}
     train_ds = ImageLabelDataset(
-        images_root, image_days, train_samples, pixel_mean, pixel_std, mmap_cache=mmap_cache
+        images_root,
+        image_days,
+        train_samples,
+        pixel_mean,
+        pixel_std,
+        sample_freq=sample_freq,
+        mmap_cache=mmap_cache,
     )
     val_ds = ImageLabelDataset(
-        images_root, image_days, val_samples, pixel_mean, pixel_std, mmap_cache=mmap_cache
+        images_root,
+        image_days,
+        val_samples,
+        pixel_mean,
+        pixel_std,
+        sample_freq=sample_freq,
+        mmap_cache=mmap_cache,
     )
     test_ds = ImageLabelDataset(
-        images_root, image_days, test_samples, pixel_mean, pixel_std, mmap_cache=mmap_cache
+        images_root,
+        image_days,
+        test_samples,
+        pixel_mean,
+        pixel_std,
+        sample_freq=sample_freq,
+        mmap_cache=mmap_cache,
     )
     return train_ds, val_ds, test_ds, len(test_samples)
 
@@ -356,6 +381,8 @@ def build_child_cmd(args: argparse.Namespace, image_days: int, horizon: int, see
         str(args.batch_size),
         "--models",
         str(args.models),
+        "--market",
+        args.market,
     ]
     if args.images is not None:
         cmd.extend(["--images", str(args.images)])
@@ -485,9 +512,9 @@ def run_local_jobs(
     configs: list[tuple[int, int]],
     seeds: list[int],
 ) -> None:
-    from config import IMAGES_ROOT
-
-    images_root = args.images if args.images is not None else IMAGES_ROOT
+    market_root = market_processed_dir(args.market)
+    images_root = args.images if args.images is not None else market_root / "images"
+    models_root = args.models if args.models is not None else market_root / "models"
     for image_days, horizon in configs:
         train_ds, val_ds, test_ds, n_test = prepare_datasets(
             images_root,
@@ -496,7 +523,7 @@ def run_local_jobs(
             split_seed=args.split_seed,
             year_limit=args.year_limit,
             max_samples=args.max_samples,
-            models_root=args.models,
+            models_root=models_root,
         )
         for seed in seeds:
             train_one_seed(
@@ -504,7 +531,7 @@ def run_local_jobs(
                 val_ds=val_ds,
                 test_ds=test_ds,
                 n_test=n_test,
-                models_root=args.models,
+                models_root=models_root,
                 image_days=image_days,
                 horizon=horizon,
                 seed=seed,
@@ -517,14 +544,14 @@ def run_local_jobs(
             )
         if args.all_seeds:
             ensemble = merge_ensemble(
-                args.models,
+                models_root,
                 image_days,
                 horizon,
                 seeds,
                 init_from_image_days=args.init_from_image_days,
             )
             out_path = ensemble_pred_path(
-                args.models,
+                models_root,
                 image_days,
                 horizon,
                 init_from_image_days=args.init_from_image_days,
@@ -534,13 +561,19 @@ def run_local_jobs(
 
 
 def resolve_configs(args: argparse.Namespace) -> list[tuple[int, int]]:
-    if args.all_configs:
+    if args.paper_cross:
+        if args.all_configs or args.image_days is not None or args.horizon is not None:
+            raise ValueError(
+                "--paper-cross cannot be combined with --all-configs or --image-days/--horizon"
+            )
+        configs = list(PAPER_CROSS_CONFIGS)
+    elif args.all_configs:
         if args.image_days is not None or args.horizon is not None:
             raise ValueError("--all-configs cannot be combined with --image-days/--horizon")
         configs = [(d, h) for d in WINDOW_DAYS for h in WINDOW_DAYS]
     else:
         if args.image_days is None or args.horizon is None:
-            raise ValueError("require --image-days and --horizon, or --all-configs")
+            raise ValueError("require --image-days and --horizon, or --all-configs, or --paper-cross")
         configs = [(args.image_days, args.horizon)]
     if args.init_from_image_days is not None:
         if args.all_configs:
@@ -562,8 +595,9 @@ def resolve_configs(args: argparse.Namespace) -> list[tuple[int, int]]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Train CNN on OHLC images")
-    parser.add_argument("--images", type=Path, default=None, help="processed/images root")
-    parser.add_argument("--models", type=Path, default=MODELS_ROOT)
+    parser.add_argument("--market", choices=(MARKET_US, MARKET_CN), default=MARKET_US)
+    parser.add_argument("--images", type=Path, default=None, help="processed/{market}/images root")
+    parser.add_argument("--models", type=Path, default=None, help="processed/{market}/models root")
     parser.add_argument("--image-days", type=int, default=None, choices=WINDOW_DAYS)
     parser.add_argument("--horizon", type=int, default=None, choices=WINDOW_DAYS)
     parser.add_argument("--seed", type=int, default=0, help="optimization seed (init / shuffle)")
@@ -582,6 +616,11 @@ def main() -> None:
         "--all-configs",
         action="store_true",
         help="train all image-days × horizon pairs (9 models)",
+    )
+    parser.add_argument(
+        "--paper-cross",
+        action="store_true",
+        help="train 6 paper cross-frequency configs only (I20/R5, I60/R5, ...)",
     )
     parser.add_argument(
         "--init-from-image-days",
@@ -608,6 +647,12 @@ def main() -> None:
     parser.add_argument("--skip-train", action="store_true")
     parser.add_argument("--skip-predict", action="store_true")
     args = parser.parse_args()
+
+    market_root = market_processed_dir(args.market)
+    if args.models is None:
+        args.models = market_root / "models"
+    if args.images is None:
+        args.images = market_root / "images"
 
     configs = resolve_configs(args)
     seeds = list(range(N_ENSEMBLE)) if args.all_seeds else [args.seed]

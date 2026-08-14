@@ -25,10 +25,13 @@ from backtest.markets import CN_SPEC, us_spec
 from config import (
     BACKTEST_N_GROUP,
     BACKTEST_ROOT,
-    IMAGES_ROOT,
-    MODELS_ROOT,
+    MARKET_CN,
+    MARKET_US,
+    PAPER_CROSS_CONFIGS,
     TEST_START,
     WINDOW_DAYS,
+    market_processed_dir,
+    sample_freq_for_horizon,
 )
 from models.dataset import model_run_tag
 
@@ -45,12 +48,20 @@ def parse_sig_cols(raw: str) -> list[str]:
 
 
 def resolve_us_configs(args: argparse.Namespace) -> list[tuple[int, int]]:
+    if args.paper_cross:
+        if args.all_configs or args.image_days is not None or args.horizon is not None:
+            raise ValueError(
+                "--paper-cross cannot be combined with --all-configs or --image-days/--horizon"
+            )
+        return list(PAPER_CROSS_CONFIGS)
     if args.all_configs:
         if args.image_days is not None or args.horizon is not None:
             raise ValueError("--all-configs cannot be combined with --image-days/--horizon")
         return [(d, h) for d in WINDOW_DAYS for h in WINDOW_DAYS]
     if args.image_days is None or args.horizon is None:
-        raise ValueError("US backtest requires --image-days and --horizon, or --all-configs")
+        raise ValueError(
+            "US backtest requires --image-days and --horizon, --all-configs, or --paper-cross"
+        )
     return [(args.image_days, args.horizon)]
 
 
@@ -78,14 +89,18 @@ def run_us(args: argparse.Namespace) -> Path:
     if args.fresh and out_path.is_file():
         out_path.unlink()
 
-    images_root = args.images if args.images is not None else IMAGES_ROOT
-    models_root = args.models if args.models is not None else MODELS_ROOT
-    horizons_by_image: dict[int, list[int]] = {}
+    market_root = market_processed_dir(args.market)
+    images_root = args.images if args.images is not None else market_root / "images"
+    models_root = args.models if args.models is not None else market_root / "models"
+    bundle_horizons: dict[tuple[int, str], set[int]] = {}
     for image_days, horizon in configs:
-        horizons_by_image.setdefault(image_days, []).append(horizon)
+        freq = sample_freq_for_horizon(horizon)
+        bundle_horizons.setdefault((image_days, freq), set()).add(horizon)
     label_cache = {
-        image_days: load_us_image_labels(images_root, image_days, tuple(horizons))
-        for image_days, horizons in horizons_by_image.items()
+        key: load_us_image_labels(
+            images_root, image_days, freq, tuple(sorted(horizons))
+        )
+        for (image_days, freq), horizons in bundle_horizons.items()
     }
     scheme_rows: dict[str, list[pd.DataFrame]] = {"equal": [], "float": [], "total": []}
     for image_days, horizon in configs:
@@ -99,8 +114,12 @@ def run_us(args: argparse.Namespace) -> Path:
             horizon,
             init_from_image_days=args.init_from_image_days,
         )
+        freq = sample_freq_for_horizon(horizon)
         panel = merge_us_panel(
-            pred, label_cache[image_days], horizon=horizon, start=args.start
+            pred,
+            label_cache[(image_days, freq)],
+            horizon=horizon,
+            start=args.start,
         )
         log(f"{tag} n={len(panel)} dates={panel['Date'].nunique()}")
         spec = us_spec(image_days, horizon)
@@ -180,6 +199,11 @@ def main() -> None:
         "--all-configs",
         action="store_true",
         help="US: backtest all image-days × horizon pairs",
+    )
+    parser.add_argument(
+        "--paper-cross",
+        action="store_true",
+        help="US: backtest 6 paper cross-frequency configs only",
     )
     parser.add_argument(
         "--init-from-image-days",

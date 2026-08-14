@@ -5,6 +5,7 @@
 #   ./scripts/sh/02_generate_images.sh
 #   ./scripts/sh/02_generate_images.sh --workers 8
 #   ./scripts/sh/02_generate_images.sh --permno-limit 50 --workers 2
+#   ./scripts/sh/02_generate_images.sh --paper-cross
 #   ./scripts/sh/02_generate_images.sh --windows 5 --fresh
 #
 set -euo pipefail
