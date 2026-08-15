@@ -15,6 +15,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from backtest.engine import h1_perf_tables
 from backtest.io import (
+    filter_top_n_by_cap,
     load_cn_panel,
     load_image_labels,
     load_us_predictions,
@@ -24,9 +25,11 @@ from backtest.io import (
 )
 from backtest.markets import CN_SPEC, cn_cnn_spec, us_spec
 from config import (
-    BACKTEST_N_GROUP,
     BACKTEST_CNN_ROOT,
+    BACKTEST_CNN_TOP500_FLOAT_ROOT,
+    BACKTEST_CNN_TOP500_ROOT,
     BACKTEST_CN_FACTOR_ROOT,
+    BACKTEST_N_GROUP,
     CN_FACTOR_BACKTEST_DIR,
     HORIZON_BACKTEST_DIR,
     MARKET_CN,
@@ -85,6 +88,14 @@ def summary_stem(tags: list[str], init_from: int | None, direct_signal: bool) ->
     return f"direct_{base}" if direct_signal else base
 
 
+def cnn_output_root(top_n: int | None, top_n_cap: str = "total") -> Path:
+    if top_n is None:
+        return BACKTEST_CNN_ROOT
+    if top_n_cap == "float":
+        return BACKTEST_CNN_TOP500_FLOAT_ROOT
+    return BACKTEST_CNN_TOP500_ROOT
+
+
 def config_xlsx_path(
     market: str,
     horizon: int,
@@ -92,6 +103,7 @@ def config_xlsx_path(
     *,
     init_from: int | None,
     direct_signal: bool,
+    output_root: Path,
 ) -> Path:
     freq_dir = backtest_freq_dir(horizon)
     if init_from is not None:
@@ -100,7 +112,7 @@ def config_xlsx_path(
         stem = tag
     if direct_signal:
         stem = f"direct_{stem}"
-    return BACKTEST_CNN_ROOT / market / freq_dir / f"{stem}_h1.xlsx"
+    return output_root / market / freq_dir / f"{stem}_h1.xlsx"
 
 
 def summary_xlsx_path(
@@ -110,10 +122,11 @@ def summary_xlsx_path(
     *,
     init_from: int | None,
     direct_signal: bool,
+    output_root: Path,
 ) -> Path:
     freq_dir = backtest_freq_dir(horizon)
     stem = summary_stem(tags, init_from, direct_signal)
-    return BACKTEST_CNN_ROOT / market / freq_dir / f"{stem}_h1.xlsx"
+    return output_root / market / freq_dir / f"{stem}_h1.xlsx"
 
 
 def default_cn_factor_xlsx_path(market: str, stem: str) -> Path:
@@ -176,6 +189,13 @@ def run_cnn_backtest(args: argparse.Namespace) -> list[Path]:
     models_root = args.models if args.models is not None else market_root / "models"
     start = args.start if args.start is not None else default_test_start(market)
     direct_signal = args.direct_signal
+    top_n = args.top_n
+    top_n_cap = args.top_n_cap
+    if top_n is None and top_n_cap != "total":
+        raise ValueError("--top-n-cap float requires --top-n")
+    if top_n_cap == "float" and market != MARKET_CN:
+        raise ValueError("--top-n-cap float only supported for --market cn")
+    output_root = cnn_output_root(top_n, top_n_cap)
 
     bundle_horizons: dict[tuple[int, str], set[int]] = {}
     for image_days, horizon in configs:
@@ -199,6 +219,7 @@ def run_cnn_backtest(args: argparse.Namespace) -> list[Path]:
                 tag,
                 init_from=args.init_from_image_days,
                 direct_signal=direct_signal,
+                output_root=output_root,
             )
             if ind.is_file():
                 ind.unlink()
@@ -214,6 +235,7 @@ def run_cnn_backtest(args: argparse.Namespace) -> list[Path]:
                     tags,
                     init_from=args.init_from_image_days,
                     direct_signal=direct_signal,
+                    output_root=output_root,
                 )
                 if summ.is_file():
                     summ.unlink()
@@ -231,6 +253,7 @@ def run_cnn_backtest(args: argparse.Namespace) -> list[Path]:
                     tag,
                     init_from=args.init_from_image_days,
                     direct_signal=direct_signal,
+                    output_root=output_root,
                 )
             )
         for horizon, h_configs in grouped.items():
@@ -245,6 +268,7 @@ def run_cnn_backtest(args: argparse.Namespace) -> list[Path]:
                     tags,
                     init_from=args.init_from_image_days,
                     direct_signal=direct_signal,
+                    output_root=output_root,
                 )
             )
         if all(p.is_file() for p in expected):
@@ -276,6 +300,7 @@ def run_cnn_backtest(args: argparse.Namespace) -> list[Path]:
                 tag,
                 init_from=args.init_from_image_days,
                 direct_signal=direct_signal,
+                output_root=output_root,
             )
 
         if single_config and out_path.is_file() and not args.fresh:
@@ -294,6 +319,14 @@ def run_cnn_backtest(args: argparse.Namespace) -> list[Path]:
             init_from=args.init_from_image_days,
         )
         log(f"{tag} n={len(panel)} dates={panel['Date'].nunique()}")
+        if top_n is not None:
+            panel = filter_top_n_by_cap(
+                panel, spec=spec, top_n=top_n, cap_kind=top_n_cap
+            )
+            log(
+                f"{tag} top-{top_n} ({top_n_cap}) n={len(panel)} "
+                f"dates={panel['Date'].nunique()}"
+            )
         tables = h1_perf_tables(
             panel,
             spec=spec,
@@ -331,6 +364,7 @@ def run_cnn_backtest(args: argparse.Namespace) -> list[Path]:
                 tags,
                 init_from=args.init_from_image_days,
                 direct_signal=direct_signal,
+                output_root=output_root,
             )
             if out_path.is_file() and not args.fresh and not summary_dirty[horizon]:
                 log(f"skip summary (exists): {out_path}")
@@ -429,6 +463,19 @@ def main() -> None:
         default=None,
         choices=WINDOW_DAYS,
         help="read transfer-run ensemble predictions (fromI source window)",
+    )
+    parser.add_argument(
+        "--top-n",
+        type=int,
+        default=None,
+        metavar="N",
+        help="keep top N stocks by formation-date cap; writes outputs/cnn_top500/",
+    )
+    parser.add_argument(
+        "--top-n-cap",
+        choices=("total", "float"),
+        default="total",
+        help="CN only: rank top-N on TotalCap (default) or FloatCap → outputs/cnn_top500_float/",
     )
     parser.add_argument("--models", type=Path, default=None)
     parser.add_argument("--images", type=Path, default=None)
