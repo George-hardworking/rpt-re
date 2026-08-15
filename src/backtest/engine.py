@@ -158,6 +158,7 @@ def h1_perf_one(
     signal_col: str,
     scheme: str,
     ngroup: int = BACKTEST_N_GROUP,
+    direct_signal: bool = False,
 ) -> pd.DataFrame:
     """One signal, one weight scheme: rows=groups (D01..DH), columns=H1 metrics."""
     if scheme not in BACKTEST_WEIGHT_SCHEMES:
@@ -179,9 +180,10 @@ def h1_perf_one(
     work = work.dropna(subset=[signal_col, ret_col])
     assert len(work) > 0, f"empty panel after dropping NA {signal_col}/{ret_col}"
 
-    work = standardize_by_date(work, date_col, [signal_col])
-    work = work.dropna(subset=[signal_col])
-    assert len(work) > 0, f"empty panel after standardizing {signal_col}"
+    if not direct_signal:
+        work = standardize_by_date(work, date_col, [signal_col])
+        work = work.dropna(subset=[signal_col])
+        assert len(work) > 0, f"empty panel after standardizing {signal_col}"
     work = work.copy()
     work["_g"] = assign_quantile_groups(work[signal_col], work[date_col], ngroup)
 
@@ -257,6 +259,7 @@ def h1_perf_tables(
     ngroup: int = BACKTEST_N_GROUP,
     row_names: list[str] | None = None,
     schemes: tuple[str, ...] = BACKTEST_WEIGHT_SCHEMES,
+    direct_signal: bool = False,
 ) -> dict[str, pd.DataFrame]:
     """Default output: three H1Perf tables keyed equal / float / total."""
     if row_names is None:
@@ -275,6 +278,7 @@ def h1_perf_tables(
                     signal_col=col,
                     scheme=scheme,
                     ngroup=ngroup,
+                    direct_signal=direct_signal,
                 ),
                 name,
             )

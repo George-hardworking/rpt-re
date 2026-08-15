@@ -2,9 +2,10 @@
 # 04_backtest: OOS p_up (US) or China signals -> H1 Excel under outputs/{market}/{weekly,monthly,quarterly}/.
 #
 # Usage:
-#   ./scripts/sh/04_backtest.sh --market us --all-configs
+#   ./scripts/sh/04_backtest.sh --market us
+#   ./scripts/sh/04_backtest.sh --market cn
+#   ./scripts/sh/04_backtest.sh --market us --direct-signal
 #   ./scripts/sh/04_backtest.sh --market us --paper-cross
-#   ./scripts/sh/04_backtest.sh --market us --all-configs
 #   ./scripts/sh/04_backtest.sh --market us --image-days 20 --horizon 20 --init-from-image-days 5
 #   ./scripts/sh/04_backtest.sh --market cn --signals PATH --returns PATH --sig-cols p_up
 #

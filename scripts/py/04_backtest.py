@@ -50,6 +50,10 @@ def parse_sig_cols(raw: str) -> list[str]:
     return cols
 
 
+def all_diagonal_configs() -> list[tuple[int, int]]:
+    return [(d, h) for d in WINDOW_DAYS for h in WINDOW_DAYS]
+
+
 def resolve_cnn_configs(args: argparse.Namespace) -> list[tuple[int, int]]:
     if args.paper_cross:
         if args.all_configs or args.image_days is not None or args.horizon is not None:
@@ -57,15 +61,11 @@ def resolve_cnn_configs(args: argparse.Namespace) -> list[tuple[int, int]]:
                 "--paper-cross cannot be combined with --all-configs or --image-days/--horizon"
             )
         return list(PAPER_CROSS_CONFIGS)
-    if args.all_configs:
-        if args.image_days is not None or args.horizon is not None:
-            raise ValueError("--all-configs cannot be combined with --image-days/--horizon")
-        return [(d, h) for d in WINDOW_DAYS for h in WINDOW_DAYS]
-    if args.image_days is None or args.horizon is None:
-        raise ValueError(
-            "CNN backtest requires --image-days and --horizon, --all-configs, or --paper-cross"
-        )
-    return [(args.image_days, args.horizon)]
+    if args.image_days is not None and args.horizon is not None:
+        return [(args.image_days, args.horizon)]
+    if args.all_configs or args.image_days is None and args.horizon is None:
+        return all_diagonal_configs()
+    raise ValueError("provide both --image-days and --horizon for a single config")
 
 
 def backtest_freq_dir(horizon: int) -> str:
@@ -74,17 +74,44 @@ def backtest_freq_dir(horizon: int) -> str:
     return HORIZON_BACKTEST_DIR[horizon]
 
 
-def output_stem(tags: list[str], init_from: int | None) -> str:
+def summary_stem(tags: list[str], init_from: int | None, direct_signal: bool) -> str:
     if len(tags) == 1:
-        return tags[0]
+        raise ValueError("summary_stem requires multiple config tags")
     if init_from is not None:
-        return f"all_fromI{init_from}"
-    return "all"
+        base = f"all_fromI{init_from}"
+    else:
+        base = "all"
+    return f"direct_{base}" if direct_signal else base
 
 
-def default_xlsx_path(market: str, horizon: int, tags: list[str], init_from: int | None) -> Path:
-    stem = output_stem(tags, init_from)
+def config_xlsx_path(
+    market: str,
+    horizon: int,
+    tag: str,
+    *,
+    init_from: int | None,
+    direct_signal: bool,
+) -> Path:
     freq_dir = backtest_freq_dir(horizon)
+    if init_from is not None:
+        stem = f"{tag}_fromI{init_from}"
+    else:
+        stem = tag
+    if direct_signal:
+        stem = f"direct_{stem}"
+    return BACKTEST_ROOT / market / freq_dir / f"{stem}_h1.xlsx"
+
+
+def summary_xlsx_path(
+    market: str,
+    horizon: int,
+    tags: list[str],
+    *,
+    init_from: int | None,
+    direct_signal: bool,
+) -> Path:
+    freq_dir = backtest_freq_dir(horizon)
+    stem = summary_stem(tags, init_from, direct_signal)
     return BACKTEST_ROOT / market / freq_dir / f"{stem}_h1.xlsx"
 
 
@@ -103,17 +130,51 @@ def group_configs_by_horizon(configs: list[tuple[int, int]]) -> dict[int, list[t
     return dict(grouped)
 
 
+def load_cnn_panel(
+    *,
+    market: str,
+    image_days: int,
+    horizon: int,
+    models_root: Path,
+    label_cache: dict[tuple[int, str], pd.DataFrame],
+    start: str,
+    init_from: int | None,
+) -> tuple[pd.DataFrame, str]:
+    tag = model_run_tag(image_days, horizon, init_from_image_days=init_from)
+    pred = load_us_predictions(
+        models_root,
+        image_days,
+        horizon,
+        init_from_image_days=init_from,
+    )
+    freq = sample_freq_for_horizon(horizon)
+    if market == MARKET_CN:
+        spec = cn_cnn_spec(horizon)
+    else:
+        spec = us_spec(image_days, horizon)
+    panel = merge_cnn_panel(
+        pred,
+        label_cache[(image_days, freq)],
+        horizon=horizon,
+        spec=spec,
+        start=start,
+    )
+    return panel, tag
+
+
 def run_cnn_backtest(args: argparse.Namespace) -> list[Path]:
     configs = resolve_cnn_configs(args)
     market = args.market
     grouped = group_configs_by_horizon(configs)
-    if args.output is not None and len(grouped) > 1:
-        raise ValueError("--output cannot be used when configs span multiple rebalance frequencies")
+    single_config = len(configs) == 1
+    if args.output is not None and not single_config:
+        raise ValueError("--output only allowed for a single --image-days/--horizon config")
 
     market_root = market_processed_dir(market)
     images_root = args.images if args.images is not None else market_root / "images"
     models_root = args.models if args.models is not None else market_root / "models"
     start = args.start if args.start is not None else default_test_start(market)
+    direct_signal = args.direct_signal
 
     bundle_horizons: dict[tuple[int, str], set[int]] = {}
     for image_days, horizon in configs:
@@ -126,64 +187,165 @@ def run_cnn_backtest(args: argparse.Namespace) -> list[Path]:
         for (image_days, freq), horizons in bundle_horizons.items()
     }
 
+    if args.fresh:
+        for image_days, horizon in configs:
+            tag = model_run_tag(
+                image_days, horizon, init_from_image_days=args.init_from_image_days
+            )
+            ind = config_xlsx_path(
+                market,
+                horizon,
+                tag,
+                init_from=args.init_from_image_days,
+                direct_signal=direct_signal,
+            )
+            if ind.is_file():
+                ind.unlink()
+        if not single_config:
+            for horizon, h_configs in grouped.items():
+                tags = [
+                    model_run_tag(d, h, init_from_image_days=args.init_from_image_days)
+                    for d, h in h_configs
+                ]
+                summ = summary_xlsx_path(
+                    market,
+                    horizon,
+                    tags,
+                    init_from=args.init_from_image_days,
+                    direct_signal=direct_signal,
+                )
+                if summ.is_file():
+                    summ.unlink()
+
+    if not single_config and not args.fresh:
+        expected: list[Path] = []
+        for image_days, horizon in configs:
+            tag = model_run_tag(
+                image_days, horizon, init_from_image_days=args.init_from_image_days
+            )
+            expected.append(
+                config_xlsx_path(
+                    market,
+                    horizon,
+                    tag,
+                    init_from=args.init_from_image_days,
+                    direct_signal=direct_signal,
+                )
+            )
+        for horizon, h_configs in grouped.items():
+            tags = [
+                model_run_tag(d, h, init_from_image_days=args.init_from_image_days)
+                for d, h in h_configs
+            ]
+            expected.append(
+                summary_xlsx_path(
+                    market,
+                    horizon,
+                    tags,
+                    init_from=args.init_from_image_days,
+                    direct_signal=direct_signal,
+                )
+            )
+        if all(p.is_file() for p in expected):
+            for p in expected:
+                log(f"skip backtest (exists): {p}")
+            return expected
+
+    scheme_rows_by_horizon: dict[int, dict[str, list[pd.DataFrame]]] = defaultdict(
+        lambda: {"equal": [], "float": [], "total": []}
+    )
+    summary_dirty: dict[int, bool] = defaultdict(bool)
     written: list[Path] = []
-    for horizon in sorted(grouped):
-        h_configs = grouped[horizon]
-        tags = [
-            model_run_tag(d, h, init_from_image_days=args.init_from_image_days)
-            for d, h in h_configs
-        ]
+
+    for image_days, horizon in configs:
+        tag = model_run_tag(
+            image_days, horizon, init_from_image_days=args.init_from_image_days
+        )
+        if market == MARKET_CN:
+            spec = cn_cnn_spec(horizon)
+        else:
+            spec = us_spec(image_days, horizon)
+
         if args.output is not None:
             out_path = args.output
         else:
-            out_path = default_xlsx_path(market, horizon, tags, args.init_from_image_days)
+            out_path = config_xlsx_path(
+                market,
+                horizon,
+                tag,
+                init_from=args.init_from_image_days,
+                direct_signal=direct_signal,
+            )
 
-        if out_path.is_file() and not args.fresh:
-            log(f"skip backtest (exists): {out_path}")
+        if single_config and out_path.is_file() and not args.fresh:
+            log(f"skip config (exists): {out_path}")
             written.append(out_path)
             continue
-        if args.fresh and out_path.is_file():
-            out_path.unlink()
 
-        scheme_rows: dict[str, list[pd.DataFrame]] = {"equal": [], "float": [], "total": []}
-        for image_days, h in h_configs:
-            tag = model_run_tag(
-                image_days, h, init_from_image_days=args.init_from_image_days
-            )
-            log(f"load {market.upper()} panel {tag}")
-            pred = load_us_predictions(
-                models_root,
-                image_days,
-                h,
-                init_from_image_days=args.init_from_image_days,
-            )
-            freq = sample_freq_for_horizon(h)
-            if market == MARKET_CN:
-                spec = cn_cnn_spec(h)
-            else:
-                spec = us_spec(image_days, h)
-            panel = merge_cnn_panel(
-                pred,
-                label_cache[(image_days, freq)],
-                horizon=h,
-                spec=spec,
-                start=start,
-            )
-            log(f"{tag} n={len(panel)} dates={panel['Date'].nunique()}")
-            tables = h1_perf_tables(
-                panel,
-                spec=spec,
-                signal_cols=["p_up"],
-                ngroup=args.ngroup,
-                row_names=[tag],
-            )
+        log(f"load {market.upper()} panel {tag}")
+        panel, _ = load_cnn_panel(
+            market=market,
+            image_days=image_days,
+            horizon=horizon,
+            models_root=models_root,
+            label_cache=label_cache,
+            start=start,
+            init_from=args.init_from_image_days,
+        )
+        log(f"{tag} n={len(panel)} dates={panel['Date'].nunique()}")
+        tables = h1_perf_tables(
+            panel,
+            spec=spec,
+            signal_cols=["p_up"],
+            ngroup=args.ngroup,
+            row_names=[tag],
+            direct_signal=direct_signal,
+        )
+
+        write_individual = not out_path.is_file() or args.fresh
+        if write_individual:
+            path = write_h1_excel(tables, out_path)
+            log(f"wrote {path}")
+            written.append(path)
+            if not single_config:
+                summary_dirty[horizon] = True
+        else:
+            log(f"skip write config (exists): {out_path}")
+            written.append(out_path)
+
+        if not single_config:
             for scheme, frame in tables.items():
-                scheme_rows[scheme].append(frame)
+                scheme_rows_by_horizon[horizon][scheme].append(frame)
 
-        combined = {scheme: pd.concat(frames, axis=0) for scheme, frames in scheme_rows.items()}
-        path = write_h1_excel(combined, out_path)
-        log(f"wrote {path}")
-        written.append(path)
+    if not single_config:
+        for horizon in sorted(grouped):
+            h_configs = grouped[horizon]
+            tags = [
+                model_run_tag(d, h, init_from_image_days=args.init_from_image_days)
+                for d, h in h_configs
+            ]
+            out_path = summary_xlsx_path(
+                market,
+                horizon,
+                tags,
+                init_from=args.init_from_image_days,
+                direct_signal=direct_signal,
+            )
+            if out_path.is_file() and not args.fresh and not summary_dirty[horizon]:
+                log(f"skip summary (exists): {out_path}")
+                written.append(out_path)
+                continue
+
+            scheme_rows = scheme_rows_by_horizon[horizon]
+            if not scheme_rows["equal"]:
+                raise RuntimeError(f"missing tables for horizon={horizon} summary")
+            combined = {
+                scheme: pd.concat(frames, axis=0) for scheme, frames in scheme_rows.items()
+            }
+            path = write_h1_excel(combined, out_path)
+            log(f"wrote {path}")
+            written.append(path)
+
     return written
 
 
@@ -231,6 +393,7 @@ def run_cn_factor(args: argparse.Namespace) -> Path:
         spec=spec,
         signal_cols=sig_cols,
         ngroup=args.ngroup,
+        direct_signal=args.direct_signal,
     )
     written = write_h1_excel(tables, out_path)
     log(f"wrote {written}")
@@ -247,12 +410,17 @@ def main() -> None:
     parser.add_argument(
         "--all-configs",
         action="store_true",
-        help="backtest all image-days × horizon pairs",
+        help="all 9 I×R configs (default when --image-days/--horizon omitted)",
     )
     parser.add_argument(
         "--paper-cross",
         action="store_true",
         help="backtest 6 paper cross-frequency configs only",
+    )
+    parser.add_argument(
+        "--direct-signal",
+        action="store_true",
+        help="sort deciles on raw p_up (paper Table I style); writes direct_*_h1.xlsx",
     )
     parser.add_argument(
         "--init-from-image-days",

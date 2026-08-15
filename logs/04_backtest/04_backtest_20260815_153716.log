@@ -1,0 +1,39 @@
+[2026-08-15 15:37:17] ============================================================
+[2026-08-15 15:37:17] 04_backtest
+[2026-08-15 15:37:17] Conda: 5020_env
+[2026-08-15 15:37:17] Python: /home/zkb/rpt-re/scripts/py/04_backtest.py
+[2026-08-15 15:37:17] Args:  --market cn --fresh
+[2026-08-15 15:37:17] Log:   /home/zkb/rpt-re/logs/04_backtest/04_backtest_20260815_153716.log
+[2026-08-15 15:37:17] ============================================================
+[2026-08-15 15:37:17] starting python
+[2026-08-15 15:37:24] load CN panel I5_R5
+[2026-08-15 15:37:24] I5_R5 n=594005 dates=254
+[2026-08-15 15:37:28] wrote /home/zkb/rpt-re/outputs/cn/weekly/I5_R5_h1.xlsx
+[2026-08-15 15:37:28] load CN panel I5_R20
+[2026-08-15 15:37:28] I5_R20 n=138289 dates=59
+[2026-08-15 15:37:28] wrote /home/zkb/rpt-re/outputs/cn/monthly/I5_R20_h1.xlsx
+[2026-08-15 15:37:28] load CN panel I5_R60
+[2026-08-15 15:37:29] I5_R60 n=44539 dates=19
+[2026-08-15 15:37:29] wrote /home/zkb/rpt-re/outputs/cn/quarterly/I5_R60_h1.xlsx
+[2026-08-15 15:37:29] load CN panel I20_R5
+[2026-08-15 15:37:29] I20_R5 n=593994 dates=254
+[2026-08-15 15:37:32] wrote /home/zkb/rpt-re/outputs/cn/weekly/I20_R5_h1.xlsx
+[2026-08-15 15:37:32] load CN panel I20_R20
+[2026-08-15 15:37:32] I20_R20 n=138287 dates=59
+[2026-08-15 15:37:32] wrote /home/zkb/rpt-re/outputs/cn/monthly/I20_R20_h1.xlsx
+[2026-08-15 15:37:32] load CN panel I20_R60
+[2026-08-15 15:37:32] I20_R60 n=44538 dates=19
+[2026-08-15 15:37:33] wrote /home/zkb/rpt-re/outputs/cn/quarterly/I20_R60_h1.xlsx
+[2026-08-15 15:37:33] load CN panel I60_R5
+[2026-08-15 15:37:33] I60_R5 n=593690 dates=254
+[2026-08-15 15:37:35] wrote /home/zkb/rpt-re/outputs/cn/weekly/I60_R5_h1.xlsx
+[2026-08-15 15:37:35] load CN panel I60_R20
+[2026-08-15 15:37:35] I60_R20 n=138165 dates=59
+[2026-08-15 15:37:36] wrote /home/zkb/rpt-re/outputs/cn/monthly/I60_R20_h1.xlsx
+[2026-08-15 15:37:36] load CN panel I60_R60
+[2026-08-15 15:37:36] I60_R60 n=44421 dates=19
+[2026-08-15 15:37:36] wrote /home/zkb/rpt-re/outputs/cn/quarterly/I60_R60_h1.xlsx
+[2026-08-15 15:37:36] wrote /home/zkb/rpt-re/outputs/cn/weekly/all_h1.xlsx
+[2026-08-15 15:37:36] wrote /home/zkb/rpt-re/outputs/cn/monthly/all_h1.xlsx
+[2026-08-15 15:37:36] wrote /home/zkb/rpt-re/outputs/cn/quarterly/all_h1.xlsx
+[2026-08-15 15:37:37] Done.
