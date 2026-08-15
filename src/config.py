@@ -27,7 +27,8 @@ FEATURES_PARQUET = PROCESSED_DIR / "features"
 IMAGES_ROOT = PROCESSED_DIR / "images"
 MODELS_ROOT = PROCESSED_DIR / "models"
 OUTPUT_ROOT = PROJECT_ROOT / "outputs"
-BACKTEST_ROOT = OUTPUT_ROOT
+BACKTEST_CNN_ROOT = OUTPUT_ROOT / "cnn_baseline"
+BACKTEST_CN_FACTOR_ROOT = OUTPUT_ROOT / "cn_factors"
 
 # Rebalance folders for step-04 H1 tables (keyed by forecast horizon R).
 HORIZON_BACKTEST_DIR: dict[int, str] = {

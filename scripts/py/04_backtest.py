@@ -25,7 +25,8 @@ from backtest.io import (
 from backtest.markets import CN_SPEC, cn_cnn_spec, us_spec
 from config import (
     BACKTEST_N_GROUP,
-    BACKTEST_ROOT,
+    BACKTEST_CNN_ROOT,
+    BACKTEST_CN_FACTOR_ROOT,
     CN_FACTOR_BACKTEST_DIR,
     HORIZON_BACKTEST_DIR,
     MARKET_CN,
@@ -99,7 +100,7 @@ def config_xlsx_path(
         stem = tag
     if direct_signal:
         stem = f"direct_{stem}"
-    return BACKTEST_ROOT / market / freq_dir / f"{stem}_h1.xlsx"
+    return BACKTEST_CNN_ROOT / market / freq_dir / f"{stem}_h1.xlsx"
 
 
 def summary_xlsx_path(
@@ -112,11 +113,11 @@ def summary_xlsx_path(
 ) -> Path:
     freq_dir = backtest_freq_dir(horizon)
     stem = summary_stem(tags, init_from, direct_signal)
-    return BACKTEST_ROOT / market / freq_dir / f"{stem}_h1.xlsx"
+    return BACKTEST_CNN_ROOT / market / freq_dir / f"{stem}_h1.xlsx"
 
 
 def default_cn_factor_xlsx_path(market: str, stem: str) -> Path:
-    return BACKTEST_ROOT / market / CN_FACTOR_BACKTEST_DIR / f"{stem}_h1.xlsx"
+    return BACKTEST_CN_FACTOR_ROOT / market / CN_FACTOR_BACKTEST_DIR / f"{stem}_h1.xlsx"
 
 
 def default_test_start(market: str) -> str:
