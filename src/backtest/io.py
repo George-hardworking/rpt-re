@@ -99,6 +99,12 @@ def merge_cnn_panel(
     spec: MarketSpec,
     start: str = TEST_START,
 ) -> pd.DataFrame:
+    """Join OOS p_up at formation date t with Ret_{R}d on the same row.
+
+    Ret_{R}d is the forward holding-period return from t+1 through t+R
+    (see data.labels.stock_label_panel). No extra signal lag is applied here;
+    same-date merge is the T+1 H1 alignment for CNN image labels.
+    """
     ret_col = f"Ret_{horizon}d"
     label_cols = ["PERMNO", "Date", ret_col]
     if "FloatCap" in labels.columns and "TotalCap" in labels.columns:

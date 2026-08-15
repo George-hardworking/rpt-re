@@ -26,8 +26,16 @@ OHLC_CALENDAR = PROCESSED_DIR / "ohlc_calendar.parquet"
 FEATURES_PARQUET = PROCESSED_DIR / "features"
 IMAGES_ROOT = PROCESSED_DIR / "images"
 MODELS_ROOT = PROCESSED_DIR / "models"
-OUTPUT_ROOT = PROJECT_ROOT / "output"
+OUTPUT_ROOT = PROJECT_ROOT / "outputs"
 BACKTEST_ROOT = OUTPUT_ROOT
+
+# Rebalance folders for step-04 H1 tables (keyed by forecast horizon R).
+HORIZON_BACKTEST_DIR: dict[int, str] = {
+    5: "weekly",
+    20: "monthly",
+    60: "quarterly",
+}
+CN_FACTOR_BACKTEST_DIR = "weekly"
 
 BACKTEST_N_GROUP = 10
 BACKTEST_WEIGHT_SCHEMES = ("equal", "float", "total")

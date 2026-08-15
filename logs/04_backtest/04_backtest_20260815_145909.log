@@ -1,0 +1,30 @@
+[2026-08-15 14:59:10] ============================================================
+[2026-08-15 14:59:10] 04_backtest
+[2026-08-15 14:59:10] Conda: 5020_env
+[2026-08-15 14:59:10] Python: /home/zkb/rpt-re/scripts/py/04_backtest.py
+[2026-08-15 14:59:10] Args:  --market us --all-configs
+[2026-08-15 14:59:10] Log:   /home/zkb/rpt-re/logs/04_backtest/04_backtest_20260815_145909.log
+[2026-08-15 14:59:10] ============================================================
+[2026-08-15 14:59:10] starting python
+[2026-08-15 14:59:53] load US panel I5_R5
+[2026-08-15 14:59:57] I5_R5 n=6660951 dates=991
+[2026-08-15 15:00:33] load US panel I20_R5
+[2026-08-15 15:00:37] I20_R5 n=6619772 dates=991
+[2026-08-15 15:01:12] load US panel I60_R5
+[2026-08-15 15:01:16] I60_R5 n=6542415 dates=991
+[2026-08-15 15:01:51] wrote /home/zkb/rpt-re/outputs/us/weekly/all_h1.xlsx
+[2026-08-15 15:01:51] load US panel I5_R20
+[2026-08-15 15:01:51] I5_R20 n=1524334 dates=228
+[2026-08-15 15:01:58] load US panel I20_R20
+[2026-08-15 15:01:59] I20_R20 n=1517498 dates=228
+[2026-08-15 15:02:05] load US panel I60_R20
+[2026-08-15 15:02:06] I60_R20 n=498948 dates=76
+[2026-08-15 15:02:08] wrote /home/zkb/rpt-re/outputs/us/monthly/all_h1.xlsx
+[2026-08-15 15:02:08] load US panel I5_R60
+[2026-08-15 15:02:08] I5_R60 n=502487 dates=76
+[2026-08-15 15:02:10] load US panel I20_R60
+[2026-08-15 15:02:10] I20_R60 n=499097 dates=76
+[2026-08-15 15:02:12] load US panel I60_R60
+[2026-08-15 15:02:12] I60_R60 n=492712 dates=76
+[2026-08-15 15:02:14] wrote /home/zkb/rpt-re/outputs/us/quarterly/all_h1.xlsx
+[2026-08-15 15:02:15] Done.

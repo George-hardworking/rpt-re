@@ -1,0 +1,30 @@
+[2026-08-15 15:01:53] ============================================================
+[2026-08-15 15:01:53] 04_backtest
+[2026-08-15 15:01:53] Conda: 5020_env
+[2026-08-15 15:01:53] Python: /home/zkb/rpt-re/scripts/py/04_backtest.py
+[2026-08-15 15:01:53] Args:  --market cn --all-configs
+[2026-08-15 15:01:53] Log:   /home/zkb/rpt-re/logs/04_backtest/04_backtest_20260815_150151.log
+[2026-08-15 15:01:53] ============================================================
+[2026-08-15 15:01:53] starting python
+[2026-08-15 15:01:59] load CN panel I5_R5
+[2026-08-15 15:02:00] I5_R5 n=594005 dates=254
+[2026-08-15 15:02:03] load CN panel I20_R5
+[2026-08-15 15:02:03] I20_R5 n=593994 dates=254
+[2026-08-15 15:02:06] load CN panel I60_R5
+[2026-08-15 15:02:07] I60_R5 n=593690 dates=254
+[2026-08-15 15:02:09] wrote /home/zkb/rpt-re/outputs/cn/weekly/all_h1.xlsx
+[2026-08-15 15:02:09] load CN panel I5_R20
+[2026-08-15 15:02:09] I5_R20 n=138289 dates=59
+[2026-08-15 15:02:10] load CN panel I20_R20
+[2026-08-15 15:02:10] I20_R20 n=138287 dates=59
+[2026-08-15 15:02:10] load CN panel I60_R20
+[2026-08-15 15:02:10] I60_R20 n=138165 dates=59
+[2026-08-15 15:02:11] wrote /home/zkb/rpt-re/outputs/cn/monthly/all_h1.xlsx
+[2026-08-15 15:02:11] load CN panel I5_R60
+[2026-08-15 15:02:11] I5_R60 n=44539 dates=19
+[2026-08-15 15:02:11] load CN panel I20_R60
+[2026-08-15 15:02:11] I20_R60 n=44538 dates=19
+[2026-08-15 15:02:12] load CN panel I60_R60
+[2026-08-15 15:02:12] I60_R60 n=44421 dates=19
+[2026-08-15 15:02:12] wrote /home/zkb/rpt-re/outputs/cn/quarterly/all_h1.xlsx
+[2026-08-15 15:02:12] Done.
