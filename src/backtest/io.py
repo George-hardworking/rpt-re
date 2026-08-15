@@ -158,6 +158,50 @@ def load_us_oos_panel(
     return merge_us_panel(pred, labels, horizon=horizon, start=start)
 
 
+def cap_col_for_top_n(
+    panel: pd.DataFrame,
+    spec: MarketSpec,
+    *,
+    cap_kind: str = "total",
+) -> str:
+    """PIT cap column for top-N universe (US: MarketCap when no TotalCap)."""
+    if cap_kind == "float":
+        if spec.float_cap_col not in panel.columns:
+            raise KeyError(f"panel missing float cap column {spec.float_cap_col}")
+        return spec.float_cap_col
+    if cap_kind == "total":
+        if spec.total_cap_col in panel.columns:
+            return spec.total_cap_col
+        if "MarketCap" in panel.columns:
+            return "MarketCap"
+        raise KeyError(
+            f"panel missing cap column for top-N filter "
+            f"(need {spec.total_cap_col} or MarketCap)"
+        )
+    raise ValueError(f"unknown cap_kind={cap_kind!r}, expected 'total' or 'float'")
+
+
+def filter_top_n_by_cap(
+    panel: pd.DataFrame,
+    *,
+    spec: MarketSpec,
+    top_n: int,
+    cap_kind: str = "total",
+) -> pd.DataFrame:
+    """Keep largest top_n names by formation-date cap (PIT; no future cap)."""
+    if top_n < 1:
+        raise ValueError(f"top_n must be >= 1, got {top_n}")
+    cap_col = cap_col_for_top_n(panel, spec, cap_kind=cap_kind)
+    date_col = spec.date_col
+    cap = panel[cap_col].to_numpy(dtype=np.float64)
+    ok = np.isfinite(cap) & (cap > 0.0)
+    tmp = panel.iloc[np.flatnonzero(ok)]
+    rank = tmp.groupby(date_col, sort=False)[cap_col].rank(method="first", ascending=False)
+    out = tmp.loc[rank <= top_n]
+    assert len(out) > 0, f"empty panel after top-{top_n} filter on {cap_col}"
+    return out
+
+
 def apply_universe(
     df: pd.DataFrame,
     universe: pd.DataFrame,

@@ -28,7 +28,38 @@ IMAGES_ROOT = PROCESSED_DIR / "images"
 MODELS_ROOT = PROCESSED_DIR / "models"
 OUTPUT_ROOT = PROJECT_ROOT / "outputs"
 BACKTEST_CNN_ROOT = OUTPUT_ROOT / "cnn_baseline"
+BACKTEST_CNN_TOP500_ROOT = OUTPUT_ROOT / "cnn_top500"
+BACKTEST_CNN_TOP500_FLOAT_ROOT = OUTPUT_ROOT / "cnn_top500_float"
 BACKTEST_CN_FACTOR_ROOT = OUTPUT_ROOT / "cn_factors"
+BACKTEST_TOP_N_CAP = 500
+
+# Paper trend benchmarks (Jiang–Kelly–Xiu JF 2023 Table I; HZZ from Han–Zhou–Zhu 2016).
+TREND_MOM_WINDOW = 252
+TREND_MOM_SKIP = 21
+TREND_STR_WINDOW = 21
+TREND_WSTR_WINDOW = 5
+TREND_52WH_WINDOW = 252
+TREND_HZZ_MA_LAGS: tuple[int, ...] = (3, 5, 10, 20, 50, 100, 200, 400)
+TREND_HZZ_EMA_LAMBDA = 0.1
+TREND_HZZ_MIN_NAMES = 30
+TREND_SIGNALS_DAILY = "trend_signals_daily"
+TREND_SIGNALS_REBALANCE = "trend_signals_rebalance"
+
+BENCHMARK_SIGNAL_COLS: tuple[str, ...] = (
+    "MOM",
+    "REV1m_STR",
+    "REV1w_WSTR",
+    "TREND_HZZ",
+    "DIST_52WH",
+)
+BENCHMARK_SIGNAL_DIRS: dict[str, str] = {
+    "MOM": "mom",
+    "REV1m_STR": "rev1m_str",
+    "REV1w_WSTR": "rev1w_wstr",
+    "TREND_HZZ": "trend_hzz",
+    "DIST_52WH": "dist_52wh",
+}
+HORIZON_DIAGONAL_IMAGE_DAYS: dict[int, int] = {5: 5, 20: 20, 60: 60}
 
 # Rebalance folders for step-04 H1 tables (keyed by forecast horizon R).
 HORIZON_BACKTEST_DIR: dict[int, str] = {
@@ -36,6 +67,30 @@ HORIZON_BACKTEST_DIR: dict[int, str] = {
     20: "monthly",
     60: "quarterly",
 }
+
+
+def benchmark_signals_dir(signal_col: str, market: str, horizon: int) -> Path:
+    """Rebalance-date signal panels on DATA_ROOT (not repo outputs/)."""
+    if signal_col not in BENCHMARK_SIGNAL_DIRS:
+        raise ValueError(f"unsupported benchmark signal={signal_col}")
+    if horizon not in HORIZON_BACKTEST_DIR:
+        raise ValueError(f"unsupported horizon={horizon}")
+    return (
+        market_processed_dir(market)
+        / TREND_SIGNALS_REBALANCE
+        / BENCHMARK_SIGNAL_DIRS[signal_col]
+        / HORIZON_BACKTEST_DIR[horizon]
+    )
+
+
+def benchmark_output_dir(signal_col: str, market: str, horizon: int) -> Path:
+    """H1 backtest Excel under repo outputs/."""
+    if signal_col not in BENCHMARK_SIGNAL_DIRS:
+        raise ValueError(f"unsupported benchmark signal={signal_col}")
+    if horizon not in HORIZON_BACKTEST_DIR:
+        raise ValueError(f"unsupported horizon={horizon}")
+    return OUTPUT_ROOT / BENCHMARK_SIGNAL_DIRS[signal_col] / market / HORIZON_BACKTEST_DIR[horizon]
+
 CN_FACTOR_BACKTEST_DIR = "weekly"
 
 BACKTEST_N_GROUP = 10
