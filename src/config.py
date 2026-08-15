@@ -78,7 +78,7 @@ def market_sample_config(market: str) -> MarketSampleConfig:
 N_ENSEMBLE = 5
 TRAIN_VAL_SPLIT_SEED = 0  # fixed 70/30 split per Ix/Ry; ensemble seeds only affect optimization
 ADAM_LR = 1e-5
-BATCH_SIZE = 128
+BATCH_SIZE = 512
 EARLY_STOP_PATIENCE = 2
 TRAIN_VAL_FRAC = 0.7
 MAX_EPOCHS = 100

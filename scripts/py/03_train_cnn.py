@@ -416,6 +416,7 @@ def build_child_cmd(args: argparse.Namespace, image_days: int, horizon: int, see
         cmd.append("--skip-train")
     if args.skip_predict:
         cmd.append("--skip-predict")
+    cmd.append("--no-all-seeds")
     return cmd
 
 
@@ -597,21 +598,21 @@ def run_local_jobs(
 
 def resolve_configs(args: argparse.Namespace) -> list[tuple[int, int]]:
     if args.paper_cross:
-        if args.all_configs or args.image_days is not None or args.horizon is not None:
+        if args.image_days is not None or args.horizon is not None:
             raise ValueError(
-                "--paper-cross cannot be combined with --all-configs or --image-days/--horizon"
+                "--paper-cross cannot be combined with --image-days/--horizon"
             )
         configs = list(PAPER_CROSS_CONFIGS)
+    elif args.image_days is not None and args.horizon is not None:
+        configs = [(args.image_days, args.horizon)]
     elif args.all_configs:
-        if args.image_days is not None or args.horizon is not None:
-            raise ValueError("--all-configs cannot be combined with --image-days/--horizon")
         configs = [(d, h) for d in WINDOW_DAYS for h in WINDOW_DAYS]
     else:
-        if args.image_days is None or args.horizon is None:
-            raise ValueError("require --image-days and --horizon, or --all-configs, or --paper-cross")
-        configs = [(args.image_days, args.horizon)]
+        raise ValueError(
+            "require --image-days and --horizon when using --no-all-configs"
+        )
     if args.init_from_image_days is not None:
-        if args.all_configs:
+        if len(configs) > 1:
             src_blocks = cnn_num_blocks(args.init_from_image_days)
             configs = [
                 (image_days, horizon)
@@ -644,13 +645,15 @@ def main() -> None:
     )
     parser.add_argument(
         "--all-seeds",
-        action="store_true",
-        help=f"train/predict seeds 0..{N_ENSEMBLE - 1} and write ensemble_pred.feather",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help=f"train/predict seeds 0..{N_ENSEMBLE - 1} and write ensemble_pred.feather (default: on)",
     )
     parser.add_argument(
         "--all-configs",
-        action="store_true",
-        help="train all image-days × horizon pairs (9 models)",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="train all image-days × horizon pairs (9 models; default: on unless --paper-cross)",
     )
     parser.add_argument(
         "--paper-cross",
@@ -698,8 +701,13 @@ def main() -> None:
         args.images = market_root / "images"
 
     configs = resolve_configs(args)
-    seeds = list(range(N_ENSEMBLE)) if args.all_seeds else [args.seed]
     is_child = os.environ.get(CHILD_ENV) == "1"
+    if is_child:
+        seeds = [args.seed]
+    elif args.all_seeds:
+        seeds = list(range(N_ENSEMBLE))
+    else:
+        seeds = [args.seed]
 
     if args.fresh:
         for image_days, horizon in configs:

@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 # 03_train_cnn: memmap images -> trained CNN checkpoints + OOS P(up) predictions.
 #
-# Usage:
-#   ./scripts/sh/03_train_cnn.sh --image-days 5 --horizon 5 --seed 0
-#   ./scripts/sh/03_train_cnn.sh --image-days 20 --horizon 20 --all-seeds
-#   ./scripts/sh/03_train_cnn.sh --image-days 5 --horizon 5 --seed 0 --device cuda
-#   ./scripts/sh/03_train_cnn.sh --all-configs --all-seeds
+# Usage (default: 9 I×R configs × 5 ensemble seeds, batch 512):
+#   ./scripts/sh/03_train_cnn.sh
+#   ./scripts/sh/03_train_cnn.sh --market cn --gpu-ids 0,1,2,3
+#   ./scripts/sh/03_train_cnn.sh --image-days 5 --horizon 5 --no-all-seeds --seed 0
+#   ./scripts/sh/03_train_cnn.sh --paper-cross --gpu-ids 0,3
 #   ./scripts/sh/03_train_cnn.sh --all-configs --all-seeds --gpu-ids 1,3
-#   ./scripts/sh/03_train_cnn.sh --paper-cross --all-seeds --gpu-ids 0,3
 #   # --seed: optimization only; 70/30 split uses --split-seed (default 0, shared by ensemble)
 #   ./scripts/sh/03_train_cnn.sh --image-days 20 --horizon 20 --all-seeds --init-from-image-days 5
 #
@@ -95,7 +94,7 @@ if [[ "$*" != *"--reserve-gib"* ]]; then
   set -- "$@" --reserve-gib "$RESERVE_GIB"
 fi
 if [[ "$*" != *"--batch-size"* ]]; then
-  set -- "$@" --batch-size 128
+  set -- "$@" --batch-size 512
 fi
 
 log "============================================================"
