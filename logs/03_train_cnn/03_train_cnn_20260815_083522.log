@@ -1,0 +1,1578 @@
+[2026-08-15 08:35:23] ============================================================
+[2026-08-15 08:35:23] 03_train_cnn
+[2026-08-15 08:35:23] Conda: 5020_env
+[2026-08-15 08:35:23] Python: /home/zkb/rpt-re/scripts/py/03_train_cnn.py
+[2026-08-15 08:35:23] Args:  --market cn --paper-cross --all-seeds --gpu-ids 0,1,2,3 --batch-size 256 --reserve-gib 16
+[2026-08-15 08:35:23] Log:   /home/zkb/rpt-re/logs/03_train_cnn/03_train_cnn_20260815_083522.log
+[2026-08-15 08:35:23] ============================================================
+[2026-08-15 08:35:23] starting python
+[2026-08-15 08:35:25] pending jobs=30 configs=[(20, 5), (60, 5), (5, 20), (60, 20), (5, 60), (20, 60)] seeds=[0, 1, 2, 3, 4]
+[2026-08-15 08:35:25] nvidia-smi=[(0, 48494, 0), (1, 48496, 0), (2, 48464, 0), (3, 48496, 0)]
+[2026-08-15 08:35:25] parallel jobs=30 n_conc=30 gpu_free=[(0, 48494), (1, 48496), (2, 48464), (3, 48496)] gpu_slots=44 per_gpu_slots=[11, 11, 11, 11] jobs_per_gpu_max=32 batch_size=256 ram_diag={'source': 'memory_budget', 'avail_gib': 348.2, 'total_gib': 377.5, 'reserve_gib': 16.0, 'budget_gib': 332.2, 'mem_per_worker_gib': 10.0, 'mem_cap': 33, 'cpu_cap': 112, 'swap_percent': 99.7, 'n_tasks': 30, 'resolved_workers': 30}
+[2026-08-15 08:35:25] acquire gpu=1 need_mib=8192 active={0: 0, 1: 1, 2: 0, 3: 0} remaining={0: 48494, 1: 40304, 2: 48464, 3: 48496}
+[2026-08-15 08:35:25] acquire gpu=3 need_mib=8192 active={0: 0, 1: 1, 2: 0, 3: 1} remaining={0: 48494, 1: 40304, 2: 48464, 3: 40304}
+[2026-08-15 08:35:25] [I20_R5 seed0 gpu1] start
+[2026-08-15 08:35:25] [I20_R5 seed1 gpu3] start
+[2026-08-15 08:35:25] acquire gpu=0 need_mib=8192 active={0: 1, 1: 1, 2: 0, 3: 1} remaining={0: 40302, 1: 40304, 2: 48464, 3: 40304}
+[2026-08-15 08:35:25] [I20_R5 seed2 gpu0] start
+[2026-08-15 08:35:25] acquire gpu=2 need_mib=8192 active={0: 1, 1: 1, 2: 1, 3: 1} remaining={0: 40302, 1: 40304, 2: 40272, 3: 40304}
+[2026-08-15 08:35:25] acquire gpu=1 need_mib=8192 active={0: 1, 1: 2, 2: 1, 3: 1} remaining={0: 40302, 1: 32112, 2: 40272, 3: 40304}
+[2026-08-15 08:35:25] [I20_R5 seed3 gpu2] start
+[2026-08-15 08:35:25] acquire gpu=3 need_mib=16384 active={0: 1, 1: 2, 2: 1, 3: 2} remaining={0: 40302, 1: 32112, 2: 40272, 3: 23920}
+[2026-08-15 08:35:25] [I20_R5 seed4 gpu1] start
+[2026-08-15 08:35:25] [I60_R5 seed0 gpu3] start
+[2026-08-15 08:35:25] acquire gpu=0 need_mib=16384 active={0: 2, 1: 2, 2: 1, 3: 2} remaining={0: 23918, 1: 32112, 2: 40272, 3: 23920}
+[2026-08-15 08:35:25] [I60_R5 seed1 gpu0] start
+[2026-08-15 08:35:25] acquire gpu=2 need_mib=16384 active={0: 2, 1: 2, 2: 2, 3: 2} remaining={0: 23918, 1: 32112, 2: 23888, 3: 23920}
+[2026-08-15 08:35:25] [I60_R5 seed2 gpu2] start
+[2026-08-15 08:35:25] acquire gpu=1 need_mib=16384 active={0: 2, 1: 3, 2: 2, 3: 2} remaining={0: 23918, 1: 15728, 2: 23888, 3: 23920}
+[2026-08-15 08:35:25] [I60_R5 seed3 gpu1] start
+[2026-08-15 08:35:25] acquire gpu=3 need_mib=16384 active={0: 2, 1: 3, 2: 2, 3: 3} remaining={0: 23918, 1: 15728, 2: 23888, 3: 7536}
+[2026-08-15 08:35:25] [I60_R5 seed4 gpu3] start
+[2026-08-15 08:35:25] acquire gpu=0 need_mib=4096 active={0: 3, 1: 3, 2: 2, 3: 3} remaining={0: 19822, 1: 15728, 2: 23888, 3: 7536}
+[2026-08-15 08:35:25] acquire gpu=2 need_mib=4096 active={0: 3, 1: 3, 2: 3, 3: 3} remaining={0: 19822, 1: 15728, 2: 19792, 3: 7536}[I5_R20 seed0 gpu0] start
+[2026-08-15 08:35:25] 
+[2026-08-15 08:35:25] acquire gpu=0 need_mib=4096 active={0: 4, 1: 3, 2: 3, 3: 3} remaining={0: 15726, 1: 15728, 2: 19792, 3: 7536}
+[2026-08-15 08:35:25] acquire gpu=2 need_mib=4096 active={0: 4, 1: 3, 2: 4, 3: 3} remaining={0: 15726, 1: 15728, 2: 15696, 3: 7536}
+[2026-08-15 08:35:25] [I5_R20 seed1 gpu2] start
+[2026-08-15 08:35:25] [I5_R20 seed2 gpu0] start
+[2026-08-15 08:35:25] acquire gpu=1 need_mib=4096 active={0: 4, 1: 4, 2: 4, 3: 3} remaining={0: 15726, 1: 11632, 2: 15696, 3: 7536}[I5_R20 seed3 gpu2] start
+[2026-08-15 08:35:25] 
+[2026-08-15 08:35:25] [I5_R20 seed4 gpu1] start
+[2026-08-15 08:35:25] acquire gpu=0 need_mib=4096 active={0: 5, 1: 4, 2: 4, 3: 3} remaining={0: 11630, 1: 11632, 2: 15696, 3: 7536}
+[2026-08-15 08:35:25] acquire gpu=2 need_mib=4096 active={0: 5, 1: 4, 2: 5, 3: 3} remaining={0: 11630, 1: 11632, 2: 11600, 3: 7536}
+[2026-08-15 08:35:25] [I5_R60 seed0 gpu0] start
+[2026-08-15 08:35:25] acquire gpu=1 need_mib=4096 active={0: 5, 1: 5, 2: 5, 3: 3} remaining={0: 11630, 1: 7536, 2: 11600, 3: 7536}
+[2026-08-15 08:35:25] [I5_R60 seed2 gpu1] start
+[2026-08-15 08:35:25] acquire gpu=0 need_mib=4096 active={0: 6, 1: 5, 2: 5, 3: 3} remaining={0: 7534, 1: 7536, 2: 11600, 3: 7536}
+[2026-08-15 08:35:25] [I5_R60 seed1 gpu2] start
+[2026-08-15 08:35:25] [I5_R60 seed3 gpu0] start
+[2026-08-15 08:35:25] acquire gpu=2 need_mib=4096 active={0: 6, 1: 5, 2: 6, 3: 3} remaining={0: 7534, 1: 7536, 2: 7504, 3: 7536}
+[2026-08-15 08:35:25] [I5_R60 seed4 gpu2] start
+[2026-08-15 08:35:26] [I5_R20 seed4 gpu1] pending jobs=1 configs=[(5, 20)] seeds=[4]
+[2026-08-15 08:35:26] [I20_R5 seed4 gpu1] pending jobs=1 configs=[(20, 5)] seeds=[4]
+[2026-08-15 08:35:26] [I20_R5 seed3 gpu2] pending jobs=1 configs=[(20, 5)] seeds=[3]
+[2026-08-15 08:35:26] [I20_R5 seed2 gpu0] pending jobs=1 configs=[(20, 5)] seeds=[2]
+[2026-08-15 08:35:26] [I5_R20 seed0 gpu0] pending jobs=1 configs=[(5, 20)] seeds=[0]
+[2026-08-15 08:35:26] [I60_R5 seed0 gpu3] pending jobs=1 configs=[(60, 5)] seeds=[0]
+[2026-08-15 08:35:26] [I5_R60 seed2 gpu1] pending jobs=1 configs=[(5, 60)] seeds=[2]
+[2026-08-15 08:35:26] [I5_R60 seed4 gpu2] pending jobs=1 configs=[(5, 60)] seeds=[4]
+[2026-08-15 08:35:26] [I20_R5 seed0 gpu1] pending jobs=1 configs=[(20, 5)] seeds=[0]
+[2026-08-15 08:35:26] [I5_R20 seed1 gpu2] pending jobs=1 configs=[(5, 20)] seeds=[1]
+[2026-08-15 08:35:26] [I5_R60 seed1 gpu2] pending jobs=1 configs=[(5, 60)] seeds=[1]
+[2026-08-15 08:35:26] [I5_R20 seed2 gpu0] pending jobs=1 configs=[(5, 20)] seeds=[2]
+[2026-08-15 08:35:27] [I5_R60 seed0 gpu0] pending jobs=1 configs=[(5, 60)] seeds=[0]
+[2026-08-15 08:35:27] [I5_R20 seed3 gpu2] pending jobs=1 configs=[(5, 20)] seeds=[3]
+[2026-08-15 08:35:27] [I60_R5 seed3 gpu1] pending jobs=1 configs=[(60, 5)] seeds=[3]
+[2026-08-15 08:35:27] [I5_R60 seed4 gpu2] I5/R60 freq=quarter split_seed=0 samples train=31335 val=13430 test=44539
+[2026-08-15 08:35:27] [I5_R60 seed2 gpu1] I5/R60 freq=quarter split_seed=0 samples train=31335 val=13430 test=44539
+[2026-08-15 08:35:27] [I5_R60 seed4 gpu2] pixel stats: year=2007 done (1/8 years)
+[2026-08-15 08:35:27] [I5_R60 seed4 gpu2] pixel stats: year=2008 done (2/8 years)
+[2026-08-15 08:35:27] [I5_R60 seed3 gpu0] pending jobs=1 configs=[(5, 60)] seeds=[3]
+[2026-08-15 08:35:27] [I5_R60 seed1 gpu2] I5/R60 freq=quarter split_seed=0 samples train=31335 val=13430 test=44539
+[2026-08-15 08:35:27] [I5_R60 seed4 gpu2] pixel stats: year=2009 done (3/8 years)
+[2026-08-15 08:35:27] [I60_R5 seed4 gpu3] pending jobs=1 configs=[(60, 5)] seeds=[4]
+[2026-08-15 08:35:27] [I5_R60 seed4 gpu2] pixel stats: year=2010 done (4/8 years)
+[2026-08-15 08:35:27] [I5_R60 seed4 gpu2] pixel stats: year=2011 done (5/8 years)
+[2026-08-15 08:35:27] [I5_R60 seed4 gpu2] pixel stats: year=2012 84% (6/8 years)
+[2026-08-15 08:35:27] [I5_R60 seed4 gpu2] pixel stats: year=2012 100% (6/8 years)
+[2026-08-15 08:35:27] [I5_R60 seed4 gpu2] pixel stats: year=2012 done (6/8 years)
+[2026-08-15 08:35:27] [I60_R5 seed1 gpu0] pending jobs=1 configs=[(60, 5)] seeds=[1]
+[2026-08-15 08:35:27] [I60_R5 seed2 gpu2] pending jobs=1 configs=[(60, 5)] seeds=[2]
+[2026-08-15 08:35:27] [I20_R5 seed1 gpu3] pending jobs=1 configs=[(20, 5)] seeds=[1]
+[2026-08-15 08:35:27] [I5_R60 seed4 gpu2] pixel stats: year=2013 78% (7/8 years)
+[2026-08-15 08:35:27] [I5_R60 seed4 gpu2] pixel stats: year=2013 100% (7/8 years)
+[2026-08-15 08:35:27] [I5_R60 seed4 gpu2] pixel stats: year=2013 done (7/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] I5/R20 freq=month split_seed=0 samples train=93506 val=40075 test=138289
+[2026-08-15 08:35:27] [I5_R60 seed4 gpu2] pixel stats: year=2014 77% (8/8 years)
+[2026-08-15 08:35:27] [I5_R60 seed4 gpu2] pixel stats: year=2014 100% (8/8 years)
+[2026-08-15 08:35:27] [I5_R60 seed4 gpu2] pixel stats: year=2014 done (8/8 years)
+[2026-08-15 08:35:27] [I5_R60 seed4 gpu2] pixel_mean=50.962803 pixel_std=101.972092
+[2026-08-15 08:35:27] [I5_R60 seed2 gpu1] pixel_mean=50.962803 pixel_std=101.972092
+[2026-08-15 08:35:27] [I5_R60 seed4 gpu2] I5_R60 train_seed=4
+[2026-08-15 08:35:27] [I5_R60 seed1 gpu2] pixel_mean=50.962803 pixel_std=101.972092
+[2026-08-15 08:35:27] [I5_R60 seed0 gpu0] I5/R60 freq=quarter split_seed=0 samples train=31335 val=13430 test=44539
+[2026-08-15 08:35:27] [I5_R60 seed2 gpu1] I5_R60 train_seed=2
+[2026-08-15 08:35:27] [I5_R60 seed1 gpu2] I5_R60 train_seed=1
+[2026-08-15 08:35:27] [I5_R60 seed0 gpu0] pixel_mean=50.962803 pixel_std=101.972092
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2007 53% (1/8 years)
+[2026-08-15 08:35:27] [I5_R60 seed0 gpu0] I5_R60 train_seed=0
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2007 100% (1/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2007 done (1/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2008 49% (2/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2008 97% (2/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2008 100% (2/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2008 done (2/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2009 46% (3/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2009 92% (3/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2009 100% (3/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2009 done (3/8 years)
+[2026-08-15 08:35:27] [I5_R60 seed3 gpu0] I5/R60 freq=quarter split_seed=0 samples train=31335 val=13430 test=44539
+[2026-08-15 08:35:27] [I5_R60 seed3 gpu0] pixel_mean=50.962803 pixel_std=101.972092
+[2026-08-15 08:35:27] [I5_R60 seed3 gpu0] I5_R60 train_seed=3
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2010 41% (4/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2010 81% (4/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2010 100% (4/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2010 done (4/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed0 gpu0] I5/R20 freq=month split_seed=0 samples train=93506 val=40075 test=138289
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2011 33% (5/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2011 67% (5/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2011 100% (5/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2011 done (5/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2012 28% (6/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2012 57% (6/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed1 gpu2] I5/R20 freq=month split_seed=0 samples train=93506 val=40075 test=138289
+[2026-08-15 08:35:27] [I5_R20 seed2 gpu0] I5/R20 freq=month split_seed=0 samples train=93506 val=40075 test=138289
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2012 85% (6/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2012 100% (6/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2012 done (6/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2013 26% (7/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2013 52% (7/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2013 78% (7/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2013 100% (7/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2013 done (7/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2014 26% (8/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2014 52% (8/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2014 78% (8/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2014 100% (8/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel stats: year=2014 done (8/8 years)
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] pixel_mean=51.168057 pixel_std=102.125827
+[2026-08-15 08:35:27] [I5_R20 seed0 gpu0] pixel_mean=51.168057 pixel_std=102.125827
+[2026-08-15 08:35:27] [I5_R20 seed1 gpu2] pixel_mean=51.168057 pixel_std=102.125827
+[2026-08-15 08:35:27] [I5_R20 seed4 gpu1] I5_R20 train_seed=4
+[2026-08-15 08:35:27] [I5_R20 seed2 gpu0] pixel_mean=51.168057 pixel_std=102.125827
+[2026-08-15 08:35:27] [I5_R20 seed0 gpu0] I5_R20 train_seed=0
+[2026-08-15 08:35:27] [I5_R20 seed1 gpu2] I5_R20 train_seed=1
+[2026-08-15 08:35:27] [I5_R20 seed2 gpu0] I5_R20 train_seed=2
+[2026-08-15 08:35:27] [I5_R20 seed3 gpu2] I5/R20 freq=month split_seed=0 samples train=93506 val=40075 test=138289
+[2026-08-15 08:35:27] [I5_R20 seed3 gpu2] pixel_mean=51.168057 pixel_std=102.125827
+[2026-08-15 08:35:27] [I5_R20 seed3 gpu2] I5_R20 train_seed=3
+[2026-08-15 08:35:28] [I60_R5 seed3 gpu1] I60/R5 freq=week split_seed=0 samples train=392760 val=168326 test=593690
+[2026-08-15 08:35:28] [I60_R5 seed1 gpu0] I60/R5 freq=week split_seed=0 samples train=392760 val=168326 test=593690
+[2026-08-15 08:35:28] [I60_R5 seed4 gpu3] I60/R5 freq=week split_seed=0 samples train=392760 val=168326 test=593690
+[2026-08-15 08:35:28] [I5_R60 seed4 gpu2] model I5 flatten=15360 params=155138
+[2026-08-15 08:35:28] [I60_R5 seed0 gpu3] I60/R5 freq=week split_seed=0 samples train=392760 val=168326 test=593690
+[2026-08-15 08:35:28] [I5_R60 seed0 gpu0] model I5 flatten=15360 params=155138
+[2026-08-15 08:35:28] [I5_R60 seed2 gpu1] model I5 flatten=15360 params=155138
+[2026-08-15 08:35:28] [I5_R60 seed3 gpu0] model I5 flatten=15360 params=155138
+[2026-08-15 08:35:28] [I5_R60 seed1 gpu2] model I5 flatten=15360 params=155138
+[2026-08-15 08:35:28] [I5_R20 seed0 gpu0] model I5 flatten=15360 params=155138
+[2026-08-15 08:35:28] [I5_R20 seed4 gpu1] model I5 flatten=15360 params=155138
+[2026-08-15 08:35:28] [I60_R5 seed2 gpu2] I60/R5 freq=week split_seed=0 samples train=392760 val=168326 test=593690
+[2026-08-15 08:35:28] [I5_R20 seed1 gpu2] model I5 flatten=15360 params=155138
+[2026-08-15 08:35:28] [I5_R20 seed2 gpu0] model I5 flatten=15360 params=155138
+[2026-08-15 08:35:28] [I5_R20 seed3 gpu2] model I5 flatten=15360 params=155138
+[2026-08-15 08:35:28] [I60_R5 seed3 gpu1] pixel stats: year=2007 13% (1/8 years)
+[2026-08-15 08:35:29] [I20_R5 seed1 gpu3] I20/R5 freq=week split_seed=0 samples train=395894 val=169669 test=593994
+[2026-08-15 08:35:29] [I20_R5 seed3 gpu2] I20/R5 freq=week split_seed=0 samples train=395894 val=169669 test=593994
+[2026-08-15 08:35:29] [I20_R5 seed0 gpu1] I20/R5 freq=week split_seed=0 samples train=395894 val=169669 test=593994
+[2026-08-15 08:35:29] [I20_R5 seed4 gpu1] I20/R5 freq=week split_seed=0 samples train=395894 val=169669 test=593994
+[2026-08-15 08:35:29] [I20_R5 seed2 gpu0] I20/R5 freq=week split_seed=0 samples train=395894 val=169669 test=593994
+[2026-08-15 08:35:29] [I60_R5 seed3 gpu1] pixel stats: year=2007 26% (1/8 years)
+[2026-08-15 08:35:29] [I20_R5 seed1 gpu3] pixel stats: year=2007 13% (1/8 years)
+[2026-08-15 08:35:29] [I20_R5 seed1 gpu3] pixel stats: year=2007 25% (1/8 years)
+[2026-08-15 08:35:29] [I20_R5 seed1 gpu3] pixel stats: year=2007 38% (1/8 years)
+[2026-08-15 08:35:29] [I20_R5 seed1 gpu3] pixel stats: year=2007 51% (1/8 years)
+[2026-08-15 08:35:29] [I20_R5 seed1 gpu3] pixel stats: year=2007 64% (1/8 years)
+[2026-08-15 08:35:29] [I60_R5 seed3 gpu1] pixel stats: year=2007 39% (1/8 years)
+[2026-08-15 08:35:30] [I20_R5 seed1 gpu3] pixel stats: year=2007 76% (1/8 years)
+[2026-08-15 08:35:30] [I20_R5 seed1 gpu3] pixel stats: year=2007 89% (1/8 years)
+[2026-08-15 08:35:30] [I20_R5 seed1 gpu3] pixel stats: year=2007 100% (1/8 years)
+[2026-08-15 08:35:30] [I20_R5 seed1 gpu3] pixel stats: year=2007 done (1/8 years)
+[2026-08-15 08:35:30] [I20_R5 seed1 gpu3] pixel stats: year=2008 11% (2/8 years)
+[2026-08-15 08:35:30] [I60_R5 seed3 gpu1] pixel stats: year=2007 52% (1/8 years)
+[2026-08-15 08:35:30] [I20_R5 seed1 gpu3] pixel stats: year=2008 23% (2/8 years)
+[2026-08-15 08:35:30] [I20_R5 seed1 gpu3] pixel stats: year=2008 34% (2/8 years)
+[2026-08-15 08:35:30] [I5_R60 seed4 gpu2] epoch=1 train_loss=1.068628 val_loss=0.741520
+[2026-08-15 08:35:30] [I5_R60 seed4 gpu2] new best epoch=1 val_loss=0.741520 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed4/best.pt
+[2026-08-15 08:35:30] [I20_R5 seed1 gpu3] pixel stats: year=2008 45% (2/8 years)
+[2026-08-15 08:35:30] [I20_R5 seed1 gpu3] pixel stats: year=2008 56% (2/8 years)
+[2026-08-15 08:35:30] [I5_R60 seed3 gpu0] epoch=1 train_loss=1.013303 val_loss=0.725829
+[2026-08-15 08:35:30] [I5_R60 seed3 gpu0] new best epoch=1 val_loss=0.725829 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed3/best.pt
+[2026-08-15 08:35:30] [I5_R60 seed0 gpu0] epoch=1 train_loss=1.042092 val_loss=0.740010
+[2026-08-15 08:35:30] [I5_R60 seed0 gpu0] new best epoch=1 val_loss=0.740010 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0/best.pt
+[2026-08-15 08:35:30] [I60_R5 seed3 gpu1] pixel stats: year=2007 64% (1/8 years)
+[2026-08-15 08:35:30] [I20_R5 seed1 gpu3] pixel stats: year=2008 68% (2/8 years)
+[2026-08-15 08:35:31] [I20_R5 seed1 gpu3] pixel stats: year=2008 79% (2/8 years)
+[2026-08-15 08:35:31] [I20_R5 seed1 gpu3] pixel stats: year=2008 90% (2/8 years)
+[2026-08-15 08:35:31] [I20_R5 seed1 gpu3] pixel stats: year=2008 100% (2/8 years)
+[2026-08-15 08:35:31] [I20_R5 seed1 gpu3] pixel stats: year=2008 done (2/8 years)
+[2026-08-15 08:35:31] [I5_R60 seed2 gpu1] epoch=1 train_loss=1.031811 val_loss=0.728460
+[2026-08-15 08:35:31] [I5_R60 seed2 gpu1] new best epoch=1 val_loss=0.728460 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:31] [I20_R5 seed1 gpu3] pixel stats: year=2009 11% (3/8 years)
+[2026-08-15 08:35:31] [I60_R5 seed3 gpu1] pixel stats: year=2007 77% (1/8 years)
+[2026-08-15 08:35:31] [I20_R5 seed1 gpu3] pixel stats: year=2009 22% (3/8 years)
+[2026-08-15 08:35:31] [I20_R5 seed1 gpu3] pixel stats: year=2009 33% (3/8 years)
+[2026-08-15 08:35:31] [I20_R5 seed1 gpu3] pixel stats: year=2009 43% (3/8 years)
+[2026-08-15 08:35:31] [I20_R5 seed1 gpu3] pixel stats: year=2009 54% (3/8 years)
+[2026-08-15 08:35:31] [I5_R60 seed4 gpu2] epoch=2 train_loss=1.015832 val_loss=0.726009
+[2026-08-15 08:35:31] [I5_R60 seed4 gpu2] new best epoch=2 val_loss=0.726009 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed4/best.pt
+[2026-08-15 08:35:31] [I60_R5 seed3 gpu1] pixel stats: year=2007 90% (1/8 years)
+[2026-08-15 08:35:31] [I20_R5 seed1 gpu3] pixel stats: year=2009 65% (3/8 years)
+[2026-08-15 08:35:31] [I5_R60 seed1 gpu2] epoch=1 train_loss=1.042305 val_loss=0.737003
+[2026-08-15 08:35:31] [I5_R60 seed1 gpu2] new best epoch=1 val_loss=0.737003 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:35:31] [I20_R5 seed1 gpu3] pixel stats: year=2009 76% (3/8 years)
+[2026-08-15 08:35:31] [I5_R60 seed2 gpu1] epoch=2 train_loss=0.994458 val_loss=0.716266
+[2026-08-15 08:35:31] [I5_R60 seed2 gpu1] new best epoch=2 val_loss=0.716266 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:31] [I20_R5 seed1 gpu3] pixel stats: year=2009 87% (3/8 years)
+[2026-08-15 08:35:32] [I20_R5 seed1 gpu3] pixel stats: year=2009 98% (3/8 years)
+[2026-08-15 08:35:32] [I5_R60 seed3 gpu0] epoch=2 train_loss=0.978506 val_loss=0.709950
+[2026-08-15 08:35:32] [I5_R60 seed3 gpu0] new best epoch=2 val_loss=0.709950 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed3/best.pt
+[2026-08-15 08:35:32] [I20_R5 seed1 gpu3] pixel stats: year=2009 100% (3/8 years)
+[2026-08-15 08:35:32] [I20_R5 seed1 gpu3] pixel stats: year=2009 done (3/8 years)
+[2026-08-15 08:35:32] [I5_R60 seed0 gpu0] epoch=2 train_loss=0.996530 val_loss=0.714970
+[2026-08-15 08:35:32] [I5_R60 seed0 gpu0] new best epoch=2 val_loss=0.714970 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0/best.pt
+[2026-08-15 08:35:32] [I60_R5 seed3 gpu1] pixel stats: year=2007 100% (1/8 years)
+[2026-08-15 08:35:32] [I60_R5 seed3 gpu1] pixel stats: year=2007 done (1/8 years)
+[2026-08-15 08:35:32] [I20_R5 seed1 gpu3] pixel stats: year=2010 10% (4/8 years)
+[2026-08-15 08:35:32] [I20_R5 seed1 gpu3] pixel stats: year=2010 20% (4/8 years)
+[2026-08-15 08:35:32] [I5_R20 seed4 gpu1] epoch=1 train_loss=1.026960 val_loss=0.721937
+[2026-08-15 08:35:32] [I5_R20 seed4 gpu1] new best epoch=1 val_loss=0.721937 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed4/best.pt
+[2026-08-15 08:35:32] [I20_R5 seed1 gpu3] pixel stats: year=2010 29% (4/8 years)
+[2026-08-15 08:35:32] [I20_R5 seed1 gpu3] pixel stats: year=2010 39% (4/8 years)
+[2026-08-15 08:35:32] [I5_R60 seed2 gpu1] epoch=3 train_loss=0.967704 val_loss=0.704030
+[2026-08-15 08:35:32] [I5_R60 seed2 gpu1] new best epoch=3 val_loss=0.704030 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:32] [I60_R5 seed3 gpu1] pixel stats: year=2008 11% (2/8 years)
+[2026-08-15 08:35:32] [I20_R5 seed1 gpu3] pixel stats: year=2010 49% (4/8 years)
+[2026-08-15 08:35:32] [I20_R5 seed1 gpu3] pixel stats: year=2010 59% (4/8 years)
+[2026-08-15 08:35:32] [I20_R5 seed1 gpu3] pixel stats: year=2010 68% (4/8 years)
+[2026-08-15 08:35:32] [I5_R60 seed4 gpu2] epoch=3 train_loss=0.987652 val_loss=0.711484
+[2026-08-15 08:35:32] [I5_R60 seed4 gpu2] new best epoch=3 val_loss=0.711484 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed4/best.pt
+[2026-08-15 08:35:32] [I20_R5 seed1 gpu3] pixel stats: year=2010 78% (4/8 years)
+[2026-08-15 08:35:32] [I5_R60 seed1 gpu2] epoch=2 train_loss=0.991864 val_loss=0.718803
+[2026-08-15 08:35:33] [I5_R60 seed1 gpu2] new best epoch=2 val_loss=0.718803 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:35:33] [I20_R5 seed1 gpu3] pixel stats: year=2010 88% (4/8 years)
+[2026-08-15 08:35:33] [I60_R5 seed3 gpu1] pixel stats: year=2008 23% (2/8 years)
+[2026-08-15 08:35:33] [I20_R5 seed1 gpu3] pixel stats: year=2010 98% (4/8 years)
+[2026-08-15 08:35:33] [I20_R5 seed1 gpu3] pixel stats: year=2010 100% (4/8 years)
+[2026-08-15 08:35:33] [I20_R5 seed1 gpu3] pixel stats: year=2010 done (4/8 years)
+[2026-08-15 08:35:33] [I5_R60 seed2 gpu1] epoch=4 train_loss=0.951487 val_loss=0.695207
+[2026-08-15 08:35:33] [I5_R60 seed2 gpu1] new best epoch=4 val_loss=0.695207 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:33] [I5_R60 seed3 gpu0] epoch=3 train_loss=0.964807 val_loss=0.703714
+[2026-08-15 08:35:33] [I5_R60 seed3 gpu0] new best epoch=3 val_loss=0.703714 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed3/best.pt
+[2026-08-15 08:35:33] [I5_R60 seed0 gpu0] epoch=3 train_loss=0.973860 val_loss=0.707460
+[2026-08-15 08:35:33] [I5_R60 seed0 gpu0] new best epoch=3 val_loss=0.707460 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0/best.pt
+[2026-08-15 08:35:33] [I20_R5 seed1 gpu3] pixel stats: year=2011 8% (5/8 years)
+[2026-08-15 08:35:33] [I20_R5 seed1 gpu3] pixel stats: year=2011 16% (5/8 years)
+[2026-08-15 08:35:33] [I20_R5 seed1 gpu3] pixel stats: year=2011 24% (5/8 years)
+[2026-08-15 08:35:33] [I5_R20 seed3 gpu2] epoch=1 train_loss=0.998649 val_loss=0.713656
+[2026-08-15 08:35:33] [I5_R20 seed3 gpu2] new best epoch=1 val_loss=0.713656 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed3/best.pt
+[2026-08-15 08:35:33] [I60_R5 seed3 gpu1] pixel stats: year=2008 34% (2/8 years)
+[2026-08-15 08:35:33] [I20_R5 seed1 gpu3] pixel stats: year=2011 32% (5/8 years)
+[2026-08-15 08:35:33] [I5_R20 seed2 gpu0] epoch=1 train_loss=1.012924 val_loss=0.730114
+[2026-08-15 08:35:33] [I5_R20 seed2 gpu0] new best epoch=1 val_loss=0.730114 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed2/best.pt
+[2026-08-15 08:35:33] [I20_R5 seed1 gpu3] pixel stats: year=2011 40% (5/8 years)
+[2026-08-15 08:35:33] [I20_R5 seed1 gpu3] pixel stats: year=2011 48% (5/8 years)
+[2026-08-15 08:35:33] [I5_R60 seed2 gpu1] epoch=5 train_loss=0.941068 val_loss=0.689085
+[2026-08-15 08:35:33] [I5_R60 seed2 gpu1] new best epoch=5 val_loss=0.689085 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:33] [I5_R60 seed4 gpu2] epoch=4 train_loss=0.966233 val_loss=0.697608
+[2026-08-15 08:35:33] [I5_R60 seed4 gpu2] new best epoch=4 val_loss=0.697608 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed4/best.pt
+[2026-08-15 08:35:33] [I20_R5 seed1 gpu3] pixel stats: year=2011 56% (5/8 years)
+[2026-08-15 08:35:33] [I5_R60 seed1 gpu2] epoch=3 train_loss=0.971423 val_loss=0.705018
+[2026-08-15 08:35:33] [I5_R60 seed1 gpu2] new best epoch=3 val_loss=0.705018 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:35:34] [I20_R5 seed1 gpu3] pixel stats: year=2011 65% (5/8 years)
+[2026-08-15 08:35:34] [I60_R5 seed3 gpu1] pixel stats: year=2008 46% (2/8 years)
+[2026-08-15 08:35:34] [I5_R60 seed3 gpu0] epoch=4 train_loss=0.942183 val_loss=0.694757
+[2026-08-15 08:35:34] [I5_R60 seed3 gpu0] new best epoch=4 val_loss=0.694757 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed3/best.pt
+[2026-08-15 08:35:34] [I20_R5 seed1 gpu3] pixel stats: year=2011 73% (5/8 years)
+[2026-08-15 08:35:34] [I5_R60 seed0 gpu0] epoch=4 train_loss=0.962394 val_loss=0.697551
+[2026-08-15 08:35:34] [I5_R60 seed0 gpu0] new best epoch=4 val_loss=0.697551 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0/best.pt
+[2026-08-15 08:35:34] [I5_R20 seed0 gpu0] epoch=1 train_loss=1.019761 val_loss=0.725142
+[2026-08-15 08:35:34] [I5_R20 seed0 gpu0] new best epoch=1 val_loss=0.725142 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed0/best.pt
+[2026-08-15 08:35:34] [I20_R5 seed1 gpu3] pixel stats: year=2011 81% (5/8 years)
+[2026-08-15 08:35:34] [I5_R20 seed1 gpu2] epoch=1 train_loss=1.002889 val_loss=0.714637
+[2026-08-15 08:35:34] [I5_R20 seed1 gpu2] new best epoch=1 val_loss=0.714637 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed1/best.pt
+[2026-08-15 08:35:34] [I20_R5 seed1 gpu3] pixel stats: year=2011 89% (5/8 years)
+[2026-08-15 08:35:34] [I5_R60 seed2 gpu1] epoch=6 train_loss=0.920837 val_loss=0.683339
+[2026-08-15 08:35:34] [I5_R60 seed2 gpu1] new best epoch=6 val_loss=0.683339 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:34] [I5_R20 seed4 gpu1] epoch=2 train_loss=0.971874 val_loss=0.711191
+[2026-08-15 08:35:34] [I20_R5 seed1 gpu3] pixel stats: year=2011 97% (5/8 years)
+[2026-08-15 08:35:34] [I5_R20 seed4 gpu1] new best epoch=2 val_loss=0.711191 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed4/best.pt
+[2026-08-15 08:35:34] [I20_R5 seed1 gpu3] pixel stats: year=2011 100% (5/8 years)
+[2026-08-15 08:35:34] [I20_R5 seed1 gpu3] pixel stats: year=2011 done (5/8 years)
+[2026-08-15 08:35:34] [I60_R5 seed3 gpu1] pixel stats: year=2008 57% (2/8 years)
+[2026-08-15 08:35:34] [I20_R5 seed1 gpu3] pixel stats: year=2012 7% (6/8 years)
+[2026-08-15 08:35:34] [I20_R5 seed1 gpu3] pixel stats: year=2012 14% (6/8 years)
+[2026-08-15 08:35:34] [I20_R5 seed1 gpu3] pixel stats: year=2012 21% (6/8 years)
+[2026-08-15 08:35:34] [I20_R5 seed1 gpu3] pixel stats: year=2012 27% (6/8 years)
+[2026-08-15 08:35:35] [I60_R5 seed3 gpu1] pixel stats: year=2008 68% (2/8 years)
+[2026-08-15 08:35:35] [I20_R5 seed1 gpu3] pixel stats: year=2012 34% (6/8 years)
+[2026-08-15 08:35:35] [I5_R60 seed2 gpu1] epoch=7 train_loss=0.904474 val_loss=0.679146
+[2026-08-15 08:35:35] [I5_R60 seed2 gpu1] new best epoch=7 val_loss=0.679146 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:35] [I5_R60 seed4 gpu2] epoch=5 train_loss=0.942110 val_loss=0.697093
+[2026-08-15 08:35:35] [I5_R60 seed4 gpu2] new best epoch=5 val_loss=0.697093 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed4/best.pt
+[2026-08-15 08:35:35] [I20_R5 seed1 gpu3] pixel stats: year=2012 41% (6/8 years)
+[2026-08-15 08:35:35] [I5_R60 seed1 gpu2] epoch=4 train_loss=0.956061 val_loss=0.700981
+[2026-08-15 08:35:35] [I5_R60 seed1 gpu2] new best epoch=4 val_loss=0.700981 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:35:35] [I20_R5 seed1 gpu3] pixel stats: year=2012 48% (6/8 years)
+[2026-08-15 08:35:35] [I20_R5 seed1 gpu3] pixel stats: year=2012 55% (6/8 years)
+[2026-08-15 08:35:35] [I5_R60 seed3 gpu0] epoch=5 train_loss=0.923597 val_loss=0.688558
+[2026-08-15 08:35:35] [I5_R60 seed3 gpu0] new best epoch=5 val_loss=0.688558 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed3/best.pt
+[2026-08-15 08:35:35] [I5_R60 seed0 gpu0] epoch=5 train_loss=0.941050 val_loss=0.690792
+[2026-08-15 08:35:35] [I5_R60 seed0 gpu0] new best epoch=5 val_loss=0.690792 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0/best.pt
+[2026-08-15 08:35:35] [I60_R5 seed3 gpu1] pixel stats: year=2008 80% (2/8 years)
+[2026-08-15 08:35:35] [I20_R5 seed1 gpu3] pixel stats: year=2012 62% (6/8 years)
+[2026-08-15 08:35:35] [I20_R5 seed1 gpu3] pixel stats: year=2012 69% (6/8 years)
+[2026-08-15 08:35:35] [I20_R5 seed1 gpu3] pixel stats: year=2012 76% (6/8 years)
+[2026-08-15 08:35:35] [I5_R60 seed2 gpu1] epoch=8 train_loss=0.896002 val_loss=0.675369
+[2026-08-15 08:35:35] [I5_R60 seed2 gpu1] new best epoch=8 val_loss=0.675369 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:35] [I20_R5 seed1 gpu3] pixel stats: year=2012 82% (6/8 years)
+[2026-08-15 08:35:35] [I60_R5 seed3 gpu1] pixel stats: year=2008 91% (2/8 years)
+[2026-08-15 08:35:35] [I20_R5 seed1 gpu3] pixel stats: year=2012 89% (6/8 years)
+[2026-08-15 08:35:36] [I20_R5 seed1 gpu3] pixel stats: year=2012 96% (6/8 years)
+[2026-08-15 08:35:36] [I20_R5 seed1 gpu3] pixel stats: year=2012 100% (6/8 years)
+[2026-08-15 08:35:36] [I20_R5 seed1 gpu3] pixel stats: year=2012 done (6/8 years)
+[2026-08-15 08:35:36] [I20_R5 seed1 gpu3] pixel stats: year=2013 6% (7/8 years)
+[2026-08-15 08:35:36] [I60_R5 seed3 gpu1] pixel stats: year=2008 100% (2/8 years)
+[2026-08-15 08:35:36] [I60_R5 seed3 gpu1] pixel stats: year=2008 done (2/8 years)
+[2026-08-15 08:35:36] [I20_R5 seed1 gpu3] pixel stats: year=2013 12% (7/8 years)
+[2026-08-15 08:35:36] [I5_R60 seed4 gpu2] epoch=6 train_loss=0.937183 val_loss=0.684585
+[2026-08-15 08:35:36] [I5_R60 seed4 gpu2] new best epoch=6 val_loss=0.684585 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed4/best.pt
+[2026-08-15 08:35:36] [I5_R60 seed1 gpu2] epoch=5 train_loss=0.944779 val_loss=0.689575
+[2026-08-15 08:35:36] [I5_R60 seed1 gpu2] new best epoch=5 val_loss=0.689575 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:35:36] [I5_R60 seed2 gpu1] epoch=9 train_loss=0.891633 val_loss=0.672466
+[2026-08-15 08:35:36] [I5_R60 seed2 gpu1] new best epoch=9 val_loss=0.672466 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:36] [I20_R5 seed1 gpu3] pixel stats: year=2013 18% (7/8 years)
+[2026-08-15 08:35:36] [I20_R5 seed1 gpu3] pixel stats: year=2013 25% (7/8 years)
+[2026-08-15 08:35:36] [I5_R60 seed3 gpu0] epoch=6 train_loss=0.913939 val_loss=0.684334
+[2026-08-15 08:35:36] [I5_R60 seed3 gpu0] new best epoch=6 val_loss=0.684334 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed3/best.pt
+[2026-08-15 08:35:36] [I5_R60 seed0 gpu0] epoch=6 train_loss=0.927376 val_loss=0.686048
+[2026-08-15 08:35:36] [I5_R60 seed0 gpu0] new best epoch=6 val_loss=0.686048 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0/best.pt
+[2026-08-15 08:35:36] [I20_R5 seed1 gpu3] pixel stats: year=2013 31% (7/8 years)
+[2026-08-15 08:35:36] [I20_R5 seed1 gpu3] pixel stats: year=2013 37% (7/8 years)
+[2026-08-15 08:35:36] [I5_R20 seed4 gpu1] epoch=3 train_loss=0.941419 val_loss=0.698468
+[2026-08-15 08:35:36] [I60_R5 seed3 gpu1] pixel stats: year=2009 11% (3/8 years)
+[2026-08-15 08:35:36] [I5_R20 seed4 gpu1] new best epoch=3 val_loss=0.698468 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed4/best.pt
+[2026-08-15 08:35:36] [I20_R5 seed1 gpu3] pixel stats: year=2013 43% (7/8 years)
+[2026-08-15 08:35:36] [I20_R5 seed1 gpu3] pixel stats: year=2013 49% (7/8 years)
+[2026-08-15 08:35:37] [I5_R20 seed3 gpu2] epoch=2 train_loss=0.947405 val_loss=0.710564
+[2026-08-15 08:35:37] [I5_R20 seed3 gpu2] new best epoch=2 val_loss=0.710564 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed3/best.pt
+[2026-08-15 08:35:37] [I20_R5 seed1 gpu3] pixel stats: year=2013 55% (7/8 years)
+[2026-08-15 08:35:37] [I5_R60 seed2 gpu1] epoch=10 train_loss=0.877901 val_loss=0.669444
+[2026-08-15 08:35:37] [I5_R60 seed2 gpu1] new best epoch=10 val_loss=0.669444 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:37] [I5_R20 seed2 gpu0] epoch=2 train_loss=0.957878 val_loss=0.704540
+[2026-08-15 08:35:37] [I5_R20 seed2 gpu0] new best epoch=2 val_loss=0.704540 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed2/best.pt
+[2026-08-15 08:35:37] [I20_R5 seed1 gpu3] pixel stats: year=2013 61% (7/8 years)
+[2026-08-15 08:35:37] [I60_R5 seed3 gpu1] pixel stats: year=2009 22% (3/8 years)
+[2026-08-15 08:35:37] [I20_R5 seed1 gpu3] pixel stats: year=2013 68% (7/8 years)
+[2026-08-15 08:35:37] [I5_R60 seed4 gpu2] epoch=7 train_loss=0.920684 val_loss=0.680382
+[2026-08-15 08:35:37] [I5_R60 seed4 gpu2] new best epoch=7 val_loss=0.680382 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed4/best.pt
+[2026-08-15 08:35:37] [I5_R60 seed1 gpu2] epoch=6 train_loss=0.921554 val_loss=0.684191
+[2026-08-15 08:35:37] [I5_R60 seed1 gpu2] new best epoch=6 val_loss=0.684191 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:35:37] [I20_R5 seed1 gpu3] pixel stats: year=2013 74% (7/8 years)
+[2026-08-15 08:35:37] [I20_R5 seed1 gpu3] pixel stats: year=2013 80% (7/8 years)
+[2026-08-15 08:35:37] [I5_R60 seed3 gpu0] epoch=7 train_loss=0.901576 val_loss=0.678711
+[2026-08-15 08:35:37] [I5_R60 seed3 gpu0] new best epoch=7 val_loss=0.678711 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed3/best.pt
+[2026-08-15 08:35:37] [I5_R60 seed0 gpu0] epoch=7 train_loss=0.920168 val_loss=0.681695
+[2026-08-15 08:35:37] [I5_R60 seed0 gpu0] new best epoch=7 val_loss=0.681695 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0/best.pt
+[2026-08-15 08:35:37] [I20_R5 seed1 gpu3] pixel stats: year=2013 86% (7/8 years)
+[2026-08-15 08:35:37] [I20_R5 seed1 gpu3] pixel stats: year=2013 92% (7/8 years)
+[2026-08-15 08:35:37] [I60_R5 seed3 gpu1] pixel stats: year=2009 33% (3/8 years)
+[2026-08-15 08:35:37] [I5_R20 seed1 gpu2] epoch=2 train_loss=0.952176 val_loss=0.701089
+[2026-08-15 08:35:37] [I5_R60 seed2 gpu1] epoch=11 train_loss=0.862754 val_loss=0.668433
+[2026-08-15 08:35:37] [I5_R20 seed1 gpu2] new best epoch=2 val_loss=0.701089 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed1/best.pt
+[2026-08-15 08:35:37] [I5_R60 seed2 gpu1] new best epoch=11 val_loss=0.668433 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:37] [I5_R20 seed0 gpu0] epoch=2 train_loss=0.969240 val_loss=0.712278
+[2026-08-15 08:35:37] [I5_R20 seed0 gpu0] new best epoch=2 val_loss=0.712278 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed0/best.pt
+[2026-08-15 08:35:37] [I20_R5 seed1 gpu3] pixel stats: year=2013 98% (7/8 years)
+[2026-08-15 08:35:37] [I20_R5 seed1 gpu3] pixel stats: year=2013 100% (7/8 years)
+[2026-08-15 08:35:37] [I20_R5 seed1 gpu3] pixel stats: year=2013 done (7/8 years)
+[2026-08-15 08:35:37] [I20_R5 seed1 gpu3] pixel stats: year=2014 6% (8/8 years)
+[2026-08-15 08:35:37] [I20_R5 seed1 gpu3] pixel stats: year=2014 12% (8/8 years)
+[2026-08-15 08:35:38] [I20_R5 seed1 gpu3] pixel stats: year=2014 17% (8/8 years)
+[2026-08-15 08:35:38] [I60_R5 seed3 gpu1] pixel stats: year=2009 43% (3/8 years)
+[2026-08-15 08:35:38] [I20_R5 seed1 gpu3] pixel stats: year=2014 23% (8/8 years)
+[2026-08-15 08:35:38] [I20_R5 seed1 gpu3] pixel stats: year=2014 29% (8/8 years)
+[2026-08-15 08:35:38] [I5_R60 seed2 gpu1] epoch=12 train_loss=0.856657 val_loss=0.666029
+[2026-08-15 08:35:38] [I5_R60 seed2 gpu1] new best epoch=12 val_loss=0.666029 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:38] [I20_R5 seed1 gpu3] pixel stats: year=2014 35% (8/8 years)
+[2026-08-15 08:35:38] [I20_R5 seed1 gpu3] pixel stats: year=2014 41% (8/8 years)
+[2026-08-15 08:35:38] [I5_R60 seed4 gpu2] epoch=8 train_loss=0.906779 val_loss=0.683417
+[2026-08-15 08:35:38] [I5_R60 seed1 gpu2] epoch=7 train_loss=0.912789 val_loss=0.687255
+[2026-08-15 08:35:38] [I20_R5 seed1 gpu3] pixel stats: year=2014 47% (8/8 years)
+[2026-08-15 08:35:38] [I60_R5 seed3 gpu1] pixel stats: year=2009 54% (3/8 years)
+[2026-08-15 08:35:38] [I20_R5 seed1 gpu3] pixel stats: year=2014 52% (8/8 years)
+[2026-08-15 08:35:38] [I20_R5 seed1 gpu3] pixel stats: year=2014 58% (8/8 years)
+[2026-08-15 08:35:38] [I5_R60 seed3 gpu0] epoch=8 train_loss=0.885416 val_loss=0.675835
+[2026-08-15 08:35:38] [I5_R60 seed3 gpu0] new best epoch=8 val_loss=0.675835 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed3/best.pt
+[2026-08-15 08:35:38] [I5_R60 seed0 gpu0] epoch=8 train_loss=0.913980 val_loss=0.677444
+[2026-08-15 08:35:38] [I5_R60 seed0 gpu0] new best epoch=8 val_loss=0.677444 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0/best.pt
+[2026-08-15 08:35:38] [I20_R5 seed1 gpu3] pixel stats: year=2014 64% (8/8 years)
+[2026-08-15 08:35:38] [I5_R60 seed2 gpu1] epoch=13 train_loss=0.848046 val_loss=0.663111
+[2026-08-15 08:35:38] [I5_R60 seed2 gpu1] new best epoch=13 val_loss=0.663111 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:38] [I20_R5 seed1 gpu3] pixel stats: year=2014 70% (8/8 years)
+[2026-08-15 08:35:38] [I5_R20 seed4 gpu1] epoch=4 train_loss=0.911335 val_loss=0.697211
+[2026-08-15 08:35:38] [I5_R20 seed4 gpu1] new best epoch=4 val_loss=0.697211 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed4/best.pt
+[2026-08-15 08:35:39] [I20_R5 seed1 gpu3] pixel stats: year=2014 76% (8/8 years)
+[2026-08-15 08:35:39] [I60_R5 seed3 gpu1] pixel stats: year=2009 65% (3/8 years)
+[2026-08-15 08:35:39] [I20_R5 seed1 gpu3] pixel stats: year=2014 81% (8/8 years)
+[2026-08-15 08:35:39] [I20_R5 seed1 gpu3] pixel stats: year=2014 87% (8/8 years)
+[2026-08-15 08:35:39] [I20_R5 seed1 gpu3] pixel stats: year=2014 93% (8/8 years)
+[2026-08-15 08:35:39] [I20_R5 seed1 gpu3] pixel stats: year=2014 99% (8/8 years)
+[2026-08-15 08:35:39] [I20_R5 seed1 gpu3] pixel stats: year=2014 100% (8/8 years)
+[2026-08-15 08:35:39] [I20_R5 seed1 gpu3] pixel stats: year=2014 done (8/8 years)
+[2026-08-15 08:35:39] [I20_R5 seed1 gpu3] pixel_mean=28.568807 pixel_std=80.429280
+[2026-08-15 08:35:39] [I20_R5 seed3 gpu2] pixel_mean=28.568807 pixel_std=80.429280
+[2026-08-15 08:35:39] [I20_R5 seed0 gpu1] pixel_mean=28.568807 pixel_std=80.429280
+[2026-08-15 08:35:39] [I20_R5 seed4 gpu1] pixel_mean=28.568807 pixel_std=80.429280
+[2026-08-15 08:35:39] [I20_R5 seed2 gpu0] pixel_mean=28.568807 pixel_std=80.429280
+[2026-08-15 08:35:39] [I20_R5 seed1 gpu3] I20_R5 train_seed=1
+[2026-08-15 08:35:39] [I20_R5 seed0 gpu1] I20_R5 train_seed=0
+[2026-08-15 08:35:39] [I20_R5 seed3 gpu2] I20_R5 train_seed=3
+[2026-08-15 08:35:39] [I20_R5 seed4 gpu1] I20_R5 train_seed=4
+[2026-08-15 08:35:39] [I20_R5 seed2 gpu0] I20_R5 train_seed=2
+[2026-08-15 08:35:39] [I5_R60 seed2 gpu1] epoch=14 train_loss=0.845683 val_loss=0.664528
+[2026-08-15 08:35:39] [I60_R5 seed3 gpu1] pixel stats: year=2009 76% (3/8 years)
+[2026-08-15 08:35:39] [I5_R60 seed4 gpu2] epoch=9 train_loss=0.889843 val_loss=0.674064
+[2026-08-15 08:35:39] [I5_R60 seed4 gpu2] new best epoch=9 val_loss=0.674064 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed4/best.pt
+[2026-08-15 08:35:39] [I5_R60 seed1 gpu2] epoch=8 train_loss=0.906820 val_loss=0.677367
+[2026-08-15 08:35:39] [I5_R60 seed1 gpu2] new best epoch=8 val_loss=0.677367 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:35:39] [I5_R60 seed3 gpu0] epoch=9 train_loss=0.877549 val_loss=0.670539
+[2026-08-15 08:35:39] [I5_R60 seed3 gpu0] new best epoch=9 val_loss=0.670539 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed3/best.pt
+[2026-08-15 08:35:39] [I5_R60 seed0 gpu0] epoch=9 train_loss=0.893213 val_loss=0.672860
+[2026-08-15 08:35:39] [I5_R60 seed0 gpu0] new best epoch=9 val_loss=0.672860 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0/best.pt
+[2026-08-15 08:35:40] [I60_R5 seed3 gpu1] pixel stats: year=2009 87% (3/8 years)
+[2026-08-15 08:35:40] [I5_R60 seed2 gpu1] epoch=15 train_loss=0.831841 val_loss=0.662206
+[2026-08-15 08:35:40] [I5_R60 seed2 gpu1] new best epoch=15 val_loss=0.662206 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:40] [I5_R20 seed3 gpu2] epoch=3 train_loss=0.917204 val_loss=0.694008
+[2026-08-15 08:35:40] [I5_R20 seed3 gpu2] new best epoch=3 val_loss=0.694008 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed3/best.pt
+[2026-08-15 08:35:40] [I20_R5 seed1 gpu3] model I20 flatten=46080 params=708866
+[2026-08-15 08:35:40] [I5_R20 seed2 gpu0] epoch=3 train_loss=0.920940 val_loss=0.697743
+[2026-08-15 08:35:40] [I5_R20 seed2 gpu0] new best epoch=3 val_loss=0.697743 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed2/best.pt
+[2026-08-15 08:35:40] [I20_R5 seed4 gpu1] model I20 flatten=46080 params=708866
+[2026-08-15 08:35:40] [I20_R5 seed0 gpu1] model I20 flatten=46080 params=708866
+[2026-08-15 08:35:40] [I60_R5 seed3 gpu1] pixel stats: year=2009 98% (3/8 years)
+[2026-08-15 08:35:40] [I20_R5 seed3 gpu2] model I20 flatten=46080 params=708866
+[2026-08-15 08:35:40] [I60_R5 seed3 gpu1] pixel stats: year=2009 100% (3/8 years)
+[2026-08-15 08:35:40] [I60_R5 seed3 gpu1] pixel stats: year=2009 done (3/8 years)
+[2026-08-15 08:35:40] [I5_R60 seed4 gpu2] epoch=10 train_loss=0.884200 val_loss=0.671709
+[2026-08-15 08:35:40] [I5_R60 seed4 gpu2] new best epoch=10 val_loss=0.671709 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed4/best.pt
+[2026-08-15 08:35:40] [I5_R60 seed1 gpu2] epoch=9 train_loss=0.893361 val_loss=0.672871
+[2026-08-15 08:35:40] [I5_R60 seed1 gpu2] new best epoch=9 val_loss=0.672871 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:35:40] [I20_R5 seed2 gpu0] model I20 flatten=46080 params=708866
+[2026-08-15 08:35:40] [I5_R60 seed2 gpu1] epoch=16 train_loss=0.826351 val_loss=0.658158
+[2026-08-15 08:35:40] [I5_R60 seed2 gpu1] new best epoch=16 val_loss=0.658158 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:40] [I5_R60 seed3 gpu0] epoch=10 train_loss=0.865728 val_loss=0.671986
+[2026-08-15 08:35:40] [I5_R60 seed0 gpu0] epoch=10 train_loss=0.894083 val_loss=0.670792
+[2026-08-15 08:35:40] [I5_R60 seed0 gpu0] new best epoch=10 val_loss=0.670792 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0/best.pt
+[2026-08-15 08:35:40] [I5_R20 seed4 gpu1] epoch=5 train_loss=0.887215 val_loss=0.687424
+[2026-08-15 08:35:40] [I5_R20 seed4 gpu1] new best epoch=5 val_loss=0.687424 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed4/best.pt
+[2026-08-15 08:35:41] [I5_R20 seed1 gpu2] epoch=3 train_loss=0.929273 val_loss=0.693508
+[2026-08-15 08:35:41] [I5_R20 seed1 gpu2] new best epoch=3 val_loss=0.693508 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed1/best.pt
+[2026-08-15 08:35:41] [I5_R20 seed0 gpu0] epoch=3 train_loss=0.932638 val_loss=0.700885
+[2026-08-15 08:35:41] [I5_R20 seed0 gpu0] new best epoch=3 val_loss=0.700885 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed0/best.pt
+[2026-08-15 08:35:41] [I60_R5 seed3 gpu1] pixel stats: year=2010 10% (4/8 years)
+[2026-08-15 08:35:41] [I5_R60 seed2 gpu1] epoch=17 train_loss=0.823223 val_loss=0.659610
+[2026-08-15 08:35:41] [I60_R5 seed3 gpu1] pixel stats: year=2010 20% (4/8 years)
+[2026-08-15 08:35:41] [I5_R60 seed4 gpu2] epoch=11 train_loss=0.877459 val_loss=0.666287
+[2026-08-15 08:35:41] [I5_R60 seed4 gpu2] new best epoch=11 val_loss=0.666287 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed4/best.pt
+[2026-08-15 08:35:41] [I5_R60 seed1 gpu2] epoch=10 train_loss=0.884947 val_loss=0.671528
+[2026-08-15 08:35:41] [I5_R60 seed1 gpu2] new best epoch=10 val_loss=0.671528 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:35:42] [I60_R5 seed3 gpu1] pixel stats: year=2010 30% (4/8 years)
+[2026-08-15 08:35:42] [I5_R60 seed3 gpu0] epoch=11 train_loss=0.860043 val_loss=0.678984
+[2026-08-15 08:35:42] [I5_R60 seed3 gpu0] early stop at epoch=11 best_epoch=9
+[2026-08-15 08:35:42] [I5_R60 seed0 gpu0] epoch=11 train_loss=0.886132 val_loss=0.667958
+[2026-08-15 08:35:42] [I5_R60 seed0 gpu0] new best epoch=11 val_loss=0.667958 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0/best.pt
+[2026-08-15 08:35:42] [I5_R60 seed2 gpu1] epoch=18 train_loss=0.811784 val_loss=0.655906
+[2026-08-15 08:35:42] [I5_R60 seed2 gpu1] new best epoch=18 val_loss=0.655906 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:42] [I5_R60 seed3 gpu0] training done best_epoch=9 val_loss=0.670539
+[2026-08-15 08:35:42] [I60_R5 seed3 gpu1] pixel stats: year=2010 40% (4/8 years)
+[2026-08-15 08:35:42] [I60_R5 seed3 gpu1] pixel stats: year=2010 50% (4/8 years)
+[2026-08-15 08:35:43] [I5_R60 seed2 gpu1] epoch=19 train_loss=0.809413 val_loss=0.657326
+[2026-08-15 08:35:43] [I60_R5 seed3 gpu1] pixel stats: year=2010 60% (4/8 years)
+[2026-08-15 08:35:43] [I5_R60 seed4 gpu2] epoch=12 train_loss=0.871175 val_loss=0.664746
+[2026-08-15 08:35:43] [I5_R60 seed4 gpu2] new best epoch=12 val_loss=0.664746 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed4/best.pt
+[2026-08-15 08:35:43] [I5_R60 seed1 gpu2] epoch=11 train_loss=0.872278 val_loss=0.669701
+[2026-08-15 08:35:43] [I5_R60 seed0 gpu0] epoch=12 train_loss=0.878212 val_loss=0.667217
+[2026-08-15 08:35:43] [I5_R60 seed0 gpu0] new best epoch=12 val_loss=0.667217 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0/best.pt
+[2026-08-15 08:35:43] [I5_R60 seed1 gpu2] new best epoch=11 val_loss=0.669701 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:35:43] [I5_R60 seed3 gpu0] saved OOS predictions n=44539 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed3_pred.feather
+[2026-08-15 08:35:43] [I60_R5 seed3 gpu1] pixel stats: year=2010 70% (4/8 years)
+[2026-08-15 08:35:44] [I5_R20 seed2 gpu0] epoch=4 train_loss=0.903999 val_loss=0.689272
+[2026-08-15 08:35:44] [I5_R20 seed2 gpu0] new best epoch=4 val_loss=0.689272 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed2/best.pt
+[2026-08-15 08:35:44] [I5_R20 seed4 gpu1] epoch=6 train_loss=0.866144 val_loss=0.687901
+[2026-08-15 08:35:44] [I60_R5 seed3 gpu1] pixel stats: year=2010 81% (4/8 years)
+[2026-08-15 08:35:44] [I5_R20 seed3 gpu2] epoch=4 train_loss=0.891663 val_loss=0.696950
+[2026-08-15 08:35:44] [I5_R60 seed0 gpu0] epoch=13 train_loss=0.862600 val_loss=0.664713
+[2026-08-15 08:35:44] [I5_R60 seed0 gpu0] new best epoch=13 val_loss=0.664713 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0/best.pt
+[2026-08-15 08:35:44] [I5_R60 seed3 gpu0] done
+[2026-08-15 08:35:44] acquire gpu=0 need_mib=8192 active={0: 6, 1: 5, 2: 6, 3: 3} remaining={0: 3438, 1: 7536, 2: 7504, 3: 7536}
+[2026-08-15 08:35:44] [I20_R60 seed0 gpu0] start
+[2026-08-15 08:35:44] [I5_R60 seed2 gpu1] epoch=20 train_loss=0.799976 val_loss=0.655807
+[2026-08-15 08:35:44] [I5_R60 seed2 gpu1] new best epoch=20 val_loss=0.655807 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:44] [I5_R20 seed0 gpu0] epoch=4 train_loss=0.910976 val_loss=0.692482
+[2026-08-15 08:35:44] [I5_R20 seed0 gpu0] new best epoch=4 val_loss=0.692482 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed0/best.pt
+[2026-08-15 08:35:44] [I60_R5 seed3 gpu1] pixel stats: year=2010 91% (4/8 years)
+[2026-08-15 08:35:44] [I5_R60 seed4 gpu2] epoch=13 train_loss=0.856453 val_loss=0.663685
+[2026-08-15 08:35:44] [I5_R60 seed4 gpu2] new best epoch=13 val_loss=0.663685 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed4/best.pt
+[2026-08-15 08:35:44] [I5_R60 seed1 gpu2] epoch=12 train_loss=0.859841 val_loss=0.665734
+[2026-08-15 08:35:44] [I5_R60 seed1 gpu2] new best epoch=12 val_loss=0.665734 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:35:45] [I60_R5 seed3 gpu1] pixel stats: year=2010 100% (4/8 years)
+[2026-08-15 08:35:45] [I60_R5 seed3 gpu1] pixel stats: year=2010 done (4/8 years)
+[2026-08-15 08:35:45] [I5_R20 seed1 gpu2] epoch=4 train_loss=0.906071 val_loss=0.693708
+[2026-08-15 08:35:45] [I60_R5 seed3 gpu1] pixel stats: year=2011 8% (5/8 years)
+[2026-08-15 08:35:45] [I5_R60 seed0 gpu0] epoch=14 train_loss=0.844698 val_loss=0.664345
+[2026-08-15 08:35:45] [I5_R60 seed0 gpu0] new best epoch=14 val_loss=0.664345 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0/best.pt
+[2026-08-15 08:35:46] [I60_R5 seed3 gpu1] pixel stats: year=2011 16% (5/8 years)
+[2026-08-15 08:35:46] [I5_R60 seed2 gpu1] epoch=21 train_loss=0.796592 val_loss=0.653327
+[2026-08-15 08:35:46] [I5_R60 seed2 gpu1] new best epoch=21 val_loss=0.653327 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:46] [I5_R60 seed4 gpu2] epoch=14 train_loss=0.852770 val_loss=0.662547
+[2026-08-15 08:35:46] [I5_R60 seed4 gpu2] new best epoch=14 val_loss=0.662547 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed4/best.pt
+[2026-08-15 08:35:46] [I5_R60 seed1 gpu2] epoch=13 train_loss=0.848792 val_loss=0.663331
+[2026-08-15 08:35:46] [I5_R60 seed1 gpu2] new best epoch=13 val_loss=0.663331 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:35:46] [I60_R5 seed3 gpu1] pixel stats: year=2011 25% (5/8 years)
+[2026-08-15 08:35:46] [I20_R60 seed0 gpu0] pending jobs=1 configs=[(20, 60)] seeds=[0]
+[2026-08-15 08:35:46] [I20_R60 seed0 gpu0] I20/R60 freq=quarter split_seed=0 samples train=31247 val=13393 test=44538
+[2026-08-15 08:35:46] [I60_R5 seed3 gpu1] pixel stats: year=2011 33% (5/8 years)
+[2026-08-15 08:35:46] [I20_R60 seed0 gpu0] pixel stats: year=2007 done (1/8 years)
+[2026-08-15 08:35:47] [I20_R60 seed0 gpu0] pixel stats: year=2008 done (2/8 years)
+[2026-08-15 08:35:47] [I5_R60 seed0 gpu0] epoch=15 train_loss=0.841153 val_loss=0.666157
+[2026-08-15 08:35:47] [I20_R60 seed0 gpu0] pixel stats: year=2009 done (3/8 years)
+[2026-08-15 08:35:47] [I20_R60 seed0 gpu0] pixel stats: year=2010 done (4/8 years)
+[2026-08-15 08:35:47] [I20_R60 seed0 gpu0] pixel stats: year=2011 done (5/8 years)
+[2026-08-15 08:35:47] [I5_R60 seed2 gpu1] epoch=22 train_loss=0.786728 val_loss=0.651919
+[2026-08-15 08:35:47] [I5_R60 seed2 gpu1] new best epoch=22 val_loss=0.651919 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:47] [I60_R5 seed3 gpu1] pixel stats: year=2011 41% (5/8 years)
+[2026-08-15 08:35:47] [I20_R60 seed0 gpu0] pixel stats: year=2012 84% (6/8 years)
+[2026-08-15 08:35:47] [I20_R60 seed0 gpu0] pixel stats: year=2012 100% (6/8 years)
+[2026-08-15 08:35:47] [I20_R60 seed0 gpu0] pixel stats: year=2012 done (6/8 years)
+[2026-08-15 08:35:47] [I20_R60 seed0 gpu0] pixel stats: year=2013 78% (7/8 years)
+[2026-08-15 08:35:47] [I20_R60 seed0 gpu0] pixel stats: year=2013 100% (7/8 years)
+[2026-08-15 08:35:47] [I20_R60 seed0 gpu0] pixel stats: year=2013 done (7/8 years)
+[2026-08-15 08:35:47] [I5_R20 seed2 gpu0] epoch=5 train_loss=0.879641 val_loss=0.685381
+[2026-08-15 08:35:47] [I5_R20 seed2 gpu0] new best epoch=5 val_loss=0.685381 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed2/best.pt
+[2026-08-15 08:35:47] [I20_R60 seed0 gpu0] pixel stats: year=2014 77% (8/8 years)
+[2026-08-15 08:35:47] [I20_R60 seed0 gpu0] pixel stats: year=2014 100% (8/8 years)
+[2026-08-15 08:35:47] [I20_R60 seed0 gpu0] pixel stats: year=2014 done (8/8 years)
+[2026-08-15 08:35:47] [I20_R60 seed0 gpu0] pixel_mean=28.151615 pixel_std=79.913381
+[2026-08-15 08:35:47] [I20_R60 seed0 gpu0] I20_R60 train_seed=0
+[2026-08-15 08:35:47] [I60_R5 seed3 gpu1] pixel stats: year=2011 49% (5/8 years)
+[2026-08-15 08:35:47] [I5_R60 seed4 gpu2] epoch=15 train_loss=0.841327 val_loss=0.660004
+[2026-08-15 08:35:48] [I5_R60 seed4 gpu2] new best epoch=15 val_loss=0.660004 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed4/best.pt
+[2026-08-15 08:35:48] [I5_R60 seed1 gpu2] epoch=14 train_loss=0.846738 val_loss=0.661327
+[2026-08-15 08:35:48] [I5_R60 seed1 gpu2] new best epoch=14 val_loss=0.661327 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:35:48] [I5_R20 seed4 gpu1] epoch=7 train_loss=0.848998 val_loss=0.681493
+[2026-08-15 08:35:48] [I5_R20 seed4 gpu1] new best epoch=7 val_loss=0.681493 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed4/best.pt
+[2026-08-15 08:35:48] [I5_R60 seed0 gpu0] epoch=16 train_loss=0.840656 val_loss=0.658842
+[2026-08-15 08:35:48] [I5_R60 seed0 gpu0] new best epoch=16 val_loss=0.658842 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0/best.pt
+[2026-08-15 08:35:48] [I20_R60 seed0 gpu0] model I20 flatten=46080 params=708866
+[2026-08-15 08:35:48] [I60_R5 seed3 gpu1] pixel stats: year=2011 57% (5/8 years)
+[2026-08-15 08:35:48] [I5_R20 seed0 gpu0] epoch=5 train_loss=0.882179 val_loss=0.686085
+[2026-08-15 08:35:48] [I5_R20 seed0 gpu0] new best epoch=5 val_loss=0.686085 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed0/best.pt
+[2026-08-15 08:35:48] [I5_R60 seed2 gpu1] epoch=23 train_loss=0.786576 val_loss=0.651526
+[2026-08-15 08:35:48] [I5_R60 seed2 gpu1] new best epoch=23 val_loss=0.651526 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:48] [I60_R5 seed3 gpu1] pixel stats: year=2011 66% (5/8 years)
+[2026-08-15 08:35:48] [I5_R20 seed3 gpu2] epoch=5 train_loss=0.871054 val_loss=0.683628
+[2026-08-15 08:35:48] [I5_R20 seed3 gpu2] new best epoch=5 val_loss=0.683628 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed3/best.pt
+[2026-08-15 08:35:49] [I60_R5 seed3 gpu1] pixel stats: year=2011 74% (5/8 years)
+[2026-08-15 08:35:49] [I5_R60 seed4 gpu2] epoch=16 train_loss=0.843234 val_loss=0.660074
+[2026-08-15 08:35:49] [I5_R60 seed1 gpu2] epoch=15 train_loss=0.836337 val_loss=0.660727
+[2026-08-15 08:35:49] [I5_R60 seed1 gpu2] new best epoch=15 val_loss=0.660727 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:35:49] [I5_R60 seed0 gpu0] epoch=17 train_loss=0.828789 val_loss=0.658337
+[2026-08-15 08:35:49] [I5_R60 seed0 gpu0] new best epoch=17 val_loss=0.658337 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0/best.pt
+[2026-08-15 08:35:49] [I60_R5 seed3 gpu1] pixel stats: year=2011 82% (5/8 years)
+[2026-08-15 08:35:49] [I5_R20 seed1 gpu2] epoch=5 train_loss=0.878636 val_loss=0.685940
+[2026-08-15 08:35:49] [I5_R20 seed1 gpu2] new best epoch=5 val_loss=0.685940 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed1/best.pt
+[2026-08-15 08:35:50] [I5_R60 seed2 gpu1] epoch=24 train_loss=0.780103 val_loss=0.653174
+[2026-08-15 08:35:50] [I60_R5 seed3 gpu1] pixel stats: year=2011 90% (5/8 years)
+[2026-08-15 08:35:50] [I60_R5 seed3 gpu1] pixel stats: year=2011 98% (5/8 years)
+[2026-08-15 08:35:50] [I60_R5 seed3 gpu1] pixel stats: year=2011 100% (5/8 years)
+[2026-08-15 08:35:50] [I60_R5 seed3 gpu1] pixel stats: year=2011 done (5/8 years)
+[2026-08-15 08:35:50] [I5_R60 seed4 gpu2] epoch=17 train_loss=0.840893 val_loss=0.662132
+[2026-08-15 08:35:50] [I5_R60 seed4 gpu2] early stop at epoch=17 best_epoch=15
+[2026-08-15 08:35:50] [I5_R60 seed1 gpu2] epoch=16 train_loss=0.837300 val_loss=0.659160
+[2026-08-15 08:35:50] [I5_R60 seed1 gpu2] new best epoch=16 val_loss=0.659160 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:35:51] [I60_R5 seed3 gpu1] pixel stats: year=2012 7% (6/8 years)
+[2026-08-15 08:35:51] [I5_R60 seed0 gpu0] epoch=18 train_loss=0.818710 val_loss=0.656261
+[2026-08-15 08:35:51] [I5_R60 seed0 gpu0] new best epoch=18 val_loss=0.656261 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0/best.pt
+[2026-08-15 08:35:51] [I5_R60 seed4 gpu2] training done best_epoch=15 val_loss=0.660004
+[2026-08-15 08:35:51] [I5_R60 seed2 gpu1] epoch=25 train_loss=0.786415 val_loss=0.650859
+[2026-08-15 08:35:51] [I5_R60 seed2 gpu1] new best epoch=25 val_loss=0.650859 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:51] [I60_R5 seed3 gpu1] pixel stats: year=2012 14% (6/8 years)
+[2026-08-15 08:35:51] [I5_R20 seed2 gpu0] epoch=6 train_loss=0.860472 val_loss=0.684695
+[2026-08-15 08:35:51] [I5_R20 seed2 gpu0] new best epoch=6 val_loss=0.684695 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed2/best.pt
+[2026-08-15 08:35:51] [I60_R5 seed3 gpu1] pixel stats: year=2012 21% (6/8 years)
+[2026-08-15 08:35:51] [I5_R20 seed4 gpu1] epoch=8 train_loss=0.836048 val_loss=0.682080
+[2026-08-15 08:35:52] [I60_R5 seed3 gpu1] pixel stats: year=2012 27% (6/8 years)
+[2026-08-15 08:35:52] [I5_R60 seed1 gpu2] epoch=17 train_loss=0.824135 val_loss=0.656735
+[2026-08-15 08:35:52] [I5_R60 seed1 gpu2] new best epoch=17 val_loss=0.656735 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:35:52] [I5_R60 seed0 gpu0] epoch=19 train_loss=0.820274 val_loss=0.656726
+[2026-08-15 08:35:52] [I5_R60 seed2 gpu1] epoch=26 train_loss=0.773541 val_loss=0.648818
+[2026-08-15 08:35:52] [I5_R60 seed2 gpu1] new best epoch=26 val_loss=0.648818 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:52] [I5_R20 seed0 gpu0] epoch=6 train_loss=0.867352 val_loss=0.681745
+[2026-08-15 08:35:52] [I5_R20 seed0 gpu0] new best epoch=6 val_loss=0.681745 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed0/best.pt
+[2026-08-15 08:35:52] [I5_R60 seed4 gpu2] saved OOS predictions n=44539 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed4_pred.feather
+[2026-08-15 08:35:52] [I60_R5 seed3 gpu1] pixel stats: year=2012 34% (6/8 years)
+[2026-08-15 08:35:53] [I5_R20 seed3 gpu2] epoch=6 train_loss=0.847828 val_loss=0.685878
+[2026-08-15 08:35:53] [I60_R5 seed3 gpu1] pixel stats: year=2012 41% (6/8 years)
+[2026-08-15 08:35:53] [I5_R60 seed1 gpu2] epoch=18 train_loss=0.819677 val_loss=0.656615
+[2026-08-15 08:35:53] [I5_R60 seed1 gpu2] new best epoch=18 val_loss=0.656615 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:35:53] [I5_R20 seed1 gpu2] epoch=6 train_loss=0.860330 val_loss=0.679859
+[2026-08-15 08:35:53] [I5_R20 seed1 gpu2] new best epoch=6 val_loss=0.679859 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed1/best.pt
+[2026-08-15 08:35:53] [I60_R5 seed3 gpu1] pixel stats: year=2012 48% (6/8 years)
+[2026-08-15 08:35:53] [I5_R60 seed2 gpu1] epoch=27 train_loss=0.771604 val_loss=0.648502
+[2026-08-15 08:35:53] [I5_R60 seed2 gpu1] new best epoch=27 val_loss=0.648502 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:54] [I5_R60 seed4 gpu2] done
+[2026-08-15 08:35:54] acquire gpu=2 need_mib=8192 active={0: 6, 1: 5, 2: 6, 3: 3} remaining={0: 3438, 1: 7536, 2: 3408, 3: 7536}
+[2026-08-15 08:35:54] [I20_R60 seed3 gpu2] start
+[2026-08-15 08:35:54] [I60_R5 seed3 gpu1] pixel stats: year=2012 55% (6/8 years)
+[2026-08-15 08:35:54] [I5_R60 seed0 gpu0] epoch=20 train_loss=0.813752 val_loss=0.655294
+[2026-08-15 08:35:54] [I5_R60 seed0 gpu0] new best epoch=20 val_loss=0.655294 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0/best.pt
+[2026-08-15 08:35:54] [I60_R5 seed3 gpu1] pixel stats: year=2012 62% (6/8 years)
+[2026-08-15 08:35:54] [I5_R60 seed1 gpu2] epoch=19 train_loss=0.816557 val_loss=0.654531
+[2026-08-15 08:35:54] [I5_R60 seed1 gpu2] new best epoch=19 val_loss=0.654531 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:35:54] [I60_R5 seed3 gpu1] pixel stats: year=2012 69% (6/8 years)
+[2026-08-15 08:35:55] [I5_R60 seed2 gpu1] epoch=28 train_loss=0.769737 val_loss=0.646589
+[2026-08-15 08:35:55] [I5_R60 seed2 gpu1] new best epoch=28 val_loss=0.646589 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:55] [I60_R5 seed3 gpu1] pixel stats: year=2012 75% (6/8 years)
+[2026-08-15 08:35:55] [I60_R5 seed3 gpu1] pixel stats: year=2012 82% (6/8 years)
+[2026-08-15 08:35:55] [I5_R20 seed4 gpu1] epoch=9 train_loss=0.818400 val_loss=0.676599
+[2026-08-15 08:35:55] [I5_R20 seed4 gpu1] new best epoch=9 val_loss=0.676599 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed4/best.pt
+[2026-08-15 08:35:55] [I5_R60 seed0 gpu0] epoch=21 train_loss=0.801429 val_loss=0.653877
+[2026-08-15 08:35:55] [I5_R60 seed0 gpu0] new best epoch=21 val_loss=0.653877 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0/best.pt
+[2026-08-15 08:35:56] [I20_R60 seed3 gpu2] pending jobs=1 configs=[(20, 60)] seeds=[3]
+[2026-08-15 08:35:56] [I5_R60 seed1 gpu2] epoch=20 train_loss=0.806309 val_loss=0.653558
+[2026-08-15 08:35:56] [I5_R60 seed1 gpu2] new best epoch=20 val_loss=0.653558 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:35:56] [I60_R5 seed3 gpu1] pixel stats: year=2012 89% (6/8 years)
+[2026-08-15 08:35:56] [I20_R60 seed3 gpu2] I20/R60 freq=quarter split_seed=0 samples train=31247 val=13393 test=44538
+[2026-08-15 08:35:56] [I20_R60 seed3 gpu2] pixel_mean=28.151615 pixel_std=79.913381
+[2026-08-15 08:35:56] [I20_R60 seed3 gpu2] I20_R60 train_seed=3
+[2026-08-15 08:35:56] [I5_R60 seed2 gpu1] epoch=29 train_loss=0.764171 val_loss=0.646423
+[2026-08-15 08:35:56] [I5_R60 seed2 gpu1] new best epoch=29 val_loss=0.646423 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:56] [I5_R20 seed2 gpu0] epoch=7 train_loss=0.837533 val_loss=0.680106
+[2026-08-15 08:35:56] [I5_R20 seed2 gpu0] new best epoch=7 val_loss=0.680106 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed2/best.pt
+[2026-08-15 08:35:56] [I5_R20 seed3 gpu2] epoch=7 train_loss=0.833263 val_loss=0.681326
+[2026-08-15 08:35:56] [I5_R20 seed3 gpu2] new best epoch=7 val_loss=0.681326 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed3/best.pt
+[2026-08-15 08:35:56] [I60_R5 seed3 gpu1] pixel stats: year=2012 96% (6/8 years)
+[2026-08-15 08:35:56] [I20_R60 seed3 gpu2] model I20 flatten=46080 params=708866
+[2026-08-15 08:35:57] [I60_R5 seed3 gpu1] pixel stats: year=2012 100% (6/8 years)
+[2026-08-15 08:35:57] [I60_R5 seed3 gpu1] pixel stats: year=2012 done (6/8 years)
+[2026-08-15 08:35:57] [I5_R60 seed1 gpu2] epoch=21 train_loss=0.800553 val_loss=0.652834
+[2026-08-15 08:35:57] [I5_R60 seed1 gpu2] new best epoch=21 val_loss=0.652834 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:35:57] [I5_R20 seed1 gpu2] epoch=7 train_loss=0.843717 val_loss=0.677192
+[2026-08-15 08:35:57] [I5_R20 seed1 gpu2] new best epoch=7 val_loss=0.677192 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed1/best.pt
+[2026-08-15 08:35:57] [I5_R60 seed0 gpu0] epoch=22 train_loss=0.796637 val_loss=0.652679
+[2026-08-15 08:35:57] [I5_R60 seed0 gpu0] new best epoch=22 val_loss=0.652679 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0/best.pt
+[2026-08-15 08:35:57] [I60_R5 seed3 gpu1] pixel stats: year=2013 6% (7/8 years)
+[2026-08-15 08:35:57] [I5_R20 seed0 gpu0] epoch=7 train_loss=0.848136 val_loss=0.679874
+[2026-08-15 08:35:57] [I5_R20 seed0 gpu0] new best epoch=7 val_loss=0.679874 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed0/best.pt
+[2026-08-15 08:35:57] [I20_R60 seed0 gpu0] epoch=1 train_loss=0.998640 val_loss=0.699250
+[2026-08-15 08:35:57] [I20_R60 seed0 gpu0] new best epoch=1 val_loss=0.699250 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed0/best.pt
+[2026-08-15 08:35:57] [I60_R5 seed3 gpu1] pixel stats: year=2013 12% (7/8 years)
+[2026-08-15 08:35:57] [I5_R60 seed2 gpu1] epoch=30 train_loss=0.768345 val_loss=0.647070
+[2026-08-15 08:35:58] [I60_R5 seed3 gpu1] pixel stats: year=2013 18% (7/8 years)
+[2026-08-15 08:35:58] [I5_R60 seed1 gpu2] epoch=22 train_loss=0.789790 val_loss=0.651511
+[2026-08-15 08:35:58] [I5_R60 seed1 gpu2] new best epoch=22 val_loss=0.651511 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:35:58] [I60_R5 seed3 gpu1] pixel stats: year=2013 25% (7/8 years)
+[2026-08-15 08:35:59] [I5_R60 seed0 gpu0] epoch=23 train_loss=0.796997 val_loss=0.657729
+[2026-08-15 08:35:59] [I5_R60 seed2 gpu1] epoch=31 train_loss=0.758195 val_loss=0.646093
+[2026-08-15 08:35:59] [I5_R60 seed2 gpu1] new best epoch=31 val_loss=0.646093 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:35:59] [I60_R5 seed3 gpu1] pixel stats: year=2013 31% (7/8 years)
+[2026-08-15 08:35:59] [I60_R5 seed3 gpu1] pixel stats: year=2013 37% (7/8 years)
+[2026-08-15 08:35:59] [I5_R20 seed4 gpu1] epoch=10 train_loss=0.809311 val_loss=0.675476
+[2026-08-15 08:35:59] [I5_R20 seed4 gpu1] new best epoch=10 val_loss=0.675476 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed4/best.pt
+[2026-08-15 08:36:00] [I60_R5 seed3 gpu1] pixel stats: year=2013 43% (7/8 years)
+[2026-08-15 08:36:00] [I5_R60 seed1 gpu2] epoch=23 train_loss=0.790978 val_loss=0.651197
+[2026-08-15 08:36:00] [I5_R60 seed1 gpu2] new best epoch=23 val_loss=0.651197 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:36:00] [I5_R60 seed2 gpu1] epoch=32 train_loss=0.746941 val_loss=0.645014
+[2026-08-15 08:36:00] [I5_R60 seed2 gpu1] new best epoch=32 val_loss=0.645014 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:36:00] [I60_R5 seed3 gpu1] pixel stats: year=2013 49% (7/8 years)
+[2026-08-15 08:36:00] [I5_R60 seed0 gpu0] epoch=24 train_loss=0.792857 val_loss=0.651639
+[2026-08-15 08:36:00] [I5_R60 seed0 gpu0] new best epoch=24 val_loss=0.651639 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0/best.pt
+[2026-08-15 08:36:00] [I5_R20 seed3 gpu2] epoch=8 train_loss=0.816927 val_loss=0.676086
+[2026-08-15 08:36:00] [I5_R20 seed3 gpu2] new best epoch=8 val_loss=0.676086 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed3/best.pt
+[2026-08-15 08:36:00] [I60_R5 seed3 gpu1] pixel stats: year=2013 55% (7/8 years)
+[2026-08-15 08:36:01] [I60_R5 seed3 gpu1] pixel stats: year=2013 61% (7/8 years)
+[2026-08-15 08:36:01] [I5_R20 seed2 gpu0] epoch=8 train_loss=0.828086 val_loss=0.676558
+[2026-08-15 08:36:01] [I5_R20 seed2 gpu0] new best epoch=8 val_loss=0.676558 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed2/best.pt
+[2026-08-15 08:36:01] [I5_R60 seed1 gpu2] epoch=24 train_loss=0.786423 val_loss=0.651285
+[2026-08-15 08:36:01] [I5_R20 seed1 gpu2] epoch=8 train_loss=0.830879 val_loss=0.680378
+[2026-08-15 08:36:01] [I5_R60 seed2 gpu1] epoch=33 train_loss=0.748037 val_loss=0.645161
+[2026-08-15 08:36:01] [I60_R5 seed3 gpu1] pixel stats: year=2013 68% (7/8 years)
+[2026-08-15 08:36:02] [I5_R60 seed0 gpu0] epoch=25 train_loss=0.787728 val_loss=0.649343
+[2026-08-15 08:36:02] [I5_R60 seed0 gpu0] new best epoch=25 val_loss=0.649343 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0/best.pt
+[2026-08-15 08:36:02] [I5_R20 seed0 gpu0] epoch=8 train_loss=0.831663 val_loss=0.677679
+[2026-08-15 08:36:02] [I5_R20 seed0 gpu0] new best epoch=8 val_loss=0.677679 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed0/best.pt
+[2026-08-15 08:36:02] [I60_R5 seed3 gpu1] pixel stats: year=2013 74% (7/8 years)
+[2026-08-15 08:36:02] [I60_R5 seed3 gpu1] pixel stats: year=2013 80% (7/8 years)
+[2026-08-15 08:36:03] [I5_R60 seed2 gpu1] epoch=34 train_loss=0.743208 val_loss=0.644126
+[2026-08-15 08:36:03] [I5_R60 seed2 gpu1] new best epoch=34 val_loss=0.644126 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2/best.pt
+[2026-08-15 08:36:03] [I60_R5 seed3 gpu1] pixel stats: year=2013 86% (7/8 years)
+[2026-08-15 08:36:03] [I5_R60 seed1 gpu2] epoch=25 train_loss=0.788041 val_loss=0.650224
+[2026-08-15 08:36:03] [I5_R60 seed1 gpu2] new best epoch=25 val_loss=0.650224 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:36:03] [I60_R5 seed3 gpu1] pixel stats: year=2013 92% (7/8 years)
+[2026-08-15 08:36:03] [I5_R20 seed4 gpu1] epoch=11 train_loss=0.797735 val_loss=0.673457
+[2026-08-15 08:36:03] [I5_R20 seed4 gpu1] new best epoch=11 val_loss=0.673457 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed4/best.pt
+[2026-08-15 08:36:04] [I5_R60 seed0 gpu0] epoch=26 train_loss=0.788169 val_loss=0.648444
+[2026-08-15 08:36:04] [I5_R60 seed0 gpu0] new best epoch=26 val_loss=0.648444 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0/best.pt
+[2026-08-15 08:36:04] [I60_R5 seed3 gpu1] pixel stats: year=2013 98% (7/8 years)
+[2026-08-15 08:36:04] [I60_R5 seed3 gpu1] pixel stats: year=2013 100% (7/8 years)
+[2026-08-15 08:36:04] [I60_R5 seed3 gpu1] pixel stats: year=2013 done (7/8 years)
+[2026-08-15 08:36:04] [I5_R60 seed2 gpu1] epoch=35 train_loss=0.741196 val_loss=0.646601
+[2026-08-15 08:36:04] [I60_R5 seed3 gpu1] pixel stats: year=2014 6% (8/8 years)
+[2026-08-15 08:36:05] [I60_R5 seed3 gpu1] pixel stats: year=2014 12% (8/8 years)
+[2026-08-15 08:36:05] [I5_R60 seed1 gpu2] epoch=26 train_loss=0.774863 val_loss=0.648162
+[2026-08-15 08:36:05] [I5_R60 seed1 gpu2] new best epoch=26 val_loss=0.648162 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:36:05] [I60_R5 seed3 gpu1] pixel stats: year=2014 17% (8/8 years)
+[2026-08-15 08:36:05] [I5_R60 seed0 gpu0] epoch=27 train_loss=0.776819 val_loss=0.648885
+[2026-08-15 08:36:05] [I5_R20 seed3 gpu2] epoch=9 train_loss=0.806635 val_loss=0.674114
+[2026-08-15 08:36:05] [I5_R20 seed3 gpu2] new best epoch=9 val_loss=0.674114 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed3/best.pt
+[2026-08-15 08:36:05] [I5_R60 seed2 gpu1] epoch=36 train_loss=0.733502 val_loss=0.645090
+[2026-08-15 08:36:05] [I5_R60 seed2 gpu1] early stop at epoch=36 best_epoch=34
+[2026-08-15 08:36:05] [I20_R60 seed0 gpu0] epoch=2 train_loss=0.918288 val_loss=0.679487
+[2026-08-15 08:36:05] [I20_R60 seed0 gpu0] new best epoch=2 val_loss=0.679487 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed0/best.pt
+[2026-08-15 08:36:05] [I60_R5 seed3 gpu1] pixel stats: year=2014 23% (8/8 years)
+[2026-08-15 08:36:05] [I5_R60 seed2 gpu1] training done best_epoch=34 val_loss=0.644126
+[2026-08-15 08:36:06] [I5_R20 seed2 gpu0] epoch=9 train_loss=0.812291 val_loss=0.675058
+[2026-08-15 08:36:06] [I5_R20 seed2 gpu0] new best epoch=9 val_loss=0.675058 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed2/best.pt
+[2026-08-15 08:36:06] [I60_R5 seed3 gpu1] pixel stats: year=2014 29% (8/8 years)
+[2026-08-15 08:36:06] [I20_R60 seed3 gpu2] epoch=1 train_loss=0.981588 val_loss=0.683477
+[2026-08-15 08:36:06] [I20_R60 seed3 gpu2] new best epoch=1 val_loss=0.683477 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed3/best.pt
+[2026-08-15 08:36:06] [I5_R20 seed1 gpu2] epoch=9 train_loss=0.815004 val_loss=0.673823
+[2026-08-15 08:36:06] [I5_R20 seed1 gpu2] new best epoch=9 val_loss=0.673823 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed1/best.pt
+[2026-08-15 08:36:06] [I5_R60 seed1 gpu2] epoch=27 train_loss=0.775806 val_loss=0.647263
+[2026-08-15 08:36:06] [I5_R60 seed1 gpu2] new best epoch=27 val_loss=0.647263 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:36:06] [I60_R5 seed3 gpu1] pixel stats: year=2014 35% (8/8 years)
+[2026-08-15 08:36:07] [I5_R60 seed2 gpu1] saved OOS predictions n=44539 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed2_pred.feather
+[2026-08-15 08:36:07] [I5_R20 seed0 gpu0] epoch=9 train_loss=0.817471 val_loss=0.675859
+[2026-08-15 08:36:07] [I5_R20 seed0 gpu0] new best epoch=9 val_loss=0.675859 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed0/best.pt
+[2026-08-15 08:36:07] [I5_R60 seed0 gpu0] epoch=28 train_loss=0.777278 val_loss=0.649137
+[2026-08-15 08:36:07] [I5_R60 seed0 gpu0] early stop at epoch=28 best_epoch=26
+[2026-08-15 08:36:07] [I5_R20 seed4 gpu1] epoch=12 train_loss=0.786862 val_loss=0.672397
+[2026-08-15 08:36:07] [I5_R20 seed4 gpu1] new best epoch=12 val_loss=0.672397 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed4/best.pt
+[2026-08-15 08:36:07] [I60_R5 seed3 gpu1] pixel stats: year=2014 41% (8/8 years)
+[2026-08-15 08:36:07] [I5_R60 seed0 gpu0] training done best_epoch=26 val_loss=0.648444
+[2026-08-15 08:36:07] [I60_R5 seed3 gpu1] pixel stats: year=2014 47% (8/8 years)
+[2026-08-15 08:36:07] [I5_R60 seed2 gpu1] done
+[2026-08-15 08:36:07] acquire gpu=1 need_mib=8192 active={0: 6, 1: 5, 2: 6, 3: 3} remaining={0: 3438, 1: 3440, 2: 3408, 3: 7536}
+[2026-08-15 08:36:07] [I20_R60 seed2 gpu1] start
+[2026-08-15 08:36:08] [I60_R5 seed3 gpu1] pixel stats: year=2014 52% (8/8 years)
+[2026-08-15 08:36:08] [I5_R60 seed1 gpu2] epoch=28 train_loss=0.770065 val_loss=0.647799
+[2026-08-15 08:36:08] [I60_R5 seed3 gpu1] pixel stats: year=2014 58% (8/8 years)
+[2026-08-15 08:36:08] [I20_R5 seed1 gpu3] epoch=1 train_loss=0.964513 val_loss=0.715765
+[2026-08-15 08:36:08] [I20_R5 seed1 gpu3] new best epoch=1 val_loss=0.715765 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 08:36:08] [I5_R60 seed0 gpu0] saved OOS predictions n=44539 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed0_pred.feather
+[2026-08-15 08:36:09] [I60_R5 seed3 gpu1] pixel stats: year=2014 64% (8/8 years)
+[2026-08-15 08:36:09] [I60_R5 seed3 gpu1] pixel stats: year=2014 70% (8/8 years)
+[2026-08-15 08:36:09] [I20_R60 seed2 gpu1] pending jobs=1 configs=[(20, 60)] seeds=[2]
+[2026-08-15 08:36:09] [I5_R60 seed0 gpu0] done
+[2026-08-15 08:36:09] [I20_R60 seed2 gpu1] I20/R60 freq=quarter split_seed=0 samples train=31247 val=13393 test=44538
+[2026-08-15 08:36:09] [I20_R60 seed2 gpu1] pixel_mean=28.151615 pixel_std=79.913381
+[2026-08-15 08:36:09] [I20_R60 seed2 gpu1] I20_R60 train_seed=2
+[2026-08-15 08:36:09] [I60_R5 seed3 gpu1] pixel stats: year=2014 76% (8/8 years)
+[2026-08-15 08:36:10] [I5_R60 seed1 gpu2] epoch=29 train_loss=0.764809 val_loss=0.646361
+[2026-08-15 08:36:10] [I5_R60 seed1 gpu2] new best epoch=29 val_loss=0.646361 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:36:10] [I5_R20 seed4 gpu1] epoch=13 train_loss=0.778572 val_loss=0.671863
+[2026-08-15 08:36:10] [I5_R20 seed4 gpu1] new best epoch=13 val_loss=0.671863 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed4/best.pt
+[2026-08-15 08:36:10] [I20_R60 seed2 gpu1] model I20 flatten=46080 params=708866
+[2026-08-15 08:36:10] [I60_R5 seed3 gpu1] pixel stats: year=2014 81% (8/8 years)
+[2026-08-15 08:36:10] [I5_R20 seed2 gpu0] epoch=10 train_loss=0.802375 val_loss=0.673779
+[2026-08-15 08:36:10] [I5_R20 seed2 gpu0] new best epoch=10 val_loss=0.673779 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed2/best.pt
+[2026-08-15 08:36:10] [I5_R20 seed3 gpu2] epoch=10 train_loss=0.795324 val_loss=0.672625
+[2026-08-15 08:36:10] [I5_R20 seed3 gpu2] new best epoch=10 val_loss=0.672625 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed3/best.pt
+[2026-08-15 08:36:10] [I60_R5 seed3 gpu1] pixel stats: year=2014 87% (8/8 years)
+[2026-08-15 08:36:11] [I5_R20 seed0 gpu0] epoch=10 train_loss=0.804030 val_loss=0.673715
+[2026-08-15 08:36:11] [I5_R20 seed0 gpu0] new best epoch=10 val_loss=0.673715 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed0/best.pt
+[2026-08-15 08:36:11] [I60_R5 seed3 gpu1] pixel stats: year=2014 93% (8/8 years)
+[2026-08-15 08:36:11] [I5_R20 seed1 gpu2] epoch=10 train_loss=0.799315 val_loss=0.671589
+[2026-08-15 08:36:11] [I5_R20 seed1 gpu2] new best epoch=10 val_loss=0.671589 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed1/best.pt
+[2026-08-15 08:36:11] [I5_R60 seed1 gpu2] epoch=30 train_loss=0.764157 val_loss=0.645007
+[2026-08-15 08:36:11] [I5_R60 seed1 gpu2] new best epoch=30 val_loss=0.645007 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:36:11] [I60_R5 seed3 gpu1] pixel stats: year=2014 99% (8/8 years)
+[2026-08-15 08:36:11] [I60_R5 seed3 gpu1] pixel stats: year=2014 100% (8/8 years)
+[2026-08-15 08:36:11] [I60_R5 seed3 gpu1] pixel stats: year=2014 done (8/8 years)
+[2026-08-15 08:36:11] [I60_R5 seed3 gpu1] pixel_mean=17.912285 pixel_std=65.167344
+[2026-08-15 08:36:11] [I60_R5 seed1 gpu0] pixel_mean=17.912285 pixel_std=65.167344
+[2026-08-15 08:36:11] [I60_R5 seed4 gpu3] pixel_mean=17.912285 pixel_std=65.167344
+[2026-08-15 08:36:11] [I60_R5 seed0 gpu3] pixel_mean=17.912285 pixel_std=65.167344
+[2026-08-15 08:36:11] [I60_R5 seed2 gpu2] pixel_mean=17.912285 pixel_std=65.167344
+[2026-08-15 08:36:11] [I60_R5 seed3 gpu1] I60_R5 train_seed=3
+[2026-08-15 08:36:11] [I60_R5 seed1 gpu0] I60_R5 train_seed=1
+[2026-08-15 08:36:11] [I60_R5 seed4 gpu3] I60_R5 train_seed=4
+[2026-08-15 08:36:11] [I60_R5 seed0 gpu3] I60_R5 train_seed=0
+[2026-08-15 08:36:11] [I60_R5 seed2 gpu2] I60_R5 train_seed=2
+[2026-08-15 08:36:12] [I60_R5 seed3 gpu1] model I60 flatten=184320 params=2952962
+[2026-08-15 08:36:12] [I20_R60 seed0 gpu0] epoch=3 train_loss=0.884686 val_loss=0.666350
+[2026-08-15 08:36:12] [I20_R60 seed0 gpu0] new best epoch=3 val_loss=0.666350 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed0/best.pt
+[2026-08-15 08:36:12] [I60_R5 seed0 gpu3] model I60 flatten=184320 params=2952962
+[2026-08-15 08:36:13] [I60_R5 seed4 gpu3] model I60 flatten=184320 params=2952962
+[2026-08-15 08:36:13] [I5_R60 seed1 gpu2] epoch=31 train_loss=0.757941 val_loss=0.644587
+[2026-08-15 08:36:13] [I5_R60 seed1 gpu2] new best epoch=31 val_loss=0.644587 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:36:13] [I60_R5 seed1 gpu0] model I60 flatten=184320 params=2952962
+[2026-08-15 08:36:13] [I60_R5 seed2 gpu2] model I60 flatten=184320 params=2952962
+[2026-08-15 08:36:13] [I5_R20 seed4 gpu1] epoch=14 train_loss=0.769477 val_loss=0.671819
+[2026-08-15 08:36:13] [I5_R20 seed4 gpu1] new best epoch=14 val_loss=0.671819 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed4/best.pt
+[2026-08-15 08:36:14] [I5_R20 seed2 gpu0] epoch=11 train_loss=0.790636 val_loss=0.680972
+[2026-08-15 08:36:14] [I20_R60 seed3 gpu2] epoch=2 train_loss=0.908962 val_loss=0.674195
+[2026-08-15 08:36:14] [I20_R60 seed3 gpu2] new best epoch=2 val_loss=0.674195 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed3/best.pt
+[2026-08-15 08:36:14] [I5_R60 seed1 gpu2] epoch=32 train_loss=0.750098 val_loss=0.643793
+[2026-08-15 08:36:14] [I5_R60 seed1 gpu2] new best epoch=32 val_loss=0.643793 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1/best.pt
+[2026-08-15 08:36:15] [I5_R20 seed0 gpu0] epoch=11 train_loss=0.797920 val_loss=0.675235
+[2026-08-15 08:36:15] [I5_R20 seed3 gpu2] epoch=11 train_loss=0.790609 val_loss=0.673702
+[2026-08-15 08:36:16] [I5_R20 seed1 gpu2] epoch=11 train_loss=0.793225 val_loss=0.671760
+[2026-08-15 08:36:16] [I5_R60 seed1 gpu2] epoch=33 train_loss=0.751109 val_loss=0.646020
+[2026-08-15 08:36:18] [I5_R20 seed4 gpu1] epoch=15 train_loss=0.759191 val_loss=0.669062
+[2026-08-15 08:36:18] [I5_R20 seed4 gpu1] new best epoch=15 val_loss=0.669062 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed4/best.pt
+[2026-08-15 08:36:18] [I5_R60 seed1 gpu2] epoch=34 train_loss=0.747227 val_loss=0.649358
+[2026-08-15 08:36:18] [I5_R60 seed1 gpu2] early stop at epoch=34 best_epoch=32
+[2026-08-15 08:36:19] [I5_R60 seed1 gpu2] training done best_epoch=32 val_loss=0.643793
+[2026-08-15 08:36:19] [I5_R20 seed2 gpu0] epoch=12 train_loss=0.778726 val_loss=0.672460
+[2026-08-15 08:36:19] [I5_R20 seed2 gpu0] new best epoch=12 val_loss=0.672460 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed2/best.pt
+[2026-08-15 08:36:20] [I5_R20 seed0 gpu0] epoch=12 train_loss=0.786087 val_loss=0.672330
+[2026-08-15 08:36:20] [I5_R20 seed0 gpu0] new best epoch=12 val_loss=0.672330 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed0/best.pt
+[2026-08-15 08:36:20] [I20_R60 seed0 gpu0] epoch=4 train_loss=0.856737 val_loss=0.652977
+[2026-08-15 08:36:20] [I20_R60 seed0 gpu0] new best epoch=4 val_loss=0.652977 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed0/best.pt
+[2026-08-15 08:36:20] [I20_R60 seed2 gpu1] epoch=1 train_loss=0.991706 val_loss=0.697833
+[2026-08-15 08:36:20] [I20_R60 seed2 gpu1] new best epoch=1 val_loss=0.697833 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed2/best.pt
+[2026-08-15 08:36:20] [I5_R60 seed1 gpu2] saved OOS predictions n=44539 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/seed1_pred.feather
+[2026-08-15 08:36:20] [I5_R20 seed3 gpu2] epoch=12 train_loss=0.774425 val_loss=0.670863
+[2026-08-15 08:36:20] [I5_R20 seed3 gpu2] new best epoch=12 val_loss=0.670863 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed3/best.pt
+[2026-08-15 08:36:21] [I5_R60 seed1 gpu2] done
+[2026-08-15 08:36:21] [I5_R20 seed1 gpu2] epoch=12 train_loss=0.776892 val_loss=0.670008
+[2026-08-15 08:36:21] [I5_R20 seed1 gpu2] new best epoch=12 val_loss=0.670008 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed1/best.pt
+[2026-08-15 08:36:23] [I20_R60 seed3 gpu2] epoch=3 train_loss=0.881769 val_loss=0.655028
+[2026-08-15 08:36:23] [I20_R60 seed3 gpu2] new best epoch=3 val_loss=0.655028 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed3/best.pt
+[2026-08-15 08:36:23] [I5_R20 seed4 gpu1] epoch=16 train_loss=0.752237 val_loss=0.671993
+[2026-08-15 08:36:24] [I5_R20 seed2 gpu0] epoch=13 train_loss=0.769670 val_loss=0.669836
+[2026-08-15 08:36:24] [I5_R20 seed2 gpu0] new best epoch=13 val_loss=0.669836 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed2/best.pt
+[2026-08-15 08:36:25] [I5_R20 seed0 gpu0] epoch=13 train_loss=0.776739 val_loss=0.670320
+[2026-08-15 08:36:25] [I5_R20 seed0 gpu0] new best epoch=13 val_loss=0.670320 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed0/best.pt
+[2026-08-15 08:36:25] [I5_R20 seed3 gpu2] epoch=13 train_loss=0.764660 val_loss=0.671198
+[2026-08-15 08:36:26] [I5_R20 seed1 gpu2] epoch=13 train_loss=0.769725 val_loss=0.668415
+[2026-08-15 08:36:26] [I5_R20 seed1 gpu2] new best epoch=13 val_loss=0.668415 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed1/best.pt
+[2026-08-15 08:36:28] [I20_R60 seed0 gpu0] epoch=5 train_loss=0.842752 val_loss=0.666727
+[2026-08-15 08:36:29] [I20_R60 seed2 gpu1] epoch=2 train_loss=0.919190 val_loss=0.671841
+[2026-08-15 08:36:29] [I20_R60 seed2 gpu1] new best epoch=2 val_loss=0.671841 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed2/best.pt
+[2026-08-15 08:36:29] [I5_R20 seed4 gpu1] epoch=17 train_loss=0.745554 val_loss=0.667406
+[2026-08-15 08:36:29] [I5_R20 seed4 gpu1] new best epoch=17 val_loss=0.667406 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed4/best.pt
+[2026-08-15 08:36:29] [I5_R20 seed2 gpu0] epoch=14 train_loss=0.763922 val_loss=0.669459
+[2026-08-15 08:36:29] [I5_R20 seed2 gpu0] new best epoch=14 val_loss=0.669459 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed2/best.pt
+[2026-08-15 08:36:30] [I5_R20 seed0 gpu0] epoch=14 train_loss=0.768058 val_loss=0.669367
+[2026-08-15 08:36:30] [I5_R20 seed0 gpu0] new best epoch=14 val_loss=0.669367 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed0/best.pt
+[2026-08-15 08:36:31] [I5_R20 seed3 gpu2] epoch=14 train_loss=0.758943 val_loss=0.672265
+[2026-08-15 08:36:31] [I5_R20 seed3 gpu2] early stop at epoch=14 best_epoch=12
+[2026-08-15 08:36:31] [I5_R20 seed3 gpu2] training done best_epoch=12 val_loss=0.670863
+[2026-08-15 08:36:31] [I20_R60 seed3 gpu2] epoch=4 train_loss=0.856462 val_loss=0.648342
+[2026-08-15 08:36:31] [I20_R60 seed3 gpu2] new best epoch=4 val_loss=0.648342 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed3/best.pt
+[2026-08-15 08:36:31] [I5_R20 seed1 gpu2] epoch=14 train_loss=0.762292 val_loss=0.668798
+[2026-08-15 08:36:34] [I5_R20 seed2 gpu0] epoch=15 train_loss=0.753171 val_loss=0.672637
+[2026-08-15 08:36:34] [I5_R20 seed4 gpu1] epoch=18 train_loss=0.739605 val_loss=0.666771
+[2026-08-15 08:36:34] [I5_R20 seed4 gpu1] new best epoch=18 val_loss=0.666771 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed4/best.pt
+[2026-08-15 08:36:35] [I5_R20 seed0 gpu0] epoch=15 train_loss=0.759405 val_loss=0.669779
+[2026-08-15 08:36:36] [I5_R20 seed1 gpu2] epoch=15 train_loss=0.755274 val_loss=0.667556
+[2026-08-15 08:36:36] [I5_R20 seed1 gpu2] new best epoch=15 val_loss=0.667556 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed1/best.pt
+[2026-08-15 08:36:36] [I5_R20 seed3 gpu2] saved OOS predictions n=138289 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed3_pred.feather
+[2026-08-15 08:36:37] [I5_R20 seed3 gpu2] done
+[2026-08-15 08:36:37] acquire gpu=2 need_mib=8192 active={0: 5, 1: 5, 2: 5, 3: 3} remaining={0: 7534, 1: 3440, 2: 3408, 3: 7536}
+[2026-08-15 08:36:37] [I20_R60 seed4 gpu2] start
+[2026-08-15 08:36:37] [I20_R60 seed0 gpu0] epoch=6 train_loss=0.799616 val_loss=0.641875
+[2026-08-15 08:36:37] [I20_R60 seed0 gpu0] new best epoch=6 val_loss=0.641875 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed0/best.pt
+[2026-08-15 08:36:38] [I20_R60 seed2 gpu1] epoch=3 train_loss=0.869412 val_loss=0.661178
+[2026-08-15 08:36:38] [I20_R60 seed2 gpu1] new best epoch=3 val_loss=0.661178 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed2/best.pt
+[2026-08-15 08:36:39] [I20_R60 seed4 gpu2] pending jobs=1 configs=[(20, 60)] seeds=[4]
+[2026-08-15 08:36:39] [I20_R60 seed3 gpu2] epoch=5 train_loss=0.821068 val_loss=0.638559
+[2026-08-15 08:36:39] [I20_R60 seed3 gpu2] new best epoch=5 val_loss=0.638559 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed3/best.pt
+[2026-08-15 08:36:39] [I20_R60 seed4 gpu2] I20/R60 freq=quarter split_seed=0 samples train=31247 val=13393 test=44538
+[2026-08-15 08:36:39] [I20_R60 seed4 gpu2] pixel_mean=28.151615 pixel_std=79.913381
+[2026-08-15 08:36:39] [I20_R60 seed4 gpu2] I20_R60 train_seed=4
+[2026-08-15 08:36:39] [I5_R20 seed2 gpu0] epoch=16 train_loss=0.749906 val_loss=0.668217
+[2026-08-15 08:36:39] [I5_R20 seed2 gpu0] new best epoch=16 val_loss=0.668217 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed2/best.pt
+[2026-08-15 08:36:39] [I5_R20 seed4 gpu1] epoch=19 train_loss=0.734130 val_loss=0.666946
+[2026-08-15 08:36:39] [I20_R60 seed4 gpu2] model I20 flatten=46080 params=708866
+[2026-08-15 08:36:40] [I5_R20 seed1 gpu2] epoch=16 train_loss=0.748542 val_loss=0.667918
+[2026-08-15 08:36:40] [I5_R20 seed0 gpu0] epoch=16 train_loss=0.754855 val_loss=0.669234
+[2026-08-15 08:36:40] [I5_R20 seed0 gpu0] new best epoch=16 val_loss=0.669234 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed0/best.pt
+[2026-08-15 08:36:44] [I5_R20 seed2 gpu0] epoch=17 train_loss=0.743829 val_loss=0.667420
+[2026-08-15 08:36:44] [I5_R20 seed2 gpu0] new best epoch=17 val_loss=0.667420 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed2/best.pt
+[2026-08-15 08:36:45] [I5_R20 seed4 gpu1] epoch=20 train_loss=0.730207 val_loss=0.665856
+[2026-08-15 08:36:45] [I5_R20 seed4 gpu1] new best epoch=20 val_loss=0.665856 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed4/best.pt
+[2026-08-15 08:36:45] [I5_R20 seed1 gpu2] epoch=17 train_loss=0.742695 val_loss=0.666034
+[2026-08-15 08:36:45] [I5_R20 seed1 gpu2] new best epoch=17 val_loss=0.666034 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed1/best.pt
+[2026-08-15 08:36:45] [I5_R20 seed0 gpu0] epoch=17 train_loss=0.746997 val_loss=0.666876
+[2026-08-15 08:36:45] [I5_R20 seed0 gpu0] new best epoch=17 val_loss=0.666876 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed0/best.pt
+[2026-08-15 08:36:45] [I20_R60 seed0 gpu0] epoch=7 train_loss=0.798218 val_loss=0.646957
+[2026-08-15 08:36:47] [I20_R60 seed3 gpu2] epoch=6 train_loss=0.802247 val_loss=0.633823
+[2026-08-15 08:36:47] [I20_R60 seed3 gpu2] new best epoch=6 val_loss=0.633823 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed3/best.pt
+[2026-08-15 08:36:47] [I20_R60 seed2 gpu1] epoch=4 train_loss=0.851946 val_loss=0.655744
+[2026-08-15 08:36:47] [I20_R60 seed2 gpu1] new best epoch=4 val_loss=0.655744 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed2/best.pt
+[2026-08-15 08:36:49] [I5_R20 seed2 gpu0] epoch=18 train_loss=0.734265 val_loss=0.669185
+[2026-08-15 08:36:50] [I5_R20 seed4 gpu1] epoch=21 train_loss=0.723554 val_loss=0.666579
+[2026-08-15 08:36:50] [I20_R60 seed4 gpu2] epoch=1 train_loss=0.989920 val_loss=0.694686
+[2026-08-15 08:36:50] [I20_R60 seed4 gpu2] new best epoch=1 val_loss=0.694686 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed4/best.pt
+[2026-08-15 08:36:50] [I5_R20 seed0 gpu0] epoch=18 train_loss=0.741024 val_loss=0.666503
+[2026-08-15 08:36:50] [I5_R20 seed0 gpu0] new best epoch=18 val_loss=0.666503 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed0/best.pt
+[2026-08-15 08:36:50] [I5_R20 seed1 gpu2] epoch=18 train_loss=0.737332 val_loss=0.666890
+[2026-08-15 08:36:54] [I20_R60 seed0 gpu0] epoch=8 train_loss=0.786187 val_loss=0.635791
+[2026-08-15 08:36:54] [I20_R60 seed0 gpu0] new best epoch=8 val_loss=0.635791 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed0/best.pt
+[2026-08-15 08:36:54] [I5_R20 seed2 gpu0] epoch=19 train_loss=0.729662 val_loss=0.666074
+[2026-08-15 08:36:54] [I5_R20 seed2 gpu0] new best epoch=19 val_loss=0.666074 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed2/best.pt
+[2026-08-15 08:36:55] [I5_R20 seed4 gpu1] epoch=22 train_loss=0.721550 val_loss=0.664969
+[2026-08-15 08:36:55] [I5_R20 seed4 gpu1] new best epoch=22 val_loss=0.664969 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed4/best.pt
+[2026-08-15 08:36:55] [I5_R20 seed0 gpu0] epoch=19 train_loss=0.736370 val_loss=0.665760
+[2026-08-15 08:36:55] [I5_R20 seed0 gpu0] new best epoch=19 val_loss=0.665760 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed0/best.pt
+[2026-08-15 08:36:55] [I20_R60 seed3 gpu2] epoch=7 train_loss=0.792974 val_loss=0.644864
+[2026-08-15 08:36:56] [I5_R20 seed1 gpu2] epoch=19 train_loss=0.732454 val_loss=0.665022
+[2026-08-15 08:36:56] [I5_R20 seed1 gpu2] new best epoch=19 val_loss=0.665022 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed1/best.pt
+[2026-08-15 08:36:56] [I20_R60 seed2 gpu1] epoch=5 train_loss=0.830735 val_loss=0.647998
+[2026-08-15 08:36:56] [I20_R60 seed2 gpu1] new best epoch=5 val_loss=0.647998 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed2/best.pt
+[2026-08-15 08:36:59] [I20_R60 seed4 gpu2] epoch=2 train_loss=0.919969 val_loss=0.674243
+[2026-08-15 08:36:59] [I20_R60 seed4 gpu2] new best epoch=2 val_loss=0.674243 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed4/best.pt
+[2026-08-15 08:37:00] [I5_R20 seed2 gpu0] epoch=20 train_loss=0.726735 val_loss=0.667562
+[2026-08-15 08:37:00] [I5_R20 seed4 gpu1] epoch=23 train_loss=0.715522 val_loss=0.665027
+[2026-08-15 08:37:00] [I5_R20 seed0 gpu0] epoch=20 train_loss=0.731177 val_loss=0.667975
+[2026-08-15 08:37:01] [I5_R20 seed1 gpu2] epoch=20 train_loss=0.727733 val_loss=0.667599
+[2026-08-15 08:37:03] [I20_R60 seed0 gpu0] epoch=9 train_loss=0.772697 val_loss=0.632897
+[2026-08-15 08:37:03] [I20_R60 seed0 gpu0] new best epoch=9 val_loss=0.632897 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed0/best.pt
+[2026-08-15 08:37:04] [I20_R60 seed3 gpu2] epoch=8 train_loss=0.781543 val_loss=0.635588
+[2026-08-15 08:37:04] [I20_R60 seed3 gpu2] early stop at epoch=8 best_epoch=6
+[2026-08-15 08:37:05] [I5_R20 seed2 gpu0] epoch=21 train_loss=0.722242 val_loss=0.665900
+[2026-08-15 08:37:05] [I5_R20 seed2 gpu0] new best epoch=21 val_loss=0.665900 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed2/best.pt
+[2026-08-15 08:37:05] [I20_R60 seed3 gpu2] training done best_epoch=6 val_loss=0.633823
+[2026-08-15 08:37:05] [I20_R60 seed2 gpu1] epoch=6 train_loss=0.812215 val_loss=0.652701
+[2026-08-15 08:37:05] [I5_R20 seed4 gpu1] epoch=24 train_loss=0.710532 val_loss=0.666029
+[2026-08-15 08:37:05] [I5_R20 seed4 gpu1] early stop at epoch=24 best_epoch=22
+[2026-08-15 08:37:05] [I5_R20 seed4 gpu1] training done best_epoch=22 val_loss=0.664969
+[2026-08-15 08:37:05] [I5_R20 seed0 gpu0] epoch=21 train_loss=0.727132 val_loss=0.665270
+[2026-08-15 08:37:05] [I5_R20 seed0 gpu0] new best epoch=21 val_loss=0.665270 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed0/best.pt
+[2026-08-15 08:37:06] [I5_R20 seed1 gpu2] epoch=21 train_loss=0.721689 val_loss=0.668494
+[2026-08-15 08:37:06] [I5_R20 seed1 gpu2] early stop at epoch=21 best_epoch=19
+[2026-08-15 08:37:06] [I5_R20 seed1 gpu2] training done best_epoch=19 val_loss=0.665022
+[2026-08-15 08:37:06] [I20_R5 seed1 gpu3] epoch=2 train_loss=0.867739 val_loss=0.684704
+[2026-08-15 08:37:06] [I20_R5 seed1 gpu3] new best epoch=2 val_loss=0.684704 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 08:37:07] [I20_R60 seed4 gpu2] epoch=3 train_loss=0.874399 val_loss=0.659811
+[2026-08-15 08:37:07] [I20_R60 seed4 gpu2] new best epoch=3 val_loss=0.659811 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed4/best.pt
+[2026-08-15 08:37:08] [I20_R60 seed3 gpu2] saved OOS predictions n=44538 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed3_pred.feather
+[2026-08-15 08:37:09] [I20_R60 seed3 gpu2] done
+[2026-08-15 08:37:09] acquire gpu=2 need_mib=8192 active={0: 5, 1: 5, 2: 5, 3: 3} remaining={0: 7534, 1: 3440, 2: 3408, 3: 7536}
+[2026-08-15 08:37:09] [I20_R60 seed1 gpu2] start
+[2026-08-15 08:37:10] [I5_R20 seed2 gpu0] epoch=22 train_loss=0.716195 val_loss=0.665738
+[2026-08-15 08:37:10] [I5_R20 seed2 gpu0] new best epoch=22 val_loss=0.665738 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed2/best.pt
+[2026-08-15 08:37:10] [I5_R20 seed0 gpu0] epoch=22 train_loss=0.722033 val_loss=0.664659
+[2026-08-15 08:37:10] [I5_R20 seed0 gpu0] new best epoch=22 val_loss=0.664659 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed0/best.pt
+[2026-08-15 08:37:10] [I5_R20 seed4 gpu1] saved OOS predictions n=138289 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed4_pred.feather
+[2026-08-15 08:37:11] [I5_R20 seed1 gpu2] saved OOS predictions n=138289 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed1_pred.feather
+[2026-08-15 08:37:11] [I20_R60 seed1 gpu2] pending jobs=1 configs=[(20, 60)] seeds=[1]
+[2026-08-15 08:37:11] [I20_R60 seed1 gpu2] I20/R60 freq=quarter split_seed=0 samples train=31247 val=13393 test=44538
+[2026-08-15 08:37:11] [I20_R60 seed1 gpu2] pixel_mean=28.151615 pixel_std=79.913381
+[2026-08-15 08:37:11] [I20_R60 seed1 gpu2] I20_R60 train_seed=1
+[2026-08-15 08:37:11] [I20_R60 seed0 gpu0] epoch=10 train_loss=0.748897 val_loss=0.640163
+[2026-08-15 08:37:11] [I5_R20 seed4 gpu1] done
+[2026-08-15 08:37:12] [I5_R20 seed1 gpu2] done
+[2026-08-15 08:37:12] [I20_R60 seed1 gpu2] model I20 flatten=46080 params=708866
+[2026-08-15 08:37:13] [I20_R60 seed2 gpu1] epoch=7 train_loss=0.792243 val_loss=0.637713
+[2026-08-15 08:37:13] [I20_R60 seed2 gpu1] new best epoch=7 val_loss=0.637713 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed2/best.pt
+[2026-08-15 08:37:14] [I20_R60 seed4 gpu2] epoch=4 train_loss=0.853265 val_loss=0.652440
+[2026-08-15 08:37:14] [I20_R60 seed4 gpu2] new best epoch=4 val_loss=0.652440 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed4/best.pt
+[2026-08-15 08:37:14] [I5_R20 seed2 gpu0] epoch=23 train_loss=0.712917 val_loss=0.666283
+[2026-08-15 08:37:15] [I20_R5 seed4 gpu1] epoch=1 train_loss=0.969670 val_loss=0.703917
+[2026-08-15 08:37:15] [I20_R5 seed4 gpu1] new best epoch=1 val_loss=0.703917 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed4/best.pt
+[2026-08-15 08:37:15] [I5_R20 seed0 gpu0] epoch=23 train_loss=0.718338 val_loss=0.664668
+[2026-08-15 08:37:18] [I20_R5 seed3 gpu2] epoch=1 train_loss=0.959083 val_loss=0.701874
+[2026-08-15 08:37:18] [I20_R5 seed3 gpu2] new best epoch=1 val_loss=0.701874 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed3/best.pt
+[2026-08-15 08:37:19] [I20_R5 seed2 gpu0] epoch=1 train_loss=0.964345 val_loss=0.704238
+[2026-08-15 08:37:19] [I20_R5 seed2 gpu0] new best epoch=1 val_loss=0.704238 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed2/best.pt
+[2026-08-15 08:37:19] [I5_R20 seed2 gpu0] epoch=24 train_loss=0.712253 val_loss=0.664491
+[2026-08-15 08:37:19] [I5_R20 seed2 gpu0] new best epoch=24 val_loss=0.664491 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed2/best.pt
+[2026-08-15 08:37:20] [I20_R60 seed0 gpu0] epoch=11 train_loss=0.742166 val_loss=0.631300
+[2026-08-15 08:37:20] [I20_R60 seed0 gpu0] new best epoch=11 val_loss=0.631300 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed0/best.pt
+[2026-08-15 08:37:20] [I5_R20 seed0 gpu0] epoch=24 train_loss=0.714108 val_loss=0.665413
+[2026-08-15 08:37:20] [I5_R20 seed0 gpu0] early stop at epoch=24 best_epoch=22
+[2026-08-15 08:37:20] [I5_R20 seed0 gpu0] training done best_epoch=22 val_loss=0.664659
+[2026-08-15 08:37:21] [I20_R60 seed1 gpu2] epoch=1 train_loss=0.968164 val_loss=0.688155
+[2026-08-15 08:37:21] [I20_R60 seed1 gpu2] new best epoch=1 val_loss=0.688155 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed1/best.pt
+[2026-08-15 08:37:21] [I20_R60 seed2 gpu1] epoch=8 train_loss=0.779333 val_loss=0.634456
+[2026-08-15 08:37:21] [I20_R60 seed2 gpu1] new best epoch=8 val_loss=0.634456 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed2/best.pt
+[2026-08-15 08:37:22] [I20_R60 seed4 gpu2] epoch=5 train_loss=0.831011 val_loss=0.646654
+[2026-08-15 08:37:22] [I20_R60 seed4 gpu2] new best epoch=5 val_loss=0.646654 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed4/best.pt
+[2026-08-15 08:37:23] [I20_R5 seed0 gpu1] epoch=1 train_loss=0.970179 val_loss=0.705612
+[2026-08-15 08:37:23] [I20_R5 seed0 gpu1] new best epoch=1 val_loss=0.705612 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed0/best.pt
+[2026-08-15 08:37:24] [I5_R20 seed2 gpu0] epoch=25 train_loss=0.707014 val_loss=0.663703
+[2026-08-15 08:37:24] [I5_R20 seed2 gpu0] new best epoch=25 val_loss=0.663703 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed2/best.pt
+[2026-08-15 08:37:25] [I5_R20 seed0 gpu0] saved OOS predictions n=138289 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed0_pred.feather
+[2026-08-15 08:37:26] [I5_R20 seed0 gpu0] done
+[2026-08-15 08:37:28] [I20_R60 seed0 gpu0] epoch=12 train_loss=0.739852 val_loss=0.629372
+[2026-08-15 08:37:28] [I20_R60 seed0 gpu0] new best epoch=12 val_loss=0.629372 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed0/best.pt
+[2026-08-15 08:37:28] [I20_R60 seed1 gpu2] epoch=2 train_loss=0.904453 val_loss=0.672596
+[2026-08-15 08:37:28] [I20_R60 seed1 gpu2] new best epoch=2 val_loss=0.672596 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed1/best.pt
+[2026-08-15 08:37:28] [I5_R20 seed2 gpu0] epoch=26 train_loss=0.704896 val_loss=0.665032
+[2026-08-15 08:37:29] [I20_R60 seed2 gpu1] epoch=9 train_loss=0.768164 val_loss=0.630013
+[2026-08-15 08:37:29] [I20_R60 seed2 gpu1] new best epoch=9 val_loss=0.630013 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed2/best.pt
+[2026-08-15 08:37:29] [I20_R60 seed4 gpu2] epoch=6 train_loss=0.816120 val_loss=0.639203
+[2026-08-15 08:37:29] [I20_R60 seed4 gpu2] new best epoch=6 val_loss=0.639203 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed4/best.pt
+[2026-08-15 08:37:32] [I5_R20 seed2 gpu0] epoch=27 train_loss=0.699987 val_loss=0.664622
+[2026-08-15 08:37:32] [I5_R20 seed2 gpu0] early stop at epoch=27 best_epoch=25
+[2026-08-15 08:37:33] [I5_R20 seed2 gpu0] training done best_epoch=25 val_loss=0.663703
+[2026-08-15 08:37:34] [I20_R60 seed0 gpu0] epoch=13 train_loss=0.716737 val_loss=0.627388
+[2026-08-15 08:37:34] [I20_R60 seed0 gpu0] new best epoch=13 val_loss=0.627388 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed0/best.pt
+[2026-08-15 08:37:35] [I20_R60 seed1 gpu2] epoch=3 train_loss=0.872992 val_loss=0.653847
+[2026-08-15 08:37:35] [I20_R60 seed1 gpu2] new best epoch=3 val_loss=0.653847 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed1/best.pt
+[2026-08-15 08:37:37] [I5_R20 seed2 gpu0] saved OOS predictions n=138289 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/seed2_pred.feather
+[2026-08-15 08:37:37] [I20_R60 seed4 gpu2] epoch=7 train_loss=0.796081 val_loss=0.634356
+[2026-08-15 08:37:37] [I20_R60 seed4 gpu2] new best epoch=7 val_loss=0.634356 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed4/best.pt
+[2026-08-15 08:37:37] [I20_R60 seed2 gpu1] epoch=10 train_loss=0.756562 val_loss=0.658921
+[2026-08-15 08:37:37] [I5_R20 seed2 gpu0] done
+[2026-08-15 08:37:40] [I20_R60 seed0 gpu0] epoch=14 train_loss=0.713659 val_loss=0.622792
+[2026-08-15 08:37:40] [I20_R60 seed0 gpu0] new best epoch=14 val_loss=0.622792 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed0/best.pt
+[2026-08-15 08:37:43] [I20_R60 seed1 gpu2] epoch=4 train_loss=0.847407 val_loss=0.649046
+[2026-08-15 08:37:43] [I20_R60 seed1 gpu2] new best epoch=4 val_loss=0.649046 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed1/best.pt
+[2026-08-15 08:37:44] [I20_R60 seed4 gpu2] epoch=8 train_loss=0.770951 val_loss=0.637394
+[2026-08-15 08:37:45] [I20_R60 seed2 gpu1] epoch=11 train_loss=0.755641 val_loss=0.628323
+[2026-08-15 08:37:45] [I20_R60 seed2 gpu1] new best epoch=11 val_loss=0.628323 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed2/best.pt
+[2026-08-15 08:37:46] [I20_R60 seed0 gpu0] epoch=15 train_loss=0.709383 val_loss=0.622645
+[2026-08-15 08:37:46] [I20_R60 seed0 gpu0] new best epoch=15 val_loss=0.622645 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed0/best.pt
+[2026-08-15 08:37:50] [I20_R60 seed1 gpu2] epoch=5 train_loss=0.837590 val_loss=0.643040
+[2026-08-15 08:37:50] [I20_R60 seed1 gpu2] new best epoch=5 val_loss=0.643040 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed1/best.pt
+[2026-08-15 08:37:52] [I20_R60 seed4 gpu2] epoch=9 train_loss=0.773992 val_loss=0.625930
+[2026-08-15 08:37:52] [I20_R60 seed4 gpu2] new best epoch=9 val_loss=0.625930 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed4/best.pt
+[2026-08-15 08:37:52] [I20_R60 seed0 gpu0] epoch=16 train_loss=0.690421 val_loss=0.626307
+[2026-08-15 08:37:53] [I20_R60 seed2 gpu1] epoch=12 train_loss=0.735722 val_loss=0.641199
+[2026-08-15 08:37:58] [I20_R60 seed0 gpu0] epoch=17 train_loss=0.690816 val_loss=0.631274
+[2026-08-15 08:37:58] [I20_R60 seed0 gpu0] early stop at epoch=17 best_epoch=15
+[2026-08-15 08:37:58] [I20_R60 seed1 gpu2] epoch=6 train_loss=0.815339 val_loss=0.638359
+[2026-08-15 08:37:58] [I20_R60 seed1 gpu2] new best epoch=6 val_loss=0.638359 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed1/best.pt
+[2026-08-15 08:37:58] [I20_R60 seed0 gpu0] training done best_epoch=15 val_loss=0.622645
+[2026-08-15 08:37:59] [I20_R60 seed4 gpu2] epoch=10 train_loss=0.757655 val_loss=0.628580
+[2026-08-15 08:38:00] [I20_R60 seed0 gpu0] saved OOS predictions n=44538 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed0_pred.feather
+[2026-08-15 08:38:01] [I20_R60 seed2 gpu1] epoch=13 train_loss=0.726004 val_loss=0.622073
+[2026-08-15 08:38:01] [I20_R60 seed2 gpu1] new best epoch=13 val_loss=0.622073 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed2/best.pt
+[2026-08-15 08:38:01] [I20_R60 seed0 gpu0] done
+[2026-08-15 08:38:01] acquire gpu=0 need_mib=16384 active={0: 3, 1: 4, 2: 4, 3: 3} remaining={0: 7534, 1: 7536, 2: 7504, 3: 7536}
+[2026-08-15 08:38:01] [I60_R20 seed0 gpu0] start
+[2026-08-15 08:38:03] [I60_R20 seed0 gpu0] pending jobs=1 configs=[(60, 20)] seeds=[0]
+[2026-08-15 08:38:03] [I60_R20 seed0 gpu0] I60/R20 freq=month split_seed=0 samples train=92514 val=39649 test=138165
+[2026-08-15 08:38:04] [I60_R20 seed0 gpu0] pixel stats: year=2007 54% (1/8 years)
+[2026-08-15 08:38:04] [I60_R20 seed0 gpu0] pixel stats: year=2007 100% (1/8 years)
+[2026-08-15 08:38:04] [I60_R20 seed0 gpu0] pixel stats: year=2007 done (1/8 years)
+[2026-08-15 08:38:05] [I60_R20 seed0 gpu0] pixel stats: year=2008 49% (2/8 years)
+[2026-08-15 08:38:05] [I60_R20 seed0 gpu0] pixel stats: year=2008 99% (2/8 years)
+[2026-08-15 08:38:05] [I60_R20 seed0 gpu0] pixel stats: year=2008 100% (2/8 years)
+[2026-08-15 08:38:05] [I60_R20 seed0 gpu0] pixel stats: year=2008 done (2/8 years)
+[2026-08-15 08:38:05] [I20_R60 seed1 gpu2] epoch=7 train_loss=0.794817 val_loss=0.635083
+[2026-08-15 08:38:05] [I20_R60 seed1 gpu2] new best epoch=7 val_loss=0.635083 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed1/best.pt
+[2026-08-15 08:38:06] [I60_R20 seed0 gpu0] pixel stats: year=2009 46% (3/8 years)
+[2026-08-15 08:38:06] [I60_R20 seed0 gpu0] pixel stats: year=2009 92% (3/8 years)
+[2026-08-15 08:38:06] [I60_R20 seed0 gpu0] pixel stats: year=2009 100% (3/8 years)
+[2026-08-15 08:38:06] [I60_R20 seed0 gpu0] pixel stats: year=2009 done (3/8 years)
+[2026-08-15 08:38:07] [I60_R20 seed0 gpu0] pixel stats: year=2010 42% (4/8 years)
+[2026-08-15 08:38:07] [I20_R60 seed4 gpu2] epoch=11 train_loss=0.751859 val_loss=0.625672
+[2026-08-15 08:38:07] [I20_R60 seed4 gpu2] new best epoch=11 val_loss=0.625672 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed4/best.pt
+[2026-08-15 08:38:07] [I60_R20 seed0 gpu0] pixel stats: year=2010 85% (4/8 years)
+[2026-08-15 08:38:07] [I60_R20 seed0 gpu0] pixel stats: year=2010 100% (4/8 years)
+[2026-08-15 08:38:07] [I60_R20 seed0 gpu0] pixel stats: year=2010 done (4/8 years)
+[2026-08-15 08:38:08] [I60_R20 seed0 gpu0] pixel stats: year=2011 34% (5/8 years)
+[2026-08-15 08:38:08] [I60_R20 seed0 gpu0] pixel stats: year=2011 68% (5/8 years)
+[2026-08-15 08:38:09] [I60_R20 seed0 gpu0] pixel stats: year=2011 100% (5/8 years)
+[2026-08-15 08:38:09] [I60_R20 seed0 gpu0] pixel stats: year=2011 done (5/8 years)
+[2026-08-15 08:38:09] [I20_R60 seed2 gpu1] epoch=14 train_loss=0.715467 val_loss=0.649857
+[2026-08-15 08:38:09] [I60_R20 seed0 gpu0] pixel stats: year=2012 28% (6/8 years)
+[2026-08-15 08:38:09] [I60_R20 seed0 gpu0] pixel stats: year=2012 57% (6/8 years)
+[2026-08-15 08:38:10] [I60_R20 seed0 gpu0] pixel stats: year=2012 85% (6/8 years)
+[2026-08-15 08:38:10] [I60_R20 seed0 gpu0] pixel stats: year=2012 100% (6/8 years)
+[2026-08-15 08:38:10] [I60_R20 seed0 gpu0] pixel stats: year=2012 done (6/8 years)
+[2026-08-15 08:38:11] [I60_R20 seed0 gpu0] pixel stats: year=2013 26% (7/8 years)
+[2026-08-15 08:38:11] [I60_R20 seed0 gpu0] pixel stats: year=2013 52% (7/8 years)
+[2026-08-15 08:38:12] [I60_R20 seed0 gpu0] pixel stats: year=2013 78% (7/8 years)
+[2026-08-15 08:38:12] [I60_R20 seed0 gpu0] pixel stats: year=2013 100% (7/8 years)
+[2026-08-15 08:38:12] [I60_R20 seed0 gpu0] pixel stats: year=2013 done (7/8 years)
+[2026-08-15 08:38:12] [I60_R20 seed0 gpu0] pixel stats: year=2014 26% (8/8 years)
+[2026-08-15 08:38:13] [I20_R60 seed1 gpu2] epoch=8 train_loss=0.782168 val_loss=0.631751
+[2026-08-15 08:38:13] [I20_R60 seed1 gpu2] new best epoch=8 val_loss=0.631751 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed1/best.pt
+[2026-08-15 08:38:13] [I60_R20 seed0 gpu0] pixel stats: year=2014 52% (8/8 years)
+[2026-08-15 08:38:13] [I60_R20 seed0 gpu0] pixel stats: year=2014 78% (8/8 years)
+[2026-08-15 08:38:14] [I60_R20 seed0 gpu0] pixel stats: year=2014 100% (8/8 years)
+[2026-08-15 08:38:14] [I60_R20 seed0 gpu0] pixel stats: year=2014 done (8/8 years)
+[2026-08-15 08:38:14] [I60_R20 seed0 gpu0] pixel_mean=17.832078 pixel_std=65.032275
+[2026-08-15 08:38:14] [I60_R20 seed0 gpu0] I60_R20 train_seed=0
+[2026-08-15 08:38:14] [I60_R20 seed0 gpu0] model I60 flatten=184320 params=2952962
+[2026-08-15 08:38:15] [I20_R60 seed4 gpu2] epoch=12 train_loss=0.735128 val_loss=0.620156
+[2026-08-15 08:38:15] [I20_R60 seed4 gpu2] new best epoch=12 val_loss=0.620156 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed4/best.pt
+[2026-08-15 08:38:15] [I20_R5 seed1 gpu3] epoch=3 train_loss=0.808225 val_loss=0.675661
+[2026-08-15 08:38:15] [I20_R5 seed1 gpu3] new best epoch=3 val_loss=0.675661 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 08:38:17] [I20_R60 seed2 gpu1] epoch=15 train_loss=0.706025 val_loss=0.622422
+[2026-08-15 08:38:17] [I20_R60 seed2 gpu1] early stop at epoch=15 best_epoch=13
+[2026-08-15 08:38:17] [I20_R60 seed2 gpu1] training done best_epoch=13 val_loss=0.622073
+[2026-08-15 08:38:20] [I20_R60 seed2 gpu1] saved OOS predictions n=44538 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed2_pred.feather
+[2026-08-15 08:38:20] [I20_R60 seed1 gpu2] epoch=9 train_loss=0.773694 val_loss=0.635698
+[2026-08-15 08:38:21] [I20_R60 seed2 gpu1] done
+[2026-08-15 08:38:22] [I20_R60 seed4 gpu2] epoch=13 train_loss=0.724040 val_loss=0.626517
+[2026-08-15 08:38:24] [I20_R5 seed2 gpu0] epoch=2 train_loss=0.863596 val_loss=0.687210
+[2026-08-15 08:38:24] [I20_R5 seed2 gpu0] new best epoch=2 val_loss=0.687210 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed2/best.pt
+[2026-08-15 08:38:28] [I20_R60 seed1 gpu2] epoch=10 train_loss=0.754764 val_loss=0.625380
+[2026-08-15 08:38:28] [I20_R60 seed1 gpu2] new best epoch=10 val_loss=0.625380 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed1/best.pt
+[2026-08-15 08:38:30] [I20_R60 seed4 gpu2] epoch=14 train_loss=0.715212 val_loss=0.619352
+[2026-08-15 08:38:30] [I20_R60 seed4 gpu2] new best epoch=14 val_loss=0.619352 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed4/best.pt
+[2026-08-15 08:38:35] [I20_R60 seed1 gpu2] epoch=11 train_loss=0.743086 val_loss=0.624197
+[2026-08-15 08:38:35] [I20_R60 seed1 gpu2] new best epoch=11 val_loss=0.624197 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed1/best.pt
+[2026-08-15 08:38:37] [I20_R60 seed4 gpu2] epoch=15 train_loss=0.709774 val_loss=0.618928
+[2026-08-15 08:38:37] [I20_R60 seed4 gpu2] new best epoch=15 val_loss=0.618928 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed4/best.pt
+[2026-08-15 08:38:41] [I20_R5 seed4 gpu1] epoch=2 train_loss=0.871147 val_loss=0.687168
+[2026-08-15 08:38:41] [I20_R5 seed4 gpu1] new best epoch=2 val_loss=0.687168 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed4/best.pt
+[2026-08-15 08:38:43] [I20_R60 seed1 gpu2] epoch=12 train_loss=0.732669 val_loss=0.637791
+[2026-08-15 08:38:44] [I20_R60 seed4 gpu2] epoch=16 train_loss=0.692494 val_loss=0.614571
+[2026-08-15 08:38:44] [I20_R60 seed4 gpu2] new best epoch=16 val_loss=0.614571 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed4/best.pt
+[2026-08-15 08:38:49] [I20_R5 seed3 gpu2] epoch=2 train_loss=0.861377 val_loss=0.684834
+[2026-08-15 08:38:49] [I20_R5 seed3 gpu2] new best epoch=2 val_loss=0.684834 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed3/best.pt
+[2026-08-15 08:38:50] [I20_R60 seed1 gpu2] epoch=13 train_loss=0.725036 val_loss=0.620836
+[2026-08-15 08:38:50] [I20_R60 seed1 gpu2] new best epoch=13 val_loss=0.620836 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed1/best.pt
+[2026-08-15 08:38:52] [I20_R5 seed0 gpu1] epoch=2 train_loss=0.868209 val_loss=0.689991
+[2026-08-15 08:38:52] [I20_R5 seed0 gpu1] new best epoch=2 val_loss=0.689991 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed0/best.pt
+[2026-08-15 08:38:52] [I20_R60 seed4 gpu2] epoch=17 train_loss=0.690342 val_loss=0.617365
+[2026-08-15 08:38:58] [I20_R60 seed1 gpu2] epoch=14 train_loss=0.718186 val_loss=0.619175
+[2026-08-15 08:38:58] [I20_R60 seed1 gpu2] new best epoch=14 val_loss=0.619175 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed1/best.pt
+[2026-08-15 08:38:59] [I20_R60 seed4 gpu2] epoch=18 train_loss=0.676113 val_loss=0.618890
+[2026-08-15 08:38:59] [I20_R60 seed4 gpu2] early stop at epoch=18 best_epoch=16
+[2026-08-15 08:39:00] [I20_R60 seed4 gpu2] training done best_epoch=16 val_loss=0.614571
+[2026-08-15 08:39:03] [I20_R60 seed4 gpu2] saved OOS predictions n=44538 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed4_pred.feather
+[2026-08-15 08:39:04] [I20_R60 seed4 gpu2] done
+[2026-08-15 08:39:05] [I20_R60 seed1 gpu2] epoch=15 train_loss=0.707310 val_loss=0.616523
+[2026-08-15 08:39:05] [I20_R60 seed1 gpu2] new best epoch=15 val_loss=0.616523 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed1/best.pt
+[2026-08-15 08:39:11] [I20_R60 seed1 gpu2] epoch=16 train_loss=0.696779 val_loss=0.626101
+[2026-08-15 08:39:17] [I20_R60 seed1 gpu2] epoch=17 train_loss=0.691516 val_loss=0.613423
+[2026-08-15 08:39:17] [I20_R60 seed1 gpu2] new best epoch=17 val_loss=0.613423 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed1/best.pt
+[2026-08-15 08:39:23] [I20_R5 seed1 gpu3] epoch=4 train_loss=0.766402 val_loss=0.671985
+[2026-08-15 08:39:23] [I20_R5 seed1 gpu3] new best epoch=4 val_loss=0.671985 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 08:39:23] [I20_R60 seed1 gpu2] epoch=18 train_loss=0.682399 val_loss=0.615267
+[2026-08-15 08:39:30] [I20_R60 seed1 gpu2] epoch=19 train_loss=0.666612 val_loss=0.612923
+[2026-08-15 08:39:30] [I20_R60 seed1 gpu2] new best epoch=19 val_loss=0.612923 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed1/best.pt
+[2026-08-15 08:39:32] [I20_R5 seed2 gpu0] epoch=3 train_loss=0.804141 val_loss=0.676364
+[2026-08-15 08:39:32] [I20_R5 seed2 gpu0] new best epoch=3 val_loss=0.676364 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed2/best.pt
+[2026-08-15 08:39:36] [I20_R60 seed1 gpu2] epoch=20 train_loss=0.662243 val_loss=0.615102
+[2026-08-15 08:39:42] [I20_R60 seed1 gpu2] epoch=21 train_loss=0.663717 val_loss=0.611968
+[2026-08-15 08:39:42] [I20_R60 seed1 gpu2] new best epoch=21 val_loss=0.611968 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed1/best.pt
+[2026-08-15 08:39:48] [I20_R60 seed1 gpu2] epoch=22 train_loss=0.650528 val_loss=0.611378
+[2026-08-15 08:39:48] [I20_R60 seed1 gpu2] new best epoch=22 val_loss=0.611378 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed1/best.pt
+[2026-08-15 08:39:53] [I20_R5 seed4 gpu1] epoch=3 train_loss=0.811961 val_loss=0.677681
+[2026-08-15 08:39:53] [I20_R5 seed4 gpu1] new best epoch=3 val_loss=0.677681 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed4/best.pt
+[2026-08-15 08:39:54] [I20_R60 seed1 gpu2] epoch=23 train_loss=0.642990 val_loss=0.611712
+[2026-08-15 08:40:01] [I20_R5 seed3 gpu2] epoch=3 train_loss=0.800435 val_loss=0.677210
+[2026-08-15 08:40:01] [I20_R5 seed3 gpu2] new best epoch=3 val_loss=0.677210 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed3/best.pt
+[2026-08-15 08:40:01] [I20_R60 seed1 gpu2] epoch=24 train_loss=0.641630 val_loss=0.613263
+[2026-08-15 08:40:01] [I20_R60 seed1 gpu2] early stop at epoch=24 best_epoch=22
+[2026-08-15 08:40:01] [I20_R60 seed1 gpu2] training done best_epoch=22 val_loss=0.611378
+[2026-08-15 08:40:04] [I20_R60 seed1 gpu2] saved OOS predictions n=44538 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/seed1_pred.feather
+[2026-08-15 08:40:05] [I20_R60 seed1 gpu2] done
+[2026-08-15 08:40:05] acquire gpu=2 need_mib=16384 active={0: 3, 1: 3, 2: 3, 3: 3} remaining={0: 7534, 1: 15728, 2: 7504, 3: 7536}
+[2026-08-15 08:40:05] [I60_R20 seed4 gpu2] start
+[2026-08-15 08:40:06] [I60_R20 seed4 gpu2] pending jobs=1 configs=[(60, 20)] seeds=[4]
+[2026-08-15 08:40:07] [I60_R20 seed4 gpu2] I60/R20 freq=month split_seed=0 samples train=92514 val=39649 test=138165
+[2026-08-15 08:40:07] [I60_R20 seed4 gpu2] pixel_mean=17.832078 pixel_std=65.032275
+[2026-08-15 08:40:07] [I60_R20 seed4 gpu2] I60_R20 train_seed=4
+[2026-08-15 08:40:07] [I60_R20 seed4 gpu2] model I60 flatten=184320 params=2952962
+[2026-08-15 08:40:07] [I20_R5 seed0 gpu1] epoch=3 train_loss=0.808117 val_loss=0.682639
+[2026-08-15 08:40:07] [I20_R5 seed0 gpu1] new best epoch=3 val_loss=0.682639 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed0/best.pt
+[2026-08-15 08:40:30] [I60_R20 seed0 gpu0] epoch=1 train_loss=1.010538 val_loss=0.667683
+[2026-08-15 08:40:30] [I60_R20 seed0 gpu0] new best epoch=1 val_loss=0.667683 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed0/best.pt
+[2026-08-15 08:40:32] [I20_R5 seed1 gpu3] epoch=5 train_loss=0.739732 val_loss=0.672684
+[2026-08-15 08:40:40] [I20_R5 seed2 gpu0] epoch=4 train_loss=0.763191 val_loss=0.675147
+[2026-08-15 08:40:41] [I20_R5 seed2 gpu0] new best epoch=4 val_loss=0.675147 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed2/best.pt
+[2026-08-15 08:41:06] [I20_R5 seed4 gpu1] epoch=4 train_loss=0.770905 val_loss=0.674299
+[2026-08-15 08:41:06] [I20_R5 seed4 gpu1] new best epoch=4 val_loss=0.674299 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed4/best.pt
+[2026-08-15 08:41:07] [I20_R5 seed3 gpu2] epoch=4 train_loss=0.761998 val_loss=0.671880
+[2026-08-15 08:41:07] [I20_R5 seed3 gpu2] new best epoch=4 val_loss=0.671880 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed3/best.pt
+[2026-08-15 08:41:23] [I20_R5 seed0 gpu1] epoch=4 train_loss=0.765679 val_loss=0.689539
+[2026-08-15 08:41:40] [I20_R5 seed1 gpu3] epoch=6 train_loss=0.719628 val_loss=0.670336
+[2026-08-15 08:41:40] [I20_R5 seed1 gpu3] new best epoch=6 val_loss=0.670336 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 08:41:49] [I20_R5 seed2 gpu0] epoch=5 train_loss=0.736755 val_loss=0.669958
+[2026-08-15 08:41:49] [I20_R5 seed2 gpu0] new best epoch=5 val_loss=0.669958 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed2/best.pt
+[2026-08-15 08:42:16] [I20_R5 seed3 gpu2] epoch=5 train_loss=0.734267 val_loss=0.670708
+[2026-08-15 08:42:16] [I20_R5 seed3 gpu2] new best epoch=5 val_loss=0.670708 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed3/best.pt
+[2026-08-15 08:42:18] [I20_R5 seed4 gpu1] epoch=5 train_loss=0.741902 val_loss=0.668772
+[2026-08-15 08:42:18] [I20_R5 seed4 gpu1] new best epoch=5 val_loss=0.668772 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed4/best.pt
+[2026-08-15 08:42:24] [I60_R20 seed4 gpu2] epoch=1 train_loss=1.005683 val_loss=0.669776
+[2026-08-15 08:42:24] [I60_R20 seed4 gpu2] new best epoch=1 val_loss=0.669776 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed4/best.pt
+[2026-08-15 08:42:39] [I20_R5 seed0 gpu1] epoch=5 train_loss=0.737537 val_loss=0.669614
+[2026-08-15 08:42:39] [I20_R5 seed0 gpu1] new best epoch=5 val_loss=0.669614 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed0/best.pt
+[2026-08-15 08:42:42] [I60_R20 seed0 gpu0] epoch=2 train_loss=0.888068 val_loss=0.652974
+[2026-08-15 08:42:42] [I60_R20 seed0 gpu0] new best epoch=2 val_loss=0.652974 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed0/best.pt
+[2026-08-15 08:42:49] [I20_R5 seed1 gpu3] epoch=7 train_loss=0.704695 val_loss=0.672107
+[2026-08-15 08:42:57] [I20_R5 seed2 gpu0] epoch=6 train_loss=0.716307 val_loss=0.669151
+[2026-08-15 08:42:57] [I20_R5 seed2 gpu0] new best epoch=6 val_loss=0.669151 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed2/best.pt
+[2026-08-15 08:43:24] [I20_R5 seed3 gpu2] epoch=6 train_loss=0.716516 val_loss=0.675771
+[2026-08-15 08:43:31] [I20_R5 seed4 gpu1] epoch=6 train_loss=0.721229 val_loss=0.671264
+[2026-08-15 08:43:55] [I20_R5 seed0 gpu1] epoch=6 train_loss=0.718021 val_loss=0.667604
+[2026-08-15 08:43:55] [I20_R5 seed0 gpu1] new best epoch=6 val_loss=0.667604 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed0/best.pt
+[2026-08-15 08:43:57] [I20_R5 seed1 gpu3] epoch=8 train_loss=0.693817 val_loss=0.665339
+[2026-08-15 08:43:57] [I20_R5 seed1 gpu3] new best epoch=8 val_loss=0.665339 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 08:44:06] [I20_R5 seed2 gpu0] epoch=7 train_loss=0.701618 val_loss=0.673820
+[2026-08-15 08:44:33] [I20_R5 seed3 gpu2] epoch=7 train_loss=0.702496 val_loss=0.665195
+[2026-08-15 08:44:33] [I20_R5 seed3 gpu2] new best epoch=7 val_loss=0.665195 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed3/best.pt
+[2026-08-15 08:44:40] [I60_R20 seed4 gpu2] epoch=2 train_loss=0.887911 val_loss=0.666557
+[2026-08-15 08:44:40] [I60_R20 seed4 gpu2] new best epoch=2 val_loss=0.666557 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed4/best.pt
+[2026-08-15 08:44:43] [I20_R5 seed4 gpu1] epoch=7 train_loss=0.705896 val_loss=0.665919
+[2026-08-15 08:44:43] [I20_R5 seed4 gpu1] new best epoch=7 val_loss=0.665919 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed4/best.pt
+[2026-08-15 08:44:54] [I60_R20 seed0 gpu0] epoch=3 train_loss=0.824901 val_loss=0.632432
+[2026-08-15 08:44:55] [I60_R20 seed0 gpu0] new best epoch=3 val_loss=0.632432 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed0/best.pt
+[2026-08-15 08:45:03] [I20_R5 seed1 gpu3] epoch=9 train_loss=0.685825 val_loss=0.663973
+[2026-08-15 08:45:03] [I20_R5 seed1 gpu3] new best epoch=9 val_loss=0.663973 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 08:45:09] [I20_R5 seed0 gpu1] epoch=7 train_loss=0.703855 val_loss=0.665677
+[2026-08-15 08:45:09] [I20_R5 seed0 gpu1] new best epoch=7 val_loss=0.665677 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed0/best.pt
+[2026-08-15 08:45:13] [I20_R5 seed2 gpu0] epoch=8 train_loss=0.690985 val_loss=0.665428
+[2026-08-15 08:45:13] [I20_R5 seed2 gpu0] new best epoch=8 val_loss=0.665428 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed2/best.pt
+[2026-08-15 08:45:25] [I60_R5 seed0 gpu3] epoch=1 train_loss=0.990988 val_loss=0.726617
+[2026-08-15 08:45:25] [I60_R5 seed0 gpu3] new best epoch=1 val_loss=0.726617 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed0/best.pt
+[2026-08-15 08:45:25] [I60_R5 seed4 gpu3] epoch=1 train_loss=0.988561 val_loss=0.685071
+[2026-08-15 08:45:25] [I60_R5 seed4 gpu3] new best epoch=1 val_loss=0.685071 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed4/best.pt
+[2026-08-15 08:45:28] [I60_R5 seed3 gpu1] epoch=1 train_loss=0.990779 val_loss=0.691254
+[2026-08-15 08:45:28] [I60_R5 seed3 gpu1] new best epoch=1 val_loss=0.691254 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed3/best.pt
+[2026-08-15 08:45:41] [I20_R5 seed3 gpu2] epoch=8 train_loss=0.693267 val_loss=0.664654
+[2026-08-15 08:45:41] [I20_R5 seed3 gpu2] new best epoch=8 val_loss=0.664654 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed3/best.pt
+[2026-08-15 08:45:43] [I60_R5 seed1 gpu0] epoch=1 train_loss=0.988558 val_loss=0.695526
+[2026-08-15 08:45:43] [I60_R5 seed1 gpu0] new best epoch=1 val_loss=0.695526 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed1/best.pt
+[2026-08-15 08:45:53] [I20_R5 seed4 gpu1] epoch=8 train_loss=0.694025 val_loss=0.663846
+[2026-08-15 08:45:53] [I20_R5 seed4 gpu1] new best epoch=8 val_loss=0.663846 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed4/best.pt
+[2026-08-15 08:46:02] [I60_R5 seed2 gpu2] epoch=1 train_loss=0.990110 val_loss=0.685274
+[2026-08-15 08:46:02] [I60_R5 seed2 gpu2] new best epoch=1 val_loss=0.685274 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed2/best.pt
+[2026-08-15 08:46:10] [I20_R5 seed1 gpu3] epoch=10 train_loss=0.678885 val_loss=0.662739
+[2026-08-15 08:46:10] [I20_R5 seed1 gpu3] new best epoch=10 val_loss=0.662739 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 08:46:21] [I20_R5 seed2 gpu0] epoch=9 train_loss=0.683685 val_loss=0.663212
+[2026-08-15 08:46:21] [I20_R5 seed2 gpu0] new best epoch=9 val_loss=0.663212 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed2/best.pt
+[2026-08-15 08:46:24] [I20_R5 seed0 gpu1] epoch=8 train_loss=0.694065 val_loss=0.684537
+[2026-08-15 08:46:51] [I20_R5 seed3 gpu2] epoch=9 train_loss=0.684788 val_loss=0.664690
+[2026-08-15 08:46:53] [I60_R20 seed4 gpu2] epoch=3 train_loss=0.827255 val_loss=0.647239
+[2026-08-15 08:46:53] [I60_R20 seed4 gpu2] new best epoch=3 val_loss=0.647239 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed4/best.pt
+[2026-08-15 08:47:06] [I20_R5 seed4 gpu1] epoch=9 train_loss=0.685282 val_loss=0.664890
+[2026-08-15 08:47:06] [I60_R20 seed0 gpu0] epoch=4 train_loss=0.785444 val_loss=0.628146
+[2026-08-15 08:47:06] [I60_R20 seed0 gpu0] new best epoch=4 val_loss=0.628146 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed0/best.pt
+[2026-08-15 08:47:18] [I20_R5 seed1 gpu3] epoch=11 train_loss=0.673303 val_loss=0.665463
+[2026-08-15 08:47:29] [I20_R5 seed2 gpu0] epoch=10 train_loss=0.677503 val_loss=0.664987
+[2026-08-15 08:47:40] [I20_R5 seed0 gpu1] epoch=9 train_loss=0.685741 val_loss=0.663771
+[2026-08-15 08:47:40] [I20_R5 seed0 gpu1] new best epoch=9 val_loss=0.663771 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed0/best.pt
+[2026-08-15 08:48:01] [I20_R5 seed3 gpu2] epoch=10 train_loss=0.678354 val_loss=0.662603
+[2026-08-15 08:48:01] [I20_R5 seed3 gpu2] new best epoch=10 val_loss=0.662603 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed3/best.pt
+[2026-08-15 08:48:19] [I20_R5 seed4 gpu1] epoch=10 train_loss=0.678744 val_loss=0.662339
+[2026-08-15 08:48:19] [I20_R5 seed4 gpu1] new best epoch=10 val_loss=0.662339 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed4/best.pt
+[2026-08-15 08:48:27] [I20_R5 seed1 gpu3] epoch=12 train_loss=0.669398 val_loss=0.661077
+[2026-08-15 08:48:27] [I20_R5 seed1 gpu3] new best epoch=12 val_loss=0.661077 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 08:48:37] [I20_R5 seed2 gpu0] epoch=11 train_loss=0.672129 val_loss=0.661658
+[2026-08-15 08:48:37] [I20_R5 seed2 gpu0] new best epoch=11 val_loss=0.661658 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed2/best.pt
+[2026-08-15 08:48:55] [I20_R5 seed0 gpu1] epoch=10 train_loss=0.678834 val_loss=0.665395
+[2026-08-15 08:49:08] [I60_R20 seed4 gpu2] epoch=4 train_loss=0.775926 val_loss=0.624546
+[2026-08-15 08:49:08] [I60_R20 seed4 gpu2] new best epoch=4 val_loss=0.624546 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed4/best.pt
+[2026-08-15 08:49:10] [I20_R5 seed3 gpu2] epoch=11 train_loss=0.673211 val_loss=0.661015
+[2026-08-15 08:49:11] [I20_R5 seed3 gpu2] new best epoch=11 val_loss=0.661015 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed3/best.pt
+[2026-08-15 08:49:19] [I60_R20 seed0 gpu0] epoch=5 train_loss=0.750929 val_loss=0.663572
+[2026-08-15 08:49:31] [I20_R5 seed4 gpu1] epoch=11 train_loss=0.672179 val_loss=0.660530
+[2026-08-15 08:49:31] [I20_R5 seed4 gpu1] new best epoch=11 val_loss=0.660530 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed4/best.pt
+[2026-08-15 08:49:35] [I20_R5 seed1 gpu3] epoch=13 train_loss=0.665112 val_loss=0.660920
+[2026-08-15 08:49:35] [I20_R5 seed1 gpu3] new best epoch=13 val_loss=0.660920 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 08:49:45] [I20_R5 seed2 gpu0] epoch=12 train_loss=0.668061 val_loss=0.660097
+[2026-08-15 08:49:45] [I20_R5 seed2 gpu0] new best epoch=12 val_loss=0.660097 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed2/best.pt
+[2026-08-15 08:50:11] [I20_R5 seed0 gpu1] epoch=11 train_loss=0.673496 val_loss=0.661192
+[2026-08-15 08:50:11] [I20_R5 seed0 gpu1] new best epoch=11 val_loss=0.661192 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed0/best.pt
+[2026-08-15 08:50:20] [I20_R5 seed3 gpu2] epoch=12 train_loss=0.668055 val_loss=0.659981
+[2026-08-15 08:50:20] [I20_R5 seed3 gpu2] new best epoch=12 val_loss=0.659981 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed3/best.pt
+[2026-08-15 08:50:44] [I20_R5 seed1 gpu3] epoch=14 train_loss=0.661908 val_loss=0.663680
+[2026-08-15 08:50:44] [I20_R5 seed4 gpu1] epoch=12 train_loss=0.668105 val_loss=0.659844
+[2026-08-15 08:50:44] [I20_R5 seed4 gpu1] new best epoch=12 val_loss=0.659844 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed4/best.pt
+[2026-08-15 08:50:53] [I20_R5 seed2 gpu0] epoch=13 train_loss=0.663671 val_loss=0.659109
+[2026-08-15 08:50:53] [I20_R5 seed2 gpu0] new best epoch=13 val_loss=0.659109 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed2/best.pt
+[2026-08-15 08:51:23] [I60_R20 seed4 gpu2] epoch=5 train_loss=0.753161 val_loss=0.628914
+[2026-08-15 08:51:27] [I20_R5 seed0 gpu1] epoch=12 train_loss=0.669362 val_loss=0.661585
+[2026-08-15 08:51:30] [I20_R5 seed3 gpu2] epoch=13 train_loss=0.665639 val_loss=0.659208
+[2026-08-15 08:51:30] [I20_R5 seed3 gpu2] new best epoch=13 val_loss=0.659208 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed3/best.pt
+[2026-08-15 08:51:32] [I60_R20 seed0 gpu0] epoch=6 train_loss=0.723856 val_loss=0.621752
+[2026-08-15 08:51:32] [I60_R20 seed0 gpu0] new best epoch=6 val_loss=0.621752 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed0/best.pt
+[2026-08-15 08:51:53] [I20_R5 seed1 gpu3] epoch=15 train_loss=0.658312 val_loss=0.657999
+[2026-08-15 08:51:53] [I20_R5 seed1 gpu3] new best epoch=15 val_loss=0.657999 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 08:51:57] [I20_R5 seed4 gpu1] epoch=13 train_loss=0.663633 val_loss=0.659284
+[2026-08-15 08:51:57] [I20_R5 seed4 gpu1] new best epoch=13 val_loss=0.659284 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed4/best.pt
+[2026-08-15 08:52:01] [I20_R5 seed2 gpu0] epoch=14 train_loss=0.661210 val_loss=0.659670
+[2026-08-15 08:52:40] [I20_R5 seed3 gpu2] epoch=14 train_loss=0.661841 val_loss=0.658729
+[2026-08-15 08:52:40] [I20_R5 seed3 gpu2] new best epoch=14 val_loss=0.658729 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed3/best.pt
+[2026-08-15 08:52:43] [I20_R5 seed0 gpu1] epoch=13 train_loss=0.664976 val_loss=0.660306
+[2026-08-15 08:52:43] [I20_R5 seed0 gpu1] new best epoch=13 val_loss=0.660306 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed0/best.pt
+[2026-08-15 08:53:01] [I20_R5 seed1 gpu3] epoch=16 train_loss=0.655877 val_loss=0.657895
+[2026-08-15 08:53:01] [I20_R5 seed1 gpu3] new best epoch=16 val_loss=0.657895 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 08:53:09] [I20_R5 seed4 gpu1] epoch=14 train_loss=0.659758 val_loss=0.657348
+[2026-08-15 08:53:09] [I20_R5 seed4 gpu1] new best epoch=14 val_loss=0.657348 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed4/best.pt
+[2026-08-15 08:53:09] [I20_R5 seed2 gpu0] epoch=15 train_loss=0.658313 val_loss=0.660302
+[2026-08-15 08:53:09] [I20_R5 seed2 gpu0] early stop at epoch=15 best_epoch=13
+[2026-08-15 08:53:09] [I20_R5 seed2 gpu0] training done best_epoch=13 val_loss=0.659109
+[2026-08-15 08:53:37] [I60_R20 seed4 gpu2] epoch=6 train_loss=0.721044 val_loss=0.617407
+[2026-08-15 08:53:37] [I60_R20 seed4 gpu2] new best epoch=6 val_loss=0.617407 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed4/best.pt
+[2026-08-15 08:53:41] [I20_R5 seed2 gpu0] saved OOS predictions n=593994 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed2_pred.feather
+[2026-08-15 08:53:42] [I20_R5 seed2 gpu0] done
+[2026-08-15 08:53:43] [I60_R20 seed0 gpu0] epoch=7 train_loss=0.698485 val_loss=0.625063
+[2026-08-15 08:53:50] [I20_R5 seed3 gpu2] epoch=15 train_loss=0.658454 val_loss=0.661223
+[2026-08-15 08:53:56] [I20_R5 seed0 gpu1] epoch=14 train_loss=0.661629 val_loss=0.659606
+[2026-08-15 08:53:56] [I20_R5 seed0 gpu1] new best epoch=14 val_loss=0.659606 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed0/best.pt
+[2026-08-15 08:54:02] [I60_R5 seed3 gpu1] epoch=2 train_loss=0.873610 val_loss=0.705934
+[2026-08-15 08:54:08] [I20_R5 seed1 gpu3] epoch=17 train_loss=0.653332 val_loss=0.657295
+[2026-08-15 08:54:08] [I20_R5 seed1 gpu3] new best epoch=17 val_loss=0.657295 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 08:54:19] [I20_R5 seed4 gpu1] epoch=15 train_loss=0.656765 val_loss=0.656979
+[2026-08-15 08:54:19] [I20_R5 seed4 gpu1] new best epoch=15 val_loss=0.656979 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed4/best.pt
+[2026-08-15 08:54:33] [I60_R5 seed1 gpu0] epoch=2 train_loss=0.869740 val_loss=0.672497
+[2026-08-15 08:54:33] [I60_R5 seed1 gpu0] new best epoch=2 val_loss=0.672497 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed1/best.pt
+[2026-08-15 08:54:35] [I60_R5 seed0 gpu3] epoch=2 train_loss=0.868987 val_loss=0.683891
+[2026-08-15 08:54:35] [I60_R5 seed0 gpu3] new best epoch=2 val_loss=0.683891 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed0/best.pt
+[2026-08-15 08:54:35] [I60_R5 seed4 gpu3] epoch=2 train_loss=0.870842 val_loss=0.680371
+[2026-08-15 08:54:35] [I60_R5 seed4 gpu3] new best epoch=2 val_loss=0.680371 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed4/best.pt
+[2026-08-15 08:54:59] [I20_R5 seed3 gpu2] epoch=16 train_loss=0.656632 val_loss=0.657823
+[2026-08-15 08:54:59] [I20_R5 seed3 gpu2] new best epoch=16 val_loss=0.657823 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed3/best.pt
+[2026-08-15 08:55:04] [I60_R5 seed2 gpu2] epoch=2 train_loss=0.865617 val_loss=0.681332
+[2026-08-15 08:55:04] [I60_R5 seed2 gpu2] new best epoch=2 val_loss=0.681332 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed2/best.pt
+[2026-08-15 08:55:07] [I60_R20 seed0 gpu0] epoch=8 train_loss=0.673629 val_loss=0.632109
+[2026-08-15 08:55:07] [I60_R20 seed0 gpu0] early stop at epoch=8 best_epoch=6
+[2026-08-15 08:55:07] [I60_R20 seed0 gpu0] training done best_epoch=6 val_loss=0.621752
+[2026-08-15 08:55:11] [I20_R5 seed0 gpu1] epoch=15 train_loss=0.658319 val_loss=0.665021
+[2026-08-15 08:55:14] [I20_R5 seed1 gpu3] epoch=18 train_loss=0.651066 val_loss=0.657908
+[2026-08-15 08:55:30] [I20_R5 seed4 gpu1] epoch=16 train_loss=0.653514 val_loss=0.657511
+[2026-08-15 08:55:48] [I60_R20 seed0 gpu0] saved OOS predictions n=138165 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed0_pred.feather
+[2026-08-15 08:55:49] [I60_R20 seed0 gpu0] done
+[2026-08-15 08:55:49] acquire gpu=0 need_mib=16384 active={0: 2, 1: 3, 2: 3, 3: 3} remaining={0: 15726, 1: 15728, 2: 7504, 3: 7536}
+[2026-08-15 08:55:49] [I60_R20 seed3 gpu0] start
+[2026-08-15 08:55:49] [I60_R20 seed4 gpu2] epoch=7 train_loss=0.691873 val_loss=0.616098
+[2026-08-15 08:55:49] [I60_R20 seed4 gpu2] new best epoch=7 val_loss=0.616098 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed4/best.pt
+[2026-08-15 08:55:50] [I60_R20 seed3 gpu0] pending jobs=1 configs=[(60, 20)] seeds=[3]
+[2026-08-15 08:55:51] [I60_R20 seed3 gpu0] I60/R20 freq=month split_seed=0 samples train=92514 val=39649 test=138165
+[2026-08-15 08:55:51] [I60_R20 seed3 gpu0] pixel_mean=17.832078 pixel_std=65.032275
+[2026-08-15 08:55:51] [I60_R20 seed3 gpu0] I60_R20 train_seed=3
+[2026-08-15 08:55:51] [I60_R20 seed3 gpu0] model I60 flatten=184320 params=2952962
+[2026-08-15 08:56:09] [I20_R5 seed3 gpu2] epoch=17 train_loss=0.653734 val_loss=0.657371
+[2026-08-15 08:56:09] [I20_R5 seed3 gpu2] new best epoch=17 val_loss=0.657371 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed3/best.pt
+[2026-08-15 08:56:23] [I20_R5 seed1 gpu3] epoch=19 train_loss=0.648936 val_loss=0.655040
+[2026-08-15 08:56:23] [I20_R5 seed1 gpu3] new best epoch=19 val_loss=0.655040 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 08:56:27] [I20_R5 seed0 gpu1] epoch=16 train_loss=0.655727 val_loss=0.658274
+[2026-08-15 08:56:27] [I20_R5 seed0 gpu1] new best epoch=16 val_loss=0.658274 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed0/best.pt
+[2026-08-15 08:56:42] [I20_R5 seed4 gpu1] epoch=17 train_loss=0.651802 val_loss=0.660567
+[2026-08-15 08:56:42] [I20_R5 seed4 gpu1] early stop at epoch=17 best_epoch=15
+[2026-08-15 08:56:43] [I20_R5 seed4 gpu1] training done best_epoch=15 val_loss=0.656979
+[2026-08-15 08:57:14] [I20_R5 seed4 gpu1] saved OOS predictions n=593994 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed4_pred.feather
+[2026-08-15 08:57:15] [I20_R5 seed4 gpu1] done
+[2026-08-15 08:57:15] acquire gpu=1 need_mib=16384 active={0: 2, 1: 3, 2: 3, 3: 3} remaining={0: 15726, 1: 7536, 2: 7504, 3: 7536}
+[2026-08-15 08:57:15] [I60_R20 seed2 gpu1] start
+[2026-08-15 08:57:16] [I60_R20 seed2 gpu1] pending jobs=1 configs=[(60, 20)] seeds=[2]
+[2026-08-15 08:57:17] [I60_R20 seed2 gpu1] I60/R20 freq=month split_seed=0 samples train=92514 val=39649 test=138165
+[2026-08-15 08:57:17] [I60_R20 seed2 gpu1] pixel_mean=17.832078 pixel_std=65.032275
+[2026-08-15 08:57:17] [I60_R20 seed2 gpu1] I60_R20 train_seed=2
+[2026-08-15 08:57:17] [I60_R20 seed2 gpu1] model I60 flatten=184320 params=2952962
+[2026-08-15 08:57:19] [I20_R5 seed3 gpu2] epoch=18 train_loss=0.651392 val_loss=0.658320
+[2026-08-15 08:57:25] [I60_R20 seed3 gpu0] epoch=1 train_loss=1.005246 val_loss=0.704733
+[2026-08-15 08:57:25] [I60_R20 seed3 gpu0] new best epoch=1 val_loss=0.704733 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed3/best.pt
+[2026-08-15 08:57:32] [I20_R5 seed1 gpu3] epoch=20 train_loss=0.646924 val_loss=0.654871
+[2026-08-15 08:57:32] [I20_R5 seed1 gpu3] new best epoch=20 val_loss=0.654871 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 08:57:39] [I20_R5 seed0 gpu1] epoch=17 train_loss=0.653136 val_loss=0.658513
+[2026-08-15 08:58:04] [I60_R20 seed4 gpu2] epoch=8 train_loss=0.668005 val_loss=0.615818
+[2026-08-15 08:58:04] [I60_R20 seed4 gpu2] new best epoch=8 val_loss=0.615818 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed4/best.pt
+[2026-08-15 08:58:29] [I20_R5 seed3 gpu2] epoch=19 train_loss=0.649487 val_loss=0.654274
+[2026-08-15 08:58:29] [I20_R5 seed3 gpu2] new best epoch=19 val_loss=0.654274 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed3/best.pt
+[2026-08-15 08:58:40] [I20_R5 seed1 gpu3] epoch=21 train_loss=0.644705 val_loss=0.653701
+[2026-08-15 08:58:40] [I20_R5 seed1 gpu3] new best epoch=21 val_loss=0.653701 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 08:58:53] [I20_R5 seed0 gpu1] epoch=18 train_loss=0.650764 val_loss=0.656319
+[2026-08-15 08:58:53] [I20_R5 seed0 gpu1] new best epoch=18 val_loss=0.656319 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed0/best.pt
+[2026-08-15 08:58:56] [I60_R20 seed3 gpu0] epoch=2 train_loss=0.886971 val_loss=0.652489
+[2026-08-15 08:58:56] [I60_R20 seed3 gpu0] new best epoch=2 val_loss=0.652489 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed3/best.pt
+[2026-08-15 08:59:30] [I60_R20 seed2 gpu1] epoch=1 train_loss=1.014553 val_loss=0.673341
+[2026-08-15 08:59:30] [I60_R20 seed2 gpu1] new best epoch=1 val_loss=0.673341 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed2/best.pt
+[2026-08-15 08:59:39] [I20_R5 seed3 gpu2] epoch=20 train_loss=0.647143 val_loss=0.653535
+[2026-08-15 08:59:39] [I20_R5 seed3 gpu2] new best epoch=20 val_loss=0.653535 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed3/best.pt
+[2026-08-15 08:59:49] [I20_R5 seed1 gpu3] epoch=22 train_loss=0.642571 val_loss=0.653337
+[2026-08-15 08:59:49] [I20_R5 seed1 gpu3] new best epoch=22 val_loss=0.653337 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 09:00:07] [I20_R5 seed0 gpu1] epoch=19 train_loss=0.649379 val_loss=0.655603
+[2026-08-15 09:00:07] [I20_R5 seed0 gpu1] new best epoch=19 val_loss=0.655603 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed0/best.pt
+[2026-08-15 09:00:18] [I60_R5 seed1 gpu0] epoch=3 train_loss=0.806634 val_loss=0.661329
+[2026-08-15 09:00:18] [I60_R5 seed1 gpu0] new best epoch=3 val_loss=0.661329 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed1/best.pt
+[2026-08-15 09:00:19] [I60_R20 seed4 gpu2] epoch=9 train_loss=0.645123 val_loss=0.611034
+[2026-08-15 09:00:19] [I60_R20 seed4 gpu2] new best epoch=9 val_loss=0.611034 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed4/best.pt
+[2026-08-15 09:00:24] [I60_R20 seed3 gpu0] epoch=3 train_loss=0.823426 val_loss=0.704310
+[2026-08-15 09:00:48] [I20_R5 seed3 gpu2] epoch=21 train_loss=0.644645 val_loss=0.653708
+[2026-08-15 09:00:58] [I20_R5 seed1 gpu3] epoch=23 train_loss=0.640235 val_loss=0.652847
+[2026-08-15 09:00:58] [I20_R5 seed1 gpu3] new best epoch=23 val_loss=0.652847 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 09:01:21] [I20_R5 seed0 gpu1] epoch=20 train_loss=0.646592 val_loss=0.657573
+[2026-08-15 09:01:42] [I60_R20 seed2 gpu1] epoch=2 train_loss=0.881422 val_loss=0.659647
+[2026-08-15 09:01:42] [I60_R20 seed2 gpu1] new best epoch=2 val_loss=0.659647 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed2/best.pt
+[2026-08-15 09:01:56] [I60_R20 seed3 gpu0] epoch=4 train_loss=0.780280 val_loss=0.629252
+[2026-08-15 09:01:56] [I60_R20 seed3 gpu0] new best epoch=4 val_loss=0.629252 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed3/best.pt
+[2026-08-15 09:01:59] [I20_R5 seed3 gpu2] epoch=22 train_loss=0.643328 val_loss=0.652718
+[2026-08-15 09:01:59] [I20_R5 seed3 gpu2] new best epoch=22 val_loss=0.652718 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed3/best.pt
+[2026-08-15 09:02:06] [I20_R5 seed1 gpu3] epoch=24 train_loss=0.639131 val_loss=0.654577
+[2026-08-15 09:02:33] [I60_R20 seed4 gpu2] epoch=10 train_loss=0.632662 val_loss=0.610985
+[2026-08-15 09:02:33] [I20_R5 seed0 gpu1] epoch=21 train_loss=0.644288 val_loss=0.654717
+[2026-08-15 09:02:33] [I20_R5 seed0 gpu1] new best epoch=21 val_loss=0.654717 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed0/best.pt
+[2026-08-15 09:02:33] [I60_R20 seed4 gpu2] new best epoch=10 val_loss=0.610985 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed4/best.pt
+[2026-08-15 09:02:46] [I60_R5 seed3 gpu1] epoch=3 train_loss=0.809114 val_loss=0.685537
+[2026-08-15 09:02:46] [I60_R5 seed3 gpu1] new best epoch=3 val_loss=0.685537 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed3/best.pt
+[2026-08-15 09:03:08] [I20_R5 seed3 gpu2] epoch=23 train_loss=0.641602 val_loss=0.654354
+[2026-08-15 09:03:13] [I20_R5 seed1 gpu3] epoch=25 train_loss=0.637150 val_loss=0.652220
+[2026-08-15 09:03:13] [I20_R5 seed1 gpu3] new best epoch=25 val_loss=0.652220 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 09:03:28] [I60_R20 seed3 gpu0] epoch=5 train_loss=0.753957 val_loss=0.618674
+[2026-08-15 09:03:28] [I60_R20 seed3 gpu0] new best epoch=5 val_loss=0.618674 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed3/best.pt
+[2026-08-15 09:03:45] [I60_R5 seed0 gpu3] epoch=3 train_loss=0.809057 val_loss=0.662692
+[2026-08-15 09:03:45] [I60_R5 seed0 gpu3] new best epoch=3 val_loss=0.662692 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed0/best.pt
+[2026-08-15 09:03:46] [I60_R5 seed4 gpu3] epoch=3 train_loss=0.807957 val_loss=0.673857
+[2026-08-15 09:03:46] [I60_R5 seed4 gpu3] new best epoch=3 val_loss=0.673857 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed4/best.pt
+[2026-08-15 09:03:46] [I20_R5 seed0 gpu1] epoch=22 train_loss=0.642148 val_loss=0.653636
+[2026-08-15 09:03:46] [I20_R5 seed0 gpu1] new best epoch=22 val_loss=0.653636 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed0/best.pt
+[2026-08-15 09:03:52] [I60_R20 seed2 gpu1] epoch=3 train_loss=0.832883 val_loss=0.658438
+[2026-08-15 09:03:52] [I60_R20 seed2 gpu1] new best epoch=3 val_loss=0.658438 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed2/best.pt
+[2026-08-15 09:04:06] [I60_R5 seed2 gpu2] epoch=3 train_loss=0.807928 val_loss=0.685523
+[2026-08-15 09:04:17] [I20_R5 seed3 gpu2] epoch=24 train_loss=0.639949 val_loss=0.651717
+[2026-08-15 09:04:17] [I20_R5 seed3 gpu2] new best epoch=24 val_loss=0.651717 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed3/best.pt
+[2026-08-15 09:04:19] [I20_R5 seed1 gpu3] epoch=26 train_loss=0.635253 val_loss=0.652396
+[2026-08-15 09:04:45] [I60_R20 seed4 gpu2] epoch=11 train_loss=0.608951 val_loss=0.612875
+[2026-08-15 09:05:00] [I60_R20 seed3 gpu0] epoch=6 train_loss=0.719147 val_loss=0.627155
+[2026-08-15 09:05:01] [I20_R5 seed0 gpu1] epoch=23 train_loss=0.640670 val_loss=0.654528
+[2026-08-15 09:05:27] [I20_R5 seed3 gpu2] epoch=25 train_loss=0.638238 val_loss=0.652957
+[2026-08-15 09:05:28] [I20_R5 seed1 gpu3] epoch=27 train_loss=0.633922 val_loss=0.651406
+[2026-08-15 09:05:28] [I20_R5 seed1 gpu3] new best epoch=27 val_loss=0.651406 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 09:06:04] [I60_R20 seed2 gpu1] epoch=4 train_loss=0.793143 val_loss=0.688240
+[2026-08-15 09:06:08] [I60_R5 seed1 gpu0] epoch=4 train_loss=0.768759 val_loss=0.653959
+[2026-08-15 09:06:08] [I60_R5 seed1 gpu0] new best epoch=4 val_loss=0.653959 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed1/best.pt
+[2026-08-15 09:06:14] [I20_R5 seed0 gpu1] epoch=24 train_loss=0.639024 val_loss=0.666336
+[2026-08-15 09:06:14] [I20_R5 seed0 gpu1] early stop at epoch=24 best_epoch=22
+[2026-08-15 09:06:14] [I20_R5 seed0 gpu1] training done best_epoch=22 val_loss=0.653636
+[2026-08-15 09:06:28] [I60_R20 seed3 gpu0] epoch=7 train_loss=0.694461 val_loss=0.617431
+[2026-08-15 09:06:28] [I60_R20 seed3 gpu0] new best epoch=7 val_loss=0.617431 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed3/best.pt
+[2026-08-15 09:06:36] [I20_R5 seed1 gpu3] epoch=28 train_loss=0.632308 val_loss=0.651616
+[2026-08-15 09:06:37] [I20_R5 seed3 gpu2] epoch=26 train_loss=0.636552 val_loss=0.661509
+[2026-08-15 09:06:37] [I20_R5 seed3 gpu2] early stop at epoch=26 best_epoch=24
+[2026-08-15 09:06:38] [I20_R5 seed3 gpu2] training done best_epoch=24 val_loss=0.651717
+[2026-08-15 09:06:46] [I20_R5 seed0 gpu1] saved OOS predictions n=593994 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed0_pred.feather
+[2026-08-15 09:06:47] [I20_R5 seed0 gpu1] done
+[2026-08-15 09:06:59] [I60_R20 seed4 gpu2] epoch=12 train_loss=0.595730 val_loss=0.609112
+[2026-08-15 09:06:59] [I60_R20 seed4 gpu2] new best epoch=12 val_loss=0.609112 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed4/best.pt
+[2026-08-15 09:07:08] [I20_R5 seed3 gpu2] saved OOS predictions n=593994 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed3_pred.feather
+[2026-08-15 09:07:09] [I20_R5 seed3 gpu2] done
+[2026-08-15 09:07:45] [I20_R5 seed1 gpu3] epoch=29 train_loss=0.630679 val_loss=0.650846
+[2026-08-15 09:07:45] [I20_R5 seed1 gpu3] new best epoch=29 val_loss=0.650846 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 09:07:49] [I60_R20 seed2 gpu1] epoch=5 train_loss=0.747051 val_loss=0.631486
+[2026-08-15 09:07:49] [I60_R20 seed2 gpu1] new best epoch=5 val_loss=0.631486 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed2/best.pt
+[2026-08-15 09:08:00] [I60_R20 seed3 gpu0] epoch=8 train_loss=0.670415 val_loss=0.613011
+[2026-08-15 09:08:00] [I60_R20 seed3 gpu0] new best epoch=8 val_loss=0.613011 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed3/best.pt
+[2026-08-15 09:08:32] [I60_R20 seed4 gpu2] epoch=13 train_loss=0.577225 val_loss=0.609147
+[2026-08-15 09:08:53] [I20_R5 seed1 gpu3] epoch=30 train_loss=0.628057 val_loss=0.655693
+[2026-08-15 09:09:20] [I60_R20 seed2 gpu1] epoch=6 train_loss=0.727234 val_loss=0.635767
+[2026-08-15 09:09:32] [I60_R20 seed3 gpu0] epoch=9 train_loss=0.645560 val_loss=0.616615
+[2026-08-15 09:10:00] [I60_R5 seed3 gpu1] epoch=4 train_loss=0.768953 val_loss=0.651214
+[2026-08-15 09:10:00] [I60_R5 seed3 gpu1] new best epoch=4 val_loss=0.651214 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed3/best.pt
+[2026-08-15 09:10:02] [I20_R5 seed1 gpu3] epoch=31 train_loss=0.626499 val_loss=0.650086
+[2026-08-15 09:10:02] [I20_R5 seed1 gpu3] new best epoch=31 val_loss=0.650086 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 09:10:03] [I60_R20 seed4 gpu2] epoch=14 train_loss=0.556620 val_loss=0.614364
+[2026-08-15 09:10:03] [I60_R20 seed4 gpu2] early stop at epoch=14 best_epoch=12
+[2026-08-15 09:10:03] [I60_R20 seed4 gpu2] training done best_epoch=12 val_loss=0.609112
+[2026-08-15 09:10:45] [I60_R20 seed4 gpu2] saved OOS predictions n=138165 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed4_pred.feather
+[2026-08-15 09:10:45] [I60_R20 seed4 gpu2] done
+[2026-08-15 09:10:45] acquire gpu=2 need_mib=16384 active={0: 2, 1: 2, 2: 2, 3: 3} remaining={0: 15726, 1: 15728, 2: 15696, 3: 7536}
+[2026-08-15 09:10:45] [I60_R20 seed1 gpu2] start
+[2026-08-15 09:10:47] [I60_R20 seed1 gpu2] pending jobs=1 configs=[(60, 20)] seeds=[1]
+[2026-08-15 09:10:47] [I60_R20 seed1 gpu2] I60/R20 freq=month split_seed=0 samples train=92514 val=39649 test=138165
+[2026-08-15 09:10:47] [I60_R20 seed1 gpu2] pixel_mean=17.832078 pixel_std=65.032275
+[2026-08-15 09:10:47] [I60_R20 seed1 gpu2] I60_R20 train_seed=1
+[2026-08-15 09:10:48] [I60_R20 seed1 gpu2] model I60 flatten=184320 params=2952962
+[2026-08-15 09:10:49] [I60_R20 seed2 gpu1] epoch=7 train_loss=0.694867 val_loss=0.614530
+[2026-08-15 09:10:49] [I60_R20 seed2 gpu1] new best epoch=7 val_loss=0.614530 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed2/best.pt
+[2026-08-15 09:10:55] [I60_R5 seed2 gpu2] epoch=4 train_loss=0.765753 val_loss=0.668590
+[2026-08-15 09:10:55] [I60_R5 seed2 gpu2] new best epoch=4 val_loss=0.668590 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed2/best.pt
+[2026-08-15 09:11:04] [I60_R20 seed3 gpu0] epoch=10 train_loss=0.628729 val_loss=0.633383
+[2026-08-15 09:11:04] [I60_R20 seed3 gpu0] early stop at epoch=10 best_epoch=8
+[2026-08-15 09:11:05] [I60_R20 seed3 gpu0] training done best_epoch=8 val_loss=0.613011
+[2026-08-15 09:11:11] [I20_R5 seed1 gpu3] epoch=32 train_loss=0.625204 val_loss=0.653516
+[2026-08-15 09:11:46] [I60_R20 seed3 gpu0] saved OOS predictions n=138165 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed3_pred.feather
+[2026-08-15 09:11:47] [I60_R20 seed3 gpu0] done
+[2026-08-15 09:11:49] [I60_R5 seed1 gpu0] epoch=5 train_loss=0.737629 val_loss=0.654940
+[2026-08-15 09:12:17] [I20_R5 seed1 gpu3] epoch=33 train_loss=0.623145 val_loss=0.649603
+[2026-08-15 09:12:18] [I20_R5 seed1 gpu3] new best epoch=33 val_loss=0.649603 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 09:12:18] [I60_R20 seed1 gpu2] epoch=1 train_loss=1.004676 val_loss=0.693508
+[2026-08-15 09:12:18] [I60_R20 seed1 gpu2] new best epoch=1 val_loss=0.693508 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed1/best.pt
+[2026-08-15 09:12:20] [I60_R20 seed2 gpu1] epoch=8 train_loss=0.675552 val_loss=0.613427
+[2026-08-15 09:12:21] [I60_R20 seed2 gpu1] new best epoch=8 val_loss=0.613427 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed2/best.pt
+[2026-08-15 09:12:56] [I60_R5 seed0 gpu3] epoch=4 train_loss=0.767542 val_loss=0.703104
+[2026-08-15 09:12:57] [I60_R5 seed4 gpu3] epoch=4 train_loss=0.769166 val_loss=0.651818
+[2026-08-15 09:12:57] [I60_R5 seed4 gpu3] new best epoch=4 val_loss=0.651818 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed4/best.pt
+[2026-08-15 09:13:23] [I20_R5 seed1 gpu3] epoch=34 train_loss=0.621378 val_loss=0.650594
+[2026-08-15 09:13:49] [I60_R20 seed1 gpu2] epoch=2 train_loss=0.889147 val_loss=0.655765
+[2026-08-15 09:13:49] [I60_R20 seed1 gpu2] new best epoch=2 val_loss=0.655765 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed1/best.pt
+[2026-08-15 09:13:52] [I60_R20 seed2 gpu1] epoch=9 train_loss=0.658605 val_loss=0.610554
+[2026-08-15 09:13:52] [I60_R20 seed2 gpu1] new best epoch=9 val_loss=0.610554 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed2/best.pt
+[2026-08-15 09:14:32] [I20_R5 seed1 gpu3] epoch=35 train_loss=0.619814 val_loss=0.649213
+[2026-08-15 09:14:32] [I20_R5 seed1 gpu3] new best epoch=35 val_loss=0.649213 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1/best.pt
+[2026-08-15 09:14:58] [I60_R5 seed1 gpu0] epoch=6 train_loss=0.715977 val_loss=0.657092
+[2026-08-15 09:14:58] [I60_R5 seed1 gpu0] early stop at epoch=6 best_epoch=4
+[2026-08-15 09:14:58] [I60_R5 seed1 gpu0] training done best_epoch=4 val_loss=0.653959
+[2026-08-15 09:15:19] [I60_R20 seed1 gpu2] epoch=3 train_loss=0.833178 val_loss=0.634281
+[2026-08-15 09:15:19] [I60_R20 seed1 gpu2] new best epoch=3 val_loss=0.634281 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed1/best.pt
+[2026-08-15 09:15:22] [I60_R20 seed2 gpu1] epoch=10 train_loss=0.636461 val_loss=0.610199
+[2026-08-15 09:15:22] [I60_R20 seed2 gpu1] new best epoch=10 val_loss=0.610199 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed2/best.pt
+[2026-08-15 09:15:40] [I20_R5 seed1 gpu3] epoch=36 train_loss=0.618670 val_loss=0.651140
+[2026-08-15 09:15:55] [I60_R5 seed3 gpu1] epoch=5 train_loss=0.739148 val_loss=0.650977
+[2026-08-15 09:15:55] [I60_R5 seed3 gpu1] new best epoch=5 val_loss=0.650977 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed3/best.pt
+[2026-08-15 09:16:35] [I60_R5 seed1 gpu0] saved OOS predictions n=593690 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed1_pred.feather
+[2026-08-15 09:16:36] [I60_R5 seed1 gpu0] done
+[2026-08-15 09:16:46] [I60_R20 seed1 gpu2] epoch=4 train_loss=0.786388 val_loss=0.629323
+[2026-08-15 09:16:46] [I60_R20 seed1 gpu2] new best epoch=4 val_loss=0.629323 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed1/best.pt
+[2026-08-15 09:16:49] [I20_R5 seed1 gpu3] epoch=37 train_loss=0.616826 val_loss=0.651745
+[2026-08-15 09:16:49] [I20_R5 seed1 gpu3] early stop at epoch=37 best_epoch=35
+[2026-08-15 09:16:49] [I20_R5 seed1 gpu3] training done best_epoch=35 val_loss=0.649213
+[2026-08-15 09:16:50] [I60_R5 seed2 gpu2] epoch=5 train_loss=0.739873 val_loss=0.652578
+[2026-08-15 09:16:50] [I60_R5 seed2 gpu2] new best epoch=5 val_loss=0.652578 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed2/best.pt
+[2026-08-15 09:16:51] [I60_R20 seed2 gpu1] epoch=11 train_loss=0.616553 val_loss=0.629941
+[2026-08-15 09:17:20] [I20_R5 seed1 gpu3] saved OOS predictions n=593994 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/seed1_pred.feather
+[2026-08-15 09:17:21] [I20_R5 seed1 gpu3] done
+[2026-08-15 09:18:16] [I60_R20 seed1 gpu2] epoch=5 train_loss=0.755557 val_loss=0.618467
+[2026-08-15 09:18:16] [I60_R20 seed1 gpu2] new best epoch=5 val_loss=0.618467 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed1/best.pt
+[2026-08-15 09:18:22] [I60_R20 seed2 gpu1] epoch=12 train_loss=0.601142 val_loss=0.605730
+[2026-08-15 09:18:22] [I60_R20 seed2 gpu1] new best epoch=12 val_loss=0.605730 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed2/best.pt
+[2026-08-15 09:19:47] [I60_R20 seed1 gpu2] epoch=6 train_loss=0.722481 val_loss=0.615672
+[2026-08-15 09:19:47] [I60_R20 seed1 gpu2] new best epoch=6 val_loss=0.615672 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed1/best.pt
+[2026-08-15 09:19:54] [I60_R20 seed2 gpu1] epoch=13 train_loss=0.582896 val_loss=0.606591
+[2026-08-15 09:20:28] [I60_R5 seed0 gpu3] epoch=5 train_loss=0.740987 val_loss=0.659149
+[2026-08-15 09:20:28] [I60_R5 seed0 gpu3] new best epoch=5 val_loss=0.659149 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed0/best.pt
+[2026-08-15 09:20:29] [I60_R5 seed4 gpu3] epoch=5 train_loss=0.739731 val_loss=0.664670
+[2026-08-15 09:21:19] [I60_R20 seed1 gpu2] epoch=7 train_loss=0.700337 val_loss=0.615895
+[2026-08-15 09:21:24] [I60_R20 seed2 gpu1] epoch=14 train_loss=0.568850 val_loss=0.607679
+[2026-08-15 09:21:24] [I60_R20 seed2 gpu1] early stop at epoch=14 best_epoch=12
+[2026-08-15 09:21:24] [I60_R20 seed2 gpu1] training done best_epoch=12 val_loss=0.605730
+[2026-08-15 09:21:47] [I60_R5 seed3 gpu1] epoch=6 train_loss=0.714690 val_loss=0.672681
+[2026-08-15 09:22:07] [I60_R20 seed2 gpu1] saved OOS predictions n=138165 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed2_pred.feather
+[2026-08-15 09:22:07] [I60_R20 seed2 gpu1] done
+[2026-08-15 09:22:43] [I60_R5 seed2 gpu2] epoch=6 train_loss=0.715114 val_loss=0.657760
+[2026-08-15 09:22:45] [I60_R20 seed1 gpu2] epoch=8 train_loss=0.678869 val_loss=0.614822
+[2026-08-15 09:22:45] [I60_R20 seed1 gpu2] new best epoch=8 val_loss=0.614822 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed1/best.pt
+[2026-08-15 09:24:15] [I60_R20 seed1 gpu2] epoch=9 train_loss=0.656911 val_loss=0.613608
+[2026-08-15 09:24:15] [I60_R20 seed1 gpu2] new best epoch=9 val_loss=0.613608 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed1/best.pt
+[2026-08-15 09:25:05] [I60_R5 seed3 gpu1] epoch=7 train_loss=0.695967 val_loss=0.680961
+[2026-08-15 09:25:05] [I60_R5 seed3 gpu1] early stop at epoch=7 best_epoch=5
+[2026-08-15 09:25:05] [I60_R5 seed3 gpu1] training done best_epoch=5 val_loss=0.650977
+[2026-08-15 09:25:45] [I60_R20 seed1 gpu2] epoch=10 train_loss=0.634596 val_loss=0.626592
+[2026-08-15 09:26:33] [I60_R5 seed0 gpu3] epoch=6 train_loss=0.717482 val_loss=0.645830
+[2026-08-15 09:26:33] [I60_R5 seed0 gpu3] new best epoch=6 val_loss=0.645830 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed0/best.pt
+[2026-08-15 09:26:38] [I60_R5 seed4 gpu3] epoch=6 train_loss=0.717162 val_loss=0.663858
+[2026-08-15 09:26:38] [I60_R5 seed4 gpu3] early stop at epoch=6 best_epoch=4
+[2026-08-15 09:26:38] [I60_R5 seed4 gpu3] training done best_epoch=4 val_loss=0.651818
+[2026-08-15 09:26:41] [I60_R5 seed3 gpu1] saved OOS predictions n=593690 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed3_pred.feather
+[2026-08-15 09:26:42] [I60_R5 seed3 gpu1] done
+[2026-08-15 09:27:16] [I60_R20 seed1 gpu2] epoch=11 train_loss=0.619352 val_loss=0.624729
+[2026-08-15 09:27:16] [I60_R20 seed1 gpu2] early stop at epoch=11 best_epoch=9
+[2026-08-15 09:27:16] [I60_R20 seed1 gpu2] training done best_epoch=9 val_loss=0.613608
+[2026-08-15 09:27:58] [I60_R20 seed1 gpu2] saved OOS predictions n=138165 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/seed1_pred.feather
+[2026-08-15 09:27:59] [I60_R20 seed1 gpu2] done
+[2026-08-15 09:28:18] [I60_R5 seed2 gpu2] epoch=7 train_loss=0.698728 val_loss=0.642974
+[2026-08-15 09:28:18] [I60_R5 seed2 gpu2] new best epoch=7 val_loss=0.642974 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed2/best.pt
+[2026-08-15 09:29:29] [I60_R5 seed4 gpu3] saved OOS predictions n=593690 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed4_pred.feather
+[2026-08-15 09:29:30] [I60_R5 seed4 gpu3] done
+[2026-08-15 09:30:56] [I60_R5 seed0 gpu3] epoch=7 train_loss=0.699322 val_loss=0.641622
+[2026-08-15 09:30:56] [I60_R5 seed0 gpu3] new best epoch=7 val_loss=0.641622 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed0/best.pt
+[2026-08-15 09:31:25] [I60_R5 seed2 gpu2] epoch=8 train_loss=0.682699 val_loss=0.641129
+[2026-08-15 09:31:25] [I60_R5 seed2 gpu2] new best epoch=8 val_loss=0.641129 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed2/best.pt
+[2026-08-15 09:33:59] [I60_R5 seed0 gpu3] epoch=8 train_loss=0.685859 val_loss=0.643094
+[2026-08-15 09:34:32] [I60_R5 seed2 gpu2] epoch=9 train_loss=0.668750 val_loss=0.650384
+[2026-08-15 09:37:02] [I60_R5 seed0 gpu3] epoch=9 train_loss=0.668369 val_loss=0.668535
+[2026-08-15 09:37:02] [I60_R5 seed0 gpu3] early stop at epoch=9 best_epoch=7
+[2026-08-15 09:37:03] [I60_R5 seed0 gpu3] training done best_epoch=7 val_loss=0.641622
+[2026-08-15 09:37:38] [I60_R5 seed2 gpu2] epoch=10 train_loss=0.657702 val_loss=0.638351
+[2026-08-15 09:37:38] [I60_R5 seed2 gpu2] new best epoch=10 val_loss=0.638351 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed2/best.pt
+[2026-08-15 09:38:34] [I60_R5 seed0 gpu3] saved OOS predictions n=593690 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed0_pred.feather
+[2026-08-15 09:38:35] [I60_R5 seed0 gpu3] done
+[2026-08-15 09:40:44] [I60_R5 seed2 gpu2] epoch=11 train_loss=0.646871 val_loss=0.655611
+[2026-08-15 09:43:50] [I60_R5 seed2 gpu2] epoch=12 train_loss=0.639132 val_loss=0.658085
+[2026-08-15 09:43:50] [I60_R5 seed2 gpu2] early stop at epoch=12 best_epoch=10
+[2026-08-15 09:43:51] [I60_R5 seed2 gpu2] training done best_epoch=10 val_loss=0.638351
+[2026-08-15 09:45:23] [I60_R5 seed2 gpu2] saved OOS predictions n=593690 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/seed2_pred.feather
+[2026-08-15 09:45:24] [I60_R5 seed2 gpu2] done
+[2026-08-15 09:45:25] ensemble n=593994 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R5/ensemble_pred.feather
+[2026-08-15 09:45:26] ensemble n=593690 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R5/ensemble_pred.feather
+[2026-08-15 09:45:26] ensemble n=138289 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R20/ensemble_pred.feather
+[2026-08-15 09:45:26] ensemble n=138165 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I60_R20/ensemble_pred.feather
+[2026-08-15 09:45:27] ensemble n=44539 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I5_R60/ensemble_pred.feather
+[2026-08-15 09:45:27] ensemble n=44538 -> /data/kaibiao/data/projects/rpt-re/processed/cn/models/I20_R60/ensemble_pred.feather
+[2026-08-15 09:45:27] Done.
