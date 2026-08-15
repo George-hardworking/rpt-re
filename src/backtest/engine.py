@@ -10,8 +10,7 @@ import numpy as np
 import pandas as pd
 
 from backtest.markets import MarketSpec
-from backtest.newey_west import format_nw_t, nw_mean_tstat
-from backtest.newey_west_lags import NW_LAGS_AUTO
+from backtest.newey_west import NW_LAGS_AUTO, format_nw_t, nw_mean_tstat
 from config import BACKTEST_N_GROUP, BACKTEST_WEIGHT_SCHEMES
 
 H1_METRICS = (
