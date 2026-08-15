@@ -10,6 +10,8 @@ import numpy as np
 import pandas as pd
 
 from backtest.markets import MarketSpec
+from backtest.newey_west import format_nw_t, nw_mean_tstat
+from backtest.newey_west_lags import NW_LAGS_AUTO
 from config import BACKTEST_N_GROUP, BACKTEST_WEIGHT_SCHEMES
 
 H1_METRICS = (
@@ -159,8 +161,9 @@ def h1_perf_one(
     scheme: str,
     ngroup: int = BACKTEST_N_GROUP,
     direct_signal: bool = False,
+    newey_west_lags: object = NW_LAGS_AUTO,
 ) -> pd.DataFrame:
-    """One signal, one weight scheme: rows=groups (D01..DH), columns=H1 metrics."""
+    """One signal, one weight scheme: rows=groups (D01..DH, t), columns=H1 metrics."""
     if scheme not in BACKTEST_WEIGHT_SCHEMES:
         raise ValueError(f"unknown weight scheme: {scheme}")
     date_col = spec.date_col
@@ -219,6 +222,8 @@ def h1_perf_one(
     to_mean = to_g.groupby(level="_g").mean() * ppy
     to_mean.loc["DH"] = (to_mean.loc[1] + to_mean.loc[ngroup]) / 2.0
 
+    _, hl_nw_t = nw_mean_tstat(raw["DH"], newey_west_lags=newey_west_lags)
+
     labels = [group_label(i) for i in range(1, ngroup + 1)] + ["DH"]
     keys = list(range(1, ngroup + 1)) + ["DH"]
     perf = pd.DataFrame(index=labels)
@@ -233,7 +238,11 @@ def h1_perf_one(
     perf["Max Drawdown (Active)"] = maxdd_act.reindex(keys).to_numpy()
     to_aligned = to_mean.reindex(keys)
     perf["Turnover (annualized)"] = to_aligned.to_numpy()
-    return perf.round(_ROUND)
+    perf = perf.round(_ROUND)
+    t_row = pd.Series({m: np.nan for m in H1_METRICS}, name="t", dtype=object)
+    t_row["Annualized Return"] = format_nw_t(hl_nw_t)
+    perf = pd.concat([perf, t_row.to_frame().T])
+    return perf
 
 
 def format_h1_row(perf: pd.DataFrame, row_name: str) -> pd.DataFrame:
@@ -260,6 +269,7 @@ def h1_perf_tables(
     row_names: list[str] | None = None,
     schemes: tuple[str, ...] = BACKTEST_WEIGHT_SCHEMES,
     direct_signal: bool = False,
+    newey_west_lags: object = NW_LAGS_AUTO,
 ) -> dict[str, pd.DataFrame]:
     """Default output: three H1Perf tables keyed equal / float / total."""
     if row_names is None:
@@ -279,6 +289,7 @@ def h1_perf_tables(
                     scheme=scheme,
                     ngroup=ngroup,
                     direct_signal=direct_signal,
+                    newey_west_lags=newey_west_lags,
                 ),
                 name,
             )
