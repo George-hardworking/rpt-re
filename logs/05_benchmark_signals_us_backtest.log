@@ -1,0 +1,33 @@
+us horizon=5 panel n=6670412 dates=991
+us horizon=20 panel n=1527188 dates=228
+us horizon=60 panel n=502379 dates=76
+wrote /home/zkb/rpt-re/outputs/mom/us/weekly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/mom/us/monthly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/mom/us/quarterly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/mom/us/weekly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/mom/us/monthly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/mom/us/quarterly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/rev1m_str/us/weekly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/rev1m_str/us/monthly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/rev1m_str/us/quarterly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/rev1m_str/us/weekly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/rev1m_str/us/monthly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/rev1m_str/us/quarterly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/rev1w_wstr/us/weekly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/rev1w_wstr/us/monthly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/rev1w_wstr/us/quarterly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/rev1w_wstr/us/weekly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/rev1w_wstr/us/monthly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/rev1w_wstr/us/quarterly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/trend_hzz/us/weekly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/trend_hzz/us/monthly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/trend_hzz/us/quarterly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/trend_hzz/us/weekly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/trend_hzz/us/monthly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/trend_hzz/us/quarterly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/dist_52wh/us/weekly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/dist_52wh/us/monthly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/dist_52wh/us/quarterly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/dist_52wh/us/weekly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/dist_52wh/us/monthly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/dist_52wh/us/quarterly/h1.xlsx

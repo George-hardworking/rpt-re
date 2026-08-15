@@ -1,0 +1,43 @@
+cn trend signals resume: skip=0 pending=3277 total=3277
+workers=112 diag={'source': 'memory_budget', 'avail_gib': 344.6, 'total_gib': 377.5, 'reserve_gib': 16.0, 'budget_gib': 328.6, 'mem_per_worker_gib': 0.8, 'mem_cap': 410, 'cpu_cap': 112, 'swap_percent': 99.7, 'n_tasks': 3277, 'resolved_workers': 112}
+progress  15.3%  stocks 500/3277  skip=0  worker=41 chunk=14/29
+progress  30.5%  stocks 1000/3277  skip=0  worker=104 chunk=10/29
+progress  45.8%  stocks 1500/3277  skip=0  worker=35 chunk=12/29
+progress  61.0%  stocks 2000/3277  skip=0  worker=9 chunk=16/30
+progress  76.3%  stocks 2500/3277  skip=0  worker=46 chunk=24/29
+progress  91.5%  stocks 3000/3277  skip=0  worker=78 chunk=20/29
+progress 100.0%  stocks 3277/3277  skip=0  worker=76 chunk=29/29
+done daily signals: built=3277 skip=0 -> /data/kaibiao/data/projects/rpt-re/processed/cn/trend_signals_daily
+cn horizon=5 panel n=599982 dates=256
+cn horizon=20 panel n=141357 dates=60
+cn horizon=60 panel n=47626 dates=20
+wrote /home/zkb/rpt-re/outputs/mom/cn/weekly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/mom/cn/monthly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/mom/cn/quarterly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/mom/cn/weekly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/mom/cn/monthly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/mom/cn/quarterly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/rev1m_str/cn/weekly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/rev1m_str/cn/monthly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/rev1m_str/cn/quarterly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/rev1m_str/cn/weekly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/rev1m_str/cn/monthly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/rev1m_str/cn/quarterly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/rev1w_wstr/cn/weekly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/rev1w_wstr/cn/monthly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/rev1w_wstr/cn/quarterly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/rev1w_wstr/cn/weekly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/rev1w_wstr/cn/monthly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/rev1w_wstr/cn/quarterly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/trend_hzz/cn/weekly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/trend_hzz/cn/monthly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/trend_hzz/cn/quarterly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/trend_hzz/cn/weekly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/trend_hzz/cn/monthly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/trend_hzz/cn/quarterly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/dist_52wh/cn/weekly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/dist_52wh/cn/monthly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/dist_52wh/cn/quarterly/signals.parquet
+wrote /home/zkb/rpt-re/outputs/dist_52wh/cn/weekly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/dist_52wh/cn/monthly/h1.xlsx
+wrote /home/zkb/rpt-re/outputs/dist_52wh/cn/quarterly/h1.xlsx

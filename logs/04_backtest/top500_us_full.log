@@ -1,0 +1,39 @@
+load US panel I5_R5
+I5_R5 n=6660951 dates=991
+I5_R5 top-500 (total) n=495500 dates=991
+skip write config (exists): /home/zkb/rpt-re/outputs/cnn_top500/us/weekly/I5_R5_h1.xlsx
+load US panel I5_R20
+I5_R20 n=1524334 dates=228
+I5_R20 top-500 (total) n=114000 dates=228
+skip write config (exists): /home/zkb/rpt-re/outputs/cnn_top500/us/monthly/I5_R20_h1.xlsx
+load US panel I5_R60
+I5_R60 n=502487 dates=76
+I5_R60 top-500 (total) n=38000 dates=76
+skip write config (exists): /home/zkb/rpt-re/outputs/cnn_top500/us/quarterly/I5_R60_h1.xlsx
+load US panel I20_R5
+I20_R5 n=6619772 dates=991
+I20_R5 top-500 (total) n=495500 dates=991
+skip write config (exists): /home/zkb/rpt-re/outputs/cnn_top500/us/weekly/I20_R5_h1.xlsx
+load US panel I20_R20
+I20_R20 n=1517498 dates=228
+I20_R20 top-500 (total) n=114000 dates=228
+skip write config (exists): /home/zkb/rpt-re/outputs/cnn_top500/us/monthly/I20_R20_h1.xlsx
+load US panel I20_R60
+I20_R60 n=499097 dates=76
+I20_R60 top-500 (total) n=38000 dates=76
+skip write config (exists): /home/zkb/rpt-re/outputs/cnn_top500/us/quarterly/I20_R60_h1.xlsx
+load US panel I60_R5
+I60_R5 n=6542415 dates=991
+I60_R5 top-500 (total) n=495500 dates=991
+skip write config (exists): /home/zkb/rpt-re/outputs/cnn_top500/us/weekly/I60_R5_h1.xlsx
+load US panel I60_R20
+I60_R20 n=498948 dates=76
+I60_R20 top-500 (total) n=38000 dates=76
+skip write config (exists): /home/zkb/rpt-re/outputs/cnn_top500/us/monthly/I60_R20_h1.xlsx
+load US panel I60_R60
+I60_R60 n=492712 dates=76
+I60_R60 top-500 (total) n=38000 dates=76
+skip write config (exists): /home/zkb/rpt-re/outputs/cnn_top500/us/quarterly/I60_R60_h1.xlsx
+skip summary (exists): /home/zkb/rpt-re/outputs/cnn_top500/us/weekly/all_h1.xlsx
+skip summary (exists): /home/zkb/rpt-re/outputs/cnn_top500/us/monthly/all_h1.xlsx
+skip summary (exists): /home/zkb/rpt-re/outputs/cnn_top500/us/quarterly/all_h1.xlsx

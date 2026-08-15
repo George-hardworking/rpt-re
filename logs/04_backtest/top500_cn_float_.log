@@ -1,0 +1,39 @@
+load CN panel I5_R5
+I5_R5 n=594005 dates=254
+I5_R5 top-500 (float) n=127000 dates=254
+skip write config (exists): /home/zkb/rpt-re/outputs/cnn_top500_float/cn/weekly/I5_R5_h1.xlsx
+load CN panel I5_R20
+I5_R20 n=138289 dates=59
+I5_R20 top-500 (float) n=29500 dates=59
+wrote /home/zkb/rpt-re/outputs/cnn_top500_float/cn/monthly/I5_R20_h1.xlsx
+load CN panel I5_R60
+I5_R60 n=44539 dates=19
+I5_R60 top-500 (float) n=9500 dates=19
+wrote /home/zkb/rpt-re/outputs/cnn_top500_float/cn/quarterly/I5_R60_h1.xlsx
+load CN panel I20_R5
+I20_R5 n=593994 dates=254
+I20_R5 top-500 (float) n=127000 dates=254
+wrote /home/zkb/rpt-re/outputs/cnn_top500_float/cn/weekly/I20_R5_h1.xlsx
+load CN panel I20_R20
+I20_R20 n=138287 dates=59
+I20_R20 top-500 (float) n=29500 dates=59
+wrote /home/zkb/rpt-re/outputs/cnn_top500_float/cn/monthly/I20_R20_h1.xlsx
+load CN panel I20_R60
+I20_R60 n=44538 dates=19
+I20_R60 top-500 (float) n=9500 dates=19
+wrote /home/zkb/rpt-re/outputs/cnn_top500_float/cn/quarterly/I20_R60_h1.xlsx
+load CN panel I60_R5
+I60_R5 n=593690 dates=254
+I60_R5 top-500 (float) n=127000 dates=254
+wrote /home/zkb/rpt-re/outputs/cnn_top500_float/cn/weekly/I60_R5_h1.xlsx
+load CN panel I60_R20
+I60_R20 n=138165 dates=59
+I60_R20 top-500 (float) n=29500 dates=59
+wrote /home/zkb/rpt-re/outputs/cnn_top500_float/cn/monthly/I60_R20_h1.xlsx
+load CN panel I60_R60
+I60_R60 n=44421 dates=19
+I60_R60 top-500 (float) n=9500 dates=19
+wrote /home/zkb/rpt-re/outputs/cnn_top500_float/cn/quarterly/I60_R60_h1.xlsx
+wrote /home/zkb/rpt-re/outputs/cnn_top500_float/cn/weekly/all_h1.xlsx
+wrote /home/zkb/rpt-re/outputs/cnn_top500_float/cn/monthly/all_h1.xlsx
+wrote /home/zkb/rpt-re/outputs/cnn_top500_float/cn/quarterly/all_h1.xlsx
