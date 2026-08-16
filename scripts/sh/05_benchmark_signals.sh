@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# 05_benchmark_signals: daily/rebalance trend signals on DATA_ROOT; H1 Excel in outputs/{mom,...}/.
+# 05_benchmark_signals: daily/rebalance trend signals on DATA_ROOT;
+# H1 Excel and Table V–VIII under outputs/05_benchmark_signals/.
 #
 # Usage:
 #   ./scripts/sh/05_benchmark_signals.sh all --market us

@@ -32,6 +32,7 @@ BACKTEST_CNN_TOP500_ROOT = OUTPUT_ROOT / "cnn_top500"
 BACKTEST_CNN_TOP500_FLOAT_ROOT = OUTPUT_ROOT / "cnn_top500_float"
 BACKTEST_CN_FACTOR_ROOT = OUTPUT_ROOT / "cn_factors"
 BACKTEST_BREAKDOWN_ROOT = OUTPUT_ROOT / "holding_breakdown"
+BACKTEST_BENCHMARK_ROOT = OUTPUT_ROOT / "05_benchmark_signals"
 BACKTEST_TOP_N_CAP = 500
 
 # Paper Table III: monthly R20 holding split into days 1–5 vs 6–20.
@@ -89,7 +90,7 @@ CHAR_LIQUIDITY_WINDOW = 21
 CHAR_LAG_WEEKLY_WINDOW = 5
 MARKET_VW_RETURNS_FILE = "market_vw_returns.parquet"
 CHARACTERISTICS_MONTH_END_FILE = "characteristics_month_end.parquet"
-BENCHMARK_TABLES_ROOT = OUTPUT_ROOT / "benchmark" / "tables_v_viii"
+BENCHMARK_TABLES_ROOT = BACKTEST_BENCHMARK_ROOT / "tables_v_viii"
 
 # Table V: 11 correlates (no LagWeeklyRet). VI/VII: +LagWeeklyRet.
 TABLE_V_CHAR_COLS: tuple[str, ...] = (
@@ -153,12 +154,17 @@ def benchmark_signals_dir(signal_col: str, market: str, horizon: int) -> Path:
 
 
 def benchmark_output_dir(signal_col: str, market: str, horizon: int) -> Path:
-    """H1 backtest Excel under repo outputs/."""
+    """H1 backtest Excel under outputs/05_benchmark_signals/."""
     if signal_col not in BENCHMARK_SIGNAL_DIRS:
         raise ValueError(f"unsupported benchmark signal={signal_col}")
     if horizon not in HORIZON_BACKTEST_DIR:
         raise ValueError(f"unsupported horizon={horizon}")
-    return OUTPUT_ROOT / BENCHMARK_SIGNAL_DIRS[signal_col] / market / HORIZON_BACKTEST_DIR[horizon]
+    return (
+        BACKTEST_BENCHMARK_ROOT
+        / BENCHMARK_SIGNAL_DIRS[signal_col]
+        / market
+        / HORIZON_BACKTEST_DIR[horizon]
+    )
 
 CN_FACTOR_BACKTEST_DIR = "weekly"
 
