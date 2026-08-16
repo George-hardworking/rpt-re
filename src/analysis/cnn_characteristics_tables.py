@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from multiprocessing import Pool
 from pathlib import Path
 
 import numpy as np
@@ -43,8 +44,10 @@ from data.trend_signals import (
     liquidity_partition_complete,
     read_stock_trend_signals,
 )
+from utils.workers import resolve_workers
 
 MIN_CROSS_SECTION = 30
+PANEL_MEM_PER_WORKER_GIB = 1.2
 LOGIT_MAX_ITER = 100
 LOGIT_TOL = 1e-8
 TRAIN_MIN_OBS = 12
@@ -96,19 +99,90 @@ def _attach_predictions(
     panel: pd.DataFrame,
     pred_map: dict[tuple[int, int], pd.DataFrame],
 ) -> pd.DataFrame:
-    out = panel.sort_values(["PERMNO", "Date"]).copy()
+    out = panel.copy()
+    out["PERMNO"] = out["PERMNO"].astype("int64")
+    out["Date"] = pd.to_datetime(out["Date"]).astype("datetime64[ns]")
+    out = out.drop_duplicates(["PERMNO", "Date"], keep="last")
+    out = out.sort_values(["PERMNO", "Date"], kind="mergesort").reset_index(drop=True)
+
     for (_, _), pred in pred_map.items():
         col = [c for c in pred.columns if c.startswith("p_up_")][0]
-        merged = pd.merge_asof(
-            out,
-            pred.sort_values(["PERMNO", "Date"]),
-            by="PERMNO",
-            left_on="Date",
-            right_on="Date",
-            direction="backward",
-        )
-        out[col] = merged[col]
+        pred_sorted = pred[["PERMNO", "Date", col]].copy()
+        pred_sorted["PERMNO"] = pred_sorted["PERMNO"].astype("int64")
+        pred_sorted["Date"] = pd.to_datetime(pred_sorted["Date"]).astype("datetime64[ns]")
+        pred_sorted = pred_sorted.drop_duplicates(["PERMNO", "Date"], keep="last")
+        pred_sorted = pred_sorted.sort_values(["PERMNO", "Date"], kind="mergesort")
+
+        pieces: list[pd.DataFrame] = []
+        for permno, left in out.groupby("PERMNO", sort=True):
+            left = left.sort_values("Date", kind="mergesort")
+            right = pred_sorted.loc[pred_sorted["PERMNO"] == permno, ["Date", col]].sort_values(
+                "Date", kind="mergesort"
+            )
+            if right.empty:
+                left = left.copy()
+                left[col] = np.nan
+            else:
+                left = pd.merge_asof(left, right, on="Date", direction="backward")
+            pieces.append(left)
+        out = pd.concat(pieces, ignore_index=True)
+        out = out.sort_values(["PERMNO", "Date"], kind="mergesort").reset_index(drop=True)
     return out
+
+
+def _prediction_universe(
+    models_root: Path,
+    configs: tuple[tuple[int, int], ...],
+) -> set[int]:
+    permnos: set[int] = set()
+    for image_days, horizon in configs:
+        pred = load_us_predictions(models_root, image_days, horizon)
+        permnos.update(pred["PERMNO"].astype("int64").tolist())
+    return permnos
+
+
+def _stock_month_end_rows(
+    task: tuple[int, str, str, np.ndarray],
+) -> list[dict]:
+    permno, ohlc_path_s, signals_root_s, month_ends_arr = task
+    ohlc_path = Path(ohlc_path_s)
+    signals_root = Path(signals_root_s)
+    if not liquidity_partition_complete(signals_root, permno):
+        return []
+
+    month_ends = pd.DatetimeIndex(month_ends_arr)
+    stock_df = read_stock(ohlc_path, permno)
+    stock_df = stock_df.copy()
+    stock_df["DlyCalDt"] = pd.to_datetime(stock_df["DlyCalDt"])
+    cap_col = "DlyTotalCap" if "DlyTotalCap" in stock_df.columns else "DlyCap"
+    cap_by_date = stock_df.set_index("DlyCalDt")[cap_col]
+    signals = read_stock_trend_signals(signals_root, permno).set_index("DlyCalDt")
+    labels = stock_label_panel(stock_df)
+
+    rows: list[dict] = []
+    for me in month_ends:
+        if me not in signals.index or me not in labels.index:
+            continue
+        if me not in cap_by_date.index:
+            continue
+        sig = signals.loc[me]
+        lab = labels.loc[me]
+        row: dict = {
+            "PERMNO": permno,
+            "Date": me,
+            "Ret_5d": float(lab["Ret_5d"]),
+            "Ret_20d": float(lab["Ret_20d"]),
+            "Ret_60d": float(lab["Ret_60d"]),
+            "Size": float(cap_by_date.loc[me]),
+        }
+        for col in TABLE_VI_CHAR_COLS:
+            if col in ("TREND_HZZ", "Size"):
+                continue
+            row[col] = float(sig[col])
+        for ma in MA_COLS:
+            row[ma] = float(sig[ma])
+        rows.append(row)
+    return rows
 
 
 def build_characteristics_month_end_panel(
@@ -118,54 +192,43 @@ def build_characteristics_month_end_panel(
     signals_root: Path,
     models_root: Path,
     out_path: Path | None = None,
+    n_workers: int | None = None,
+    reserve_gib: float = 16.0,
 ) -> pd.DataFrame:
     sample = market_sample_config(market)
     calendar = load_calendar(ohlc_path)
-    month_ends = month_end_dates(calendar, sample.test_start, sample.sample_end)
+    month_ends = month_end_dates(calendar, sample.sample_start, sample.sample_end)
+    month_ends_arr = month_ends.to_numpy()
 
-    pred_map = _load_predictions(models_root, TABLE_V_CNN_CONFIGS)
-    permnos = permno_list(ohlc_path)
-    rows: list[dict] = []
+    universe = _prediction_universe(models_root, TABLE_V_CNN_CONFIGS)
+    permnos = [int(p) for p in permno_list(ohlc_path) if int(p) in universe]
+    if not permnos:
+        raise ValueError(f"empty CNN prediction universe market={market}")
+    tasks = [
+        (permno, str(ohlc_path), str(signals_root), month_ends_arr) for permno in permnos
+    ]
+    n_workers, _ = resolve_workers(
+        len(tasks),
+        override=n_workers,
+        reserve_gib=reserve_gib,
+        mem_per_worker_gib=PANEL_MEM_PER_WORKER_GIB,
+    )
 
-    for permno in permnos:
-        permno = int(permno)
-        if not liquidity_partition_complete(signals_root, permno):
-            continue
-        stock_df = read_stock(ohlc_path, permno)
-        stock_df = stock_df.copy()
-        stock_df["DlyCalDt"] = pd.to_datetime(stock_df["DlyCalDt"])
-        signals = read_stock_trend_signals(signals_root, permno).set_index("DlyCalDt")
-        labels = stock_label_panel(stock_df)
+    if n_workers == 1:
+        chunks = [_stock_month_end_rows(t) for t in tasks]
+    else:
+        with Pool(n_workers) as pool:
+            chunks = pool.map(_stock_month_end_rows, tasks, chunksize=32)
 
-        for me in month_ends:
-            if me not in signals.index or me not in labels.index:
-                continue
-            sig = signals.loc[me]
-            lab = labels.loc[me]
-            row: dict = {
-                "PERMNO": permno,
-                "Date": me,
-                "Ret_5d": float(lab["Ret_5d"]),
-                "Ret_20d": float(lab["Ret_20d"]),
-                "Ret_60d": float(lab["Ret_60d"]),
-                "Size": _size_from_ohlc(stock_df, me),
-            }
-            for col in TABLE_VI_CHAR_COLS:
-                if col == "TREND_HZZ":
-                    continue
-                if col == "Size":
-                    continue
-                row[col] = float(sig[col])
-            for ma in MA_COLS:
-                row[ma] = float(sig[ma])
-            rows.append(row)
-
+    rows = [row for chunk in chunks for row in chunk]
     if not rows:
         raise ValueError(f"empty month-end panel market={market}")
 
     panel = pd.DataFrame(rows)
     hzz = compute_hzz_trend_scores(panel, ret_col="Ret_5d")
     panel["TREND_HZZ"] = hzz.reindex(panel.index).to_numpy(dtype=np.float32)
+
+    pred_map = _load_predictions(models_root, TABLE_V_CNN_CONFIGS)
     panel = _attach_predictions(panel, pred_map)
 
     path = out_path if out_path is not None else characteristics_month_end_path(market)
@@ -206,7 +269,8 @@ def fit_logit_irls(y: np.ndarray, x: np.ndarray) -> np.ndarray:
         wx = design * w[:, None]
         lhs = design.T @ wx
         rhs = design.T @ (w * z)
-        beta_new = np.linalg.solve(lhs, rhs)
+        beta_new, _, _, _ = np.linalg.lstsq(lhs, rhs, rcond=None)
+        beta_new = beta_new.astype(np.float64)
         if np.max(np.abs(beta_new - beta)) < LOGIT_TOL:
             beta = beta_new
             break
@@ -247,11 +311,19 @@ def fama_macbeth_logit(
             continue
         y = sub[y_col].to_numpy(dtype=np.float64)
         x = sub[list(x_cols)].to_numpy(dtype=np.float64)
-        beta = fit_logit_irls(y, x)
+        if len(np.unique(y)) < 2:
+            continue
+        try:
+            beta = fit_logit_irls(y, x)
+        except np.linalg.LinAlgError:
+            continue
         series.append(pd.Series(beta, index=coef_names, name=grp["Date"].iloc[0]))
 
     if not series:
-        raise ValueError(f"no valid cross-sections for y={y_col} x={x_cols}")
+        coef_ts = pd.DataFrame(columns=coef_names, dtype=np.float64)
+        means = pd.Series(np.nan, index=coef_names, dtype=np.float64)
+        t_stats = pd.Series(np.nan, index=coef_names, dtype=np.float64)
+        return coef_ts, means, t_stats
 
     coef_ts = pd.DataFrame(series)
     means = coef_ts.mean(axis=0)
@@ -269,9 +341,16 @@ def pooled_logit_mcfadden(
     x_cols: tuple[str, ...],
 ) -> float:
     sub = panel[[y_col, *x_cols]].dropna()
+    if len(sub) < MIN_CROSS_SECTION:
+        return float("nan")
     y = sub[y_col].to_numpy(dtype=np.float64)
+    if len(np.unique(y)) < 2:
+        return float("nan")
     x = sub[list(x_cols)].to_numpy(dtype=np.float64)
-    beta = fit_logit_irls(y, x)
+    try:
+        beta = fit_logit_irls(y, x)
+    except np.linalg.LinAlgError:
+        return float("nan")
     return mcfadden_r2(y, x, beta)
 
 
@@ -298,9 +377,16 @@ def oos_mcfadden_r2(
     x_cols: tuple[str, ...],
 ) -> float:
     sub = test_panel[[ret_col, "PERMNO", *x_cols]].dropna()
+    if len(sub) < MIN_CROSS_SECTION:
+        return float("nan")
     y = (sub[ret_col] > 0.0).astype(float).to_numpy()
+    if len(np.unique(y)) < 2:
+        return float("nan")
     x = sub[list(x_cols)].to_numpy(dtype=np.float64)
-    beta = fit_logit_irls(y, x)
+    try:
+        beta = fit_logit_irls(y, x)
+    except np.linalg.LinAlgError:
+        return float("nan")
     ll_m = log_likelihood(y, x, beta)
 
     bench, _ = _stock_positive_benchmark(train_panel, ret_col)
@@ -423,11 +509,7 @@ def table_vii_return_logit(
             ranked["y"] = sub["y"]
             _, means, ts = fama_macbeth_logit(ranked, y_col="y", x_cols=x_cols)
 
-            if "CNN" in x_cols and pcol in x_cols:
-                if pcol in means.index:
-                    mean_vals.at["CNN", col_label] = means[pcol]
-                    t_stats.at["CNN", col_label] = ts[pcol]
-            elif x_cols == (pcol,):
+            if pcol in x_cols and pcol in means.index:
                 mean_vals.at["CNN", col_label] = means[pcol]
                 t_stats.at["CNN", col_label] = ts[pcol]
 
@@ -464,10 +546,17 @@ def image_scaled_lags(
     window_days: int = TABLE_VIII_IMAGE_DAYS,
 ) -> dict[str, float] | None:
     dates = observed_dates(stock_df)
-    window = window_stock_days(dates, as_of, window_days)
-    if window is None or len(window) != window_days:
+    loc = dates.get_indexer([as_of])[0]
+    if loc < 0:
         return None
-    if window[-1] != as_of:
+    chart_start = loc - window_days + 1
+    if chart_start < 0:
+        return None
+    hist_start = chart_start - window_days
+    slice_start = max(hist_start, 0)
+    n_hist = chart_start - slice_start
+    window = dates[slice_start : loc + 1]
+    if len(window) != loc + 1 - slice_start:
         return None
 
     series = build_window_arrays(stock_df, window)
@@ -478,11 +567,15 @@ def image_scaled_lags(
     if chained is None:
         return None
     adj_open, adj_high, adj_low, adj_close = chained
-    n_hist = 0
     ma = moving_average_window_scale(adj_close, n_hist, window_days)
 
+    chart_open = adj_open[n_hist:]
+    chart_high = adj_high[n_hist:]
+    chart_low = adj_low[n_hist:]
+    chart_close = adj_close[n_hist:]
+
     price_stack = np.concatenate(
-        [adj_open, adj_high, adj_low, adj_close, ma[np.isfinite(ma)]]
+        [chart_open, chart_high, chart_low, chart_close, ma[np.isfinite(ma)]]
     )
     finite_prices = price_stack[np.isfinite(price_stack)]
     if len(finite_prices) == 0:
@@ -491,17 +584,17 @@ def image_scaled_lags(
     pmax = float(finite_prices.max())
     prange = pmax - pmin
 
-    vol = series.volume.astype(np.float64)
+    vol = series.volume[n_hist:].astype(np.float64)
     vol_max = float(np.nanmax(vol)) if np.any(np.isfinite(vol)) else float("nan")
     if not np.isfinite(vol_max) or vol_max <= 0.0:
         vol_scaled = np.full(window_days, np.nan)
     else:
         vol_scaled = vol / vol_max
 
-    o = _image_minmax_scale(adj_open, pmin, prange)
-    h = _image_minmax_scale(adj_high, pmin, prange)
-    l = _image_minmax_scale(adj_low, pmin, prange)
-    c = _image_minmax_scale(adj_close, pmin, prange)
+    o = _image_minmax_scale(chart_open, pmin, prange)
+    h = _image_minmax_scale(chart_high, pmin, prange)
+    l = _image_minmax_scale(chart_low, pmin, prange)
+    c = _image_minmax_scale(chart_close, pmin, prange)
     m = _image_minmax_scale(ma, pmin, prange)
 
     out: dict[str, float] = {}
@@ -658,6 +751,8 @@ def run_all_tables(
     signals_root: Path,
     models_root: Path,
     fresh: bool,
+    n_workers: int | None = None,
+    reserve_gib: float = 16.0,
 ) -> list[Path]:
     out_dir = benchmark_tables_output_dir(market)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -675,6 +770,8 @@ def run_all_tables(
             signals_root=signals_root,
             models_root=models_root,
             out_path=panel_path,
+            n_workers=n_workers,
+            reserve_gib=reserve_gib,
         )
 
     sample = market_sample_config(market)

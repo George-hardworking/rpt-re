@@ -1,0 +1,13 @@
+cn trend signals resume: skip=3277 pending=0 total=3277
+workers=1 diag={'source': 'memory_budget', 'avail_gib': 95.8, 'total_gib': 377.5, 'reserve_gib': 16.0, 'budget_gib': 79.8, 'mem_per_worker_gib': 0.8, 'mem_cap': 99, 'cpu_cap': 112, 'swap_percent': 100.0, 'n_tasks': 1, 'resolved_workers': 1}
+skip daily signals (complete): /data/kaibiao/data/projects/rpt-re/processed/cn/trend_signals_daily
+cn liquidity chars resume: skip=0 pending=3277 total=3277
+liquidity workers=102 diag={'source': 'memory_budget', 'avail_gib': 97.9, 'total_gib': 377.5, 'reserve_gib': 16.0, 'budget_gib': 81.9, 'mem_per_worker_gib': 0.8, 'mem_cap': 102, 'cpu_cap': 112, 'swap_percent': 100.0, 'n_tasks': 3277, 'resolved_workers': 102}
+liquidity progress  15.3%  stocks 500/3277  skip=0  worker=92 chunk=15/32
+liquidity progress  30.5%  stocks 1000/3277  skip=0  worker=94 chunk=19/32
+liquidity progress  45.8%  stocks 1500/3277  skip=0  worker=13 chunk=11/32
+liquidity progress  61.0%  stocks 2000/3277  skip=0  worker=26 chunk=15/32
+liquidity progress  76.3%  stocks 2500/3277  skip=0  worker=25 chunk=22/32
+liquidity progress  91.5%  stocks 3000/3277  skip=0  worker=1 chunk=29/33
+liquidity progress 100.0%  stocks 3277/3277  skip=0  worker=80 chunk=32/32
+done liquidity characteristics: built=3277 skip=0 -> /data/kaibiao/data/projects/rpt-re/processed/cn/trend_signals_daily

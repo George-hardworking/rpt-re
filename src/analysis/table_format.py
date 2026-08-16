@@ -41,16 +41,16 @@ def build_display_matrix(
 ) -> pd.DataFrame:
     """Element-wise ``format_cell`` for aligned value/t frames."""
     assert values.shape == t_stats.shape
-    out = values.copy()
+    display = pd.DataFrame(index=values.index, columns=values.columns, dtype=object)
     for row in values.index:
         for col in values.columns:
-            out.at[row, col] = format_cell(
+            display.at[row, col] = format_cell(
                 values.at[row, col],
                 t_stats.at[row, col],
                 value_decimals=value_decimals,
                 t_decimals=t_decimals,
             )
-    return out
+    return display
 
 
 def write_display_raw_excel(

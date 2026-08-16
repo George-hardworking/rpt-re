@@ -450,6 +450,8 @@ def run_tables(args: argparse.Namespace) -> list[Path]:
         signals_root=signals_root,
         models_root=models_root,
         fresh=args.fresh,
+        n_workers=args.workers,
+        reserve_gib=args.reserve_gib,
     )
 
 

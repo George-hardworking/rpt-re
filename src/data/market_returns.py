@@ -6,7 +6,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-import pyarrow.dataset as ds
+import pyarrow.parquet as pq
 
 from config import market_vw_returns_path
 
@@ -20,32 +20,32 @@ def _cap_col(columns: set[str]) -> str:
 def compute_market_vw_returns(ohlc_path: Path) -> pd.DataFrame:
     """One row per trading day: cap-weighted average of DlyRet."""
     ohlc_path = Path(ohlc_path)
-    hive = list(ohlc_path.glob("PERMNO=*/*.parquet"))
-    if hive:
-        dataset = ds.dataset(str(ohlc_path), format="parquet", partitioning="hive")
-        schema_cols = set(dataset.schema.names)
-        cap_col = _cap_col(schema_cols)
-        table = dataset.to_table(columns=["DlyCalDt", "DlyRet", cap_col])
-        df = table.to_pandas()
-    else:
-        df = pd.read_parquet(ohlc_path, columns=["DlyCalDt", "DlyRet", "DlyCap"])
-        cap_col = "DlyCap"
+    files = sorted(ohlc_path.glob("PERMNO=*/*.parquet"))
+    if not files:
+        raise FileNotFoundError(f"no OHLC partitions under {ohlc_path}")
 
-    df["DlyCalDt"] = pd.to_datetime(df["DlyCalDt"])
-    cap = df[cap_col].to_numpy(dtype=np.float64)
-    ret = df["DlyRet"].to_numpy(dtype=np.float64)
-    ok = np.isfinite(ret) & np.isfinite(cap) & (cap > 0.0)
-    df = df.loc[ok, ["DlyCalDt", "DlyRet", cap_col]].copy()
-    df["_wret"] = df["DlyRet"] * df[cap_col]
-    grouped = df.groupby("DlyCalDt", sort=True).agg(
-        num=("_wret", "sum"),
-        den=(cap_col, "sum"),
-    )
-    grouped["MktRet"] = (grouped["num"] / grouped["den"]).astype(np.float32)
-    out = grouped.reset_index()[["DlyCalDt", "MktRet"]]
-    if out.empty:
+    cap_col = _cap_col(set(pq.read_schema(files[0]).names))
+    num: dict[pd.Timestamp, float] = {}
+    den: dict[pd.Timestamp, float] = {}
+
+    for path in files:
+        df = pd.read_parquet(path, columns=["DlyCalDt", "DlyRet", cap_col])
+        dates = pd.to_datetime(df["DlyCalDt"])
+        ret = df["DlyRet"].to_numpy(dtype=np.float64)
+        cap = df[cap_col].to_numpy(dtype=np.float64)
+        for d, r, c in zip(dates, ret, cap):
+            if not np.isfinite(r) or not np.isfinite(c) or c <= 0.0:
+                continue
+            ts = pd.Timestamp(d)
+            num[ts] = num.get(ts, 0.0) + c * r
+            den[ts] = den.get(ts, 0.0) + c
+
+    if not num:
         raise ValueError(f"empty market return aggregation from {ohlc_path}")
-    return out
+
+    dates = sorted(num.keys())
+    mkt_ret = np.array([num[d] / den[d] for d in dates], dtype=np.float32)
+    return pd.DataFrame({"DlyCalDt": dates, "MktRet": mkt_ret})
 
 
 def write_market_vw_returns(

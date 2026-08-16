@@ -1,0 +1,177 @@
+us trend signals resume: skip=29342 pending=0 total=29342
+workers=1 diag={'source': 'memory_budget', 'avail_gib': 102.3, 'total_gib': 377.5, 'reserve_gib': 16.0, 'budget_gib': 86.3, 'mem_per_worker_gib': 0.8, 'mem_cap': 107, 'cpu_cap': 112, 'swap_percent': 100.0, 'n_tasks': 1, 'resolved_workers': 1}
+skip daily signals (complete): /data/kaibiao/data/projects/rpt-re/processed/us/trend_signals_daily
+us liquidity chars resume: skip=100 pending=29242 total=29342
+liquidity workers=109 diag={'source': 'memory_budget', 'avail_gib': 103.9, 'total_gib': 377.5, 'reserve_gib': 16.0, 'budget_gib': 87.9, 'mem_per_worker_gib': 0.8, 'mem_cap': 109, 'cpu_cap': 112, 'swap_percent': 100.0, 'n_tasks': 29242, 'resolved_workers': 109}
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress   1.7%  stocks 500/29342  skip=100  worker=36 chunk=4/269
+liquidity progress   3.4%  stocks 1000/29342  skip=100  worker=72 chunk=8/269
+liquidity progress   5.1%  stocks 1500/29342  skip=100  worker=82 chunk=13/269
+liquidity progress   6.8%  stocks 2000/29342  skip=100  worker=93 chunk=17/269
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress   8.5%  stocks 2500/29342  skip=100  worker=93 chunk=21/269
+liquidity progress  10.2%  stocks 3000/29342  skip=100  worker=78 chunk=27/269
+liquidity progress  11.9%  stocks 3500/29342  skip=100  worker=20 chunk=27/270
+liquidity progress  13.6%  stocks 4000/29342  skip=100  worker=97 chunk=34/269
+liquidity progress  15.3%  stocks 4500/29342  skip=100  worker=72 chunk=39/269
+liquidity progress  17.0%  stocks 5000/29342  skip=100  worker=57 chunk=44/269
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  18.7%  stocks 5500/29342  skip=100  worker=44 chunk=58/269
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  20.4%  stocks 6000/29342  skip=100  worker=29 chunk=60/269
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  22.2%  stocks 6500/29342  skip=100  worker=7 chunk=52/270
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  23.9%  stocks 7000/29342  skip=100  worker=20 chunk=56/270
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  25.6%  stocks 7500/29342  skip=100  worker=89 chunk=67/269
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  27.3%  stocks 8000/29342  skip=100  worker=108 chunk=69/269
+liquidity progress  29.0%  stocks 8500/29342  skip=100  worker=96 chunk=67/269
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  30.7%  stocks 9000/29342  skip=100  worker=80 chunk=80/269
+liquidity progress  32.4%  stocks 9500/29342  skip=100  worker=61 chunk=82/269
+liquidity progress  34.1%  stocks 10000/29342  skip=100  worker=68 chunk=91/269
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  35.8%  stocks 10500/29342  skip=100  worker=11 chunk=87/270
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  37.5%  stocks 11000/29342  skip=100  worker=59 chunk=110/269
+liquidity progress  39.2%  stocks 11500/29342  skip=100  worker=107 chunk=92/269
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  40.9%  stocks 12000/29342  skip=100  worker=49 chunk=113/269
+liquidity progress  42.6%  stocks 12500/29342  skip=100  worker=33 chunk=139/269
+liquidity progress  44.3%  stocks 13000/29342  skip=100  worker=84 chunk=124/269
+liquidity progress  46.0%  stocks 13500/29342  skip=100  worker=56 chunk=112/269
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  47.7%  stocks 14000/29342  skip=100  worker=92 chunk=126/269
+liquidity progress  49.4%  stocks 14500/29342  skip=100  worker=43 chunk=190/269
+liquidity progress  51.1%  stocks 15000/29342  skip=100  worker=75 chunk=145/269
+liquidity progress  52.8%  stocks 15500/29342  skip=100  worker=20 chunk=127/270
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  54.5%  stocks 16000/29342  skip=100  worker=95 chunk=143/269
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  56.2%  stocks 16500/29342  skip=100  worker=107 chunk=134/269
+liquidity progress  57.9%  stocks 17000/29342  skip=100  worker=49 chunk=184/269
+liquidity progress  59.6%  stocks 17500/29342  skip=100  worker=97 chunk=167/269
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  61.3%  stocks 18000/29342  skip=100  worker=63 chunk=154/269
+liquidity progress  63.0%  stocks 18500/29342  skip=100  worker=57 chunk=167/269
+liquidity progress  64.8%  stocks 19000/29342  skip=100  worker=18 chunk=171/270
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  66.5%  stocks 19500/29342  skip=100  worker=84 chunk=184/269
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  68.2%  stocks 20000/29342  skip=100  worker=56 chunk=170/269
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  69.9%  stocks 20500/29342  skip=100  worker=108 chunk=188/269
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  71.6%  stocks 21000/29342  skip=100  worker=67 chunk=203/269
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  73.3%  stocks 21500/29342  skip=100  worker=59 chunk=208/269
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  75.0%  stocks 22000/29342  skip=100  worker=67 chunk=212/269
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  76.7%  stocks 22500/29342  skip=100  worker=33 chunk=223/269
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  78.4%  stocks 23000/29342  skip=100  worker=73 chunk=206/269
+liquidity progress  80.1%  stocks 23500/29342  skip=100  worker=65 chunk=212/269
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  81.8%  stocks 24000/29342  skip=100  worker=97 chunk=264/269
+liquidity progress  83.5%  stocks 24500/29342  skip=100  worker=24 chunk=248/269
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  85.2%  stocks 25000/29342  skip=100  worker=22 chunk=239/269
+liquidity progress  86.9%  stocks 25500/29342  skip=100  worker=2 chunk=219/270
+liquidity progress  88.6%  stocks 26000/29342  skip=100  worker=95 chunk=256/269
+liquidity progress  90.3%  stocks 26500/29342  skip=100  worker=68 chunk=254/269
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  92.0%  stocks 27000/29342  skip=100  worker=90 chunk=255/269
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  93.7%  stocks 27500/29342  skip=100  worker=14 chunk=262/270
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  95.4%  stocks 28000/29342  skip=100  worker=39 chunk=238/269
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  97.1%  stocks 28500/29342  skip=100  worker=9 chunk=244/270
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+/home/zkb/rpt-re/src/data/trend_signals.py:145: RuntimeWarning: divide by zero encountered in log1p
+  log1p = pd.Series(np.log1p(ret), index=dates)
+liquidity progress  98.8%  stocks 29000/29342  skip=100  worker=53 chunk=262/269
+liquidity progress 100.0%  stocks 29342/29342  skip=100  worker=42 chunk=200/269
+done liquidity characteristics: built=29242 skip=100 -> /data/kaibiao/data/projects/rpt-re/processed/us/trend_signals_daily
