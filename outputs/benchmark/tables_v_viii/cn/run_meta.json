@@ -1,0 +1,15 @@
+{
+  "market": "cn",
+  "test_start": "2015-01-01",
+  "test_end": "2019-12-31",
+  "train_end": "2014-12-31",
+  "omitted_characteristics": [
+    "Bid-Ask",
+    "Price Delay"
+  ],
+  "beta_window": 252,
+  "vol_window": 21,
+  "liquidity_window": 21,
+  "table_v_alignment": "month-end; CNN p_up merge_asof backward by PERMNO",
+  "display_format": "value + stars + (t)"
+}
