@@ -18,6 +18,7 @@ DEFAULT_RESERVE_GIB = 16.0
 MEM_PER_WORKER_GIB = 0.8
 PROGRESS_EVERY = 500
 
+from analysis.cnn_characteristics_tables import run_all_tables
 from backtest.engine import h1_perf_tables
 from backtest.io import load_image_labels, write_h1_excel
 from backtest.markets import cn_cnn_spec, us_spec
@@ -30,15 +31,20 @@ from config import (
     WINDOW_DAYS,
     benchmark_output_dir,
     benchmark_signals_dir,
+    characteristics_month_end_path,
     market_processed_dir,
     market_sample_config,
+    market_vw_returns_path,
     sample_freq_for_horizon,
 )
+from data.market_returns import read_market_vw_returns, write_market_vw_returns
 from data.parquet_io import permno_list, read_stock
 from data.trend_signals import (
     STOCK_SIGNAL_COLS,
+    append_liquidity_characteristics,
     compute_hzz_trend_scores,
     join_signals_at_dates,
+    liquidity_partition_complete,
     read_stock_trend_signals,
     trend_signal_partition_complete,
     trend_signals_daily_root,
@@ -86,6 +92,31 @@ def process_permno_chunk(task: tuple) -> tuple[int, int]:
             pct = 100.0 * done / _TOTAL_STOCKS
             log(
                 f"progress {pct:5.1f}%  stocks {done}/{_TOTAL_STOCKS}  "
+                f"skip={_SKIP_STOCKS}  worker={worker_id} "
+                f"chunk={i + 1}/{len(permno_chunk)}"
+            )
+    return built, skipped
+
+
+def process_liquidity_chunk(task: tuple) -> tuple[int, int]:
+    permno_chunk, ohlc_path, output_root, mkt_ret, worker_id = task
+    built = 0
+    skipped = 0
+    for i, permno in enumerate(permno_chunk):
+        permno = int(permno)
+        if liquidity_partition_complete(output_root, permno):
+            skipped += 1
+        else:
+            stock_df = read_stock(ohlc_path, permno)
+            append_liquidity_characteristics(stock_df, permno, output_root, mkt_ret)
+            built += 1
+        with _PROGRESS.get_lock():
+            _PROGRESS.value += 1
+            done = _PROGRESS.value
+        if done % PROGRESS_EVERY == 0 or done == _TOTAL_STOCKS:
+            pct = 100.0 * done / _TOTAL_STOCKS
+            log(
+                f"liquidity progress {pct:5.1f}%  stocks {done}/{_TOTAL_STOCKS}  "
                 f"skip={_SKIP_STOCKS}  worker={worker_id} "
                 f"chunk={i + 1}/{len(permno_chunk)}"
             )
@@ -153,6 +184,70 @@ def build_daily_signals(
         skipped = sum(s for _, s in chunk_stats)
 
     log(f"done daily signals: built={built} skip={skipped} -> {output_root}")
+    return output_root
+
+
+def build_liquidity_characteristics(
+    *,
+    market: str,
+    ohlc_path: Path,
+    output_root: Path,
+    permno_limit: int | None,
+    n_workers: int | None,
+    reserve_gib: float,
+) -> Path:
+    mkt_path = market_vw_returns_path(market)
+    if not mkt_path.is_file():
+        log(f"building market VW returns -> {mkt_path}")
+        write_market_vw_returns(ohlc_path, market, out_path=mkt_path)
+    mkt_ret = read_market_vw_returns(market, path=mkt_path)
+
+    permnos = permno_list(ohlc_path)
+    if permno_limit is not None:
+        permnos = permnos[:permno_limit]
+
+    skip_stocks = sum(
+        1 for p in permnos if liquidity_partition_complete(output_root, int(p))
+    )
+    pending = len(permnos) - skip_stocks
+    log(
+        f"{market} liquidity chars resume: skip={skip_stocks} "
+        f"pending={pending} total={len(permnos)}"
+    )
+    if pending == 0:
+        log(f"skip liquidity characteristics (complete): {output_root}")
+        return output_root
+
+    n_workers, diag = resolve_workers(
+        pending,
+        override=n_workers,
+        reserve_gib=reserve_gib,
+        mem_per_worker_gib=MEM_PER_WORKER_GIB,
+    )
+    log(f"liquidity workers={n_workers} diag={diag}")
+
+    progress = Value("i", skip_stocks)
+    total_stocks = len(permnos)
+    chunks = chunk_permnos(permnos, n_workers)
+    tasks = [
+        (chunk, ohlc_path, output_root, mkt_ret, wid)
+        for wid, chunk in enumerate(chunks)
+    ]
+
+    if n_workers == 1:
+        _init_progress(progress, total_stocks, skip_stocks)
+        built, skipped = process_liquidity_chunk(tasks[0])
+    else:
+        with Pool(
+            n_workers,
+            initializer=_init_progress,
+            initargs=(progress, total_stocks, skip_stocks),
+        ) as pool:
+            chunk_stats = pool.map(process_liquidity_chunk, tasks)
+        built = sum(b for b, _ in chunk_stats)
+        skipped = sum(s for _, s in chunk_stats)
+
+    log(f"done liquidity characteristics: built={built} skip={skipped} -> {output_root}")
     return output_root
 
 
@@ -316,13 +411,44 @@ def run_signals(args: argparse.Namespace) -> Path:
         if args.signals_root is not None
         else trend_signals_daily_root(args.market)
     )
-    return build_daily_signals(
+    build_daily_signals(
         market=args.market,
         ohlc_path=ohlc_path,
         output_root=output_root,
         permno_limit=args.permno_limit,
         n_workers=args.workers,
         reserve_gib=args.reserve_gib,
+        fresh=args.fresh,
+    )
+    return build_liquidity_characteristics(
+        market=args.market,
+        ohlc_path=ohlc_path,
+        output_root=output_root,
+        permno_limit=args.permno_limit,
+        n_workers=args.workers,
+        reserve_gib=args.reserve_gib,
+    )
+
+
+def run_tables(args: argparse.Namespace) -> list[Path]:
+    market_root = market_processed_dir(args.market)
+    ohlc_path = args.ohlc if args.ohlc is not None else market_root / "ohlc_daily"
+    signals_root = (
+        args.signals_root
+        if args.signals_root is not None
+        else trend_signals_daily_root(args.market)
+    )
+    models_root = args.models if args.models is not None else market_root / "models"
+
+    panel_path = characteristics_month_end_path(args.market)
+    if args.fresh and panel_path.is_file():
+        panel_path.unlink()
+
+    return run_all_tables(
+        market=args.market,
+        ohlc_path=ohlc_path,
+        signals_root=signals_root,
+        models_root=models_root,
         fresh=args.fresh,
     )
 
@@ -393,6 +519,13 @@ def main() -> None:
         help="sort deciles on raw signal (paper Table I style)",
     )
 
+    p_tbl = sub.add_parser(
+        "tables",
+        parents=[common],
+        help="Table V–VIII characteristics analysis (requires CNN 03/04)",
+    )
+    p_tbl.add_argument("--models", type=Path, default=None)
+
     p_all = sub.add_parser("all", parents=[common], help="signals then backtest")
     p_all.add_argument("--start", type=str, default=None)
     p_all.add_argument("--horizons", type=int, nargs="+", choices=WINDOW_DAYS, default=None)
@@ -407,6 +540,11 @@ def main() -> None:
         return
     if args.command == "backtest":
         run_backtest(args)
+        return
+    if args.command == "tables":
+        paths = run_tables(args)
+        for path in paths:
+            log(f"wrote {path}")
         return
     if args.command == "all":
         run_signals(args)
