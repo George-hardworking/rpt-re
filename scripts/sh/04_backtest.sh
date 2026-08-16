@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 04_backtest: OOS p_up (US) or China signals -> H1 Excel under outputs/cnn_baseline/ or outputs/cnn_top500/.
+# 04_backtest: OOS p_up (US) or China signals -> H1 Excel under outputs/04_backtest/.
 #
 # Usage:
 #   ./scripts/sh/04_backtest.sh --market us

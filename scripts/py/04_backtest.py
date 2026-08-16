@@ -469,13 +469,13 @@ def main() -> None:
         type=int,
         default=None,
         metavar="N",
-        help="keep top N stocks by formation-date cap; writes outputs/cnn_top500/",
+        help="keep top N stocks by formation-date cap; writes outputs/04_backtest/cnn_top500/",
     )
     parser.add_argument(
         "--top-n-cap",
         choices=("total", "float"),
         default="total",
-        help="CN only: rank top-N on TotalCap (default) or FloatCap → outputs/cnn_top500_float/",
+        help="CN only: rank top-N on TotalCap (default) or FloatCap → outputs/04_backtest/cnn_top500_float/",
     )
     parser.add_argument("--models", type=Path, default=None)
     parser.add_argument("--images", type=Path, default=None)
