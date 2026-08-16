@@ -1,0 +1,32 @@
+[2026-08-16 23:13:13] ============================================================
+[2026-08-16 23:13:13] 06_holding_breakdown
+[2026-08-16 23:13:13] Conda: 5020_env
+[2026-08-16 23:13:13] Python: /home/zkb/rpt-re/scripts/py/06_holding_breakdown.py
+[2026-08-16 23:13:13] Args:  --market us
+[2026-08-16 23:13:13] Log:   /home/zkb/rpt-re/logs/06_holding_breakdown/06_holding_breakdown_20260816_231312.log
+[2026-08-16 23:13:13] ============================================================
+[2026-08-16 23:13:13] starting python
+[2026-08-16 23:13:16] load US CNN I5_R20
+[2026-08-16 23:13:21] load US CNN I20_R20
+[2026-08-16 23:13:26] load US CNN I60_R20
+[2026-08-16 23:13:31] load US benchmark MOM
+[2026-08-16 23:13:33] load US benchmark REV1m_STR
+[2026-08-16 23:13:36] load US benchmark REV1w_WSTR
+[2026-08-16 23:13:39] load US benchmark TREND_HZZ
+[2026-08-16 23:13:41] d1_d5 I5_R20 n=1524334 dates=228
+[2026-08-16 23:13:49] d1_d5 I20_R20 n=1517498 dates=228
+[2026-08-16 23:13:56] d1_d5 I60_R20 n=498948 dates=76
+[2026-08-16 23:13:58] d1_d5 MOM n=1527188 dates=228
+[2026-08-16 23:14:02] d1_d5 REV1m_STR n=1527188 dates=228
+[2026-08-16 23:14:07] d1_d5 REV1w_WSTR n=1527188 dates=228
+[2026-08-16 23:14:12] d1_d5 TREND_HZZ n=1527188 dates=228
+[2026-08-16 23:14:16] wrote /home/zkb/rpt-re/outputs/holding_breakdown/us/monthly/d1_d5_h1.xlsx
+[2026-08-16 23:14:16] d6_d20 I5_R20 n=1524334 dates=228
+[2026-08-16 23:14:24] d6_d20 I20_R20 n=1517498 dates=228
+[2026-08-16 23:14:32] d6_d20 I60_R20 n=498948 dates=76
+[2026-08-16 23:14:34] d6_d20 MOM n=1527188 dates=228
+[2026-08-16 23:14:39] d6_d20 REV1m_STR n=1527188 dates=228
+[2026-08-16 23:14:44] d6_d20 REV1w_WSTR n=1527188 dates=228
+[2026-08-16 23:14:49] d6_d20 TREND_HZZ n=1527188 dates=228
+[2026-08-16 23:14:52] wrote /home/zkb/rpt-re/outputs/holding_breakdown/us/monthly/d6_d20_h1.xlsx
+[2026-08-16 23:14:53] Done.
