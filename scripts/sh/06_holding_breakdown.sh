@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # 06_holding_breakdown: paper Table III — monthly R20 split into days 1–5 vs 6–20.
-# Writes outputs/holding_breakdown/{us,cn}/monthly/{d1_d5,d6_d20}_h1.xlsx
+# Writes outputs/06_holding_breakdown/{us,cn}/monthly/{d1_d5,d6_d20}_h1.xlsx
 #
 # Usage:
 #   ./scripts/sh/06_holding_breakdown.sh --market us
