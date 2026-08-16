@@ -10,8 +10,14 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import pyarrow.parquet as pq
 
 from config import (
+    CHAR_BETA_WINDOW,
+    CHAR_LAG_WEEKLY_WINDOW,
+    CHAR_LIQUIDITY_WINDOW,
+    CHAR_VOL_WINDOW,
+    LIQUIDITY_CHAR_COLS,
     TREND_52WH_WINDOW,
     TREND_HZZ_EMA_LAMBDA,
     TREND_HZZ_MA_LAGS,
@@ -32,6 +38,8 @@ STOCK_SIGNAL_COLS: tuple[str, ...] = (
     "DIST_52WH",
 ) + MA_COLS
 
+DAILY_CHAR_COLS: tuple[str, ...] = STOCK_SIGNAL_COLS + LIQUIDITY_CHAR_COLS
+
 
 def trend_signals_daily_root(market: str) -> Path:
     return market_processed_dir(market) / TREND_SIGNALS_DAILY
@@ -41,8 +49,24 @@ def trend_signal_partition_path(root: Path, permno: int) -> Path:
     return Path(root) / f"PERMNO={permno}" / "part-0.parquet"
 
 
+def _parquet_column_names(path: Path) -> set[str]:
+    return set(pq.read_schema(path).names)
+
+
 def trend_signal_partition_complete(root: Path, permno: int) -> bool:
-    return trend_signal_partition_path(root, permno).is_file()
+    path = trend_signal_partition_path(root, permno)
+    if not path.is_file():
+        return False
+    cols = _parquet_column_names(path)
+    return all(c in cols for c in STOCK_SIGNAL_COLS)
+
+
+def liquidity_partition_complete(root: Path, permno: int) -> bool:
+    path = trend_signal_partition_path(root, permno)
+    if not path.is_file():
+        return False
+    cols = _parquet_column_names(path)
+    return all(c in cols for c in LIQUIDITY_CHAR_COLS)
 
 
 def _rolling_log_cum(ret: pd.Series, window: int) -> np.ndarray:
@@ -79,6 +103,81 @@ def stock_daily_trend_signals(stock_df: pd.DataFrame) -> pd.DataFrame:
         ma = close_s.rolling(lag, min_periods=lag).mean()
         out[f"ma{lag}"] = (ma / close_s).to_numpy(dtype=np.float32)
     return out
+
+
+def stock_liquidity_characteristics(
+    stock_df: pd.DataFrame,
+    mkt_ret: pd.Series,
+) -> pd.DataFrame:
+    """Beta, vol, dollar volume, zero-trade count, Amihud, lag weekly return."""
+    df = stock_df.sort_values("DlyCalDt")
+    dates = pd.DatetimeIndex(df["DlyCalDt"])
+    ret = df["DlyRet"].to_numpy(dtype=np.float64)
+    close = np.abs(df["DlyClose"].to_numpy(dtype=np.float64))
+    vol = df["DlyVol"].to_numpy(dtype=np.float64)
+
+    ret_s = pd.Series(ret, index=dates)
+    mkt = mkt_ret.reindex(dates)
+    roll_cov = ret_s.rolling(CHAR_BETA_WINDOW, min_periods=CHAR_BETA_WINDOW).cov(mkt)
+    roll_var = mkt.rolling(CHAR_BETA_WINDOW, min_periods=CHAR_BETA_WINDOW).var()
+    beta = (roll_cov / roll_var).to_numpy(dtype=np.float64)
+
+    volatility = ret_s.rolling(CHAR_VOL_WINDOW, min_periods=CHAR_VOL_WINDOW).std().to_numpy(
+        dtype=np.float64
+    )
+
+    dollar_vol = close * vol
+    dollar_s = pd.Series(dollar_vol, index=dates)
+    zero_s = pd.Series((vol <= 0.0) | ~np.isfinite(vol), index=dates).astype(float)
+    zero_trade = zero_s.rolling(
+        CHAR_LIQUIDITY_WINDOW, min_periods=CHAR_LIQUIDITY_WINDOW
+    ).sum().to_numpy(dtype=np.float64)
+
+    with np.errstate(divide="ignore", invalid="ignore"):
+        amihud_daily = np.abs(ret) / dollar_vol
+    illiq = (
+        pd.Series(amihud_daily, index=dates)
+        .rolling(CHAR_LIQUIDITY_WINDOW, min_periods=CHAR_LIQUIDITY_WINDOW)
+        .mean()
+        .to_numpy(dtype=np.float64)
+    )
+
+    log1p = pd.Series(np.log1p(ret), index=dates)
+    lag_weekly = np.expm1(
+        log1p.rolling(CHAR_LAG_WEEKLY_WINDOW, min_periods=CHAR_LAG_WEEKLY_WINDOW).sum()
+    ).to_numpy(dtype=np.float64)
+
+    out = pd.DataFrame({"DlyCalDt": dates})
+    out["Beta"] = beta.astype(np.float32)
+    out["Volatility"] = volatility.astype(np.float32)
+    out["DollarVol"] = dollar_s.to_numpy(dtype=np.float32)
+    out["ZeroTrade"] = zero_trade.astype(np.float32)
+    out["Illiquidity"] = illiq.astype(np.float32)
+    out["LagWeeklyRet"] = lag_weekly.astype(np.float32)
+    return out
+
+
+def append_liquidity_characteristics(
+    stock_df: pd.DataFrame,
+    permno: int,
+    output_root: Path,
+    mkt_ret: pd.Series,
+) -> Path:
+    path = trend_signal_partition_path(output_root, permno)
+    if path.is_file():
+        panel = pd.read_parquet(path)
+        panel["DlyCalDt"] = pd.to_datetime(panel["DlyCalDt"])
+    else:
+        panel = stock_daily_trend_signals(stock_df)
+        panel.insert(0, "PERMNO", np.int64(permno))
+
+    liq = stock_liquidity_characteristics(stock_df, mkt_ret)
+    for col in LIQUIDITY_CHAR_COLS:
+        panel[col] = liq[col].to_numpy(dtype=np.float32)
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    panel.to_parquet(path, index=False)
+    return path
 
 
 def write_stock_trend_signals(

@@ -81,6 +81,53 @@ BENCHMARK_SIGNAL_DIRS: dict[str, str] = {
     "TREND_HZZ": "trend_hzz",
     "DIST_52WH": "dist_52wh",
 }
+
+# Paper Table V–VIII characteristics (omit Bid-Ask, Price Delay).
+CHAR_BETA_WINDOW = 252
+CHAR_VOL_WINDOW = 21
+CHAR_LIQUIDITY_WINDOW = 21
+CHAR_LAG_WEEKLY_WINDOW = 5
+MARKET_VW_RETURNS_FILE = "market_vw_returns.parquet"
+CHARACTERISTICS_MONTH_END_FILE = "characteristics_month_end.parquet"
+BENCHMARK_TABLES_ROOT = OUTPUT_ROOT / "benchmark" / "tables_v_viii"
+
+# Table V: 11 correlates (no LagWeeklyRet). VI/VII: +LagWeeklyRet.
+TABLE_V_CHAR_COLS: tuple[str, ...] = (
+    "MOM",
+    "REV1m_STR",
+    "REV1w_WSTR",
+    "TREND_HZZ",
+    "Beta",
+    "Volatility",
+    "DIST_52WH",
+    "DollarVol",
+    "ZeroTrade",
+    "Size",
+    "Illiquidity",
+)
+TABLE_VI_CHAR_COLS: tuple[str, ...] = TABLE_V_CHAR_COLS + ("LagWeeklyRet",)
+TABLE_V_CHAR_DISPLAY: dict[str, str] = {
+    "MOM": "MOM",
+    "REV1m_STR": "STR",
+    "REV1w_WSTR": "WSTR",
+    "TREND_HZZ": "TREND",
+    "Beta": "Beta",
+    "Volatility": "Volat.",
+    "DIST_52WH": "52WH",
+    "DollarVol": "Dollar Volume",
+    "ZeroTrade": "Zero Trade",
+    "Size": "Size",
+    "Illiquidity": "Illiq.",
+    "LagWeeklyRet": "Lag Weekly Return",
+}
+LIQUIDITY_CHAR_COLS: tuple[str, ...] = (
+    "Beta",
+    "Volatility",
+    "DollarVol",
+    "ZeroTrade",
+    "Illiquidity",
+    "LagWeeklyRet",
+)
 HORIZON_DIAGONAL_IMAGE_DAYS: dict[int, int] = {5: 5, 20: 20, 60: 60}
 
 # Rebalance folders for step-04 H1 tables (keyed by forecast horizon R).
@@ -178,6 +225,27 @@ TRAIN_JOBS_PER_GPU_MAX = 32
 
 WINDOW_DAYS = (5, 20, 60)
 FUTURE_HORIZONS = (5, 20, 60)
+
+TABLE_V_CNN_CONFIGS: tuple[tuple[int, int], ...] = tuple(
+    (i, r) for i in WINDOW_DAYS for r in WINDOW_DAYS
+)
+TABLE_VI_CNN_CONFIGS: tuple[tuple[int, int], ...] = ((5, 5), (20, 5), (60, 5))
+TABLE_VII_IMAGE_DAYS: tuple[int, ...] = WINDOW_DAYS
+TABLE_VIII_IMAGE_DAYS = 5
+TABLE_VIII_HORIZONS: tuple[int, ...] = WINDOW_DAYS
+
+
+def benchmark_tables_output_dir(market: str) -> Path:
+    return BENCHMARK_TABLES_ROOT / market
+
+
+def characteristics_month_end_path(market: str) -> Path:
+    return market_processed_dir(market) / CHARACTERISTICS_MONTH_END_FILE
+
+
+def market_vw_returns_path(market: str) -> Path:
+    return market_processed_dir(market) / MARKET_VW_RETURNS_FILE
+
 # Author GenerateStockData.ret_len_list
 LABEL_HORIZONS = (5, 20, 60, 65, 180, 250, 260)
 EWMA_VOL_SPAN = 60
