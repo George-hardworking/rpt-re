@@ -31,7 +31,29 @@ BACKTEST_CNN_ROOT = OUTPUT_ROOT / "cnn_baseline"
 BACKTEST_CNN_TOP500_ROOT = OUTPUT_ROOT / "cnn_top500"
 BACKTEST_CNN_TOP500_FLOAT_ROOT = OUTPUT_ROOT / "cnn_top500_float"
 BACKTEST_CN_FACTOR_ROOT = OUTPUT_ROOT / "cn_factors"
+BACKTEST_BREAKDOWN_ROOT = OUTPUT_ROOT / "holding_breakdown"
 BACKTEST_TOP_N_CAP = 500
+
+# Paper Table III: monthly R20 holding split into days 1–5 vs 6–20.
+HOLDING_BREAKDOWN_HORIZON = 20
+HOLDING_BREAKDOWN_FIRST_DAYS = 5
+RET_D1_D5 = "Ret_d1_d5"
+RET_D6_D20 = "Ret_d6_d20"
+HOLDING_BREAKDOWN_WINDOWS: tuple[tuple[str, str], ...] = (
+    ("d1_d5", RET_D1_D5),
+    ("d6_d20", RET_D6_D20),
+)
+HOLDING_BREAKDOWN_CNN_CONFIGS: tuple[tuple[int, int], ...] = (
+    (5, HOLDING_BREAKDOWN_HORIZON),
+    (20, HOLDING_BREAKDOWN_HORIZON),
+    (60, HOLDING_BREAKDOWN_HORIZON),
+)
+HOLDING_BREAKDOWN_BENCH_COLS: tuple[str, ...] = (
+    "MOM",
+    "REV1m_STR",
+    "REV1w_WSTR",
+    "TREND_HZZ",
+)
 
 # Paper trend benchmarks (Jiang–Kelly–Xiu JF 2023 Table I; HZZ from Han–Zhou–Zhu 2016).
 TREND_MOM_WINDOW = 252

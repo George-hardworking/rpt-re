@@ -98,6 +98,7 @@ def merge_cnn_panel(
     horizon: int,
     spec: MarketSpec,
     start: str = TEST_START,
+    extra_ret_cols: tuple[str, ...] = (),
 ) -> pd.DataFrame:
     """Join OOS p_up at formation date t with Ret_{R}d on the same row.
 
@@ -107,10 +108,16 @@ def merge_cnn_panel(
     """
     ret_col = f"Ret_{horizon}d"
     label_cols = ["PERMNO", "Date", ret_col]
+    for col in extra_ret_cols:
+        if col not in label_cols:
+            label_cols.append(col)
     if "FloatCap" in labels.columns and "TotalCap" in labels.columns:
         label_cols.extend(["FloatCap", "TotalCap"])
     else:
         label_cols.append("MarketCap")
+    missing = [c for c in label_cols if c not in labels.columns]
+    if missing:
+        raise KeyError(f"labels missing columns {missing}")
     panel = pred.merge(labels[label_cols], on=["PERMNO", "Date"], how="inner")
     panel = panel[panel["Date"] >= pd.Timestamp(start)]
     assert len(panel) > 0, (
