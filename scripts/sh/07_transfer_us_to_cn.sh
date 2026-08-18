@@ -93,7 +93,7 @@ if [[ "$*" != *"--reserve-gib"* ]]; then
   set -- "$@" --reserve-gib "$RESERVE_GIB"
 fi
 if [[ "$*" != *"--batch-size"* ]]; then
-  set -- "$@" --batch-size 512
+  set -- "$@" --batch-size 1024
 fi
 
 log "============================================================"

@@ -1,0 +1,23 @@
+[2026-08-19 03:01:10] ============================================================
+[2026-08-19 03:01:10] 07_transfer_us_to_cn
+[2026-08-19 03:01:10] Conda: 5020_env
+[2026-08-19 03:01:10] Python: /home/zkb/rpt-re/scripts/py/07_transfer_us_to_cn.py
+[2026-08-19 03:01:10] Args:  finetune --gpu-ids 1,2,3 --batch-size 2048 --jobs-per-gpu-max 1 --reserve-gib 16
+[2026-08-19 03:01:10] Log:   /home/zkb/rpt-re/logs/07_transfer_us_cn/07_transfer_us_to_cn_20260819_030109.log
+[2026-08-19 03:01:10] ============================================================
+[2026-08-19 03:01:10] starting python
+[2026-08-19 03:01:13] finetune pending jobs=9 configs=[(5, 5), (5, 20), (5, 60), (20, 5), (20, 20), (20, 60), (60, 5), (60, 20), (60, 60)] seeds=[0, 1, 2, 3, 4]
+[2026-08-19 03:01:13] nvidia-smi=[(0, 8332, 100), (1, 48496, 0), (2, 48464, 0), (3, 48493, 0)]
+[2026-08-19 03:01:13] parallel jobs=9 n_conc=3 ram_diag={'source': 'memory_budget', 'avail_gib': 326.8, 'total_gib': 377.5, 'reserve_gib': 16.0, 'budget_gib': 310.8, 'mem_per_worker_gib': 10.0, 'mem_cap': 31, 'cpu_cap': 112, 'swap_percent': 99.8, 'n_tasks': 9, 'resolved_workers': 9}
+[2026-08-19 03:01:13] [finetune I60_R5 seed0 gpu1] start
+[2026-08-19 03:01:13] [finetune I60_R5 seed1 gpu3] start
+[2026-08-19 03:01:13] [finetune I60_R5 seed2 gpu2] start
+[2026-08-19 03:01:17] [finetune I60_R5 seed1 gpu3] I60/R5 freq=week split_seed=0 train=392760 val=168326 test=593690 pixel_mean=15.655615 pixel_std=61.213426
+[2026-08-19 03:01:17] [finetune I60_R5 seed1 gpu3] I60_R5 finetune seed=1
+[2026-08-19 03:01:17] [finetune I60_R5 seed1 gpu3] resume head finetune from /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed1/last.pt epoch=6
+[2026-08-19 03:01:17] [finetune I60_R5 seed2 gpu2] I60/R5 freq=week split_seed=0 train=392760 val=168326 test=593690 pixel_mean=15.655615 pixel_std=61.213426
+[2026-08-19 03:01:17] [finetune I60_R5 seed0 gpu1] I60/R5 freq=week split_seed=0 train=392760 val=168326 test=593690 pixel_mean=15.655615 pixel_std=61.213426
+[2026-08-19 03:01:17] [finetune I60_R5 seed0 gpu1] I60_R5 finetune seed=0
+[2026-08-19 03:01:17] [finetune I60_R5 seed2 gpu2] I60_R5 finetune seed=2
+[2026-08-19 03:01:18] [finetune I60_R5 seed2 gpu2] resume head finetune from /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed2/last.pt epoch=5
+[2026-08-19 03:01:18] [finetune I60_R5 seed0 gpu1] resume head finetune from /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/last.pt epoch=5

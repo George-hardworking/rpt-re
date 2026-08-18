@@ -1,0 +1,356 @@
+[2026-08-19 03:07:43] ============================================================
+[2026-08-19 03:07:43] 07_transfer_us_to_cn
+[2026-08-19 03:07:43] Conda: 5020_env
+[2026-08-19 03:07:43] Python: /home/zkb/rpt-re/scripts/py/07_transfer_us_to_cn.py
+[2026-08-19 03:07:43] Args:  all --gpu-ids 1,2,3 --batch-size 3072 --jobs-per-gpu-max 1 --vram-per-job-gb 7 --reserve-gib 16
+[2026-08-19 03:07:43] Log:   /home/zkb/rpt-re/logs/07_transfer_us_cn/07_transfer_us_to_cn_20260819_030742.log
+[2026-08-19 03:07:43] ============================================================
+[2026-08-19 03:07:43] starting python
+[2026-08-19 03:07:45] direct pending jobs=0 configs=[(5, 5), (5, 20), (5, 60), (20, 5), (20, 20), (20, 60), (60, 5), (60, 20), (60, 60)] seeds=[0, 1, 2, 3, 4]
+[2026-08-19 03:07:46] ensemble n=594005 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/direct/I5_R5/ensemble_pred.feather
+[2026-08-19 03:07:46] ensemble n=138289 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/direct/I5_R20/ensemble_pred.feather
+[2026-08-19 03:07:46] ensemble n=44539 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/direct/I5_R60/ensemble_pred.feather
+[2026-08-19 03:07:47] ensemble n=593994 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/direct/I20_R5/ensemble_pred.feather
+[2026-08-19 03:07:47] ensemble n=138287 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/direct/I20_R20/ensemble_pred.feather
+[2026-08-19 03:07:47] ensemble n=44538 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/direct/I20_R60/ensemble_pred.feather
+[2026-08-19 03:07:48] ensemble n=593690 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/direct/I60_R5/ensemble_pred.feather
+[2026-08-19 03:07:48] ensemble n=138165 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/direct/I60_R20/ensemble_pred.feather
+[2026-08-19 03:07:48] ensemble n=44421 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/direct/I60_R60/ensemble_pred.feather
+[2026-08-19 03:07:49] finetune pending jobs=9 configs=[(5, 5), (5, 20), (5, 60), (20, 5), (20, 20), (20, 60), (60, 5), (60, 20), (60, 60)] seeds=[0, 1, 2, 3, 4]
+[2026-08-19 03:07:49] nvidia-smi=[(0, 8332, 100), (1, 48496, 0), (2, 48464, 0), (3, 48493, 0)]
+[2026-08-19 03:07:49] parallel jobs=9 n_conc=3 ram_diag={'source': 'memory_budget', 'avail_gib': 219.6, 'total_gib': 377.5, 'reserve_gib': 16.0, 'budget_gib': 203.6, 'mem_per_worker_gib': 10.0, 'mem_cap': 20, 'cpu_cap': 112, 'swap_percent': 100.0, 'n_tasks': 9, 'resolved_workers': 9}
+[2026-08-19 03:07:49] [finetune I60_R5 seed0 gpu1] start
+[2026-08-19 03:07:49] [finetune I60_R5 seed1 gpu3] start
+[2026-08-19 03:07:49] [finetune I60_R5 seed2 gpu2] start
+[2026-08-19 03:07:53] [finetune I60_R5 seed0 gpu1] I60/R5 freq=week split_seed=0 train=392760 val=168326 test=593690 pixel_mean=15.655615 pixel_std=61.213426
+[2026-08-19 03:07:53] [finetune I60_R5 seed0 gpu1] I60_R5 finetune seed=0
+[2026-08-19 03:07:53] [finetune I60_R5 seed1 gpu3] I60/R5 freq=week split_seed=0 train=392760 val=168326 test=593690 pixel_mean=15.655615 pixel_std=61.213426
+[2026-08-19 03:07:53] [finetune I60_R5 seed2 gpu2] I60/R5 freq=week split_seed=0 train=392760 val=168326 test=593690 pixel_mean=15.655615 pixel_std=61.213426
+[2026-08-19 03:07:53] [finetune I60_R5 seed1 gpu3] I60_R5 finetune seed=1
+[2026-08-19 03:07:53] [finetune I60_R5 seed2 gpu2] I60_R5 finetune seed=2
+[2026-08-19 03:07:53] [finetune I60_R5 seed0 gpu1] resume head finetune from /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/last.pt epoch=5
+[2026-08-19 03:07:53] [finetune I60_R5 seed2 gpu2] resume head finetune from /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed2/last.pt epoch=5
+[2026-08-19 03:07:53] [finetune I60_R5 seed1 gpu3] resume head finetune from /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed1/last.pt epoch=6
+[2026-08-19 03:09:49] [finetune I60_R5 seed0 gpu1] head finetune epoch=6 train_loss=0.667001 val_loss=0.669133
+[2026-08-19 03:09:49] [finetune I60_R5 seed0 gpu1] new best epoch=6 val_loss=0.669133 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/best.pt
+[2026-08-19 03:09:49] [finetune I60_R5 seed1 gpu3] head finetune epoch=7 train_loss=0.663038 val_loss=0.665576
+[2026-08-19 03:09:49] [finetune I60_R5 seed1 gpu3] new best epoch=7 val_loss=0.665576 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed1/best.pt
+[2026-08-19 03:09:49] [finetune I60_R5 seed2 gpu2] head finetune epoch=6 train_loss=0.667627 val_loss=0.669948
+[2026-08-19 03:09:49] [finetune I60_R5 seed2 gpu2] new best epoch=6 val_loss=0.669948 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed2/best.pt
+[2026-08-19 03:11:41] [finetune I60_R5 seed2 gpu2] head finetune epoch=7 train_loss=0.666106 val_loss=0.670018
+[2026-08-19 03:11:41] [finetune I60_R5 seed0 gpu1] head finetune epoch=7 train_loss=0.666563 val_loss=0.668943
+[2026-08-19 03:11:41] [finetune I60_R5 seed0 gpu1] new best epoch=7 val_loss=0.668943 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/best.pt
+[2026-08-19 03:11:41] [finetune I60_R5 seed1 gpu3] head finetune epoch=8 train_loss=0.662370 val_loss=0.665149
+[2026-08-19 03:11:41] [finetune I60_R5 seed1 gpu3] new best epoch=8 val_loss=0.665149 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed1/best.pt
+[2026-08-19 03:13:32] [finetune I60_R5 seed2 gpu2] head finetune epoch=8 train_loss=0.665380 val_loss=0.668678
+[2026-08-19 03:13:32] [finetune I60_R5 seed2 gpu2] new best epoch=8 val_loss=0.668678 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed2/best.pt
+[2026-08-19 03:13:35] [finetune I60_R5 seed1 gpu3] head finetune epoch=9 train_loss=0.661863 val_loss=0.665615
+[2026-08-19 03:13:35] [finetune I60_R5 seed0 gpu1] head finetune epoch=8 train_loss=0.666115 val_loss=0.667950
+[2026-08-19 03:13:35] [finetune I60_R5 seed0 gpu1] new best epoch=8 val_loss=0.667950 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/best.pt
+[2026-08-19 03:15:23] [finetune I60_R5 seed2 gpu2] head finetune epoch=9 train_loss=0.665279 val_loss=0.668064
+[2026-08-19 03:15:23] [finetune I60_R5 seed2 gpu2] new best epoch=9 val_loss=0.668064 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed2/best.pt
+[2026-08-19 03:15:28] [finetune I60_R5 seed1 gpu3] head finetune epoch=10 train_loss=0.661544 val_loss=0.665497
+[2026-08-19 03:15:28] [finetune I60_R5 seed1 gpu3] early stop at epoch=10 best_epoch=8
+[2026-08-19 03:15:28] [finetune I60_R5 seed1 gpu3] head finetune done best_epoch=8 val_loss=0.665149
+[2026-08-19 03:15:29] [finetune I60_R5 seed0 gpu1] head finetune epoch=9 train_loss=0.665426 val_loss=0.667470
+[2026-08-19 03:15:29] [finetune I60_R5 seed0 gpu1] new best epoch=9 val_loss=0.667470 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/best.pt
+[2026-08-19 03:17:14] [finetune I60_R5 seed2 gpu2] head finetune epoch=10 train_loss=0.664306 val_loss=0.667863
+[2026-08-19 03:17:14] [finetune I60_R5 seed2 gpu2] new best epoch=10 val_loss=0.667863 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed2/best.pt
+[2026-08-19 03:17:25] [finetune I60_R5 seed0 gpu1] head finetune epoch=10 train_loss=0.665040 val_loss=0.667426
+[2026-08-19 03:17:25] [finetune I60_R5 seed0 gpu1] new best epoch=10 val_loss=0.667426 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/best.pt
+[2026-08-19 03:17:36] [finetune I60_R5 seed1 gpu3] I60_R5 seed1 finetune predict n=593690 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed1_pred.feather
+[2026-08-19 03:17:37] [finetune I60_R5 seed1 gpu3] done
+[2026-08-19 03:17:37] [finetune I60_R5 seed3 gpu3] start
+[2026-08-19 03:17:40] [finetune I60_R5 seed3 gpu3] I60/R5 freq=week split_seed=0 train=392760 val=168326 test=593690 pixel_mean=15.655615 pixel_std=61.213426
+[2026-08-19 03:17:41] [finetune I60_R5 seed3 gpu3] I60_R5 finetune seed=3
+[2026-08-19 03:17:41] [finetune I60_R5 seed3 gpu3] resume head finetune from /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed3/last.pt epoch=6
+[2026-08-19 03:19:05] [finetune I60_R5 seed2 gpu2] head finetune epoch=11 train_loss=0.663998 val_loss=0.667436
+[2026-08-19 03:19:05] [finetune I60_R5 seed2 gpu2] new best epoch=11 val_loss=0.667436 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed2/best.pt
+[2026-08-19 03:19:18] [finetune I60_R5 seed0 gpu1] head finetune epoch=11 train_loss=0.664264 val_loss=0.666845
+[2026-08-19 03:19:19] [finetune I60_R5 seed0 gpu1] new best epoch=11 val_loss=0.666845 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/best.pt
+[2026-08-19 03:19:35] [finetune I60_R5 seed3 gpu3] head finetune epoch=7 train_loss=0.661458 val_loss=0.664430
+[2026-08-19 03:19:35] [finetune I60_R5 seed3 gpu3] new best epoch=7 val_loss=0.664430 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed3/best.pt
+[2026-08-19 03:20:57] [finetune I60_R5 seed2 gpu2] head finetune epoch=12 train_loss=0.663891 val_loss=0.666987
+[2026-08-19 03:20:57] [finetune I60_R5 seed2 gpu2] new best epoch=12 val_loss=0.666987 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed2/best.pt
+[2026-08-19 03:21:11] [finetune I60_R5 seed0 gpu1] head finetune epoch=12 train_loss=0.663894 val_loss=0.666238
+[2026-08-19 03:21:11] [finetune I60_R5 seed0 gpu1] new best epoch=12 val_loss=0.666238 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/best.pt
+[2026-08-19 03:21:28] [finetune I60_R5 seed3 gpu3] head finetune epoch=8 train_loss=0.660998 val_loss=0.664798
+[2026-08-19 03:22:48] [finetune I60_R5 seed2 gpu2] head finetune epoch=13 train_loss=0.663409 val_loss=0.667813
+[2026-08-19 03:23:05] [finetune I60_R5 seed0 gpu1] head finetune epoch=13 train_loss=0.663487 val_loss=0.666772
+[2026-08-19 03:23:20] [finetune I60_R5 seed3 gpu3] head finetune epoch=9 train_loss=0.660477 val_loss=0.664268
+[2026-08-19 03:23:21] [finetune I60_R5 seed3 gpu3] new best epoch=9 val_loss=0.664268 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed3/best.pt
+[2026-08-19 03:24:39] [finetune I60_R5 seed2 gpu2] head finetune epoch=14 train_loss=0.662364 val_loss=0.666803
+[2026-08-19 03:24:39] [finetune I60_R5 seed2 gpu2] new best epoch=14 val_loss=0.666803 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed2/best.pt
+[2026-08-19 03:24:56] [finetune I60_R5 seed0 gpu1] head finetune epoch=14 train_loss=0.662853 val_loss=0.665282
+[2026-08-19 03:24:56] [finetune I60_R5 seed0 gpu1] new best epoch=14 val_loss=0.665282 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/best.pt
+[2026-08-19 03:25:13] [finetune I60_R5 seed3 gpu3] head finetune epoch=10 train_loss=0.659933 val_loss=0.663535
+[2026-08-19 03:25:13] [finetune I60_R5 seed3 gpu3] new best epoch=10 val_loss=0.663535 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed3/best.pt
+[2026-08-19 03:26:31] [finetune I60_R5 seed2 gpu2] head finetune epoch=15 train_loss=0.662518 val_loss=0.672004
+[2026-08-19 03:26:50] [finetune I60_R5 seed0 gpu1] head finetune epoch=15 train_loss=0.662198 val_loss=0.664846
+[2026-08-19 03:26:50] [finetune I60_R5 seed0 gpu1] new best epoch=15 val_loss=0.664846 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/best.pt
+[2026-08-19 03:27:06] [finetune I60_R5 seed3 gpu3] head finetune epoch=11 train_loss=0.659713 val_loss=0.663078
+[2026-08-19 03:27:06] [finetune I60_R5 seed3 gpu3] new best epoch=11 val_loss=0.663078 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed3/best.pt
+[2026-08-19 03:28:22] [finetune I60_R5 seed2 gpu2] head finetune epoch=16 train_loss=0.661367 val_loss=0.665594
+[2026-08-19 03:28:22] [finetune I60_R5 seed2 gpu2] new best epoch=16 val_loss=0.665594 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed2/best.pt
+[2026-08-19 03:28:45] [finetune I60_R5 seed0 gpu1] head finetune epoch=16 train_loss=0.662151 val_loss=0.666235
+[2026-08-19 03:29:01] [finetune I60_R5 seed3 gpu3] head finetune epoch=12 train_loss=0.659111 val_loss=0.662761
+[2026-08-19 03:29:01] [finetune I60_R5 seed3 gpu3] new best epoch=12 val_loss=0.662761 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed3/best.pt
+[2026-08-19 03:30:13] [finetune I60_R5 seed2 gpu2] head finetune epoch=17 train_loss=0.661824 val_loss=0.666964
+[2026-08-19 03:30:38] [finetune I60_R5 seed0 gpu1] head finetune epoch=17 train_loss=0.661825 val_loss=0.664195
+[2026-08-19 03:30:38] [finetune I60_R5 seed0 gpu1] new best epoch=17 val_loss=0.664195 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/best.pt
+[2026-08-19 03:30:53] [finetune I60_R5 seed3 gpu3] head finetune epoch=13 train_loss=0.658561 val_loss=0.662200
+[2026-08-19 03:30:53] [finetune I60_R5 seed3 gpu3] new best epoch=13 val_loss=0.662200 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed3/best.pt
+[2026-08-19 03:32:03] [finetune I60_R5 seed2 gpu2] head finetune epoch=18 train_loss=0.660950 val_loss=0.665172
+[2026-08-19 03:32:03] [finetune I60_R5 seed2 gpu2] new best epoch=18 val_loss=0.665172 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed2/best.pt
+[2026-08-19 03:32:30] [finetune I60_R5 seed0 gpu1] head finetune epoch=18 train_loss=0.661020 val_loss=0.664068
+[2026-08-19 03:32:30] [finetune I60_R5 seed0 gpu1] new best epoch=18 val_loss=0.664068 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/best.pt
+[2026-08-19 03:32:44] [finetune I60_R5 seed3 gpu3] head finetune epoch=14 train_loss=0.658023 val_loss=0.663655
+[2026-08-19 03:33:54] [finetune I60_R5 seed2 gpu2] head finetune epoch=19 train_loss=0.660879 val_loss=0.667819
+[2026-08-19 03:34:22] [finetune I60_R5 seed0 gpu1] head finetune epoch=19 train_loss=0.660369 val_loss=0.663931
+[2026-08-19 03:34:22] [finetune I60_R5 seed0 gpu1] new best epoch=19 val_loss=0.663931 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/best.pt
+[2026-08-19 03:34:35] [finetune I60_R5 seed3 gpu3] head finetune epoch=15 train_loss=0.657570 val_loss=0.662156
+[2026-08-19 03:34:35] [finetune I60_R5 seed3 gpu3] new best epoch=15 val_loss=0.662156 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed3/best.pt
+[2026-08-19 03:35:44] [finetune I60_R5 seed2 gpu2] head finetune epoch=20 train_loss=0.660184 val_loss=0.670772
+[2026-08-19 03:35:44] [finetune I60_R5 seed2 gpu2] early stop at epoch=20 best_epoch=18
+[2026-08-19 03:35:44] [finetune I60_R5 seed2 gpu2] head finetune done best_epoch=18 val_loss=0.665172
+[2026-08-19 03:36:16] [finetune I60_R5 seed0 gpu1] head finetune epoch=20 train_loss=0.659797 val_loss=0.662971
+[2026-08-19 03:36:16] [finetune I60_R5 seed0 gpu1] new best epoch=20 val_loss=0.662971 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/best.pt
+[2026-08-19 03:36:25] [finetune I60_R5 seed3 gpu3] head finetune epoch=16 train_loss=0.657042 val_loss=0.661534
+[2026-08-19 03:36:25] [finetune I60_R5 seed3 gpu3] new best epoch=16 val_loss=0.661534 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed3/best.pt
+[2026-08-19 03:37:50] [finetune I60_R5 seed2 gpu2] I60_R5 seed2 finetune predict n=593690 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed2_pred.feather
+[2026-08-19 03:37:51] [finetune I60_R5 seed2 gpu2] done
+[2026-08-19 03:37:51] [finetune I60_R5 seed4 gpu2] start
+[2026-08-19 03:37:54] [finetune I60_R5 seed4 gpu2] I60/R5 freq=week split_seed=0 train=392760 val=168326 test=593690 pixel_mean=15.655615 pixel_std=61.213426
+[2026-08-19 03:37:54] [finetune I60_R5 seed4 gpu2] I60_R5 finetune seed=4
+[2026-08-19 03:37:54] [finetune I60_R5 seed4 gpu2] resume head finetune from /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed4/last.pt epoch=5
+[2026-08-19 03:38:07] [finetune I60_R5 seed0 gpu1] head finetune epoch=21 train_loss=0.659555 val_loss=0.662773
+[2026-08-19 03:38:07] [finetune I60_R5 seed0 gpu1] new best epoch=21 val_loss=0.662773 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/best.pt
+[2026-08-19 03:38:16] [finetune I60_R5 seed3 gpu3] head finetune epoch=17 train_loss=0.656643 val_loss=0.661690
+[2026-08-19 03:39:47] [finetune I60_R5 seed4 gpu2] head finetune epoch=6 train_loss=0.671645 val_loss=0.672913
+[2026-08-19 03:39:47] [finetune I60_R5 seed4 gpu2] new best epoch=6 val_loss=0.672913 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed4/best.pt
+[2026-08-19 03:39:59] [finetune I60_R5 seed0 gpu1] head finetune epoch=22 train_loss=0.659083 val_loss=0.662296
+[2026-08-19 03:39:59] [finetune I60_R5 seed0 gpu1] new best epoch=22 val_loss=0.662296 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/best.pt
+[2026-08-19 03:40:06] [finetune I60_R5 seed3 gpu3] head finetune epoch=18 train_loss=0.656316 val_loss=0.660861
+[2026-08-19 03:40:06] [finetune I60_R5 seed3 gpu3] new best epoch=18 val_loss=0.660861 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed3/best.pt
+[2026-08-19 03:41:44] [finetune I60_R5 seed4 gpu2] head finetune epoch=7 train_loss=0.671390 val_loss=0.672637
+[2026-08-19 03:41:44] [finetune I60_R5 seed4 gpu2] new best epoch=7 val_loss=0.672637 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed4/best.pt
+[2026-08-19 03:41:56] [finetune I60_R5 seed0 gpu1] head finetune epoch=23 train_loss=0.658350 val_loss=0.662256
+[2026-08-19 03:41:56] [finetune I60_R5 seed0 gpu1] new best epoch=23 val_loss=0.662256 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/best.pt
+[2026-08-19 03:41:56] [finetune I60_R5 seed3 gpu3] head finetune epoch=19 train_loss=0.655884 val_loss=0.662416
+[2026-08-19 03:43:35] [finetune I60_R5 seed4 gpu2] head finetune epoch=8 train_loss=0.671080 val_loss=0.672443
+[2026-08-19 03:43:35] [finetune I60_R5 seed4 gpu2] new best epoch=8 val_loss=0.672443 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed4/best.pt
+[2026-08-19 03:43:47] [finetune I60_R5 seed0 gpu1] head finetune epoch=24 train_loss=0.657947 val_loss=0.661663
+[2026-08-19 03:43:47] [finetune I60_R5 seed0 gpu1] new best epoch=24 val_loss=0.661663 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/best.pt
+[2026-08-19 03:43:47] [finetune I60_R5 seed3 gpu3] head finetune epoch=20 train_loss=0.655277 val_loss=0.659681
+[2026-08-19 03:43:47] [finetune I60_R5 seed3 gpu3] new best epoch=20 val_loss=0.659681 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed3/best.pt
+[2026-08-19 03:45:26] [finetune I60_R5 seed4 gpu2] head finetune epoch=9 train_loss=0.670769 val_loss=0.671991
+[2026-08-19 03:45:26] [finetune I60_R5 seed4 gpu2] new best epoch=9 val_loss=0.671991 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed4/best.pt
+[2026-08-19 03:45:38] [finetune I60_R5 seed3 gpu3] head finetune epoch=21 train_loss=0.654885 val_loss=0.660901
+[2026-08-19 03:45:39] [finetune I60_R5 seed0 gpu1] head finetune epoch=25 train_loss=0.657652 val_loss=0.661423
+[2026-08-19 03:45:39] [finetune I60_R5 seed0 gpu1] new best epoch=25 val_loss=0.661423 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/best.pt
+[2026-08-19 03:47:16] [finetune I60_R5 seed4 gpu2] head finetune epoch=10 train_loss=0.670361 val_loss=0.671743
+[2026-08-19 03:47:16] [finetune I60_R5 seed4 gpu2] new best epoch=10 val_loss=0.671743 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed4/best.pt
+[2026-08-19 03:47:28] [finetune I60_R5 seed3 gpu3] head finetune epoch=22 train_loss=0.654441 val_loss=0.659559
+[2026-08-19 03:47:28] [finetune I60_R5 seed3 gpu3] new best epoch=22 val_loss=0.659559 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed3/best.pt
+[2026-08-19 03:47:33] [finetune I60_R5 seed0 gpu1] head finetune epoch=26 train_loss=0.657103 val_loss=0.661050
+[2026-08-19 03:47:33] [finetune I60_R5 seed0 gpu1] new best epoch=26 val_loss=0.661050 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/best.pt
+[2026-08-19 03:49:06] [finetune I60_R5 seed4 gpu2] head finetune epoch=11 train_loss=0.669874 val_loss=0.672491
+[2026-08-19 03:49:19] [finetune I60_R5 seed3 gpu3] head finetune epoch=23 train_loss=0.653779 val_loss=0.658905
+[2026-08-19 03:49:19] [finetune I60_R5 seed3 gpu3] new best epoch=23 val_loss=0.658905 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed3/best.pt
+[2026-08-19 03:49:24] [finetune I60_R5 seed0 gpu1] head finetune epoch=27 train_loss=0.656549 val_loss=0.660762
+[2026-08-19 03:49:24] [finetune I60_R5 seed0 gpu1] new best epoch=27 val_loss=0.660762 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/best.pt
+[2026-08-19 03:50:56] [finetune I60_R5 seed4 gpu2] head finetune epoch=12 train_loss=0.669566 val_loss=0.671205
+[2026-08-19 03:50:56] [finetune I60_R5 seed4 gpu2] new best epoch=12 val_loss=0.671205 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed4/best.pt
+[2026-08-19 03:51:09] [finetune I60_R5 seed3 gpu3] head finetune epoch=24 train_loss=0.653294 val_loss=0.658389
+[2026-08-19 03:51:09] [finetune I60_R5 seed3 gpu3] new best epoch=24 val_loss=0.658389 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed3/best.pt
+[2026-08-19 03:51:18] [finetune I60_R5 seed0 gpu1] head finetune epoch=28 train_loss=0.656454 val_loss=0.660582
+[2026-08-19 03:51:18] [finetune I60_R5 seed0 gpu1] new best epoch=28 val_loss=0.660582 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/best.pt
+[2026-08-19 03:52:46] [finetune I60_R5 seed4 gpu2] head finetune epoch=13 train_loss=0.669037 val_loss=0.670710
+[2026-08-19 03:52:46] [finetune I60_R5 seed4 gpu2] new best epoch=13 val_loss=0.670710 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed4/best.pt
+[2026-08-19 03:52:59] [finetune I60_R5 seed3 gpu3] head finetune epoch=25 train_loss=0.652974 val_loss=0.658214
+[2026-08-19 03:52:59] [finetune I60_R5 seed3 gpu3] new best epoch=25 val_loss=0.658214 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed3/best.pt
+[2026-08-19 03:53:10] [finetune I60_R5 seed0 gpu1] head finetune epoch=29 train_loss=0.655888 val_loss=0.660192
+[2026-08-19 03:53:10] [finetune I60_R5 seed0 gpu1] new best epoch=29 val_loss=0.660192 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0/best.pt
+[2026-08-19 03:54:37] [finetune I60_R5 seed4 gpu2] head finetune epoch=14 train_loss=0.668805 val_loss=0.670350
+[2026-08-19 03:54:37] [finetune I60_R5 seed4 gpu2] new best epoch=14 val_loss=0.670350 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed4/best.pt
+[2026-08-19 03:54:50] [finetune I60_R5 seed3 gpu3] head finetune epoch=26 train_loss=0.652422 val_loss=0.658445
+[2026-08-19 03:55:00] [finetune I60_R5 seed0 gpu1] head finetune epoch=30 train_loss=0.655220 val_loss=0.661140
+[2026-08-19 03:56:28] [finetune I60_R5 seed4 gpu2] head finetune epoch=15 train_loss=0.668382 val_loss=0.670294
+[2026-08-19 03:56:28] [finetune I60_R5 seed4 gpu2] new best epoch=15 val_loss=0.670294 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed4/best.pt
+[2026-08-19 03:56:41] [finetune I60_R5 seed3 gpu3] head finetune epoch=27 train_loss=0.652085 val_loss=0.657514
+[2026-08-19 03:56:41] [finetune I60_R5 seed3 gpu3] new best epoch=27 val_loss=0.657514 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed3/best.pt
+[2026-08-19 03:56:53] [finetune I60_R5 seed0 gpu1] head finetune epoch=31 train_loss=0.655150 val_loss=0.660413
+[2026-08-19 03:56:53] [finetune I60_R5 seed0 gpu1] early stop at epoch=31 best_epoch=29
+[2026-08-19 03:56:53] [finetune I60_R5 seed0 gpu1] head finetune done best_epoch=29 val_loss=0.660192
+[2026-08-19 03:58:18] [finetune I60_R5 seed4 gpu2] head finetune epoch=16 train_loss=0.668455 val_loss=0.669738
+[2026-08-19 03:58:18] [finetune I60_R5 seed4 gpu2] new best epoch=16 val_loss=0.669738 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed4/best.pt
+[2026-08-19 03:58:31] [finetune I60_R5 seed3 gpu3] head finetune epoch=28 train_loss=0.651502 val_loss=0.658464
+[2026-08-19 03:59:00] [finetune I60_R5 seed0 gpu1] I60_R5 seed0 finetune predict n=593690 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed0_pred.feather
+[2026-08-19 03:59:01] [finetune I60_R5 seed0 gpu1] done
+[2026-08-19 03:59:01] [finetune I60_R20 seed1 gpu1] start
+[2026-08-19 03:59:04] [finetune I60_R20 seed1 gpu1] I60/R20 freq=month split_seed=0 train=92514 val=39649 test=138165 pixel_mean=15.644799 pixel_std=61.193660
+[2026-08-19 03:59:04] [finetune I60_R20 seed1 gpu1] I60_R20 finetune seed=1
+[2026-08-19 03:59:04] [finetune I60_R20 seed1 gpu1] resume head finetune from /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R20/seed1/last.pt epoch=14
+[2026-08-19 03:59:32] [finetune I60_R20 seed1 gpu1] head finetune epoch=15 train_loss=0.568068 val_loss=0.606764
+[2026-08-19 03:59:32] [finetune I60_R20 seed1 gpu1] new best epoch=15 val_loss=0.606764 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R20/seed1/best.pt
+[2026-08-19 03:59:59] [finetune I60_R20 seed1 gpu1] head finetune epoch=16 train_loss=0.566938 val_loss=0.606619
+[2026-08-19 03:59:59] [finetune I60_R20 seed1 gpu1] new best epoch=16 val_loss=0.606619 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R20/seed1/best.pt
+[2026-08-19 04:00:08] [finetune I60_R5 seed4 gpu2] head finetune epoch=17 train_loss=0.667359 val_loss=0.669763
+[2026-08-19 04:00:21] [finetune I60_R5 seed3 gpu3] head finetune epoch=29 train_loss=0.651353 val_loss=0.657003
+[2026-08-19 04:00:21] [finetune I60_R5 seed3 gpu3] new best epoch=29 val_loss=0.657003 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed3/best.pt
+[2026-08-19 04:00:25] [finetune I60_R20 seed1 gpu1] head finetune epoch=17 train_loss=0.566856 val_loss=0.605824
+[2026-08-19 04:00:25] [finetune I60_R20 seed1 gpu1] new best epoch=17 val_loss=0.605824 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R20/seed1/best.pt
+[2026-08-19 04:00:51] [finetune I60_R20 seed1 gpu1] head finetune epoch=18 train_loss=0.564810 val_loss=0.605254
+[2026-08-19 04:00:51] [finetune I60_R20 seed1 gpu1] new best epoch=18 val_loss=0.605254 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R20/seed1/best.pt
+[2026-08-19 04:01:18] [finetune I60_R20 seed1 gpu1] head finetune epoch=19 train_loss=0.566132 val_loss=0.605529
+[2026-08-19 04:01:45] [finetune I60_R20 seed1 gpu1] head finetune epoch=20 train_loss=0.563833 val_loss=0.604805
+[2026-08-19 04:01:45] [finetune I60_R20 seed1 gpu1] new best epoch=20 val_loss=0.604805 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R20/seed1/best.pt
+[2026-08-19 04:01:59] [finetune I60_R5 seed4 gpu2] head finetune epoch=18 train_loss=0.667469 val_loss=0.670583
+[2026-08-19 04:01:59] [finetune I60_R5 seed4 gpu2] early stop at epoch=18 best_epoch=16
+[2026-08-19 04:01:59] [finetune I60_R5 seed4 gpu2] head finetune done best_epoch=16 val_loss=0.669738
+[2026-08-19 04:02:12] [finetune I60_R5 seed3 gpu3] head finetune epoch=30 train_loss=0.650855 val_loss=0.659765
+[2026-08-19 04:02:12] [finetune I60_R20 seed1 gpu1] head finetune epoch=21 train_loss=0.561922 val_loss=0.604459
+[2026-08-19 04:02:12] [finetune I60_R20 seed1 gpu1] new best epoch=21 val_loss=0.604459 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R20/seed1/best.pt
+[2026-08-19 04:02:39] [finetune I60_R20 seed1 gpu1] head finetune epoch=22 train_loss=0.561673 val_loss=0.604074
+[2026-08-19 04:02:39] [finetune I60_R20 seed1 gpu1] new best epoch=22 val_loss=0.604074 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R20/seed1/best.pt
+[2026-08-19 04:03:05] [finetune I60_R20 seed1 gpu1] head finetune epoch=23 train_loss=0.561350 val_loss=0.605391
+[2026-08-19 04:03:32] [finetune I60_R20 seed1 gpu1] head finetune epoch=24 train_loss=0.563074 val_loss=0.603374
+[2026-08-19 04:03:32] [finetune I60_R20 seed1 gpu1] new best epoch=24 val_loss=0.603374 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R20/seed1/best.pt
+[2026-08-19 04:03:58] [finetune I60_R20 seed1 gpu1] head finetune epoch=25 train_loss=0.559511 val_loss=0.603020
+[2026-08-19 04:03:58] [finetune I60_R20 seed1 gpu1] new best epoch=25 val_loss=0.603020 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R20/seed1/best.pt
+[2026-08-19 04:04:03] [finetune I60_R5 seed3 gpu3] head finetune epoch=31 train_loss=0.650388 val_loss=0.656515
+[2026-08-19 04:04:03] [finetune I60_R5 seed3 gpu3] new best epoch=31 val_loss=0.656515 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed3/best.pt
+[2026-08-19 04:04:05] [finetune I60_R5 seed4 gpu2] I60_R5 seed4 finetune predict n=593690 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed4_pred.feather
+[2026-08-19 04:04:06] [finetune I60_R5 seed4 gpu2] done
+[2026-08-19 04:04:06] [finetune I60_R20 seed2 gpu2] start
+[2026-08-19 04:04:08] [finetune I60_R20 seed2 gpu2] I60/R20 freq=month split_seed=0 train=92514 val=39649 test=138165 pixel_mean=15.644799 pixel_std=61.193660
+[2026-08-19 04:04:08] [finetune I60_R20 seed2 gpu2] I60_R20 finetune seed=2
+[2026-08-19 04:04:08] [finetune I60_R20 seed2 gpu2] head finetune finished; load /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R20/seed2/best.pt
+[2026-08-19 04:04:25] [finetune I60_R20 seed1 gpu1] head finetune epoch=26 train_loss=0.558927 val_loss=0.603479
+[2026-08-19 04:04:38] [finetune I60_R20 seed2 gpu2] I60_R20 seed2 finetune predict n=138165 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R20/seed2_pred.feather
+[2026-08-19 04:04:39] [finetune I60_R20 seed2 gpu2] done
+[2026-08-19 04:04:39] [finetune I60_R20 seed3 gpu2] start
+[2026-08-19 04:04:41] [finetune I60_R20 seed3 gpu2] I60/R20 freq=month split_seed=0 train=92514 val=39649 test=138165 pixel_mean=15.644799 pixel_std=61.193660
+[2026-08-19 04:04:41] [finetune I60_R20 seed3 gpu2] I60_R20 finetune seed=3
+[2026-08-19 04:04:41] [finetune I60_R20 seed3 gpu2] resume head finetune from /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R20/seed3/last.pt epoch=12
+[2026-08-19 04:04:52] [finetune I60_R20 seed1 gpu1] head finetune epoch=27 train_loss=0.557338 val_loss=0.605926
+[2026-08-19 04:04:52] [finetune I60_R20 seed1 gpu1] early stop at epoch=27 best_epoch=25
+[2026-08-19 04:04:52] [finetune I60_R20 seed1 gpu1] head finetune done best_epoch=25 val_loss=0.603020
+[2026-08-19 04:05:10] [finetune I60_R20 seed3 gpu2] head finetune epoch=13 train_loss=0.565077 val_loss=0.603767
+[2026-08-19 04:05:10] [finetune I60_R20 seed3 gpu2] new best epoch=13 val_loss=0.603767 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R20/seed3/best.pt
+[2026-08-19 04:05:22] [finetune I60_R20 seed1 gpu1] I60_R20 seed1 finetune predict n=138165 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R20/seed1_pred.feather
+[2026-08-19 04:05:23] [finetune I60_R20 seed1 gpu1] done
+[2026-08-19 04:05:23] [finetune I60_R20 seed4 gpu1] start
+[2026-08-19 04:05:25] [finetune I60_R20 seed4 gpu1] I60/R20 freq=month split_seed=0 train=92514 val=39649 test=138165 pixel_mean=15.644799 pixel_std=61.193660
+[2026-08-19 04:05:25] [finetune I60_R20 seed4 gpu1] I60_R20 finetune seed=4
+[2026-08-19 04:05:25] [finetune I60_R20 seed4 gpu1] resume head finetune from /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R20/seed4/last.pt epoch=12
+[2026-08-19 04:05:36] [finetune I60_R20 seed3 gpu2] head finetune epoch=14 train_loss=0.561063 val_loss=0.605959
+[2026-08-19 04:05:53] [finetune I60_R20 seed4 gpu1] head finetune epoch=13 train_loss=0.570611 val_loss=0.605873
+[2026-08-19 04:05:53] [finetune I60_R20 seed4 gpu1] new best epoch=13 val_loss=0.605873 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R20/seed4/best.pt
+[2026-08-19 04:05:54] [finetune I60_R5 seed3 gpu3] head finetune epoch=32 train_loss=0.649898 val_loss=0.656189
+[2026-08-19 04:05:54] [finetune I60_R5 seed3 gpu3] new best epoch=32 val_loss=0.656189 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed3/best.pt
+[2026-08-19 04:06:03] [finetune I60_R20 seed3 gpu2] head finetune epoch=15 train_loss=0.562108 val_loss=0.602986
+[2026-08-19 04:06:03] [finetune I60_R20 seed3 gpu2] new best epoch=15 val_loss=0.602986 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R20/seed3/best.pt
+[2026-08-19 04:06:20] [finetune I60_R20 seed4 gpu1] head finetune epoch=14 train_loss=0.570805 val_loss=0.607249
+[2026-08-19 04:06:29] [finetune I60_R20 seed3 gpu2] head finetune epoch=16 train_loss=0.559692 val_loss=0.603518
+[2026-08-19 04:06:46] [finetune I60_R20 seed4 gpu1] head finetune epoch=15 train_loss=0.569088 val_loss=0.603432
+[2026-08-19 04:06:46] [finetune I60_R20 seed4 gpu1] new best epoch=15 val_loss=0.603432 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R20/seed4/best.pt
+[2026-08-19 04:06:55] [finetune I60_R20 seed3 gpu2] head finetune epoch=17 train_loss=0.558636 val_loss=0.603969
+[2026-08-19 04:06:55] [finetune I60_R20 seed3 gpu2] early stop at epoch=17 best_epoch=15
+[2026-08-19 04:06:55] [finetune I60_R20 seed3 gpu2] head finetune done best_epoch=15 val_loss=0.602986
+[2026-08-19 04:07:12] [finetune I60_R20 seed4 gpu1] head finetune epoch=16 train_loss=0.567502 val_loss=0.603503
+[2026-08-19 04:07:25] [finetune I60_R20 seed3 gpu2] I60_R20 seed3 finetune predict n=138165 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R20/seed3_pred.feather
+[2026-08-19 04:07:26] [finetune I60_R20 seed3 gpu2] done
+[2026-08-19 04:07:39] [finetune I60_R20 seed4 gpu1] head finetune epoch=17 train_loss=0.568127 val_loss=0.602830
+[2026-08-19 04:07:39] [finetune I60_R20 seed4 gpu1] new best epoch=17 val_loss=0.602830 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R20/seed4/best.pt
+[2026-08-19 04:07:44] [finetune I60_R5 seed3 gpu3] head finetune epoch=33 train_loss=0.649741 val_loss=0.656096
+[2026-08-19 04:07:45] [finetune I60_R5 seed3 gpu3] new best epoch=33 val_loss=0.656096 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed3/best.pt
+[2026-08-19 04:08:05] [finetune I60_R20 seed4 gpu1] head finetune epoch=18 train_loss=0.565630 val_loss=0.603614
+[2026-08-19 04:08:32] [finetune I60_R20 seed4 gpu1] head finetune epoch=19 train_loss=0.565792 val_loss=0.603996
+[2026-08-19 04:08:32] [finetune I60_R20 seed4 gpu1] early stop at epoch=19 best_epoch=17
+[2026-08-19 04:08:32] [finetune I60_R20 seed4 gpu1] head finetune done best_epoch=17 val_loss=0.602830
+[2026-08-19 04:09:02] [finetune I60_R20 seed4 gpu1] I60_R20 seed4 finetune predict n=138165 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R20/seed4_pred.feather
+[2026-08-19 04:09:03] [finetune I60_R20 seed4 gpu1] done
+[2026-08-19 04:09:34] [finetune I60_R5 seed3 gpu3] head finetune epoch=34 train_loss=0.649021 val_loss=0.655898
+[2026-08-19 04:09:34] [finetune I60_R5 seed3 gpu3] new best epoch=34 val_loss=0.655898 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed3/best.pt
+[2026-08-19 04:11:23] [finetune I60_R5 seed3 gpu3] head finetune epoch=35 train_loss=0.648744 val_loss=0.656104
+[2026-08-19 04:13:13] [finetune I60_R5 seed3 gpu3] head finetune epoch=36 train_loss=0.648466 val_loss=0.656146
+[2026-08-19 04:13:13] [finetune I60_R5 seed3 gpu3] early stop at epoch=36 best_epoch=34
+[2026-08-19 04:13:13] [finetune I60_R5 seed3 gpu3] head finetune done best_epoch=34 val_loss=0.655898
+[2026-08-19 04:15:15] [finetune I60_R5 seed3 gpu3] I60_R5 seed3 finetune predict n=593690 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/seed3_pred.feather
+[2026-08-19 04:15:16] [finetune I60_R5 seed3 gpu3] done
+[2026-08-19 04:15:17] ensemble n=594005 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I5_R5/ensemble_pred.feather
+[2026-08-19 04:15:17] ensemble n=138289 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I5_R20/ensemble_pred.feather
+[2026-08-19 04:15:17] ensemble n=44539 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I5_R60/ensemble_pred.feather
+[2026-08-19 04:15:18] ensemble n=593994 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I20_R5/ensemble_pred.feather
+[2026-08-19 04:15:18] ensemble n=138287 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I20_R20/ensemble_pred.feather
+[2026-08-19 04:15:19] ensemble n=44538 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I20_R60/ensemble_pred.feather
+[2026-08-19 04:15:19] ensemble n=593690 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R5/ensemble_pred.feather
+[2026-08-19 04:15:20] ensemble n=138165 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R20/ensemble_pred.feather
+[2026-08-19 04:15:20] ensemble n=44421 -> /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune/I60_R60/ensemble_pred.feather
+[2026-08-19 04:15:20] backtest direct: /home/zkb/miniconda3/envs/5020_env/bin/python /home/zkb/rpt-re/scripts/py/04_backtest.py --market cn --models /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/direct --output-root /home/zkb/rpt-re/outputs/07_transfer_us_cn/direct --eval-horizons 1 --all-configs
+[2026-08-19 04:15:29] load CN panel I5_R5
+[2026-08-19 04:15:30] I5_R5 n=594005 dates=254
+[2026-08-19 04:15:32] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/direct/cn/weekly/I5_R5_h1.xlsx
+[2026-08-19 04:15:32] load CN panel I5_R20
+[2026-08-19 04:15:32] I5_R20 n=138289 dates=59
+[2026-08-19 04:15:33] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/direct/cn/monthly/I5_R20_h1.xlsx
+[2026-08-19 04:15:33] load CN panel I5_R60
+[2026-08-19 04:15:33] I5_R60 n=44539 dates=19
+[2026-08-19 04:15:33] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/direct/cn/quarterly/I5_R60_h1.xlsx
+[2026-08-19 04:15:34] load CN panel I20_R5
+[2026-08-19 04:15:34] I20_R5 n=593994 dates=254
+[2026-08-19 04:15:36] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/direct/cn/weekly/I20_R5_h1.xlsx
+[2026-08-19 04:15:36] load CN panel I20_R20
+[2026-08-19 04:15:36] I20_R20 n=138287 dates=59
+[2026-08-19 04:15:37] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/direct/cn/monthly/I20_R20_h1.xlsx
+[2026-08-19 04:15:37] load CN panel I20_R60
+[2026-08-19 04:15:37] I20_R60 n=44538 dates=19
+[2026-08-19 04:15:37] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/direct/cn/quarterly/I20_R60_h1.xlsx
+[2026-08-19 04:15:37] load CN panel I60_R5
+[2026-08-19 04:15:37] I60_R5 n=593690 dates=254
+[2026-08-19 04:15:40] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/direct/cn/weekly/I60_R5_h1.xlsx
+[2026-08-19 04:15:40] load CN panel I60_R20
+[2026-08-19 04:15:40] I60_R20 n=138165 dates=59
+[2026-08-19 04:15:41] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/direct/cn/monthly/I60_R20_h1.xlsx
+[2026-08-19 04:15:41] load CN panel I60_R60
+[2026-08-19 04:15:41] I60_R60 n=44421 dates=19
+[2026-08-19 04:15:41] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/direct/cn/quarterly/I60_R60_h1.xlsx
+[2026-08-19 04:15:41] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/direct/cn/weekly/all_h1.xlsx
+[2026-08-19 04:15:41] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/direct/cn/monthly/all_h1.xlsx
+[2026-08-19 04:15:41] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/direct/cn/quarterly/all_h1.xlsx
+[2026-08-19 04:15:42] backtest finetune: /home/zkb/miniconda3/envs/5020_env/bin/python /home/zkb/rpt-re/scripts/py/04_backtest.py --market cn --models /data/kaibiao/data/projects/rpt-re/processed/cn/transfer_from_us/finetune --output-root /home/zkb/rpt-re/outputs/07_transfer_us_cn/finetune --eval-horizons 1 --all-configs
+[2026-08-19 04:15:48] load CN panel I5_R5
+[2026-08-19 04:15:48] I5_R5 n=594005 dates=254
+[2026-08-19 04:15:51] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/finetune/cn/weekly/I5_R5_h1.xlsx
+[2026-08-19 04:15:51] load CN panel I5_R20
+[2026-08-19 04:15:52] I5_R20 n=138289 dates=59
+[2026-08-19 04:15:53] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/finetune/cn/monthly/I5_R20_h1.xlsx
+[2026-08-19 04:15:53] load CN panel I5_R60
+[2026-08-19 04:15:53] I5_R60 n=44539 dates=19
+[2026-08-19 04:15:53] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/finetune/cn/quarterly/I5_R60_h1.xlsx
+[2026-08-19 04:15:53] load CN panel I20_R5
+[2026-08-19 04:15:53] I20_R5 n=593994 dates=254
+[2026-08-19 04:15:56] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/finetune/cn/weekly/I20_R5_h1.xlsx
+[2026-08-19 04:15:56] load CN panel I20_R20
+[2026-08-19 04:15:56] I20_R20 n=138287 dates=59
+[2026-08-19 04:15:57] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/finetune/cn/monthly/I20_R20_h1.xlsx
+[2026-08-19 04:15:57] load CN panel I20_R60
+[2026-08-19 04:15:57] I20_R60 n=44538 dates=19
+[2026-08-19 04:15:57] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/finetune/cn/quarterly/I20_R60_h1.xlsx
+[2026-08-19 04:15:57] load CN panel I60_R5
+[2026-08-19 04:15:57] I60_R5 n=593690 dates=254
+[2026-08-19 04:16:00] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/finetune/cn/weekly/I60_R5_h1.xlsx
+[2026-08-19 04:16:00] load CN panel I60_R20
+[2026-08-19 04:16:00] I60_R20 n=138165 dates=59
+[2026-08-19 04:16:01] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/finetune/cn/monthly/I60_R20_h1.xlsx
+[2026-08-19 04:16:01] load CN panel I60_R60
+[2026-08-19 04:16:01] I60_R60 n=44421 dates=19
+[2026-08-19 04:16:01] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/finetune/cn/quarterly/I60_R60_h1.xlsx
+[2026-08-19 04:16:01] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/finetune/cn/weekly/all_h1.xlsx
+[2026-08-19 04:16:01] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/finetune/cn/monthly/all_h1.xlsx
+[2026-08-19 04:16:01] wrote /home/zkb/rpt-re/outputs/07_transfer_us_cn/finetune/cn/quarterly/all_h1.xlsx
+[2026-08-19 04:16:02] wrote compare /home/zkb/rpt-re/outputs/07_transfer_us_cn/compare/cn/weekly/local_vs_direct_vs_finetune_h1.xlsx
+[2026-08-19 04:16:02] wrote compare /home/zkb/rpt-re/outputs/07_transfer_us_cn/compare/cn/monthly/local_vs_direct_vs_finetune_h1.xlsx
+[2026-08-19 04:16:03] wrote compare /home/zkb/rpt-re/outputs/07_transfer_us_cn/compare/cn/quarterly/local_vs_direct_vs_finetune_h1.xlsx
+[2026-08-19 04:16:03] Done.
