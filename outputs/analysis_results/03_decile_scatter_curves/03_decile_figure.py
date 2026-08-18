@@ -1,13 +1,13 @@
 """03 — decile portfolio curves: annualized return & risk (I5 + benchmarks).
 
-Read-only: loads step-04 all_h1.xlsx and step-05 h1.xlsx (equal-weight, weekly R5).
+Read-only: loads step-04 all_h1.xlsx and step-05 h1.xlsx (equal-weight, weekly/monthly/quarterly).
 Five series: I5 (solid red), MOM / two reversals / TREND (dashed). Hollow circle markers.
 Two panels side-by-side; y-axis ticks at 0.1 (return) and 0.05 (risk); axis limits use
 exact data extrema so the envelope touches the plot bottom-left and top-right corners.
 
 Run (from repo root, 5020_env):
-  python "outputs/analysis_results/03_decile_scatter_curves/03_decile_scatter.py"
-  python "outputs/analysis_results/03_decile_scatter_curves/03_decile_scatter.py" --market cn
+  python "outputs/analysis_results/03_decile_scatter_curves/03_decile_figure.py"
+  python "outputs/analysis_results/03_decile_scatter_curves/03_decile_figure.py" --freq monthly --market cn
 """
 
 from __future__ import annotations
@@ -40,17 +40,19 @@ VOL_STEP = 0.05
 DECILE_X = np.arange(1, 11, dtype=np.float64)
 DECILE_LABELS = tuple(f"D{i:02d}" for i in range(1, 11))
 
-STRATEGIES: tuple[tuple[str, str, str, str], ...] = (
-    ("I5/R5", "I5", "-", "#d62728"),
-    ("MOM/R5", "MOM", "--", "#2ca02c"),
-    ("STR/R5", "REV1m", "--", "#9467bd"),
-    ("WSTR/R5", "REV1w", "--", "#17becf"),
-    ("TREND/R5", "TREND", "--", "#8b0000"),
-)
-
-
 def log(msg: str) -> None:
     print(msg, flush=True)
+
+
+def strategies_for_horizon(horizon: int) -> tuple[tuple[str, str, str, str], ...]:
+    h = horizon
+    return (
+        (f"I5/R{h}", "I5", "-", "#d62728"),
+        (f"MOM/R{h}", "MOM", "--", "#2ca02c"),
+        (f"STR/R{h}", "REV1m", "--", "#9467bd"),
+        (f"WSTR/R{h}", "REV1w", "--", "#17becf"),
+        (f"TREND/R{h}", "TREND", "--", "#8b0000"),
+    )
 
 
 def _load_portfolio_module():
@@ -112,22 +114,28 @@ def _decile_values(row, metric: str) -> np.ndarray:
     return np.array([float(row[(metric, d)]) for d in DECILE_LABELS], dtype=np.float64)
 
 
-def load_decile_panel(portfolio_mod, market: str) -> dict[str, tuple[np.ndarray, np.ndarray]]:
-    spec = portfolio_mod.FREQ_SPECS["weekly"]
+def load_decile_panel(
+    portfolio_mod,
+    market: str,
+    freq: str,
+) -> tuple[dict[str, tuple[np.ndarray, np.ndarray]], tuple[tuple[str, str, str, str], ...]]:
+    spec = portfolio_mod.FREQ_SPECS[freq]
+    strategies = strategies_for_horizon(spec.horizon)
     panel = portfolio_mod.load_panel(spec, market, sheet="equal", eval_horizon=1)
-    columns = [s[0] for s in STRATEGIES]
+    columns = [s[0] for s in strategies]
     missing = [c for c in columns if c not in panel]
     if missing:
-        raise KeyError(f"missing strategies in panel: {missing}")
+        raise KeyError(f"missing strategies in panel ({freq} {market}): {missing}")
     out: dict[str, tuple[np.ndarray, np.ndarray]] = {}
     for col in columns:
         row = panel[col]
         out[col] = (_decile_values(row, RET_METRIC), _decile_values(row, VOL_METRIC))
-    return out
+    return out, strategies
 
 
 def plot_decile_curves(
     series: dict[str, tuple[np.ndarray, np.ndarray]],
+    strategies: tuple[tuple[str, str, str, str], ...],
     *,
     market: str,
     out_path: Path,
@@ -156,7 +164,7 @@ def plot_decile_curves(
             ax.spines[side].set_visible(True)
             ax.spines[side].set_linewidth(0.6)
 
-    for col, legend, ls, color in STRATEGIES:
+    for col, legend, ls, color in strategies:
         ret, vol = series[col]
         for ax, ys in zip(axes, (ret, vol)):
             ax.plot(
@@ -198,15 +206,21 @@ def plot_decile_curves(
     log(f"wrote {out_path}")
 
 
-def run_market(market: str) -> Path:
+def output_path(freq: str, market: str) -> Path:
+    return HERE / f"{STEM}_{freq}_{market}.png"
+
+
+def run_market(market: str, freq: str) -> Path:
     portfolio_mod = _load_portfolio_module()
-    series = load_decile_panel(portfolio_mod, market)
-    out_path = HERE / f"{STEM}_{market}.png"
-    plot_decile_curves(series, market=market, out_path=out_path)
+    series, strategies = load_decile_panel(portfolio_mod, market, freq)
+    out_path = output_path(freq, market)
+    plot_decile_curves(series, strategies, market=market, out_path=out_path)
     return out_path
 
 
 def main() -> None:
+    portfolio_mod = _load_portfolio_module()
+    freq_choices = tuple(portfolio_mod.FREQ_SPECS)
     parser = argparse.ArgumentParser(description="Decile return & volatility scatter curves")
     parser.add_argument(
         "--market",
@@ -214,10 +228,18 @@ def main() -> None:
         default=None,
         help="single market (default: both us and cn)",
     )
+    parser.add_argument(
+        "--freq",
+        choices=freq_choices,
+        default=None,
+        help="single rebalance frequency (default: weekly, monthly, and quarterly)",
+    )
     args = parser.parse_args()
     markets = [args.market] if args.market else [MARKET_US, MARKET_CN]
-    for market in markets:
-        run_market(market)
+    freqs = freq_choices if args.freq is None else (args.freq,)
+    for freq in freqs:
+        for market in markets:
+            run_market(market, freq)
 
 
 if __name__ == "__main__":
