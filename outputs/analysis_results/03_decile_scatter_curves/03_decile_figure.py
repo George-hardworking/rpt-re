@@ -1,0 +1,224 @@
+"""03 — decile portfolio curves: annualized return & risk (I5 + benchmarks).
+
+Read-only: loads step-04 all_h1.xlsx and step-05 h1.xlsx (equal-weight, weekly R5).
+Five series: I5 (solid red), MOM / two reversals / TREND (dashed). Hollow circle markers.
+Two panels side-by-side; y-axis ticks at 0.1 (return) and 0.05 (risk); axis limits use
+exact data extrema so the envelope touches the plot bottom-left and top-right corners.
+
+Run (from repo root, 5020_env):
+  python "outputs/analysis_results/03_decile_scatter_curves/03_decile_scatter.py"
+  python "outputs/analysis_results/03_decile_scatter_curves/03_decile_scatter.py" --market cn
+"""
+
+from __future__ import annotations
+
+import argparse
+import importlib.util
+import sys
+from pathlib import Path
+
+import matplotlib.pyplot as plt
+from matplotlib import font_manager
+import numpy as np
+
+ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(ROOT / "src"))
+
+from config import MARKET_CN, MARKET_US
+
+HERE = Path(__file__).resolve().parent
+STEM = "decile_curves"
+FIG_W, FIG_H = 6.0, 3.0
+FIG_DPI = 300
+FONT_FAMILY = "Times New Roman"
+NIMBUS_ROMAN_PATH = "/usr/share/fonts/opentype/urw-base35/NimbusRoman-Regular.otf"
+
+RET_METRIC = "Annualized Return"
+VOL_METRIC = "Annualized Risk"
+RET_STEP = 0.1
+VOL_STEP = 0.05
+DECILE_X = np.arange(1, 11, dtype=np.float64)
+DECILE_LABELS = tuple(f"D{i:02d}" for i in range(1, 11))
+
+STRATEGIES: tuple[tuple[str, str, str, str], ...] = (
+    ("I5/R5", "I5", "-", "#d62728"),
+    ("MOM/R5", "MOM", "--", "#2ca02c"),
+    ("STR/R5", "REV1m", "--", "#9467bd"),
+    ("WSTR/R5", "REV1w", "--", "#17becf"),
+    ("TREND/R5", "TREND", "--", "#8b0000"),
+)
+
+
+def log(msg: str) -> None:
+    print(msg, flush=True)
+
+
+def _load_portfolio_module():
+    path = (
+        ROOT
+        / "outputs/analysis_results/01_short-horizon portfolio performance"
+        / "01_portfolio_weekly_h1.py"
+    )
+    spec = importlib.util.spec_from_file_location("portfolio_h1", path)
+    if spec is None or spec.loader is None:
+        raise ImportError(f"cannot load {path}")
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def plot_font(size: float) -> font_manager.FontProperties:
+    tnr = font_manager.FontProperties(family=FONT_FAMILY, size=size)
+    tnr_path = font_manager.findfont(tnr)
+    if "dejavu" not in tnr_path.lower():
+        return tnr
+    nimbus = font_manager.FontProperties(fname=NIMBUS_ROMAN_PATH, size=size)
+    if not Path(NIMBUS_ROMAN_PATH).is_file():
+        raise FileNotFoundError(f"missing Times substitute font: {NIMBUS_ROMAN_PATH}")
+    font_manager.fontManager.addfont(NIMBUS_ROMAN_PATH)
+    return nimbus
+
+
+def _data_limits(values: np.ndarray) -> tuple[float, float]:
+    lo = float(np.min(values))
+    hi = float(np.max(values))
+    if lo == hi:
+        hi = lo + 1e-6
+    return lo, hi
+
+
+def _y_tick_values(y0: float, y1: float, step: float) -> np.ndarray:
+    tick_lo = np.floor(y0 / step) * step
+    tick_hi = np.ceil(y1 / step) * step
+    return np.arange(tick_lo, tick_hi + step * 0.5, step)
+
+
+def _apply_ticks(ax: plt.Axes, y0: float, y1: float, step: float, *, tick_size: float) -> None:
+    ax.set_yticks(_y_tick_values(y0, y1, step))
+    ax.set_xticks(DECILE_X)
+    ax.set_xticklabels(DECILE_LABELS)
+    ax.set_xlim(1.0, 10.0)
+    ax.set_ylim(y0, y1)
+    ax.margins(x=0, y=0)
+    ax.autoscale(enable=False)
+    ax.tick_params(axis="both", labelsize=tick_size)
+    fp = plot_font(tick_size)
+    for label in ax.get_xticklabels() + ax.get_yticklabels():
+        label.set_fontproperties(fp)
+
+
+def _decile_values(row, metric: str) -> np.ndarray:
+    return np.array([float(row[(metric, d)]) for d in DECILE_LABELS], dtype=np.float64)
+
+
+def load_decile_panel(portfolio_mod, market: str) -> dict[str, tuple[np.ndarray, np.ndarray]]:
+    spec = portfolio_mod.FREQ_SPECS["weekly"]
+    panel = portfolio_mod.load_panel(spec, market, sheet="equal", eval_horizon=1)
+    columns = [s[0] for s in STRATEGIES]
+    missing = [c for c in columns if c not in panel]
+    if missing:
+        raise KeyError(f"missing strategies in panel: {missing}")
+    out: dict[str, tuple[np.ndarray, np.ndarray]] = {}
+    for col in columns:
+        row = panel[col]
+        out[col] = (_decile_values(row, RET_METRIC), _decile_values(row, VOL_METRIC))
+    return out
+
+
+def plot_decile_curves(
+    series: dict[str, tuple[np.ndarray, np.ndarray]],
+    *,
+    market: str,
+    out_path: Path,
+) -> None:
+    all_ret = [v[0] for v in series.values()]
+    all_vol = [v[1] for v in series.values()]
+    ret_flat = np.concatenate(all_ret)
+    vol_flat = np.concatenate(all_vol)
+    ret_y0, ret_y1 = _data_limits(ret_flat)
+    vol_y0, vol_y1 = _data_limits(vol_flat)
+
+    fig, axes = plt.subplots(1, 2, figsize=(FIG_W, FIG_H), sharex=True)
+    fig.subplots_adjust(left=0.09, right=0.99, bottom=0.16, top=0.86, wspace=0.28)
+    tick_size = 7.0
+    titles = ("Annualized Return", "Annualized Volatility")
+
+    for ax, metric_idx, (y0, y1, step) in zip(
+        axes,
+        (0, 1),
+        ((ret_y0, ret_y1, RET_STEP), (vol_y0, vol_y1, VOL_STEP)),
+    ):
+        _apply_ticks(ax, y0, y1, step, tick_size=tick_size)
+        ax.set_title(titles[metric_idx], fontproperties=plot_font(tick_size + 0.5))
+        ax.grid(True, alpha=0.25, linestyle="--", linewidth=0.4)
+        for side in ("left", "right", "top", "bottom"):
+            ax.spines[side].set_visible(True)
+            ax.spines[side].set_linewidth(0.6)
+
+    for col, legend, ls, color in STRATEGIES:
+        ret, vol = series[col]
+        for ax, ys in zip(axes, (ret, vol)):
+            ax.plot(
+                DECILE_X,
+                ys,
+                linestyle=ls,
+                color=color,
+                linewidth=0.9 if ls == "-" else 0.75,
+                marker="o",
+                markersize=4.0,
+                markerfacecolor="none",
+                markeredgecolor=color,
+                markeredgewidth=0.8,
+                clip_on=False,
+                label=legend,
+            )
+
+    legend = axes[0].legend(
+        loc="upper left",
+        prop=plot_font(tick_size - 0.5),
+        frameon=True,
+        framealpha=0.92,
+        facecolor="white",
+        edgecolor="0.75",
+        handlelength=1.6,
+        borderpad=0.35,
+        labelspacing=0.3,
+    )
+    for text in legend.get_texts():
+        text.set_fontproperties(plot_font(tick_size - 0.5))
+
+    fig.savefig(
+        out_path,
+        dpi=FIG_DPI,
+        facecolor="white",
+        edgecolor="none",
+    )
+    plt.close(fig)
+    log(f"wrote {out_path}")
+
+
+def run_market(market: str) -> Path:
+    portfolio_mod = _load_portfolio_module()
+    series = load_decile_panel(portfolio_mod, market)
+    out_path = HERE / f"{STEM}_{market}.png"
+    plot_decile_curves(series, market=market, out_path=out_path)
+    return out_path
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Decile return & volatility scatter curves")
+    parser.add_argument(
+        "--market",
+        choices=(MARKET_US, MARKET_CN),
+        default=None,
+        help="single market (default: both us and cn)",
+    )
+    args = parser.parse_args()
+    markets = [args.market] if args.market else [MARKET_US, MARKET_CN]
+    for market in markets:
+        run_market(market)
+
+
+if __name__ == "__main__":
+    main()
