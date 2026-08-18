@@ -1,6 +1,7 @@
 """01 — weekly R5 portfolio performance (paper Table I layout).
 
-Read-only: loads existing step-04 all_h1.xlsx and step-05 h1.xlsx (no backtest).
+Read-only: loads step-04 all_h{k}.xlsx and step-05 h{k}.xlsx (no backtest).
+H-L uses H1 (t+1); display rows DH Ret2 / DH Ret3 use H2 / H3 eval horizons.
 US: equal + total cap weight. CN: equal + float cap + total cap weight.
 
 Run (from repo root, 5020_env):
@@ -61,9 +62,17 @@ DECILE_SIG_RANKS: tuple[tuple[str, str], ...] = (
     ("H-L", "DH"),
 )
 
+DH_EVAL_HORIZON_ROWS: tuple[tuple[str, int], ...] = (
+    ("DH Ret2", 2),
+    ("DH Ret3", 3),
+)
+
 RET_METRIC = "Annualized Return"
 SR_METRIC = "Sharpe Ratio"
 TO_METRIC = "Turnover (annualized)"
+# Paper Table I monthly turnover: per-rebalance turnover / holding months (R5 ≈ 1/4 month).
+WEEKLY_PERIODS_PER_YEAR = 52
+R5_HOLDING_MONTHS = 0.25
 
 US_PANELS: tuple[tuple[str, str, str], ...] = (
     ("Equal-Weight", "equal", "Equal-weight (EW): 1/N within each decile portfolio."),
@@ -89,12 +98,17 @@ CN_PANELS: tuple[tuple[str, str, str], ...] = (
 )
 
 NOTES_LINES: tuple[str, ...] = (
-    "Weekly R5 portfolio summary from step-04 CNN all_h1.xlsx and step-05 benchmark h1.xlsx.",
+    "Weekly R5 portfolio summary from step-04 CNN all_h{k}.xlsx and step-05 benchmark h{k}.xlsx.",
     f"Return column: {RET_METRIC} (raw portfolio return, annualized). "
     "NOT Annualized Active Return.",
     f"Sharpe column: {SR_METRIC} = Annualized Return / Annualized Risk (both raw).",
-    f"Turnover row: {TO_METRIC} on H-L (DH) portfolio.",
-    "H-L return stars use Newey-West t-stat on the long-short spread.",
+    "H-L: eval horizon H1 (signal at t, return over 1st future rebalance period).",
+    "DH Ret2 / DH Ret3: H-L (DH) annualized return at eval horizons H2 / H3 "
+    "(2nd / 3rd future rebalance period).",
+    "Turnover row: monthly turnover on H-L (DH), paper Table I / GKX (2020) convention "
+    f"(R5 one-week holding ≈ {R5_HOLDING_MONTHS} month; scaled from backtest "
+    f"{TO_METRIC}).",
+    "H-L and DH Ret2/Ret3 return stars use Newey-West t-stat on the long-short spread.",
 )
 _T_RE = re.compile(r"^([-+]?\d*\.?\d+)(\**)$")
 
@@ -140,44 +154,69 @@ def read_h1_models(path: Path, sheet: str) -> dict[str, pd.Series]:
     return models
 
 
-def cnn_h1_path(market: str) -> Path:
-    path = BACKTEST_CNN_ROOT / market / FREQ_DIR / "all_h1.xlsx"
-    if not path.is_file():
-        raise FileNotFoundError(
-            f"missing {path}; run ./scripts/sh/04_backtest.sh --market {market}"
-        )
-    return path
+def cnn_all_path(market: str, eval_horizon: int) -> Path:
+    return BACKTEST_CNN_ROOT / market / FREQ_DIR / f"all_h{eval_horizon}.xlsx"
 
 
-def benchmark_h1_path(market: str, signal_dir: str) -> Path:
-    path = BACKTEST_BENCHMARK_ROOT / signal_dir / market / FREQ_DIR / "h1.xlsx"
-    if not path.is_file():
-        raise FileNotFoundError(
-            f"missing {path}; run ./scripts/sh/05_benchmark_signals.sh backtest "
-            f"--market {market} --horizons {HORIZON}"
-        )
-    return path
+def cnn_single_path(market: str, row_name: str, eval_horizon: int) -> Path:
+    return BACKTEST_CNN_ROOT / market / FREQ_DIR / f"{row_name}_h{eval_horizon}.xlsx"
 
 
-def collect_sources(market: str) -> dict[str, tuple[Path, str]]:
+def benchmark_path(market: str, signal_dir: str, eval_horizon: int) -> Path:
+    return BACKTEST_BENCHMARK_ROOT / signal_dir / market / FREQ_DIR / f"h{eval_horizon}.xlsx"
+
+
+def collect_sources(market: str, eval_horizon: int) -> dict[str, tuple[Path, str]]:
     sources: dict[str, tuple[Path, str]] = {}
-    cnn_path = cnn_h1_path(market)
+    cnn_path = cnn_all_path(market, eval_horizon)
     for label, row_name in CNN_COLUMNS:
         sources[label] = (cnn_path, row_name)
     for label, signal_col, signal_dir in BENCHMARK_COLUMNS:
-        sources[label] = (benchmark_h1_path(market, signal_dir), signal_col)
+        sources[label] = (benchmark_path(market, signal_dir, eval_horizon), signal_col)
     return sources
 
 
-def load_panel(market: str, sheet: str) -> dict[str, pd.Series]:
-    sources = collect_sources(market)
+def _read_models_cached(
+    cache: dict[tuple[Path, str], dict[str, pd.Series]],
+    path: Path,
+    sheet: str,
+) -> dict[str, pd.Series]:
+    key = (path, sheet)
+    if key not in cache:
+        if not path.is_file():
+            raise FileNotFoundError(path)
+        cache[key] = read_h1_models(path, sheet)
+    return cache[key]
+
+
+def _resolve_cnn_row(
+    market: str,
+    sheet: str,
+    eval_horizon: int,
+    row_name: str,
+    cache: dict[tuple[Path, str], dict[str, pd.Series]],
+) -> pd.Series:
+    all_path = cnn_all_path(market, eval_horizon)
+    if all_path.is_file():
+        models = _read_models_cached(cache, all_path, sheet)
+        if row_name in models:
+            return models[row_name]
+    single_path = cnn_single_path(market, row_name, eval_horizon)
+    models = _read_models_cached(cache, single_path, sheet)
+    if row_name not in models:
+        raise KeyError(f"{single_path} sheet={sheet} missing row {row_name!r}")
+    return models[row_name]
+
+
+def load_panel(market: str, sheet: str, eval_horizon: int = 1) -> dict[str, pd.Series]:
+    sources = collect_sources(market, eval_horizon)
     cache: dict[tuple[Path, str], dict[str, pd.Series]] = {}
     panel: dict[str, pd.Series] = {}
     for label, (path, row_name) in sources.items():
-        key = (path, sheet)
-        if key not in cache:
-            cache[key] = read_h1_models(path, sheet)
-        models = cache[key]
+        if label in {c[0] for c in CNN_COLUMNS}:
+            panel[label] = _resolve_cnn_row(market, sheet, eval_horizon, row_name, cache)
+            continue
+        models = _read_models_cached(cache, path, sheet)
         if row_name not in models:
             raise KeyError(f"{path} sheet={sheet} missing row {row_name!r} for column {label}")
         panel[label] = models[row_name]
@@ -189,6 +228,14 @@ def _num(row: pd.Series, metric: str, sig_rank: str) -> float:
     if pd.isna(val):
         return float("nan")
     return float(val)
+
+
+def backtest_to_paper_monthly_pct(turnover_annualized: float) -> float:
+    """GKX monthly turnover % from engine ``Turnover (annualized)`` (= mean weekly τ × 52)."""
+    if not np.isfinite(turnover_annualized):
+        return float("nan")
+    per_rebalance = turnover_annualized / WEEKLY_PERIODS_PER_YEAR
+    return per_rebalance / R5_HOLDING_MONTHS * 100.0
 
 
 def _metric_columns(columns: list[str]) -> list[str]:
@@ -236,16 +283,36 @@ def build_panel_block(
         raw_ret_rows.append(raw_ret_row)
         raw_sr_rows.append(raw_sr_row)
 
+    for row_label, eval_horizon in DH_EVAL_HORIZON_ROWS:
+        panel_hk = load_panel(market, sheet, eval_horizon)
+        disp_row = {"Weight scheme": panel_name, "Row": row_label}
+        raw_ret_row: dict[str, object] = {"Weight scheme": panel_name, "Row": row_label}
+        raw_sr_row: dict[str, object] = {"Weight scheme": panel_name, "Row": row_label}
+        for col in columns:
+            row = panel_hk[col]
+            ret = _num(row, RET_METRIC, "DH")
+            sr = _num(row, SR_METRIC, "DH")
+            ret_key = f"{col} Ret (ann.)"
+            sr_key = f"{col} SR"
+            raw_ret_row[col] = ret
+            raw_sr_row[col] = sr
+            t = parse_t_stat(row[(RET_METRIC, "t")])
+            disp_row[ret_key] = format_cell(ret, t, value_decimals=2, t_decimals=2)
+            disp_row[sr_key] = ""
+        display_rows.append(disp_row)
+        raw_ret_rows.append(raw_ret_row)
+        raw_sr_rows.append(raw_sr_row)
+
     to_label = "Turnover"
     disp_to: dict[str, object] = {"Weight scheme": panel_name, "Row": to_label}
     raw_to_row: dict[str, object] = {"Weight scheme": panel_name, "Row": to_label}
     for col in columns:
         row = panel[col]
-        to_val = _num(row, TO_METRIC, "DH")
+        to_monthly = backtest_to_paper_monthly_pct(_num(row, TO_METRIC, "DH"))
         ret_key = f"{col} Ret (ann.)"
         sr_key = f"{col} SR"
-        raw_to_row[col] = to_val
-        disp_to[ret_key] = f"{to_val:.0f}%" if np.isfinite(to_val) else ""
+        raw_to_row[col] = to_monthly
+        disp_to[ret_key] = f"{to_monthly:.0f}%" if np.isfinite(to_monthly) else ""
         disp_to[sr_key] = ""
     display_rows.append(disp_to)
     raw_ret_rows.append(raw_to_row)
