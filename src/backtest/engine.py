@@ -152,7 +152,7 @@ def _scheme_weights(frame: pd.DataFrame, cap_col: str | None) -> tuple[pd.DataFr
     return kept, cap[ok]
 
 
-def h1_perf_one(
+def _portfolio_raw_pivot(
     panel: pd.DataFrame,
     *,
     spec: MarketSpec,
@@ -160,9 +160,8 @@ def h1_perf_one(
     scheme: str,
     ngroup: int = BACKTEST_N_GROUP,
     direct_signal: bool = False,
-    newey_west_lags: object = NW_LAGS_AUTO,
-) -> pd.DataFrame:
-    """One signal, one weight scheme: rows=groups (D01..DH, t), columns=H1 metrics."""
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.Series]:
+    """Decile portfolio raw/active return pivots and per-group turnover."""
     if scheme not in BACKTEST_WEIGHT_SCHEMES:
         raise ValueError(f"unknown weight scheme: {scheme}")
     date_col = spec.date_col
@@ -202,6 +201,53 @@ def h1_perf_one(
     act = port.pivot(index=date_col, columns="_g", values="act_ret")
     raw["DH"] = raw[ngroup] - raw[1]
     act["DH"] = act[ngroup] - act[1]
+    return raw, act, to_g
+
+
+def hl_return_series(
+    panel: pd.DataFrame,
+    *,
+    spec: MarketSpec,
+    signal_col: str,
+    scheme: str = "equal",
+    ngroup: int = BACKTEST_N_GROUP,
+    direct_signal: bool = False,
+) -> pd.Series:
+    """Equal-weight (or scheme) H–L portfolio return at each formation date."""
+    raw, _, _ = _portfolio_raw_pivot(
+        panel,
+        spec=spec,
+        signal_col=signal_col,
+        scheme=scheme,
+        ngroup=ngroup,
+        direct_signal=direct_signal,
+    )
+    out = raw["DH"].copy()
+    out.index = pd.to_datetime(out.index)
+    out.name = signal_col
+    return out.sort_index()
+
+
+def h1_perf_one(
+    panel: pd.DataFrame,
+    *,
+    spec: MarketSpec,
+    signal_col: str,
+    scheme: str,
+    ngroup: int = BACKTEST_N_GROUP,
+    direct_signal: bool = False,
+    newey_west_lags: object = NW_LAGS_AUTO,
+) -> pd.DataFrame:
+    """One signal, one weight scheme: rows=groups (D01..DH, t), columns=H1 metrics."""
+    date_col = spec.date_col
+    raw, act, to_g = _portfolio_raw_pivot(
+        panel,
+        spec=spec,
+        signal_col=signal_col,
+        scheme=scheme,
+        ngroup=ngroup,
+        direct_signal=direct_signal,
+    )
 
     ppy = spec.periods_per_year
     mean_raw = ppy * raw.mean()
