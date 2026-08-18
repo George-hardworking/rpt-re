@@ -20,11 +20,13 @@ PROGRESS_EVERY = 500
 
 from analysis.cnn_characteristics_tables import run_all_tables
 from backtest.engine import h1_perf_tables
+from backtest.eval_horizon import align_panel_eval_horizon, backtest_output_stem, parse_eval_horizons
 from backtest.io import load_image_labels, write_h1_excel
 from backtest.markets import cn_cnn_spec, us_spec
 from config import (
     BACKTEST_N_GROUP,
     BENCHMARK_SIGNAL_COLS,
+    EVAL_HORIZONS,
     HORIZON_DIAGONAL_IMAGE_DAYS,
     MARKET_CN,
     MARKET_US,
@@ -370,36 +372,36 @@ def backtest_signal(
     market: str,
     signal_col: str,
     ngroup: int,
-    direct_signal: bool,
+    eval_horizons: tuple[int, ...],
     fresh: bool,
 ) -> list[Path]:
     written: list[Path] = []
-    stem = "direct_h1.xlsx" if direct_signal else "h1.xlsx"
     for horizon, panel in panels.items():
-        out_path = benchmark_output_dir(signal_col, market, horizon) / stem
-        if out_path.is_file() and not fresh:
-            log(f"skip backtest (exists): {out_path}")
-            written.append(out_path)
-            continue
-        if fresh and out_path.is_file():
-            out_path.unlink()
-
         if market == MARKET_CN:
             spec = cn_cnn_spec(horizon)
         else:
             spec = us_spec(HORIZON_DIAGONAL_IMAGE_DAYS[horizon], horizon)
 
-        tables = h1_perf_tables(
-            panel,
-            spec=spec,
-            signal_cols=[signal_col],
-            ngroup=ngroup,
-            row_names=[signal_col],
-            direct_signal=direct_signal,
-        )
-        path = write_h1_excel(tables, out_path)
-        log(f"wrote {path}")
-        written.append(path)
+        for eval_h in eval_horizons:
+            out_path = benchmark_output_dir(signal_col, market, horizon) / f"h{eval_h}.xlsx"
+            if out_path.is_file() and not fresh:
+                log(f"skip backtest (exists): {out_path}")
+                written.append(out_path)
+                continue
+            if fresh and out_path.is_file():
+                out_path.unlink()
+
+            aligned = align_panel_eval_horizon(panel, spec, eval_h)
+            tables = h1_perf_tables(
+                aligned,
+                spec=spec,
+                signal_cols=[signal_col],
+                ngroup=ngroup,
+                row_names=[signal_col],
+            )
+            path = write_h1_excel(tables, out_path)
+            log(f"wrote {path}")
+            written.append(path)
     return written
 
 
@@ -467,6 +469,8 @@ def run_backtest(args: argparse.Namespace) -> list[Path]:
     horizons = tuple(args.horizons) if args.horizons else WINDOW_DAYS
     signal_cols = tuple(args.signals) if args.signals else BENCHMARK_SIGNAL_COLS
 
+    eval_horizons = parse_eval_horizons(args.eval_horizons)
+
     panels = build_freq_signal_panels(
         market=args.market,
         images_root=images_root,
@@ -486,7 +490,7 @@ def run_backtest(args: argparse.Namespace) -> list[Path]:
                 market=args.market,
                 signal_col=signal_col,
                 ngroup=args.ngroup,
-                direct_signal=args.direct_signal,
+                eval_horizons=eval_horizons,
                 fresh=args.fresh,
             )
         )
@@ -516,9 +520,13 @@ def main() -> None:
     p_bt.add_argument("--signals", type=str, nargs="+", default=None)
     p_bt.add_argument("--ngroup", type=int, default=BACKTEST_N_GROUP)
     p_bt.add_argument(
-        "--direct-signal",
-        action="store_true",
-        help="sort deciles on raw signal (paper Table I style)",
+        "--eval-horizons",
+        type=int,
+        nargs="+",
+        default=[1],
+        metavar="H",
+        help="H1/H2/H3: signal at t, return at t+H rebalance periods "
+        f"(default: 1; weekly grid: {' '.join(map(str, EVAL_HORIZONS))})",
     )
 
     p_tbl = sub.add_parser(
@@ -533,7 +541,13 @@ def main() -> None:
     p_all.add_argument("--horizons", type=int, nargs="+", choices=WINDOW_DAYS, default=None)
     p_all.add_argument("--signals", type=str, nargs="+", default=None)
     p_all.add_argument("--ngroup", type=int, default=BACKTEST_N_GROUP)
-    p_all.add_argument("--direct-signal", action="store_true")
+    p_all.add_argument(
+        "--eval-horizons",
+        type=int,
+        nargs="+",
+        default=[1],
+        metavar="H",
+    )
 
     args = parser.parse_args()
 

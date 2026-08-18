@@ -171,6 +171,8 @@ CN_FACTOR_BACKTEST_DIR = "weekly"
 
 BACKTEST_N_GROUP = 10
 BACKTEST_WEIGHT_SCHEMES = ("equal", "float", "total")
+# Eval horizons: Hk = signal at t, portfolio return at t+k rebalance periods (weekly → weeks).
+EVAL_HORIZONS: tuple[int, ...] = (1, 2, 3)
 # Rebalance / annualization keyed by forecast horizon R (not image window I).
 BACKTEST_PERIODS_PER_YEAR = {5: 52, 20: 12, 60: 4}
 

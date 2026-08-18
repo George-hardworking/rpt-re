@@ -4,7 +4,7 @@
 # Usage:
 #   ./scripts/sh/04_backtest.sh --market us
 #   ./scripts/sh/04_backtest.sh --market cn
-#   ./scripts/sh/04_backtest.sh --market us --direct-signal
+#   ./scripts/sh/04_backtest.sh --market us --image-days 5 --horizon 5 --eval-horizons 1 2 3
 #   ./scripts/sh/04_backtest.sh --market us --top-n 500
 #   ./scripts/sh/04_backtest.sh --market cn --top-n 500
 #   ./scripts/sh/04_backtest.sh --market cn --top-n 500 --top-n-cap float

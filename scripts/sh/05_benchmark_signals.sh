@@ -6,7 +6,7 @@
 #   ./scripts/sh/05_benchmark_signals.sh all --market us
 #   ./scripts/sh/05_benchmark_signals.sh all --market cn
 #   ./scripts/sh/05_benchmark_signals.sh signals --market us
-#   ./scripts/sh/05_benchmark_signals.sh backtest --market cn --direct-signal
+#   ./scripts/sh/05_benchmark_signals.sh backtest --market us --horizons 5 --eval-horizons 1 2 3 --direct-signal
 #   ./scripts/sh/05_benchmark_signals.sh tables --market us
 #   ./scripts/sh/05_benchmark_signals.sh tables --market cn
 #

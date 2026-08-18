@@ -1,4 +1,4 @@
-"""CLI: OOS H1 quantile backtest with equal / float / total sheets."""
+"""CLI: OOS quantile backtest with equal / float / total sheets (H1/H2/H3 eval horizons)."""
 
 from __future__ import annotations
 
@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from backtest.engine import h1_perf_tables
+from backtest.eval_horizon import align_panel_eval_horizon, backtest_output_stem, parse_eval_horizons
 from backtest.io import (
     filter_top_n_by_cap,
     load_cn_panel,
@@ -31,6 +32,7 @@ from config import (
     BACKTEST_CN_FACTOR_ROOT,
     BACKTEST_N_GROUP,
     CN_FACTOR_BACKTEST_DIR,
+    EVAL_HORIZONS,
     HORIZON_BACKTEST_DIR,
     MARKET_CN,
     PAPER_CROSS_CONFIGS,
@@ -101,18 +103,18 @@ def config_xlsx_path(
     horizon: int,
     tag: str,
     *,
+    eval_horizon: int,
     init_from: int | None,
     direct_signal: bool,
     output_root: Path,
 ) -> Path:
     freq_dir = backtest_freq_dir(horizon)
     if init_from is not None:
-        stem = f"{tag}_fromI{init_from}"
+        base = f"{tag}_fromI{init_from}"
     else:
-        stem = tag
-    if direct_signal:
-        stem = f"direct_{stem}"
-    return output_root / market / freq_dir / f"{stem}_h1.xlsx"
+        base = tag
+    stem = backtest_output_stem(base, eval_horizon, direct_signal=direct_signal)
+    return output_root / market / freq_dir / f"{stem}.xlsx"
 
 
 def summary_xlsx_path(
@@ -120,17 +122,24 @@ def summary_xlsx_path(
     horizon: int,
     tags: list[str],
     *,
+    eval_horizon: int,
     init_from: int | None,
     direct_signal: bool,
     output_root: Path,
 ) -> Path:
     freq_dir = backtest_freq_dir(horizon)
-    stem = summary_stem(tags, init_from, direct_signal)
-    return output_root / market / freq_dir / f"{stem}_h1.xlsx"
+    base = summary_stem(tags, init_from, direct_signal)
+    stem = backtest_output_stem(base, eval_horizon, direct_signal=False)
+    return output_root / market / freq_dir / f"{stem}.xlsx"
 
 
-def default_cn_factor_xlsx_path(market: str, stem: str) -> Path:
-    return BACKTEST_CN_FACTOR_ROOT / market / CN_FACTOR_BACKTEST_DIR / f"{stem}_h1.xlsx"
+def default_cn_factor_xlsx_path(market: str, stem: str, eval_horizon: int) -> Path:
+    return (
+        BACKTEST_CN_FACTOR_ROOT
+        / market
+        / CN_FACTOR_BACKTEST_DIR
+        / f"{stem}_h{eval_horizon}.xlsx"
+    )
 
 
 def default_test_start(market: str) -> str:
@@ -178,11 +187,12 @@ def load_cnn_panel(
 
 def run_cnn_backtest(args: argparse.Namespace) -> list[Path]:
     configs = resolve_cnn_configs(args)
+    eval_horizons = parse_eval_horizons(args.eval_horizons)
     market = args.market
     grouped = group_configs_by_horizon(configs)
     single_config = len(configs) == 1
-    if args.output is not None and not single_config:
-        raise ValueError("--output only allowed for a single --image-days/--horizon config")
+    if args.output is not None and (not single_config or len(eval_horizons) != 1):
+        raise ValueError("--output only allowed for one config and one --eval-horizons value")
 
     market_root = market_processed_dir(market)
     images_root = args.images if args.images is not None else market_root / "images"
@@ -213,32 +223,36 @@ def run_cnn_backtest(args: argparse.Namespace) -> list[Path]:
             tag = model_run_tag(
                 image_days, horizon, init_from_image_days=args.init_from_image_days
             )
-            ind = config_xlsx_path(
-                market,
-                horizon,
-                tag,
-                init_from=args.init_from_image_days,
-                direct_signal=direct_signal,
-                output_root=output_root,
-            )
-            if ind.is_file():
-                ind.unlink()
+            for eval_h in eval_horizons:
+                ind = config_xlsx_path(
+                    market,
+                    horizon,
+                    tag,
+                    eval_horizon=eval_h,
+                    init_from=args.init_from_image_days,
+                    direct_signal=direct_signal,
+                    output_root=output_root,
+                )
+                if ind.is_file():
+                    ind.unlink()
         if not single_config:
             for horizon, h_configs in grouped.items():
                 tags = [
                     model_run_tag(d, h, init_from_image_days=args.init_from_image_days)
                     for d, h in h_configs
                 ]
-                summ = summary_xlsx_path(
-                    market,
-                    horizon,
-                    tags,
-                    init_from=args.init_from_image_days,
-                    direct_signal=direct_signal,
-                    output_root=output_root,
-                )
-                if summ.is_file():
-                    summ.unlink()
+                for eval_h in eval_horizons:
+                    summ = summary_xlsx_path(
+                        market,
+                        horizon,
+                        tags,
+                        eval_horizon=eval_h,
+                        init_from=args.init_from_image_days,
+                        direct_signal=direct_signal,
+                        output_root=output_root,
+                    )
+                    if summ.is_file():
+                        summ.unlink()
 
     if not single_config and not args.fresh:
         expected: list[Path] = []
@@ -246,40 +260,44 @@ def run_cnn_backtest(args: argparse.Namespace) -> list[Path]:
             tag = model_run_tag(
                 image_days, horizon, init_from_image_days=args.init_from_image_days
             )
-            expected.append(
-                config_xlsx_path(
-                    market,
-                    horizon,
-                    tag,
-                    init_from=args.init_from_image_days,
-                    direct_signal=direct_signal,
-                    output_root=output_root,
+            for eval_h in eval_horizons:
+                expected.append(
+                    config_xlsx_path(
+                        market,
+                        horizon,
+                        tag,
+                        eval_horizon=eval_h,
+                        init_from=args.init_from_image_days,
+                        direct_signal=direct_signal,
+                        output_root=output_root,
+                    )
                 )
-            )
         for horizon, h_configs in grouped.items():
             tags = [
                 model_run_tag(d, h, init_from_image_days=args.init_from_image_days)
                 for d, h in h_configs
             ]
-            expected.append(
-                summary_xlsx_path(
-                    market,
-                    horizon,
-                    tags,
-                    init_from=args.init_from_image_days,
-                    direct_signal=direct_signal,
-                    output_root=output_root,
+            for eval_h in eval_horizons:
+                expected.append(
+                    summary_xlsx_path(
+                        market,
+                        horizon,
+                        tags,
+                        eval_horizon=eval_h,
+                        init_from=args.init_from_image_days,
+                        direct_signal=direct_signal,
+                        output_root=output_root,
+                    )
                 )
-            )
         if all(p.is_file() for p in expected):
             for p in expected:
                 log(f"skip backtest (exists): {p}")
             return expected
 
-    scheme_rows_by_horizon: dict[int, dict[str, list[pd.DataFrame]]] = defaultdict(
+    scheme_rows: dict[tuple[int, int], dict[str, list[pd.DataFrame]]] = defaultdict(
         lambda: {"equal": [], "float": [], "total": []}
     )
-    summary_dirty: dict[int, bool] = defaultdict(bool)
+    summary_dirty: dict[tuple[int, int], bool] = defaultdict(bool)
     written: list[Path] = []
 
     for image_days, horizon in configs:
@@ -290,23 +308,6 @@ def run_cnn_backtest(args: argparse.Namespace) -> list[Path]:
             spec = cn_cnn_spec(horizon)
         else:
             spec = us_spec(image_days, horizon)
-
-        if args.output is not None:
-            out_path = args.output
-        else:
-            out_path = config_xlsx_path(
-                market,
-                horizon,
-                tag,
-                init_from=args.init_from_image_days,
-                direct_signal=direct_signal,
-                output_root=output_root,
-            )
-
-        if single_config and out_path.is_file() and not args.fresh:
-            log(f"skip config (exists): {out_path}")
-            written.append(out_path)
-            continue
 
         log(f"load {market.upper()} panel {tag}")
         panel, _ = load_cnn_panel(
@@ -327,29 +328,42 @@ def run_cnn_backtest(args: argparse.Namespace) -> list[Path]:
                 f"{tag} top-{top_n} ({top_n_cap}) n={len(panel)} "
                 f"dates={panel['Date'].nunique()}"
             )
-        tables = h1_perf_tables(
-            panel,
-            spec=spec,
-            signal_cols=["p_up"],
-            ngroup=args.ngroup,
-            row_names=[tag],
-            direct_signal=direct_signal,
-        )
 
-        write_individual = not out_path.is_file() or args.fresh
-        if write_individual:
+        for eval_h in eval_horizons:
+            if args.output is not None:
+                out_path = args.output
+            else:
+                out_path = config_xlsx_path(
+                    market,
+                    horizon,
+                    tag,
+                    eval_horizon=eval_h,
+                    init_from=args.init_from_image_days,
+                    direct_signal=direct_signal,
+                    output_root=output_root,
+                )
+
+            if out_path.is_file() and not args.fresh:
+                log(f"skip config (exists): {out_path}")
+                written.append(out_path)
+                continue
+
+            aligned = align_panel_eval_horizon(panel, spec, eval_h)
+            tables = h1_perf_tables(
+                aligned,
+                spec=spec,
+                signal_cols=["p_up"],
+                ngroup=args.ngroup,
+                row_names=[tag],
+                direct_signal=direct_signal,
+            )
             path = write_h1_excel(tables, out_path)
             log(f"wrote {path}")
             written.append(path)
             if not single_config:
-                summary_dirty[horizon] = True
-        else:
-            log(f"skip write config (exists): {out_path}")
-            written.append(out_path)
-
-        if not single_config:
-            for scheme, frame in tables.items():
-                scheme_rows_by_horizon[horizon][scheme].append(frame)
+                summary_dirty[(horizon, eval_h)] = True
+                for scheme, frame in tables.items():
+                    scheme_rows[(horizon, eval_h)][scheme].append(frame)
 
     if not single_config:
         for horizon in sorted(grouped):
@@ -358,38 +372,43 @@ def run_cnn_backtest(args: argparse.Namespace) -> list[Path]:
                 model_run_tag(d, h, init_from_image_days=args.init_from_image_days)
                 for d, h in h_configs
             ]
-            out_path = summary_xlsx_path(
-                market,
-                horizon,
-                tags,
-                init_from=args.init_from_image_days,
-                direct_signal=direct_signal,
-                output_root=output_root,
-            )
-            if out_path.is_file() and not args.fresh and not summary_dirty[horizon]:
-                log(f"skip summary (exists): {out_path}")
-                written.append(out_path)
-                continue
+            for eval_h in eval_horizons:
+                out_path = summary_xlsx_path(
+                    market,
+                    horizon,
+                    tags,
+                    eval_horizon=eval_h,
+                    init_from=args.init_from_image_days,
+                    direct_signal=direct_signal,
+                    output_root=output_root,
+                )
+                if out_path.is_file() and not args.fresh and not summary_dirty[(horizon, eval_h)]:
+                    log(f"skip summary (exists): {out_path}")
+                    written.append(out_path)
+                    continue
 
-            scheme_rows = scheme_rows_by_horizon[horizon]
-            if not scheme_rows["equal"]:
-                raise RuntimeError(f"missing tables for horizon={horizon} summary")
-            combined = {
-                scheme: pd.concat(frames, axis=0) for scheme, frames in scheme_rows.items()
-            }
-            path = write_h1_excel(combined, out_path)
-            log(f"wrote {path}")
-            written.append(path)
+                rows = scheme_rows[(horizon, eval_h)]
+                if not rows["equal"]:
+                    raise RuntimeError(
+                        f"missing tables for horizon={horizon} eval_h={eval_h} summary"
+                    )
+                combined = {
+                    scheme: pd.concat(frames, axis=0) for scheme, frames in rows.items()
+                }
+                path = write_h1_excel(combined, out_path)
+                log(f"wrote {path}")
+                written.append(path)
 
     return written
 
 
-def run_cn_factor(args: argparse.Namespace) -> Path:
+def run_cn_factor(args: argparse.Namespace) -> list[Path]:
     if args.signals is None or args.returns is None:
         raise ValueError("China factor backtest requires --signals and --returns")
     if args.sig_cols is None:
         raise ValueError("China factor backtest requires --sig-cols")
     sig_cols = parse_sig_cols(args.sig_cols)
+    eval_horizons = parse_eval_horizons(args.eval_horizons)
     spec = replace(
         CN_SPEC,
         id_col=args.id_col,
@@ -400,44 +419,52 @@ def run_cn_factor(args: argparse.Namespace) -> Path:
         periods_per_year=args.periods_per_year,
     )
     stem = args.sigfile if args.sigfile else Path(args.signals).stem
-    out_path = args.output if args.output is not None else default_cn_factor_xlsx_path(
-        "cn", stem
-    )
-    if out_path.is_file() and not args.fresh:
-        log(f"skip backtest (exists): {out_path}")
-        return out_path
-    if args.fresh and out_path.is_file():
-        out_path.unlink()
-
     signals = read_table(args.signals)
     returns = read_table(args.returns)
     universe = read_table(args.universe) if args.universe is not None else None
     start = args.start if args.start is not None else default_test_start(MARKET_CN)
     log(f"load CN signals n={len(signals)} returns n={len(returns)}")
-    panel = load_cn_panel(
-        signals,
-        returns,
-        spec=spec,
-        lag=args.lag,
-        universe=universe,
-        start=start,
-    )
-    log(f"CN panel n={len(panel)} dates={panel[spec.date_col].nunique()}")
-    tables = h1_perf_tables(
-        panel,
-        spec=spec,
-        signal_cols=sig_cols,
-        ngroup=args.ngroup,
-        direct_signal=args.direct_signal,
-    )
-    written = write_h1_excel(tables, out_path)
-    log(f"wrote {written}")
+
+    written: list[Path] = []
+    for eval_h in eval_horizons:
+        if args.output is not None:
+            if len(eval_horizons) != 1:
+                raise ValueError("--output requires a single --eval-horizons value")
+            out_path = args.output
+        else:
+            out_path = default_cn_factor_xlsx_path("cn", stem, eval_h)
+        if out_path.is_file() and not args.fresh:
+            log(f"skip backtest (exists): {out_path}")
+            written.append(out_path)
+            continue
+        if args.fresh and out_path.is_file():
+            out_path.unlink()
+
+        panel = load_cn_panel(
+            signals,
+            returns,
+            spec=spec,
+            lag=eval_h,
+            universe=universe,
+            start=start,
+        )
+        log(f"CN panel eval_h={eval_h} n={len(panel)} dates={panel[spec.date_col].nunique()}")
+        tables = h1_perf_tables(
+            panel,
+            spec=spec,
+            signal_cols=sig_cols,
+            ngroup=args.ngroup,
+            direct_signal=args.direct_signal,
+        )
+        path = write_h1_excel(tables, out_path)
+        log(f"wrote {path}")
+        written.append(path)
     return written
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="H1 quantile backtest; writes Excel sheets equal/float/total"
+        description="Quantile backtest; Hk = return at t+k rebalance periods; Excel equal/float/total"
     )
     parser.add_argument("--market", choices=("us", "cn"), default="us")
     parser.add_argument("--image-days", type=int, default=None, choices=WINDOW_DAYS)
@@ -489,13 +516,24 @@ def main() -> None:
     parser.add_argument("--ret-col", type=str, default=CN_SPEC.ret_col)
     parser.add_argument("--float-cap-col", type=str, default=CN_SPEC.float_cap_col)
     parser.add_argument("--total-cap-col", type=str, default=CN_SPEC.total_cap_col)
-    parser.add_argument("--lag", type=int, default=1, help="China factor: periods between signal and return")
+    parser.add_argument(
+        "--eval-horizons",
+        type=int,
+        nargs="+",
+        default=[1],
+        metavar="H",
+        help="evaluation horizons H1/H2/H3: signal at t, return at t+H rebalance periods "
+        f"(default: 1; typical weekly grid: {' '.join(map(str, EVAL_HORIZONS))})",
+    )
+    parser.add_argument("--lag", type=int, default=None, help=argparse.SUPPRESS)
     parser.add_argument("--periods-per-year", type=int, default=CN_SPEC.periods_per_year)
     parser.add_argument("--ngroup", type=int, default=BACKTEST_N_GROUP)
     parser.add_argument("--start", type=str, default=None)
     parser.add_argument("--output", type=Path, default=None)
     parser.add_argument("--fresh", action="store_true")
     args = parser.parse_args()
+    if args.lag is not None:
+        args.eval_horizons = [args.lag]
 
     if args.market == MARKET_CN and args.signals is not None:
         run_cn_factor(args)
