@@ -36,6 +36,39 @@ BACKTEST_BREAKDOWN_ROOT = OUTPUT_ROOT / "06_holding_breakdown"
 BACKTEST_BENCHMARK_ROOT = OUTPUT_ROOT / "05_benchmark_signals"
 BACKTEST_TOP_N_CAP = 500
 
+# Step 07: US CNN weights -> China inference / head finetune (not processed/cn/models/).
+CN_TRANSFER_FROM_US_ROOT = market_processed_dir(MARKET_CN) / "transfer_from_us"
+TRANSFER_MODE_DIRECT = "direct"
+TRANSFER_MODE_FINETUNE = "finetune"
+TRANSFER_BACKTEST_ROOT = OUTPUT_ROOT / "07_transfer_us_cn"
+TRANSFER_BACKTEST_DIRECT_ROOT = TRANSFER_BACKTEST_ROOT / TRANSFER_MODE_DIRECT
+TRANSFER_BACKTEST_FINETUNE_ROOT = TRANSFER_BACKTEST_ROOT / TRANSFER_MODE_FINETUNE
+TRANSFER_COMPARE_ROOT = TRANSFER_BACKTEST_ROOT / "compare"
+
+
+def transfer_models_root(mode: str) -> Path:
+    if mode not in (TRANSFER_MODE_DIRECT, TRANSFER_MODE_FINETUNE):
+        raise ValueError(f"unsupported transfer mode={mode}")
+    return CN_TRANSFER_FROM_US_ROOT / mode
+
+
+def transfer_backtest_output_root(mode: str) -> Path:
+    if mode == TRANSFER_MODE_DIRECT:
+        return TRANSFER_BACKTEST_DIRECT_ROOT
+    if mode == TRANSFER_MODE_FINETUNE:
+        return TRANSFER_BACKTEST_FINETUNE_ROOT
+    raise ValueError(f"unsupported transfer mode={mode}")
+
+
+def us_seed_checkpoint(image_days: int, horizon: int, seed: int) -> Path:
+    return (
+        market_processed_dir(MARKET_US)
+        / "models"
+        / f"I{image_days}_R{horizon}"
+        / f"seed{seed}"
+        / "best.pt"
+    )
+
 # Paper Table III: monthly R20 holding split into days 1–5 vs 6–20.
 HOLDING_BREAKDOWN_HORIZON = 20
 HOLDING_BREAKDOWN_FIRST_DAYS = 5

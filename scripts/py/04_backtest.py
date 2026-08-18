@@ -90,7 +90,14 @@ def summary_stem(tags: list[str], init_from: int | None, direct_signal: bool) ->
     return f"direct_{base}" if direct_signal else base
 
 
-def cnn_output_root(top_n: int | None, top_n_cap: str = "total") -> Path:
+def cnn_output_root(
+    top_n: int | None,
+    top_n_cap: str = "total",
+    *,
+    output_root: Path | None = None,
+) -> Path:
+    if output_root is not None:
+        return output_root
     if top_n is None:
         return BACKTEST_CNN_ROOT
     if top_n_cap == "float":
@@ -205,7 +212,7 @@ def run_cnn_backtest(args: argparse.Namespace) -> list[Path]:
         raise ValueError("--top-n-cap float requires --top-n")
     if top_n_cap == "float" and market != MARKET_CN:
         raise ValueError("--top-n-cap float only supported for --market cn")
-    output_root = cnn_output_root(top_n, top_n_cap)
+    output_root = cnn_output_root(top_n, top_n_cap, output_root=args.output_root)
 
     bundle_horizons: dict[tuple[int, str], set[int]] = {}
     for image_days, horizon in configs:
@@ -530,6 +537,12 @@ def main() -> None:
     parser.add_argument("--ngroup", type=int, default=BACKTEST_N_GROUP)
     parser.add_argument("--start", type=str, default=None)
     parser.add_argument("--output", type=Path, default=None)
+    parser.add_argument(
+        "--output-root",
+        type=Path,
+        default=None,
+        help="override CNN backtest Excel root (default outputs/04_backtest/cnn_baseline)",
+    )
     parser.add_argument("--fresh", action="store_true")
     args = parser.parse_args()
     if args.lag is not None:

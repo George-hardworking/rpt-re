@@ -102,6 +102,15 @@ def _move_batch(
     return x.to(device, non_blocking=pin), y.to(device, non_blocking=pin)
 
 
+def set_train_mode(model: PriceTrendCNN, *, freeze_blocks: bool) -> None:
+    if freeze_blocks:
+        model.eval()
+        model.dropout.eval()
+        model.fc.train()
+    else:
+        model.train()
+
+
 def run_epoch(
     model: PriceTrendCNN,
     dataset: ImageLabelDataset,
@@ -110,10 +119,12 @@ def run_epoch(
     device: torch.device,
     batch_size: int,
     shuffle: bool,
+    *,
+    freeze_blocks: bool = False,
 ) -> float:
     is_train = optimizer is not None
     if is_train:
-        model.train()
+        set_train_mode(model, freeze_blocks=freeze_blocks)
     else:
         model.eval()
 
@@ -192,6 +203,13 @@ def load_checkpoint(path: Path, device: torch.device) -> tuple[PriceTrendCNN, Tr
     model.load_state_dict(payload["model_state"])
     model.to(device)
     return model, config
+
+
+def load_full_checkpoint(path: Path, device: torch.device) -> tuple[PriceTrendCNN, TrainConfig]:
+    """Load a complete foreign-market checkpoint (conv + fc) for transfer."""
+    if not path.is_file():
+        raise FileNotFoundError(f"missing checkpoint: {path}")
+    return load_checkpoint(path, device)
 
 
 def init_model_from_transfer(
@@ -332,6 +350,159 @@ def train_model(
 
     model, _ = load_checkpoint(best_path, dev)
     log_fn(f"training done best_epoch={best_epoch} val_loss={best_val:.6f}")
+    return model
+
+
+def finetune_head_model(
+    train_ds: ImageLabelDataset,
+    val_ds: ImageLabelDataset,
+    *,
+    image_days: int,
+    horizon: int,
+    seed: int,
+    pixel_mean: float,
+    pixel_std: float,
+    n_test: int,
+    ckpt_dir: Path,
+    init_checkpoint: Path,
+    device: str | None = None,
+    batch_size: int = BATCH_SIZE,
+    lr: float = ADAM_LR,
+    patience: int = EARLY_STOP_PATIENCE,
+    max_epochs: int = MAX_EPOCHS,
+    log_fn=print,
+) -> PriceTrendCNN:
+    """Freeze conv blocks; train only fc on target-market labels."""
+    dev = _device(device)
+    last_path, best_path = ckpt_dir_paths(ckpt_dir)
+    flat = flatten_feature_size(image_days)
+    config = TrainConfig(
+        image_days=image_days,
+        horizon=horizon,
+        seed=seed,
+        pixel_mean=pixel_mean,
+        pixel_std=pixel_std,
+        flatten_size=flat,
+        n_train=len(train_ds),
+        n_val=len(val_ds),
+        n_test=n_test,
+        init_from_image_days=None,
+    )
+
+    resume_payload: dict | None = None
+    if last_path.is_file():
+        resume_payload = torch.load(last_path, map_location=dev, weights_only=False)
+        if resume_payload.get("finished", False):
+            log_fn(f"head finetune finished; load {best_path}")
+            model, _ = load_checkpoint(best_path, dev)
+            return model
+
+    freeze_blocks = True
+    if resume_payload is not None:
+        log_fn(f"resume head finetune from {last_path} epoch={resume_payload['epoch']}")
+        model = PriceTrendCNN(image_days).to(dev)
+        model.load_state_dict(resume_payload["model_state"])
+        for param in model.blocks.parameters():
+            param.requires_grad = False
+        model.eval()
+        model.dropout.eval()
+        model.fc.train()
+        criterion = nn.CrossEntropyLoss()
+        optimizer = torch.optim.Adam(model.fc.parameters(), lr=lr)
+        optimizer.load_state_dict(resume_payload["optimizer_state"])
+        start_epoch = int(resume_payload["epoch"])
+        best_val = float(resume_payload["best_val"])
+        best_epoch = int(resume_payload["best_epoch"])
+        stale_epochs = int(resume_payload["stale_epochs"])
+    else:
+        if best_path.is_file():
+            log_fn(f"head finetune checkpoint exists, skip: {best_path}")
+            model, _ = load_checkpoint(best_path, dev)
+            return model
+
+        log_fn(f"init full weights from {init_checkpoint}")
+        model, src_cfg = load_full_checkpoint(init_checkpoint, dev)
+        if src_cfg.image_days != image_days or src_cfg.horizon != horizon:
+            raise ValueError(
+                f"checkpoint I{src_cfg.image_days}/R{src_cfg.horizon} "
+                f"!= target I{image_days}/R{horizon}: {init_checkpoint}"
+            )
+        for param in model.blocks.parameters():
+            param.requires_grad = False
+        model.eval()
+        model.dropout.eval()
+        model.fc.train()
+        criterion = nn.CrossEntropyLoss()
+        optimizer = torch.optim.Adam(model.fc.parameters(), lr=lr)
+        start_epoch = 0
+        best_val = float("inf")
+        best_epoch = -1
+        stale_epochs = 0
+
+    for epoch in range(start_epoch, max_epochs):
+        train_loss = run_epoch(
+            model,
+            train_ds,
+            criterion,
+            optimizer,
+            dev,
+            batch_size,
+            True,
+            freeze_blocks=freeze_blocks,
+        )
+        val_loss = run_epoch(
+            model,
+            val_ds,
+            criterion,
+            None,
+            dev,
+            batch_size,
+            False,
+        )
+        epoch_num = epoch + 1
+        log_fn(
+            f"head finetune epoch={epoch_num} train_loss={train_loss:.6f} "
+            f"val_loss={val_loss:.6f}"
+        )
+
+        if val_loss < best_val:
+            best_val = val_loss
+            best_epoch = epoch_num
+            stale_epochs = 0
+            save_best_checkpoint(best_path, model, config, best_val, best_epoch)
+            log_fn(f"new best epoch={best_epoch} val_loss={best_val:.6f} -> {best_path}")
+        else:
+            stale_epochs += 1
+
+        finished = False
+        if stale_epochs >= patience:
+            log_fn(f"early stop at epoch={epoch_num} best_epoch={best_epoch}")
+            finished = True
+        elif epoch_num >= max_epochs:
+            finished = True
+
+        save_training_state(
+            last_path,
+            model=model,
+            optimizer=optimizer,
+            config=config,
+            epoch=epoch_num,
+            train_loss=train_loss,
+            val_loss=val_loss,
+            best_val=best_val,
+            best_epoch=best_epoch,
+            stale_epochs=stale_epochs,
+            finished=finished,
+        )
+
+        if finished:
+            break
+
+    if best_epoch < 0:
+        raise RuntimeError("head finetune finished without any validation epoch")
+
+    model, _ = load_checkpoint(best_path, dev)
+    log_fn(f"head finetune done best_epoch={best_epoch} val_loss={best_val:.6f}")
     return model
 
 
