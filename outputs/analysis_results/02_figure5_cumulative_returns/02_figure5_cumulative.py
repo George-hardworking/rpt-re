@@ -56,6 +56,9 @@ TOP_IN = 0.03
 FIG_W = PLOT_IN + LEFT_IN + RIGHT_IN
 FIG_H = PLOT_IN + BOTTOM_IN + TOP_IN
 FIG_DPI = 1200
+# 0.25 pt ≈ the previously visible top-edge stroke (~4 px at 1200 dpi).
+SPINE_LW = 0.25
+SAVE_PAD_INCHES = SPINE_LW / 72.0 / 2.0 + 0.002
 FONT_FAMILY = "Times New Roman"
 NIMBUS_ROMAN_PATH = "/usr/share/fonts/opentype/urw-base35/NimbusRoman-Regular.otf"
 
@@ -277,7 +280,7 @@ def plot_cumulative(
         )
 
     tick_size = 5.5
-    ax.tick_params(axis="both", labelsize=tick_size)
+    ax.tick_params(axis="both", labelsize=tick_size, width=SPINE_LW, length=2.2)
     legend = ax.legend(
         loc="upper left",
         prop=plot_font(tick_size),
@@ -295,8 +298,8 @@ def plot_cumulative(
     ax.grid(True, alpha=0.25, linestyle="--", linewidth=0.4)
     for side in ("left", "right", "top", "bottom"):
         ax.spines[side].set_visible(True)
-        ax.spines[side].set_linewidth(0.6)
-        ax.spines[side].set_clip_on(False)
+        ax.spines[side].set_linewidth(SPINE_LW)
+        ax.spines[side].set_clip_on(True)
 
     xs = [t for s in curves.values() for t in s.index]
     xmin, xmax = min(xs), max(xs)
@@ -309,7 +312,7 @@ def plot_cumulative(
         out_path,
         dpi=FIG_DPI,
         bbox_inches="tight",
-        pad_inches=0,
+        pad_inches=SAVE_PAD_INCHES,
         facecolor="white",
         edgecolor="none",
     )
