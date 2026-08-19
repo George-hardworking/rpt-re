@@ -33,6 +33,7 @@ FIG_W, FIG_H = 4.8, 3.0
 FIG_DPI = 300
 # Match 02 cumulative-return plot boxes (pt).
 SPINE_LW = 0.25
+SAVE_PAD_INCHES = SPINE_LW / 72.0 / 2.0 + 0.002
 FONT_FAMILY = "Times New Roman"
 NIMBUS_ROMAN_PATH = "/usr/share/fonts/opentype/urw-base35/NimbusRoman-Regular.otf"
 
@@ -108,7 +109,7 @@ def _apply_ticks(ax: plt.Axes, y0: float, y1: float, step: float, *, tick_size: 
     ax.set_ylim(y0, y1)
     ax.margins(x=0, y=0)
     ax.autoscale(enable=False)
-    ax.tick_params(axis="both", labelsize=tick_size, width=SPINE_LW, length=2.2)
+    ax.tick_params(axis="both", labelsize=tick_size, width=SPINE_LW, length=2.2, pad=1.5)
     fp = plot_font(tick_size)
     for label in ax.get_xticklabels() + ax.get_yticklabels():
         label.set_fontproperties(fp)
@@ -152,7 +153,7 @@ def plot_decile_curves(
     vol_y0, vol_y1 = _data_limits(vol_flat)
 
     fig, axes = plt.subplots(1, 2, figsize=(FIG_W, FIG_H), sharex=True)
-    fig.subplots_adjust(left=0.11, right=0.99, bottom=0.16, top=0.86, wspace=0.32)
+    fig.subplots_adjust(left=0.11, right=0.99, bottom=0.12, top=0.90, wspace=0.32)
     tick_size = 7.0
     titles = ("Annualized Return", "Annualized Volatility")
 
@@ -162,7 +163,7 @@ def plot_decile_curves(
         ((ret_y0, ret_y1, RET_STEP), (vol_y0, vol_y1, VOL_STEP)),
     ):
         _apply_ticks(ax, y0, y1, step, tick_size=tick_size)
-        ax.set_title(titles[metric_idx], fontproperties=plot_font(tick_size + 0.5))
+        ax.set_title(titles[metric_idx], fontproperties=plot_font(tick_size + 0.5), pad=3.0)
         ax.grid(True, alpha=0.25, linestyle="--", linewidth=0.4)
         for side in ("left", "right", "top", "bottom"):
             ax.spines[side].set_visible(True)
@@ -204,6 +205,8 @@ def plot_decile_curves(
     fig.savefig(
         out_path,
         dpi=FIG_DPI,
+        bbox_inches="tight",
+        pad_inches=SAVE_PAD_INCHES,
         facecolor="white",
         edgecolor="none",
     )
