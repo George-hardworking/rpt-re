@@ -28,8 +28,11 @@ from config import MARKET_CN, MARKET_US
 
 HERE = Path(__file__).resolve().parent
 STEM = "decile_curves"
-FIG_W, FIG_H = 6.0, 3.0
+# Narrower canvas than before: same figure height (y-axis unchanged), shorter x-axis.
+FIG_W, FIG_H = 4.8, 3.0
 FIG_DPI = 300
+# Match 02 cumulative-return plot boxes (pt).
+SPINE_LW = 0.25
 FONT_FAMILY = "Times New Roman"
 NIMBUS_ROMAN_PATH = "/usr/share/fonts/opentype/urw-base35/NimbusRoman-Regular.otf"
 
@@ -39,6 +42,7 @@ RET_STEP = 0.1
 VOL_STEP = 0.05
 DECILE_X = np.arange(1, 11, dtype=np.float64)
 DECILE_LABELS = tuple(f"D{i:02d}" for i in range(1, 11))
+DECILE_TICK_LABELS = tuple(str(i) for i in range(1, 11))
 
 def log(msg: str) -> None:
     print(msg, flush=True)
@@ -99,12 +103,12 @@ def _y_tick_values(y0: float, y1: float, step: float) -> np.ndarray:
 def _apply_ticks(ax: plt.Axes, y0: float, y1: float, step: float, *, tick_size: float) -> None:
     ax.set_yticks(_y_tick_values(y0, y1, step))
     ax.set_xticks(DECILE_X)
-    ax.set_xticklabels(DECILE_LABELS)
+    ax.set_xticklabels(DECILE_TICK_LABELS)
     ax.set_xlim(1.0, 10.0)
     ax.set_ylim(y0, y1)
     ax.margins(x=0, y=0)
     ax.autoscale(enable=False)
-    ax.tick_params(axis="both", labelsize=tick_size)
+    ax.tick_params(axis="both", labelsize=tick_size, width=SPINE_LW, length=2.2)
     fp = plot_font(tick_size)
     for label in ax.get_xticklabels() + ax.get_yticklabels():
         label.set_fontproperties(fp)
@@ -148,7 +152,7 @@ def plot_decile_curves(
     vol_y0, vol_y1 = _data_limits(vol_flat)
 
     fig, axes = plt.subplots(1, 2, figsize=(FIG_W, FIG_H), sharex=True)
-    fig.subplots_adjust(left=0.09, right=0.99, bottom=0.16, top=0.86, wspace=0.28)
+    fig.subplots_adjust(left=0.11, right=0.99, bottom=0.16, top=0.86, wspace=0.32)
     tick_size = 7.0
     titles = ("Annualized Return", "Annualized Volatility")
 
@@ -162,7 +166,8 @@ def plot_decile_curves(
         ax.grid(True, alpha=0.25, linestyle="--", linewidth=0.4)
         for side in ("left", "right", "top", "bottom"):
             ax.spines[side].set_visible(True)
-            ax.spines[side].set_linewidth(0.6)
+            ax.spines[side].set_linewidth(SPINE_LW)
+            ax.spines[side].set_clip_on(True)
 
     for col, legend, ls, color in strategies:
         ret, vol = series[col]
