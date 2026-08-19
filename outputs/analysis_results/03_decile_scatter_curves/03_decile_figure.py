@@ -28,8 +28,16 @@ from config import MARKET_CN, MARKET_US
 
 HERE = Path(__file__).resolve().parent
 STEM = "decile_curves"
-# Narrower canvas than before: same figure height (y-axis unchanged), shorter x-axis.
-FIG_W, FIG_H = 4.8, 3.0
+# Plot box: y a bit longer than x, but not a square.
+PLOT_W = 1.60
+PLOT_H = 1.82
+LEFT_IN = 0.50
+GAP_IN = 0.60
+RIGHT_IN = 0.04
+BOTTOM_IN = 0.22
+TOP_IN = 0.04
+FIG_W = LEFT_IN + PLOT_W + GAP_IN + PLOT_W + RIGHT_IN
+FIG_H = BOTTOM_IN + PLOT_H + TOP_IN
 FIG_DPI = 300
 # Match 02 cumulative-return plot boxes (pt).
 SPINE_LW = 0.25
@@ -152,18 +160,31 @@ def plot_decile_curves(
     ret_y0, ret_y1 = _data_limits(ret_flat)
     vol_y0, vol_y1 = _data_limits(vol_flat)
 
-    fig, axes = plt.subplots(1, 2, figsize=(FIG_W, FIG_H), sharex=True)
-    fig.subplots_adjust(left=0.11, right=0.99, bottom=0.12, top=0.90, wspace=0.32)
+    fig_w, fig_h = FIG_W, FIG_H
+    fig = plt.figure(figsize=(fig_w, fig_h))
+    ax_left = fig.add_axes(
+        [LEFT_IN / fig_w, BOTTOM_IN / fig_h, PLOT_W / fig_w, PLOT_H / fig_h]
+    )
+    ax_right = fig.add_axes(
+        [
+            (LEFT_IN + PLOT_W + GAP_IN) / fig_w,
+            BOTTOM_IN / fig_h,
+            PLOT_W / fig_w,
+            PLOT_H / fig_h,
+        ]
+    )
+    ax_right.sharex(ax_left)
+    axes = (ax_left, ax_right)
     tick_size = 7.0
-    titles = ("Annualized Return", "Annualized Volatility")
+    ylabels = ("Annualized Return", "Annualized Volatility")
 
-    for ax, metric_idx, (y0, y1, step) in zip(
+    for ax, ylabel, (y0, y1, step) in zip(
         axes,
-        (0, 1),
+        ylabels,
         ((ret_y0, ret_y1, RET_STEP), (vol_y0, vol_y1, VOL_STEP)),
     ):
         _apply_ticks(ax, y0, y1, step, tick_size=tick_size)
-        ax.set_title(titles[metric_idx], fontproperties=plot_font(tick_size + 0.5), pad=3.0)
+        ax.set_ylabel(ylabel, fontproperties=plot_font(tick_size + 0.5), labelpad=3.0)
         ax.grid(True, alpha=0.25, linestyle="--", linewidth=0.4)
         for side in ("left", "right", "top", "bottom"):
             ax.spines[side].set_visible(True)
