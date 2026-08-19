@@ -47,8 +47,14 @@ HERE = Path(__file__).resolve().parent
 STEM = "figure5_cumulative"
 HORIZON = 5
 EVAL_HORIZON = 1
-# Physical layout in inches (figsize); FIG_DPI sets pixel density only, not on-screen proportions.
-FIG_W, FIG_H = 3.0, 3.6
+# Square plot box plus a thin strip for tick labels; canvas matches the figure.
+PLOT_IN = 2.05
+LEFT_IN = 0.38
+RIGHT_IN = 0.03
+BOTTOM_IN = 0.22
+TOP_IN = 0.03
+FIG_W = PLOT_IN + LEFT_IN + RIGHT_IN
+FIG_H = PLOT_IN + BOTTOM_IN + TOP_IN
 FIG_DPI = 1200
 FONT_FAMILY = "Times New Roman"
 NIMBUS_ROMAN_PATH = "/usr/share/fonts/opentype/urw-base35/NimbusRoman-Regular.otf"
@@ -249,16 +255,13 @@ def plot_cumulative(
     out_path: Path,
 ) -> None:
     fig_w, fig_h = FIG_W, FIG_H
-    plot_in = 2.05
-    left_in = 0.42
-    bottom_in = 0.95
     fig = plt.figure(figsize=(fig_w, fig_h))
     ax = fig.add_axes(
         [
-            left_in / fig_w,
-            bottom_in / fig_h,
-            plot_in / fig_w,
-            plot_in / fig_h,
+            LEFT_IN / fig_w,
+            BOTTOM_IN / fig_h,
+            PLOT_IN / fig_w,
+            PLOT_IN / fig_h,
         ]
     )
 
@@ -305,7 +308,8 @@ def plot_cumulative(
     fig.savefig(
         out_path,
         dpi=FIG_DPI,
-        pad_inches=0.06,
+        bbox_inches="tight",
+        pad_inches=0,
         facecolor="white",
         edgecolor="none",
     )
