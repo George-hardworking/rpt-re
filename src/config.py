@@ -34,7 +34,27 @@ BACKTEST_CNN_TOP500_FLOAT_ROOT = BACKTEST_STEP04_ROOT / "cnn_top500_float"
 BACKTEST_CN_FACTOR_ROOT = BACKTEST_STEP04_ROOT / "cn_factors"
 BACKTEST_BREAKDOWN_ROOT = OUTPUT_ROOT / "06_holding_breakdown"
 BACKTEST_BENCHMARK_ROOT = OUTPUT_ROOT / "05_benchmark_signals"
+BACKTEST_STW_ROOT = OUTPUT_ROOT / "08_stw_7846_rules"
 BACKTEST_TOP_N_CAP = 500
+
+# Step 08: Figure 8 STW 7,846-rule benchmark (CNN red lines use I20/R5, I20/R20, I20/R60).
+STW_FIGURE8_IMAGE_DAYS = 20
+STW_DEFAULT_HORIZONS: tuple[int, ...] = (5, 20, 60)
+STW_PROCESSED_DIR = "stw_7846_rules"
+
+
+def stw_processed_horizon_dir(market: str, horizon: int) -> Path:
+    """Intermediate STW artifacts on DATA_ROOT (manifest, sharpe chunks, combined table)."""
+    if horizon not in HORIZON_BACKTEST_DIR:
+        raise ValueError(f"unsupported horizon={horizon}")
+    return market_processed_dir(market) / STW_PROCESSED_DIR / HORIZON_BACKTEST_DIR[horizon]
+
+
+def stw_figure_dir(market: str, horizon: int) -> Path:
+    """Final Figure-8 PNGs only (repo outputs/)."""
+    if horizon not in HORIZON_BACKTEST_DIR:
+        raise ValueError(f"unsupported horizon={horizon}")
+    return BACKTEST_STW_ROOT / market / HORIZON_BACKTEST_DIR[horizon] / "figures"
 
 # Step 07: US CNN weights -> China inference / head finetune (not processed/cn/models/).
 CN_TRANSFER_FROM_US_ROOT = market_processed_dir(MARKET_CN) / "transfer_from_us"

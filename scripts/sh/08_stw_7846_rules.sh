@@ -1,34 +1,119 @@
 #!/usr/bin/env bash
+# 08_stw_7846_rules: STW 7,846 technical rules vs CNN Figure-8 Sharpe distributions.
+#
+# Usage:
+#   ./scripts/sh/08_stw_7846_rules.sh
+#   ./scripts/sh/08_stw_7846_rules.sh all --market us
+#   ./scripts/sh/08_stw_7846_rules.sh all --market us --horizons 5
+#   ./scripts/sh/08_stw_7846_rules.sh signals --market us --horizon 20
+#   ./scripts/sh/08_stw_7846_rules.sh all --market cn   # same CLI; run when CN data ready
+#
 set -euo pipefail
 
-# Server-only wrapper for the STW 7,846-rule replication.
-#
-# TODO on server: set these three paths before running.
-: "${STW_OHLC_ROOT:?set STW_OHLC_ROOT to processed/<market>/ohlc_daily}"
-: "${STW_UNIVERSE:?set STW_UNIVERSE to a rebalance panel parquet with PERMNO, Date, returns, caps}"
-: "${STW_OUTPUT_ROOT:?set STW_OUTPUT_ROOT to the desired output directory}"
+_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="$_SCRIPT_DIR"
+while [[ ! -f "$ROOT/pyproject.toml" && "$ROOT" != "/" ]]; do
+  ROOT="$(dirname "$ROOT")"
+done
+if [[ ! -f "$ROOT/pyproject.toml" ]]; then
+  echo "ERROR: could not locate repo root (pyproject.toml) from $_SCRIPT_DIR" >&2
+  exit 1
+fi
 
-MARKET="${MARKET:-us}"
-HORIZON="${HORIZON:-5}"
-RET_COL="${RET_COL:-Ret_${HORIZON}d}"
-RULE_CHUNK_SIZE="${RULE_CHUNK_SIZE:-64}"
-STOCK_BATCH_SIZE="${STOCK_BATCH_SIZE:-16}"
+PY="$ROOT/scripts/py/08_stw_7846_rules.py"
+if [[ ! -f "$PY" ]]; then
+  echo "ERROR: missing Python entry: $PY" >&2
+  exit 1
+fi
 
-args=(
-  scripts/py/08_stw_7846_rules.py all
-  --market "${MARKET}"
-  --horizon "${HORIZON}"
-  --ohlc-root "${STW_OHLC_ROOT}"
-  --universe "${STW_UNIVERSE}"
-  --ret-col "${RET_COL}"
-  --output-root "${STW_OUTPUT_ROOT}"
-  --rule-chunk-size "${RULE_CHUNK_SIZE}"
-  --stock-batch-size "${STOCK_BATCH_SIZE}"
-)
+if [[ -z "${TMUX:-}" ]]; then
+  if ! command -v tmux >/dev/null 2>&1; then
+    echo "ERROR: tmux not installed; run inside tmux or install tmux" >&2
+    exit 1
+  fi
+  mkdir -p "$ROOT/logs/08_stw_7846_rules"
+  STAMP="$(date +%Y%m%d_%H%M%S)"
+  SESSION="rpt_08_stw_${STAMP}"
+  MAIN_LOG="$ROOT/logs/08_stw_7846_rules/08_stw_7846_rules_${STAMP}.log"
+  echo "[INFO] Starting tmux session ${SESSION}"
+  echo "[INFO] Log file: ${MAIN_LOG}"
+  _quoted_args=""
+  if (($# > 0)); then
+    _quoted_args=$(printf ' %q' "$@")
+  else
+    _quoted_args=" all --market us"
+  fi
+  tmux new-session -d -s "$SESSION" \
+    env RPT_MAIN_LOG="$MAIN_LOG" RPT_STAMP="$STAMP" \
+    bash -lc "cd '$ROOT' && bash '$ROOT/scripts/sh/08_stw_7846_rules.sh'${_quoted_args}"
+  echo "[INFO] Attach:  tmux attach -t ${SESSION}"
+  echo "[INFO] Tail log: tail -f ${MAIN_LOG}"
+  exit 0
+fi
 
-# Optional CNN Sharpe values for the red vertical lines in the Figure-8 style plot.
-[[ -n "${CNN_SHARPE_EQUAL:-}" ]] && args+=(--cnn-sharpe-equal "${CNN_SHARPE_EQUAL}")
-[[ -n "${CNN_SHARPE_FLOAT:-}" ]] && args+=(--cnn-sharpe-float "${CNN_SHARPE_FLOAT}")
-[[ -n "${CNN_SHARPE_TOTAL:-}" ]] && args+=(--cnn-sharpe-total "${CNN_SHARPE_TOTAL}")
+_conda_sh=""
+if command -v conda >/dev/null 2>&1; then
+  _conda_sh="$(conda info --base)/etc/profile.d/conda.sh"
+elif [[ -f "${HOME}/miniconda3/etc/profile.d/conda.sh" ]]; then
+  _conda_sh="${HOME}/miniconda3/etc/profile.d/conda.sh"
+elif [[ -f "${HOME}/anaconda3/etc/profile.d/conda.sh" ]]; then
+  _conda_sh="${HOME}/anaconda3/etc/profile.d/conda.sh"
+fi
+if [[ -z "${_conda_sh}" || ! -f "${_conda_sh}" ]]; then
+  echo "ERROR: conda not found" >&2
+  exit 1
+fi
+# shellcheck source=/dev/null
+source "${_conda_sh}"
+conda activate 5020_env
 
-python "${args[@]}"
+cd "$ROOT"
+
+LOG_DIR="$ROOT/logs/08_stw_7846_rules"
+mkdir -p "$LOG_DIR"
+STAMP="${RPT_STAMP:-$(date +%Y%m%d_%H%M%S)}"
+MAIN_LOG="${RPT_MAIN_LOG:-$LOG_DIR/08_stw_7846_rules_${STAMP}.log}"
+
+log() { printf '[%s] %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*" | tee -a "$MAIN_LOG"; }
+
+ts_pipe() {
+  while IFS= read -r line; do
+    printf '[%s] %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$line" | tee -a "$MAIN_LOG"
+  done
+}
+
+export OMP_NUM_THREADS="${OMP_NUM_THREADS:-1}"
+export OPENBLAS_NUM_THREADS="${OPENBLAS_NUM_THREADS:-1}"
+export MKL_NUM_THREADS="${MKL_NUM_THREADS:-1}"
+export NUMEXPR_NUM_THREADS="${NUMEXPR_NUM_THREADS:-1}"
+export PYTHONUNBUFFERED="${PYTHONUNBUFFERED:-1}"
+
+RESERVE_GIB="${RPT_RESERVE_GIB:-16}"
+if [[ "$*" != *"--reserve-gib"* ]]; then
+  set -- "$@" --reserve-gib "$RESERVE_GIB"
+fi
+
+if (($# == 0)); then
+  set -- all --market us
+fi
+
+log "============================================================"
+log "08_stw_7846_rules"
+log "Conda: ${CONDA_DEFAULT_ENV:-unknown}"
+log "Python: $PY"
+log "Args:  $*"
+log "Log:   ${MAIN_LOG}"
+log "============================================================"
+log "starting python"
+
+set +e
+python "$PY" "$@" 2>&1 | ts_pipe
+ec="${PIPESTATUS[0]}"
+set -e
+
+if [[ "$ec" -ne 0 ]]; then
+  log "ERROR: 08_stw_7846_rules failed (exit ${ec}). See ${MAIN_LOG}"
+  exit "$ec"
+fi
+
+log "Done."
