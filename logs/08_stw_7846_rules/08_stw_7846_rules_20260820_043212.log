@@ -1,0 +1,539 @@
+[2026-08-20 04:32:14] ============================================================
+[2026-08-20 04:32:14] 08_stw_7846_rules
+[2026-08-20 04:32:14] Conda: 5020_env
+[2026-08-20 04:32:14] Python: /home/zkb/rpt-re/scripts/py/08_stw_7846_rules.py
+[2026-08-20 04:32:14] Args:  all --market us --reserve-gib 16
+[2026-08-20 04:32:14] Log:   /home/zkb/rpt-re/logs/08_stw_7846_rules/08_stw_7846_rules_20260820_043212.log
+[2026-08-20 04:32:14] ============================================================
+[2026-08-20 04:32:14] starting python
+[2026-08-20 04:32:16] horizon=5 wrote manifest /data/kaibiao/data/projects/rpt-re/processed/us/stw_7846_rules/weekly/stw_7846_manifest.csv counts={'CB': 2040, 'FR': 497, 'MA': 2049, 'OBV': 2040, 'SR': 1220}
+[2026-08-20 04:32:16] horizon=20 wrote manifest /data/kaibiao/data/projects/rpt-re/processed/us/stw_7846_rules/monthly/stw_7846_manifest.csv counts={'CB': 2040, 'FR': 497, 'MA': 2049, 'OBV': 2040, 'SR': 1220}
+[2026-08-20 04:32:16] horizon=60 wrote manifest /data/kaibiao/data/projects/rpt-re/processed/us/stw_7846_rules/quarterly/stw_7846_manifest.csv counts={'CB': 2040, 'FR': 497, 'MA': 2049, 'OBV': 2040, 'SR': 1220}
+[2026-08-20 04:32:26] horizon=5 STW scan stocks=17276 batches=1080 pending_chunks=123 workers=47 diag={'source': 'memory_budget', 'avail_gib': 254.2, 'total_gib': 377.5, 'reserve_gib': 16.0, 'budget_gib': 238.2, 'mem_per_worker_gib': 5.0, 'mem_cap': 47, 'cpu_cap': 112, 'swap_percent': 100.0, 'n_tasks': 1080, 'resolved_workers': 47} data_root=/data/kaibiao/data/projects/rpt-re/processed/us/stw_7846_rules/weekly
+[2026-08-20 04:35:11] progress   2.3%  stocks 400/17276  skip=0  worker=9  batch=57  batch_size=16
+[2026-08-20 04:35:41] progress   4.6%  stocks 800/17276  skip=0  worker=7  batch=55  batch_size=16
+[2026-08-20 04:36:36] progress   6.9%  stocks 1200/17276  skip=0  worker=26  batch=74  batch_size=16
+[2026-08-20 04:37:17] progress   9.3%  stocks 1600/17276  skip=0  worker=6  batch=101  batch_size=16
+[2026-08-20 04:38:04] progress  11.6%  stocks 2000/17276  skip=0  worker=26  batch=121  batch_size=16
+[2026-08-20 04:38:44] progress  13.9%  stocks 2400/17276  skip=0  worker=9  batch=151  batch_size=16
+[2026-08-20 04:39:22] progress  16.2%  stocks 2800/17276  skip=0  worker=31  batch=173  batch_size=16
+[2026-08-20 04:40:05] progress  18.5%  stocks 3200/17276  skip=0  worker=25  batch=214  batch_size=16
+[2026-08-20 04:40:39] progress  20.8%  stocks 3600/17276  skip=0  worker=36  batch=225  batch_size=16
+[2026-08-20 04:41:08] progress  23.2%  stocks 4000/17276  skip=0  worker=21  batch=257  batch_size=16
+[2026-08-20 04:41:46] progress  25.5%  stocks 4400/17276  skip=0  worker=46  batch=282  batch_size=16
+[2026-08-20 04:42:12] progress  27.8%  stocks 4800/17276  skip=0  worker=14  batch=297  batch_size=16
+[2026-08-20 04:42:47] progress  30.1%  stocks 5200/17276  skip=0  worker=46  batch=329  batch_size=16
+[2026-08-20 04:43:13] progress  32.4%  stocks 5600/17276  skip=0  worker=22  batch=352  batch_size=16
+[2026-08-20 04:46:24] progress  34.7%  stocks 6000/17276  skip=0  worker=44  batch=374  batch_size=16
+[2026-08-20 04:47:08] progress  37.0%  stocks 6400/17276  skip=0  worker=43  batch=373  batch_size=16
+[2026-08-20 04:49:52] progress  39.4%  stocks 6800/17276  skip=0  worker=43  batch=420  batch_size=16
+[2026-08-20 04:51:16] progress  41.7%  stocks 7200/17276  skip=0  worker=26  batch=450  batch_size=16
+[2026-08-20 04:53:04] progress  44.0%  stocks 7600/17276  skip=0  worker=45  batch=469  batch_size=16
+[2026-08-20 04:55:25] progress  46.3%  stocks 8000/17276  skip=0  worker=27  batch=498  batch_size=16
+[2026-08-20 04:56:16] progress  48.6%  stocks 8400/17276  skip=0  worker=38  batch=509  batch_size=16
+[2026-08-20 04:58:07] progress  50.9%  stocks 8800/17276  skip=0  worker=31  batch=549  batch_size=16
+[2026-08-20 04:58:53] progress  53.3%  stocks 9200/17276  skip=0  worker=14  batch=579  batch_size=16
+[2026-08-20 05:00:38] progress  55.6%  stocks 9600/17276  skip=0  worker=46  batch=611  batch_size=16
+[2026-08-20 05:01:43] progress  57.9%  stocks 10000/17276  skip=0  worker=0  batch=612  batch_size=16
+[2026-08-20 05:03:05] progress  60.2%  stocks 10400/17276  skip=0  worker=42  batch=654  batch_size=16
+[2026-08-20 05:04:04] progress  62.5%  stocks 10800/17276  skip=0  worker=15  batch=674  batch_size=16
+[2026-08-20 05:05:14] progress  64.8%  stocks 11200/17276  skip=0  worker=1  batch=707  batch_size=16
+[2026-08-20 05:06:10] progress  67.1%  stocks 11600/17276  skip=0  worker=12  batch=718  batch_size=16
+[2026-08-20 05:07:04] progress  69.5%  stocks 12000/17276  skip=0  worker=6  batch=759  batch_size=16
+[2026-08-20 05:07:45] progress  71.8%  stocks 12400/17276  skip=0  worker=4  batch=757  batch_size=16
+[2026-08-20 05:08:51] progress  74.1%  stocks 12800/17276  skip=0  worker=5  batch=805  batch_size=16
+[2026-08-20 05:09:42] progress  76.4%  stocks 13200/17276  skip=0  worker=32  batch=832  batch_size=16
+[2026-08-20 05:11:02] progress  78.7%  stocks 13600/17276  skip=0  worker=5  batch=852  batch_size=16
+[2026-08-20 05:11:44] progress  81.0%  stocks 14000/17276  skip=0  worker=27  batch=874  batch_size=16
+[2026-08-20 05:12:58] progress  83.4%  stocks 14400/17276  skip=0  worker=29  batch=923  batch_size=16
+[2026-08-20 05:13:49] progress  85.7%  stocks 14800/17276  skip=0  worker=26  batch=920  batch_size=16
+[2026-08-20 05:14:45] progress  88.0%  stocks 15200/17276  skip=0  worker=1  batch=942  batch_size=16
+[2026-08-20 05:15:53] progress  90.3%  stocks 15600/17276  skip=0  worker=3  batch=991  batch_size=16
+[2026-08-20 05:16:35] progress  92.6%  stocks 16000/17276  skip=0  worker=13  batch=1001  batch_size=16
+[2026-08-20 05:17:21] progress  94.9%  stocks 16400/17276  skip=0  worker=3  batch=1038  batch_size=16
+[2026-08-20 05:18:24] progress  97.2%  stocks 16800/17276  skip=0  worker=19  batch=1054  batch_size=16
+[2026-08-20 05:19:37] progress 100.0%  stocks 17276/17276  skip=0  worker=41  batch=1076  batch_size=16
+[2026-08-20 05:19:37] horizon=5 merge fragments -> sharpe chunks pending=123
+[2026-08-20 05:22:13] progress   0.8%  sharpe_chunks 1/123  horizon=5  chunk_id=0
+[2026-08-20 05:24:50] progress   1.6%  sharpe_chunks 2/123  horizon=5  chunk_id=1
+[2026-08-20 05:27:19] progress   2.4%  sharpe_chunks 3/123  horizon=5  chunk_id=2
+[2026-08-20 05:29:46] progress   3.3%  sharpe_chunks 4/123  horizon=5  chunk_id=3
+[2026-08-20 05:32:14] progress   4.1%  sharpe_chunks 5/123  horizon=5  chunk_id=4
+[2026-08-20 05:34:47] progress   4.9%  sharpe_chunks 6/123  horizon=5  chunk_id=5
+[2026-08-20 05:37:19] progress   5.7%  sharpe_chunks 7/123  horizon=5  chunk_id=6
+[2026-08-20 05:39:53] progress   6.5%  sharpe_chunks 8/123  horizon=5  chunk_id=7
+[2026-08-20 05:42:25] progress   7.3%  sharpe_chunks 9/123  horizon=5  chunk_id=8
+[2026-08-20 05:45:00] progress   8.1%  sharpe_chunks 10/123  horizon=5  chunk_id=9
+[2026-08-20 05:47:32] progress   8.9%  sharpe_chunks 11/123  horizon=5  chunk_id=10
+[2026-08-20 05:50:05] progress   9.8%  sharpe_chunks 12/123  horizon=5  chunk_id=11
+[2026-08-20 05:52:37] progress  10.6%  sharpe_chunks 13/123  horizon=5  chunk_id=12
+[2026-08-20 05:55:10] progress  11.4%  sharpe_chunks 14/123  horizon=5  chunk_id=13
+[2026-08-20 05:57:42] progress  12.2%  sharpe_chunks 15/123  horizon=5  chunk_id=14
+[2026-08-20 06:00:15] progress  13.0%  sharpe_chunks 16/123  horizon=5  chunk_id=15
+[2026-08-20 06:02:46] progress  13.8%  sharpe_chunks 17/123  horizon=5  chunk_id=16
+[2026-08-20 06:05:16] progress  14.6%  sharpe_chunks 18/123  horizon=5  chunk_id=17
+[2026-08-20 06:07:46] progress  15.4%  sharpe_chunks 19/123  horizon=5  chunk_id=18
+[2026-08-20 06:10:18] progress  16.3%  sharpe_chunks 20/123  horizon=5  chunk_id=19
+[2026-08-20 06:12:47] progress  17.1%  sharpe_chunks 21/123  horizon=5  chunk_id=20
+[2026-08-20 06:15:17] progress  17.9%  sharpe_chunks 22/123  horizon=5  chunk_id=21
+[2026-08-20 06:17:47] progress  18.7%  sharpe_chunks 23/123  horizon=5  chunk_id=22
+[2026-08-20 06:20:16] progress  19.5%  sharpe_chunks 24/123  horizon=5  chunk_id=23
+[2026-08-20 06:22:47] progress  20.3%  sharpe_chunks 25/123  horizon=5  chunk_id=24
+[2026-08-20 06:25:16] progress  21.1%  sharpe_chunks 26/123  horizon=5  chunk_id=25
+[2026-08-20 06:27:45] progress  22.0%  sharpe_chunks 27/123  horizon=5  chunk_id=26
+[2026-08-20 06:30:15] progress  22.8%  sharpe_chunks 28/123  horizon=5  chunk_id=27
+[2026-08-20 06:32:45] progress  23.6%  sharpe_chunks 29/123  horizon=5  chunk_id=28
+[2026-08-20 06:35:17] progress  24.4%  sharpe_chunks 30/123  horizon=5  chunk_id=29
+[2026-08-20 06:37:47] progress  25.2%  sharpe_chunks 31/123  horizon=5  chunk_id=30
+[2026-08-20 06:40:17] progress  26.0%  sharpe_chunks 32/123  horizon=5  chunk_id=31
+[2026-08-20 06:42:47] progress  26.8%  sharpe_chunks 33/123  horizon=5  chunk_id=32
+[2026-08-20 06:45:15] progress  27.6%  sharpe_chunks 34/123  horizon=5  chunk_id=33
+[2026-08-20 06:47:45] progress  28.5%  sharpe_chunks 35/123  horizon=5  chunk_id=34
+[2026-08-20 06:50:17] progress  29.3%  sharpe_chunks 36/123  horizon=5  chunk_id=35
+[2026-08-20 06:52:48] progress  30.1%  sharpe_chunks 37/123  horizon=5  chunk_id=36
+[2026-08-20 06:55:18] progress  30.9%  sharpe_chunks 38/123  horizon=5  chunk_id=37
+[2026-08-20 06:57:52] progress  31.7%  sharpe_chunks 39/123  horizon=5  chunk_id=38
+[2026-08-20 07:00:24] progress  32.5%  sharpe_chunks 40/123  horizon=5  chunk_id=39
+[2026-08-20 07:02:54] progress  33.3%  sharpe_chunks 41/123  horizon=5  chunk_id=40
+[2026-08-20 07:05:24] progress  34.1%  sharpe_chunks 42/123  horizon=5  chunk_id=41
+[2026-08-20 07:07:55] progress  35.0%  sharpe_chunks 43/123  horizon=5  chunk_id=42
+[2026-08-20 07:10:30] progress  35.8%  sharpe_chunks 44/123  horizon=5  chunk_id=43
+[2026-08-20 07:13:01] progress  36.6%  sharpe_chunks 45/123  horizon=5  chunk_id=44
+[2026-08-20 07:15:33] progress  37.4%  sharpe_chunks 46/123  horizon=5  chunk_id=45
+[2026-08-20 07:18:05] progress  38.2%  sharpe_chunks 47/123  horizon=5  chunk_id=46
+[2026-08-20 07:20:40] progress  39.0%  sharpe_chunks 48/123  horizon=5  chunk_id=47
+[2026-08-20 07:23:13] progress  39.8%  sharpe_chunks 49/123  horizon=5  chunk_id=48
+[2026-08-20 07:25:45] progress  40.7%  sharpe_chunks 50/123  horizon=5  chunk_id=49
+[2026-08-20 07:28:17] progress  41.5%  sharpe_chunks 51/123  horizon=5  chunk_id=50
+[2026-08-20 07:30:52] progress  42.3%  sharpe_chunks 52/123  horizon=5  chunk_id=51
+[2026-08-20 07:33:23] progress  43.1%  sharpe_chunks 53/123  horizon=5  chunk_id=52
+[2026-08-20 07:35:55] progress  43.9%  sharpe_chunks 54/123  horizon=5  chunk_id=53
+[2026-08-20 07:38:27] progress  44.7%  sharpe_chunks 55/123  horizon=5  chunk_id=54
+[2026-08-20 07:40:58] progress  45.5%  sharpe_chunks 56/123  horizon=5  chunk_id=55
+[2026-08-20 07:43:30] progress  46.3%  sharpe_chunks 57/123  horizon=5  chunk_id=56
+[2026-08-20 07:46:02] progress  47.2%  sharpe_chunks 58/123  horizon=5  chunk_id=57
+[2026-08-20 07:48:34] progress  48.0%  sharpe_chunks 59/123  horizon=5  chunk_id=58
+[2026-08-20 07:51:07] progress  48.8%  sharpe_chunks 60/123  horizon=5  chunk_id=59
+[2026-08-20 07:53:35] progress  49.6%  sharpe_chunks 61/123  horizon=5  chunk_id=60
+[2026-08-20 07:56:06] progress  50.4%  sharpe_chunks 62/123  horizon=5  chunk_id=61
+[2026-08-20 07:58:39] progress  51.2%  sharpe_chunks 63/123  horizon=5  chunk_id=62
+[2026-08-20 08:01:11] progress  52.0%  sharpe_chunks 64/123  horizon=5  chunk_id=63
+[2026-08-20 08:03:41] progress  52.8%  sharpe_chunks 65/123  horizon=5  chunk_id=64
+[2026-08-20 08:06:06] progress  53.7%  sharpe_chunks 66/123  horizon=5  chunk_id=65
+[2026-08-20 08:08:40] progress  54.5%  sharpe_chunks 67/123  horizon=5  chunk_id=66
+[2026-08-20 08:11:11] progress  55.3%  sharpe_chunks 68/123  horizon=5  chunk_id=67
+[2026-08-20 08:13:33] progress  56.1%  sharpe_chunks 69/123  horizon=5  chunk_id=68
+[2026-08-20 08:16:06] progress  56.9%  sharpe_chunks 70/123  horizon=5  chunk_id=69
+[2026-08-20 08:18:38] progress  57.7%  sharpe_chunks 71/123  horizon=5  chunk_id=70
+[2026-08-20 08:20:59] progress  58.5%  sharpe_chunks 72/123  horizon=5  chunk_id=71
+[2026-08-20 08:23:27] progress  59.3%  sharpe_chunks 73/123  horizon=5  chunk_id=72
+[2026-08-20 08:25:59] progress  60.2%  sharpe_chunks 74/123  horizon=5  chunk_id=73
+[2026-08-20 08:28:19] progress  61.0%  sharpe_chunks 75/123  horizon=5  chunk_id=74
+[2026-08-20 08:30:23] progress  61.8%  sharpe_chunks 76/123  horizon=5  chunk_id=75
+[2026-08-20 08:32:55] progress  62.6%  sharpe_chunks 77/123  horizon=5  chunk_id=76
+[2026-08-20 08:35:25] progress  63.4%  sharpe_chunks 78/123  horizon=5  chunk_id=77
+[2026-08-20 08:37:10] progress  64.2%  sharpe_chunks 79/123  horizon=5  chunk_id=78
+[2026-08-20 08:39:31] progress  65.0%  sharpe_chunks 80/123  horizon=5  chunk_id=79
+[2026-08-20 08:42:05] progress  65.9%  sharpe_chunks 81/123  horizon=5  chunk_id=80
+[2026-08-20 08:43:50] progress  66.7%  sharpe_chunks 82/123  horizon=5  chunk_id=81
+[2026-08-20 08:45:52] progress  67.5%  sharpe_chunks 83/123  horizon=5  chunk_id=82
+[2026-08-20 08:48:27] progress  68.3%  sharpe_chunks 84/123  horizon=5  chunk_id=83
+[2026-08-20 08:50:22] progress  69.1%  sharpe_chunks 85/123  horizon=5  chunk_id=84
+[2026-08-20 08:52:12] progress  69.9%  sharpe_chunks 86/123  horizon=5  chunk_id=85
+[2026-08-20 08:54:41] progress  70.7%  sharpe_chunks 87/123  horizon=5  chunk_id=86
+[2026-08-20 08:56:43] progress  71.5%  sharpe_chunks 88/123  horizon=5  chunk_id=87
+[2026-08-20 08:58:23] progress  72.4%  sharpe_chunks 89/123  horizon=5  chunk_id=88
+[2026-08-20 09:00:40] progress  73.2%  sharpe_chunks 90/123  horizon=5  chunk_id=89
+[2026-08-20 09:03:17] progress  74.0%  sharpe_chunks 91/123  horizon=5  chunk_id=90
+[2026-08-20 09:05:46] progress  74.8%  sharpe_chunks 92/123  horizon=5  chunk_id=91
+[2026-08-20 09:08:17] progress  75.6%  sharpe_chunks 93/123  horizon=5  chunk_id=92
+[2026-08-20 09:10:45] progress  76.4%  sharpe_chunks 94/123  horizon=5  chunk_id=93
+[2026-08-20 09:13:12] progress  77.2%  sharpe_chunks 95/123  horizon=5  chunk_id=94
+[2026-08-20 09:15:42] progress  78.0%  sharpe_chunks 96/123  horizon=5  chunk_id=95
+[2026-08-20 09:18:11] progress  78.9%  sharpe_chunks 97/123  horizon=5  chunk_id=96
+[2026-08-20 09:20:39] progress  79.7%  sharpe_chunks 98/123  horizon=5  chunk_id=97
+[2026-08-20 09:23:16] progress  80.5%  sharpe_chunks 99/123  horizon=5  chunk_id=98
+[2026-08-20 09:25:57] progress  81.3%  sharpe_chunks 100/123  horizon=5  chunk_id=99
+[2026-08-20 09:28:31] progress  82.1%  sharpe_chunks 101/123  horizon=5  chunk_id=100
+[2026-08-20 09:31:03] progress  82.9%  sharpe_chunks 102/123  horizon=5  chunk_id=101
+[2026-08-20 09:33:42] progress  83.7%  sharpe_chunks 103/123  horizon=5  chunk_id=102
+[2026-08-20 09:36:18] progress  84.6%  sharpe_chunks 104/123  horizon=5  chunk_id=103
+[2026-08-20 09:38:52] progress  85.4%  sharpe_chunks 105/123  horizon=5  chunk_id=104
+[2026-08-20 09:41:22] progress  86.2%  sharpe_chunks 106/123  horizon=5  chunk_id=105
+[2026-08-20 09:43:49] progress  87.0%  sharpe_chunks 107/123  horizon=5  chunk_id=106
+[2026-08-20 09:46:15] progress  87.8%  sharpe_chunks 108/123  horizon=5  chunk_id=107
+[2026-08-20 09:48:44] progress  88.6%  sharpe_chunks 109/123  horizon=5  chunk_id=108
+[2026-08-20 09:51:09] progress  89.4%  sharpe_chunks 110/123  horizon=5  chunk_id=109
+[2026-08-20 09:53:37] progress  90.2%  sharpe_chunks 111/123  horizon=5  chunk_id=110
+[2026-08-20 09:56:12] progress  91.1%  sharpe_chunks 112/123  horizon=5  chunk_id=111
+[2026-08-20 09:58:51] progress  91.9%  sharpe_chunks 113/123  horizon=5  chunk_id=112
+[2026-08-20 10:01:21] progress  92.7%  sharpe_chunks 114/123  horizon=5  chunk_id=113
+[2026-08-20 10:03:48] progress  93.5%  sharpe_chunks 115/123  horizon=5  chunk_id=114
+[2026-08-20 10:06:12] progress  94.3%  sharpe_chunks 116/123  horizon=5  chunk_id=115
+[2026-08-20 10:08:37] progress  95.1%  sharpe_chunks 117/123  horizon=5  chunk_id=116
+[2026-08-20 10:11:00] progress  95.9%  sharpe_chunks 118/123  horizon=5  chunk_id=117
+[2026-08-20 10:13:25] progress  96.7%  sharpe_chunks 119/123  horizon=5  chunk_id=118
+[2026-08-20 10:15:49] progress  97.6%  sharpe_chunks 120/123  horizon=5  chunk_id=119
+[2026-08-20 10:18:17] progress  98.4%  sharpe_chunks 121/123  horizon=5  chunk_id=120
+[2026-08-20 10:20:47] progress  99.2%  sharpe_chunks 122/123  horizon=5  chunk_id=121
+[2026-08-20 10:22:14] progress 100.0%  sharpe_chunks 123/123  horizon=5  chunk_id=122
+[2026-08-20 10:22:20] horizon=20 STW scan stocks=17180 batches=1074 pending_chunks=123 workers=65 diag={'source': 'memory_budget', 'avail_gib': 344.8, 'total_gib': 377.5, 'reserve_gib': 16.0, 'budget_gib': 328.8, 'mem_per_worker_gib': 5.0, 'mem_cap': 65, 'cpu_cap': 112, 'swap_percent': 100.0, 'n_tasks': 1074, 'resolved_workers': 65} data_root=/data/kaibiao/data/projects/rpt-re/processed/us/stw_7846_rules/monthly
+[2026-08-20 10:24:54] progress   2.3%  stocks 400/17180  skip=0  worker=13  batch=14  batch_size=16
+[2026-08-20 10:25:32] progress   4.7%  stocks 800/17180  skip=0  worker=0  batch=1  batch_size=16
+[2026-08-20 10:26:15] progress   7.0%  stocks 1200/17180  skip=0  worker=12  batch=78  batch_size=16
+[2026-08-20 10:26:51] progress   9.3%  stocks 1600/17180  skip=0  worker=48  batch=114  batch_size=16
+[2026-08-20 10:27:39] progress  11.6%  stocks 2000/17180  skip=0  worker=58  batch=124  batch_size=16
+[2026-08-20 10:28:09] progress  14.0%  stocks 2400/17180  skip=0  worker=44  batch=175  batch_size=16
+[2026-08-20 10:28:55] progress  16.3%  stocks 2800/17180  skip=0  worker=24  batch=220  batch_size=16
+[2026-08-20 10:29:21] progress  18.6%  stocks 3200/17180  skip=0  worker=22  batch=218  batch_size=16
+[2026-08-20 10:29:53] progress  21.0%  stocks 3600/17180  skip=0  worker=23  batch=154  batch_size=16
+[2026-08-20 10:30:20] progress  23.3%  stocks 4000/17180  skip=0  worker=7  batch=268  batch_size=16
+[2026-08-20 10:30:54] progress  25.6%  stocks 4400/17180  skip=0  worker=28  batch=289  batch_size=16
+[2026-08-20 10:31:21] progress  27.9%  stocks 4800/17180  skip=0  worker=64  batch=325  batch_size=16
+[2026-08-20 10:31:47] progress  30.3%  stocks 5200/17180  skip=0  worker=32  batch=293  batch_size=16
+[2026-08-20 10:32:40] progress  32.6%  stocks 5600/17180  skip=0  worker=63  batch=324  batch_size=16
+[2026-08-20 10:35:06] progress  34.9%  stocks 6000/17180  skip=0  worker=8  batch=399  batch_size=16
+[2026-08-20 10:37:22] progress  37.3%  stocks 6400/17180  skip=0  worker=37  batch=428  batch_size=16
+[2026-08-20 10:38:48] progress  39.6%  stocks 6800/17180  skip=0  worker=56  batch=447  batch_size=16
+[2026-08-20 10:39:50] progress  41.9%  stocks 7200/17180  skip=0  worker=8  batch=464  batch_size=16
+[2026-08-20 10:41:14] progress  44.2%  stocks 7600/17180  skip=0  worker=15  batch=406  batch_size=16
+[2026-08-20 10:42:21] progress  46.6%  stocks 8000/17180  skip=0  worker=44  batch=500  batch_size=16
+[2026-08-20 10:44:25] progress  48.9%  stocks 8400/17180  skip=0  worker=4  batch=525  batch_size=16
+[2026-08-20 10:45:33] progress  51.2%  stocks 8800/17180  skip=0  worker=12  batch=533  batch_size=16
+[2026-08-20 10:46:55] progress  53.6%  stocks 9200/17180  skip=0  worker=63  batch=584  batch_size=16
+[2026-08-20 10:47:30] progress  55.9%  stocks 9600/17180  skip=0  worker=31  batch=617  batch_size=16
+[2026-08-20 10:48:46] progress  58.2%  stocks 10000/17180  skip=0  worker=36  batch=622  batch_size=16
+[2026-08-20 10:49:33] progress  60.5%  stocks 10400/17180  skip=0  worker=5  batch=656  batch_size=16
+[2026-08-20 10:50:46] progress  62.9%  stocks 10800/17180  skip=0  worker=15  batch=666  batch_size=16
+[2026-08-20 10:51:41] progress  65.2%  stocks 11200/17180  skip=0  worker=9  batch=725  batch_size=16
+[2026-08-20 10:52:34] progress  67.5%  stocks 11600/17180  skip=0  worker=21  batch=737  batch_size=16
+[2026-08-20 10:53:10] progress  69.8%  stocks 12000/17180  skip=0  worker=35  batch=751  batch_size=16
+[2026-08-20 10:54:07] progress  72.2%  stocks 12400/17180  skip=0  worker=27  batch=808  batch_size=16
+[2026-08-20 10:54:46] progress  74.5%  stocks 12800/17180  skip=0  worker=28  batch=809  batch_size=16
+[2026-08-20 10:55:55] progress  76.8%  stocks 13200/17180  skip=0  worker=58  batch=839  batch_size=16
+[2026-08-20 10:56:41] progress  79.2%  stocks 13600/17180  skip=0  worker=13  batch=859  batch_size=16
+[2026-08-20 10:57:44] progress  81.5%  stocks 14000/17180  skip=0  worker=47  batch=893  batch_size=16
+[2026-08-20 10:58:33] progress  83.8%  stocks 14400/17180  skip=0  worker=1  batch=912  batch_size=16
+[2026-08-20 10:59:30] progress  86.1%  stocks 14800/17180  skip=0  worker=36  batch=947  batch_size=16
+[2026-08-20 11:00:15] progress  88.5%  stocks 15200/17180  skip=0  worker=57  batch=968  batch_size=16
+[2026-08-20 11:01:07] progress  90.8%  stocks 15600/17180  skip=0  worker=4  batch=980  batch_size=16
+[2026-08-20 11:01:46] progress  93.1%  stocks 16000/17180  skip=0  worker=56  batch=1032  batch_size=16
+[2026-08-20 11:02:38] progress  95.5%  stocks 16400/17180  skip=0  worker=11  batch=1052  batch_size=16
+[2026-08-20 11:03:08] progress  97.8%  stocks 16800/17180  skip=0  worker=41  batch=1017  batch_size=16
+[2026-08-20 11:03:31] progress  99.5%  stocks 17100/17180  skip=0  worker=32  batch=1073  batch_size=16
+[2026-08-20 11:04:02] progress 100.0%  stocks 17180/17180  skip=0  worker=29  batch=1070  batch_size=16
+[2026-08-20 11:04:03] horizon=20 merge fragments -> sharpe chunks pending=123
+[2026-08-20 11:04:52] progress   0.8%  sharpe_chunks 1/123  horizon=20  chunk_id=0
+[2026-08-20 11:05:42] progress   1.6%  sharpe_chunks 2/123  horizon=20  chunk_id=1
+[2026-08-20 11:06:30] progress   2.4%  sharpe_chunks 3/123  horizon=20  chunk_id=2
+[2026-08-20 11:07:17] progress   3.3%  sharpe_chunks 4/123  horizon=20  chunk_id=3
+[2026-08-20 11:08:04] progress   4.1%  sharpe_chunks 5/123  horizon=20  chunk_id=4
+[2026-08-20 11:08:51] progress   4.9%  sharpe_chunks 6/123  horizon=20  chunk_id=5
+[2026-08-20 11:09:40] progress   5.7%  sharpe_chunks 7/123  horizon=20  chunk_id=6
+[2026-08-20 11:10:29] progress   6.5%  sharpe_chunks 8/123  horizon=20  chunk_id=7
+[2026-08-20 11:11:17] progress   7.3%  sharpe_chunks 9/123  horizon=20  chunk_id=8
+[2026-08-20 11:12:06] progress   8.1%  sharpe_chunks 10/123  horizon=20  chunk_id=9
+[2026-08-20 11:12:55] progress   8.9%  sharpe_chunks 11/123  horizon=20  chunk_id=10
+[2026-08-20 11:13:43] progress   9.8%  sharpe_chunks 12/123  horizon=20  chunk_id=11
+[2026-08-20 11:14:32] progress  10.6%  sharpe_chunks 13/123  horizon=20  chunk_id=12
+[2026-08-20 11:15:20] progress  11.4%  sharpe_chunks 14/123  horizon=20  chunk_id=13
+[2026-08-20 11:16:09] progress  12.2%  sharpe_chunks 15/123  horizon=20  chunk_id=14
+[2026-08-20 11:16:58] progress  13.0%  sharpe_chunks 16/123  horizon=20  chunk_id=15
+[2026-08-20 11:17:47] progress  13.8%  sharpe_chunks 17/123  horizon=20  chunk_id=16
+[2026-08-20 11:18:36] progress  14.6%  sharpe_chunks 18/123  horizon=20  chunk_id=17
+[2026-08-20 11:19:25] progress  15.4%  sharpe_chunks 19/123  horizon=20  chunk_id=18
+[2026-08-20 11:20:13] progress  16.3%  sharpe_chunks 20/123  horizon=20  chunk_id=19
+[2026-08-20 11:21:02] progress  17.1%  sharpe_chunks 21/123  horizon=20  chunk_id=20
+[2026-08-20 11:21:51] progress  17.9%  sharpe_chunks 22/123  horizon=20  chunk_id=21
+[2026-08-20 11:22:39] progress  18.7%  sharpe_chunks 23/123  horizon=20  chunk_id=22
+[2026-08-20 11:23:29] progress  19.5%  sharpe_chunks 24/123  horizon=20  chunk_id=23
+[2026-08-20 11:24:18] progress  20.3%  sharpe_chunks 25/123  horizon=20  chunk_id=24
+[2026-08-20 11:25:07] progress  21.1%  sharpe_chunks 26/123  horizon=20  chunk_id=25
+[2026-08-20 11:25:56] progress  22.0%  sharpe_chunks 27/123  horizon=20  chunk_id=26
+[2026-08-20 11:26:45] progress  22.8%  sharpe_chunks 28/123  horizon=20  chunk_id=27
+[2026-08-20 11:27:35] progress  23.6%  sharpe_chunks 29/123  horizon=20  chunk_id=28
+[2026-08-20 11:28:24] progress  24.4%  sharpe_chunks 30/123  horizon=20  chunk_id=29
+[2026-08-20 11:29:13] progress  25.2%  sharpe_chunks 31/123  horizon=20  chunk_id=30
+[2026-08-20 11:30:01] progress  26.0%  sharpe_chunks 32/123  horizon=20  chunk_id=31
+[2026-08-20 11:30:50] progress  26.8%  sharpe_chunks 33/123  horizon=20  chunk_id=32
+[2026-08-20 11:31:39] progress  27.6%  sharpe_chunks 34/123  horizon=20  chunk_id=33
+[2026-08-20 11:32:28] progress  28.5%  sharpe_chunks 35/123  horizon=20  chunk_id=34
+[2026-08-20 11:33:17] progress  29.3%  sharpe_chunks 36/123  horizon=20  chunk_id=35
+[2026-08-20 11:34:06] progress  30.1%  sharpe_chunks 37/123  horizon=20  chunk_id=36
+[2026-08-20 11:34:54] progress  30.9%  sharpe_chunks 38/123  horizon=20  chunk_id=37
+[2026-08-20 11:35:43] progress  31.7%  sharpe_chunks 39/123  horizon=20  chunk_id=38
+[2026-08-20 11:36:30] progress  32.5%  sharpe_chunks 40/123  horizon=20  chunk_id=39
+[2026-08-20 11:37:18] progress  33.3%  sharpe_chunks 41/123  horizon=20  chunk_id=40
+[2026-08-20 11:38:06] progress  34.1%  sharpe_chunks 42/123  horizon=20  chunk_id=41
+[2026-08-20 11:38:55] progress  35.0%  sharpe_chunks 43/123  horizon=20  chunk_id=42
+[2026-08-20 11:39:44] progress  35.8%  sharpe_chunks 44/123  horizon=20  chunk_id=43
+[2026-08-20 11:40:34] progress  36.6%  sharpe_chunks 45/123  horizon=20  chunk_id=44
+[2026-08-20 11:41:23] progress  37.4%  sharpe_chunks 46/123  horizon=20  chunk_id=45
+[2026-08-20 11:42:13] progress  38.2%  sharpe_chunks 47/123  horizon=20  chunk_id=46
+[2026-08-20 11:43:02] progress  39.0%  sharpe_chunks 48/123  horizon=20  chunk_id=47
+[2026-08-20 11:43:49] progress  39.8%  sharpe_chunks 49/123  horizon=20  chunk_id=48
+[2026-08-20 11:44:38] progress  40.7%  sharpe_chunks 50/123  horizon=20  chunk_id=49
+[2026-08-20 11:45:26] progress  41.5%  sharpe_chunks 51/123  horizon=20  chunk_id=50
+[2026-08-20 11:46:15] progress  42.3%  sharpe_chunks 52/123  horizon=20  chunk_id=51
+[2026-08-20 11:47:04] progress  43.1%  sharpe_chunks 53/123  horizon=20  chunk_id=52
+[2026-08-20 11:47:51] progress  43.9%  sharpe_chunks 54/123  horizon=20  chunk_id=53
+[2026-08-20 11:48:40] progress  44.7%  sharpe_chunks 55/123  horizon=20  chunk_id=54
+[2026-08-20 11:49:28] progress  45.5%  sharpe_chunks 56/123  horizon=20  chunk_id=55
+[2026-08-20 11:50:16] progress  46.3%  sharpe_chunks 57/123  horizon=20  chunk_id=56
+[2026-08-20 11:51:04] progress  47.2%  sharpe_chunks 58/123  horizon=20  chunk_id=57
+[2026-08-20 11:51:53] progress  48.0%  sharpe_chunks 59/123  horizon=20  chunk_id=58
+[2026-08-20 11:52:42] progress  48.8%  sharpe_chunks 60/123  horizon=20  chunk_id=59
+[2026-08-20 11:53:31] progress  49.6%  sharpe_chunks 61/123  horizon=20  chunk_id=60
+[2026-08-20 11:54:19] progress  50.4%  sharpe_chunks 62/123  horizon=20  chunk_id=61
+[2026-08-20 11:55:06] progress  51.2%  sharpe_chunks 63/123  horizon=20  chunk_id=62
+[2026-08-20 11:55:55] progress  52.0%  sharpe_chunks 64/123  horizon=20  chunk_id=63
+[2026-08-20 11:56:43] progress  52.8%  sharpe_chunks 65/123  horizon=20  chunk_id=64
+[2026-08-20 11:57:31] progress  53.7%  sharpe_chunks 66/123  horizon=20  chunk_id=65
+[2026-08-20 11:58:19] progress  54.5%  sharpe_chunks 67/123  horizon=20  chunk_id=66
+[2026-08-20 11:59:07] progress  55.3%  sharpe_chunks 68/123  horizon=20  chunk_id=67
+[2026-08-20 11:59:52] progress  56.1%  sharpe_chunks 69/123  horizon=20  chunk_id=68
+[2026-08-20 12:00:40] progress  56.9%  sharpe_chunks 70/123  horizon=20  chunk_id=69
+[2026-08-20 12:01:29] progress  57.7%  sharpe_chunks 71/123  horizon=20  chunk_id=70
+[2026-08-20 12:02:15] progress  58.5%  sharpe_chunks 72/123  horizon=20  chunk_id=71
+[2026-08-20 12:03:04] progress  59.3%  sharpe_chunks 73/123  horizon=20  chunk_id=72
+[2026-08-20 12:03:53] progress  60.2%  sharpe_chunks 74/123  horizon=20  chunk_id=73
+[2026-08-20 12:04:39] progress  61.0%  sharpe_chunks 75/123  horizon=20  chunk_id=74
+[2026-08-20 12:05:21] progress  61.8%  sharpe_chunks 76/123  horizon=20  chunk_id=75
+[2026-08-20 12:06:11] progress  62.6%  sharpe_chunks 77/123  horizon=20  chunk_id=76
+[2026-08-20 12:07:00] progress  63.4%  sharpe_chunks 78/123  horizon=20  chunk_id=77
+[2026-08-20 12:07:37] progress  64.2%  sharpe_chunks 79/123  horizon=20  chunk_id=78
+[2026-08-20 12:08:23] progress  65.0%  sharpe_chunks 80/123  horizon=20  chunk_id=79
+[2026-08-20 12:09:13] progress  65.9%  sharpe_chunks 81/123  horizon=20  chunk_id=80
+[2026-08-20 12:09:51] progress  66.7%  sharpe_chunks 82/123  horizon=20  chunk_id=81
+[2026-08-20 12:10:33] progress  67.5%  sharpe_chunks 83/123  horizon=20  chunk_id=82
+[2026-08-20 12:11:22] progress  68.3%  sharpe_chunks 84/123  horizon=20  chunk_id=83
+[2026-08-20 12:12:02] progress  69.1%  sharpe_chunks 85/123  horizon=20  chunk_id=84
+[2026-08-20 12:12:41] progress  69.9%  sharpe_chunks 86/123  horizon=20  chunk_id=85
+[2026-08-20 12:13:29] progress  70.7%  sharpe_chunks 87/123  horizon=20  chunk_id=86
+[2026-08-20 12:14:12] progress  71.5%  sharpe_chunks 88/123  horizon=20  chunk_id=87
+[2026-08-20 12:14:49] progress  72.4%  sharpe_chunks 89/123  horizon=20  chunk_id=88
+[2026-08-20 12:15:34] progress  73.2%  sharpe_chunks 90/123  horizon=20  chunk_id=89
+[2026-08-20 12:16:23] progress  74.0%  sharpe_chunks 91/123  horizon=20  chunk_id=90
+[2026-08-20 12:17:11] progress  74.8%  sharpe_chunks 92/123  horizon=20  chunk_id=91
+[2026-08-20 12:17:59] progress  75.6%  sharpe_chunks 93/123  horizon=20  chunk_id=92
+[2026-08-20 12:18:48] progress  76.4%  sharpe_chunks 94/123  horizon=20  chunk_id=93
+[2026-08-20 12:19:36] progress  77.2%  sharpe_chunks 95/123  horizon=20  chunk_id=94
+[2026-08-20 12:20:23] progress  78.0%  sharpe_chunks 96/123  horizon=20  chunk_id=95
+[2026-08-20 12:21:10] progress  78.9%  sharpe_chunks 97/123  horizon=20  chunk_id=96
+[2026-08-20 12:21:58] progress  79.7%  sharpe_chunks 98/123  horizon=20  chunk_id=97
+[2026-08-20 12:22:46] progress  80.5%  sharpe_chunks 99/123  horizon=20  chunk_id=98
+[2026-08-20 12:23:34] progress  81.3%  sharpe_chunks 100/123  horizon=20  chunk_id=99
+[2026-08-20 12:24:21] progress  82.1%  sharpe_chunks 101/123  horizon=20  chunk_id=100
+[2026-08-20 12:25:09] progress  82.9%  sharpe_chunks 102/123  horizon=20  chunk_id=101
+[2026-08-20 12:25:57] progress  83.7%  sharpe_chunks 103/123  horizon=20  chunk_id=102
+[2026-08-20 12:26:44] progress  84.6%  sharpe_chunks 104/123  horizon=20  chunk_id=103
+[2026-08-20 12:27:32] progress  85.4%  sharpe_chunks 105/123  horizon=20  chunk_id=104
+[2026-08-20 12:28:19] progress  86.2%  sharpe_chunks 106/123  horizon=20  chunk_id=105
+[2026-08-20 12:29:06] progress  87.0%  sharpe_chunks 107/123  horizon=20  chunk_id=106
+[2026-08-20 12:29:53] progress  87.8%  sharpe_chunks 108/123  horizon=20  chunk_id=107
+[2026-08-20 12:30:39] progress  88.6%  sharpe_chunks 109/123  horizon=20  chunk_id=108
+[2026-08-20 12:31:26] progress  89.4%  sharpe_chunks 110/123  horizon=20  chunk_id=109
+[2026-08-20 12:32:13] progress  90.2%  sharpe_chunks 111/123  horizon=20  chunk_id=110
+[2026-08-20 12:33:01] progress  91.1%  sharpe_chunks 112/123  horizon=20  chunk_id=111
+[2026-08-20 12:33:48] progress  91.9%  sharpe_chunks 113/123  horizon=20  chunk_id=112
+[2026-08-20 12:34:35] progress  92.7%  sharpe_chunks 114/123  horizon=20  chunk_id=113
+[2026-08-20 12:35:23] progress  93.5%  sharpe_chunks 115/123  horizon=20  chunk_id=114
+[2026-08-20 12:36:10] progress  94.3%  sharpe_chunks 116/123  horizon=20  chunk_id=115
+[2026-08-20 12:36:57] progress  95.1%  sharpe_chunks 117/123  horizon=20  chunk_id=116
+[2026-08-20 12:37:44] progress  95.9%  sharpe_chunks 118/123  horizon=20  chunk_id=117
+[2026-08-20 12:38:32] progress  96.7%  sharpe_chunks 119/123  horizon=20  chunk_id=118
+[2026-08-20 12:39:20] progress  97.6%  sharpe_chunks 120/123  horizon=20  chunk_id=119
+[2026-08-20 12:40:08] progress  98.4%  sharpe_chunks 121/123  horizon=20  chunk_id=120
+[2026-08-20 12:40:55] progress  99.2%  sharpe_chunks 122/123  horizon=20  chunk_id=121
+[2026-08-20 12:41:24] progress 100.0%  sharpe_chunks 123/123  horizon=20  chunk_id=122
+[2026-08-20 12:41:27] horizon=60 STW scan stocks=16946 batches=1060 pending_chunks=123 workers=65 diag={'source': 'memory_budget', 'avail_gib': 344.6, 'total_gib': 377.5, 'reserve_gib': 16.0, 'budget_gib': 328.6, 'mem_per_worker_gib': 5.0, 'mem_cap': 65, 'cpu_cap': 112, 'swap_percent': 100.0, 'n_tasks': 1060, 'resolved_workers': 65} data_root=/data/kaibiao/data/projects/rpt-re/processed/us/stw_7846_rules/quarterly
+[2026-08-20 12:43:53] progress   2.4%  stocks 400/16946  skip=0  worker=30  batch=31  batch_size=16
+[2026-08-20 12:44:35] progress   4.7%  stocks 800/16946  skip=0  worker=14  batch=80  batch_size=16
+[2026-08-20 12:45:05] progress   7.1%  stocks 1200/16946  skip=0  worker=40  batch=41  batch_size=16
+[2026-08-20 12:45:57] progress   9.4%  stocks 1600/16946  skip=0  worker=45  batch=111  batch_size=16
+[2026-08-20 12:46:37] progress  11.8%  stocks 2000/16946  skip=0  worker=14  batch=145  batch_size=16
+[2026-08-20 12:47:18] progress  14.2%  stocks 2400/16946  skip=0  worker=38  batch=169  batch_size=16
+[2026-08-20 12:47:50] progress  16.5%  stocks 2800/16946  skip=0  worker=44  batch=175  batch_size=16
+[2026-08-20 12:48:22] progress  18.9%  stocks 3200/16946  skip=0  worker=27  batch=223  batch_size=16
+[2026-08-20 12:48:54] progress  21.2%  stocks 3600/16946  skip=0  worker=9  batch=140  batch_size=16
+[2026-08-20 12:49:24] progress  23.6%  stocks 4000/16946  skip=0  worker=6  batch=267  batch_size=16
+[2026-08-20 12:49:57] progress  26.0%  stocks 4400/16946  skip=0  worker=35  batch=296  batch_size=16
+[2026-08-20 12:50:21] progress  28.3%  stocks 4800/16946  skip=0  worker=57  batch=318  batch_size=16
+[2026-08-20 12:50:47] progress  30.7%  stocks 5200/16946  skip=0  worker=55  batch=251  batch_size=16
+[2026-08-20 12:51:56] progress  33.0%  stocks 5600/16946  skip=0  worker=1  batch=327  batch_size=16
+[2026-08-20 12:54:10] progress  35.4%  stocks 6000/16946  skip=0  worker=48  batch=374  batch_size=16
+[2026-08-20 12:56:57] progress  37.8%  stocks 6400/16946  skip=0  worker=47  batch=438  batch_size=16
+[2026-08-20 12:57:46] progress  40.1%  stocks 6800/16946  skip=0  worker=58  batch=449  batch_size=16
+[2026-08-20 12:58:36] progress  42.5%  stocks 7200/16946  skip=0  worker=38  batch=364  batch_size=16
+[2026-08-20 13:00:30] progress  44.8%  stocks 7600/16946  skip=0  worker=36  batch=492  batch_size=16
+[2026-08-20 13:01:21] progress  47.2%  stocks 8000/16946  skip=0  worker=46  batch=502  batch_size=16
+[2026-08-20 13:03:20] progress  49.6%  stocks 8400/16946  skip=0  worker=42  batch=563  batch_size=16
+[2026-08-20 13:04:33] progress  51.9%  stocks 8800/16946  skip=0  worker=50  batch=506  batch_size=16
+[2026-08-20 13:05:49] progress  54.3%  stocks 9200/16946  skip=0  worker=55  batch=576  batch_size=16
+[2026-08-20 13:06:33] progress  56.7%  stocks 9600/16946  skip=0  worker=24  batch=610  batch_size=16
+[2026-08-20 13:07:33] progress  59.0%  stocks 10000/16946  skip=0  worker=33  batch=619  batch_size=16
+[2026-08-20 13:08:41] progress  61.4%  stocks 10400/16946  skip=0  worker=18  batch=669  batch_size=16
+[2026-08-20 13:09:45] progress  63.7%  stocks 10800/16946  skip=0  worker=38  batch=689  batch_size=16
+[2026-08-20 13:10:36] progress  66.1%  stocks 11200/16946  skip=0  worker=57  batch=708  batch_size=16
+[2026-08-20 13:11:24] progress  68.5%  stocks 11600/16946  skip=0  worker=16  batch=667  batch_size=16
+[2026-08-20 13:11:57] progress  70.8%  stocks 12000/16946  skip=0  worker=15  batch=666  batch_size=16
+[2026-08-20 13:12:56] progress  73.2%  stocks 12400/16946  skip=0  worker=14  batch=795  batch_size=16
+[2026-08-20 13:13:48] progress  75.5%  stocks 12800/16946  skip=0  worker=32  batch=813  batch_size=16
+[2026-08-20 13:14:50] progress  77.9%  stocks 13200/16946  skip=0  worker=60  batch=841  batch_size=16
+[2026-08-20 13:15:38] progress  80.3%  stocks 13600/16946  skip=0  worker=15  batch=861  batch_size=16
+[2026-08-20 13:16:44] progress  82.6%  stocks 14000/16946  skip=0  worker=45  batch=891  batch_size=16
+[2026-08-20 13:17:32] progress  85.0%  stocks 14400/16946  skip=0  worker=5  batch=916  batch_size=16
+[2026-08-20 13:18:35] progress  87.3%  stocks 14800/16946  skip=0  worker=25  batch=871  batch_size=16
+[2026-08-20 13:19:08] progress  89.7%  stocks 15200/16946  skip=0  worker=49  batch=960  batch_size=16
+[2026-08-20 13:19:55] progress  92.1%  stocks 15600/16946  skip=0  worker=4  batch=980  batch_size=16
+[2026-08-20 13:22:29] progress 100.0%  stocks 16946/16946  skip=0  worker=8  batch=1049  batch_size=16
+[2026-08-20 13:22:30] horizon=60 merge fragments -> sharpe chunks pending=123
+[2026-08-20 13:22:58] progress   0.8%  sharpe_chunks 1/123  horizon=60  chunk_id=0
+[2026-08-20 13:23:26] progress   1.6%  sharpe_chunks 2/123  horizon=60  chunk_id=1
+[2026-08-20 13:23:52] progress   2.4%  sharpe_chunks 3/123  horizon=60  chunk_id=2
+[2026-08-20 13:24:20] progress   3.3%  sharpe_chunks 4/123  horizon=60  chunk_id=3
+[2026-08-20 13:24:47] progress   4.1%  sharpe_chunks 5/123  horizon=60  chunk_id=4
+[2026-08-20 13:25:15] progress   4.9%  sharpe_chunks 6/123  horizon=60  chunk_id=5
+[2026-08-20 13:25:42] progress   5.7%  sharpe_chunks 7/123  horizon=60  chunk_id=6
+[2026-08-20 13:26:11] progress   6.5%  sharpe_chunks 8/123  horizon=60  chunk_id=7
+[2026-08-20 13:26:39] progress   7.3%  sharpe_chunks 9/123  horizon=60  chunk_id=8
+[2026-08-20 13:27:06] progress   8.1%  sharpe_chunks 10/123  horizon=60  chunk_id=9
+[2026-08-20 13:27:35] progress   8.9%  sharpe_chunks 11/123  horizon=60  chunk_id=10
+[2026-08-20 13:28:03] progress   9.8%  sharpe_chunks 12/123  horizon=60  chunk_id=11
+[2026-08-20 13:28:30] progress  10.6%  sharpe_chunks 13/123  horizon=60  chunk_id=12
+[2026-08-20 13:28:58] progress  11.4%  sharpe_chunks 14/123  horizon=60  chunk_id=13
+[2026-08-20 13:29:26] progress  12.2%  sharpe_chunks 15/123  horizon=60  chunk_id=14
+[2026-08-20 13:29:54] progress  13.0%  sharpe_chunks 16/123  horizon=60  chunk_id=15
+[2026-08-20 13:30:21] progress  13.8%  sharpe_chunks 17/123  horizon=60  chunk_id=16
+[2026-08-20 13:30:47] progress  14.6%  sharpe_chunks 18/123  horizon=60  chunk_id=17
+[2026-08-20 13:31:14] progress  15.4%  sharpe_chunks 19/123  horizon=60  chunk_id=18
+[2026-08-20 13:31:42] progress  16.3%  sharpe_chunks 20/123  horizon=60  chunk_id=19
+[2026-08-20 13:32:08] progress  17.1%  sharpe_chunks 21/123  horizon=60  chunk_id=20
+[2026-08-20 13:32:34] progress  17.9%  sharpe_chunks 22/123  horizon=60  chunk_id=21
+[2026-08-20 13:33:01] progress  18.7%  sharpe_chunks 23/123  horizon=60  chunk_id=22
+[2026-08-20 13:33:28] progress  19.5%  sharpe_chunks 24/123  horizon=60  chunk_id=23
+[2026-08-20 13:33:55] progress  20.3%  sharpe_chunks 25/123  horizon=60  chunk_id=24
+[2026-08-20 13:34:22] progress  21.1%  sharpe_chunks 26/123  horizon=60  chunk_id=25
+[2026-08-20 13:34:50] progress  22.0%  sharpe_chunks 27/123  horizon=60  chunk_id=26
+[2026-08-20 13:35:17] progress  22.8%  sharpe_chunks 28/123  horizon=60  chunk_id=27
+[2026-08-20 13:35:43] progress  23.6%  sharpe_chunks 29/123  horizon=60  chunk_id=28
+[2026-08-20 13:36:11] progress  24.4%  sharpe_chunks 30/123  horizon=60  chunk_id=29
+[2026-08-20 13:36:38] progress  25.2%  sharpe_chunks 31/123  horizon=60  chunk_id=30
+[2026-08-20 13:37:05] progress  26.0%  sharpe_chunks 32/123  horizon=60  chunk_id=31
+[2026-08-20 13:37:33] progress  26.8%  sharpe_chunks 33/123  horizon=60  chunk_id=32
+[2026-08-20 13:37:59] progress  27.6%  sharpe_chunks 34/123  horizon=60  chunk_id=33
+[2026-08-20 13:38:26] progress  28.5%  sharpe_chunks 35/123  horizon=60  chunk_id=34
+[2026-08-20 13:38:54] progress  29.3%  sharpe_chunks 36/123  horizon=60  chunk_id=35
+[2026-08-20 13:39:20] progress  30.1%  sharpe_chunks 37/123  horizon=60  chunk_id=36
+[2026-08-20 13:39:48] progress  30.9%  sharpe_chunks 38/123  horizon=60  chunk_id=37
+[2026-08-20 13:40:15] progress  31.7%  sharpe_chunks 39/123  horizon=60  chunk_id=38
+[2026-08-20 13:40:41] progress  32.5%  sharpe_chunks 40/123  horizon=60  chunk_id=39
+[2026-08-20 13:41:08] progress  33.3%  sharpe_chunks 41/123  horizon=60  chunk_id=40
+[2026-08-20 13:41:35] progress  34.1%  sharpe_chunks 42/123  horizon=60  chunk_id=41
+[2026-08-20 13:42:03] progress  35.0%  sharpe_chunks 43/123  horizon=60  chunk_id=42
+[2026-08-20 13:42:31] progress  35.8%  sharpe_chunks 44/123  horizon=60  chunk_id=43
+[2026-08-20 13:42:57] progress  36.6%  sharpe_chunks 45/123  horizon=60  chunk_id=44
+[2026-08-20 13:43:25] progress  37.4%  sharpe_chunks 46/123  horizon=60  chunk_id=45
+[2026-08-20 13:43:53] progress  38.2%  sharpe_chunks 47/123  horizon=60  chunk_id=46
+[2026-08-20 13:44:20] progress  39.0%  sharpe_chunks 48/123  horizon=60  chunk_id=47
+[2026-08-20 13:44:48] progress  39.8%  sharpe_chunks 49/123  horizon=60  chunk_id=48
+[2026-08-20 13:45:16] progress  40.7%  sharpe_chunks 50/123  horizon=60  chunk_id=49
+[2026-08-20 13:45:44] progress  41.5%  sharpe_chunks 51/123  horizon=60  chunk_id=50
+[2026-08-20 13:46:12] progress  42.3%  sharpe_chunks 52/123  horizon=60  chunk_id=51
+[2026-08-20 13:46:39] progress  43.1%  sharpe_chunks 53/123  horizon=60  chunk_id=52
+[2026-08-20 13:47:05] progress  43.9%  sharpe_chunks 54/123  horizon=60  chunk_id=53
+[2026-08-20 13:47:33] progress  44.7%  sharpe_chunks 55/123  horizon=60  chunk_id=54
+[2026-08-20 13:48:01] progress  45.5%  sharpe_chunks 56/123  horizon=60  chunk_id=55
+[2026-08-20 13:48:29] progress  46.3%  sharpe_chunks 57/123  horizon=60  chunk_id=56
+[2026-08-20 13:48:56] progress  47.2%  sharpe_chunks 58/123  horizon=60  chunk_id=57
+[2026-08-20 13:49:24] progress  48.0%  sharpe_chunks 59/123  horizon=60  chunk_id=58
+[2026-08-20 13:49:52] progress  48.8%  sharpe_chunks 60/123  horizon=60  chunk_id=59
+[2026-08-20 13:50:20] progress  49.6%  sharpe_chunks 61/123  horizon=60  chunk_id=60
+[2026-08-20 13:50:47] progress  50.4%  sharpe_chunks 62/123  horizon=60  chunk_id=61
+[2026-08-20 13:51:15] progress  51.2%  sharpe_chunks 63/123  horizon=60  chunk_id=62
+[2026-08-20 13:51:43] progress  52.0%  sharpe_chunks 64/123  horizon=60  chunk_id=63
+[2026-08-20 13:52:10] progress  52.8%  sharpe_chunks 65/123  horizon=60  chunk_id=64
+[2026-08-20 13:52:37] progress  53.7%  sharpe_chunks 66/123  horizon=60  chunk_id=65
+[2026-08-20 13:53:06] progress  54.5%  sharpe_chunks 67/123  horizon=60  chunk_id=66
+[2026-08-20 13:53:33] progress  55.3%  sharpe_chunks 68/123  horizon=60  chunk_id=67
+[2026-08-20 13:54:00] progress  56.1%  sharpe_chunks 69/123  horizon=60  chunk_id=68
+[2026-08-20 13:54:28] progress  56.9%  sharpe_chunks 70/123  horizon=60  chunk_id=69
+[2026-08-20 13:54:55] progress  57.7%  sharpe_chunks 71/123  horizon=60  chunk_id=70
+[2026-08-20 13:55:21] progress  58.5%  sharpe_chunks 72/123  horizon=60  chunk_id=71
+[2026-08-20 13:55:48] progress  59.3%  sharpe_chunks 73/123  horizon=60  chunk_id=72
+[2026-08-20 13:56:16] progress  60.2%  sharpe_chunks 74/123  horizon=60  chunk_id=73
+[2026-08-20 13:56:43] progress  61.0%  sharpe_chunks 75/123  horizon=60  chunk_id=74
+[2026-08-20 13:57:08] progress  61.8%  sharpe_chunks 76/123  horizon=60  chunk_id=75
+[2026-08-20 13:57:34] progress  62.6%  sharpe_chunks 77/123  horizon=60  chunk_id=76
+[2026-08-20 13:58:02] progress  63.4%  sharpe_chunks 78/123  horizon=60  chunk_id=77
+[2026-08-20 13:58:26] progress  64.2%  sharpe_chunks 79/123  horizon=60  chunk_id=78
+[2026-08-20 13:58:52] progress  65.0%  sharpe_chunks 80/123  horizon=60  chunk_id=79
+[2026-08-20 13:59:20] progress  65.9%  sharpe_chunks 81/123  horizon=60  chunk_id=80
+[2026-08-20 13:59:44] progress  66.7%  sharpe_chunks 82/123  horizon=60  chunk_id=81
+[2026-08-20 14:00:09] progress  67.5%  sharpe_chunks 83/123  horizon=60  chunk_id=82
+[2026-08-20 14:00:37] progress  68.3%  sharpe_chunks 84/123  horizon=60  chunk_id=83
+[2026-08-20 14:01:01] progress  69.1%  sharpe_chunks 85/123  horizon=60  chunk_id=84
+[2026-08-20 14:01:24] progress  69.9%  sharpe_chunks 86/123  horizon=60  chunk_id=85
+[2026-08-20 14:01:52] progress  70.7%  sharpe_chunks 87/123  horizon=60  chunk_id=86
+[2026-08-20 14:02:18] progress  71.5%  sharpe_chunks 88/123  horizon=60  chunk_id=87
+[2026-08-20 14:02:41] progress  72.4%  sharpe_chunks 89/123  horizon=60  chunk_id=88
+[2026-08-20 14:03:08] progress  73.2%  sharpe_chunks 90/123  horizon=60  chunk_id=89
+[2026-08-20 14:03:36] progress  74.0%  sharpe_chunks 91/123  horizon=60  chunk_id=90
+[2026-08-20 14:04:02] progress  74.8%  sharpe_chunks 92/123  horizon=60  chunk_id=91
+[2026-08-20 14:04:30] progress  75.6%  sharpe_chunks 93/123  horizon=60  chunk_id=92
+[2026-08-20 14:04:57] progress  76.4%  sharpe_chunks 94/123  horizon=60  chunk_id=93
+[2026-08-20 14:05:24] progress  77.2%  sharpe_chunks 95/123  horizon=60  chunk_id=94
+[2026-08-20 14:05:52] progress  78.0%  sharpe_chunks 96/123  horizon=60  chunk_id=95
+[2026-08-20 14:06:20] progress  78.9%  sharpe_chunks 97/123  horizon=60  chunk_id=96
+[2026-08-20 14:06:47] progress  79.7%  sharpe_chunks 98/123  horizon=60  chunk_id=97
+[2026-08-20 14:07:15] progress  80.5%  sharpe_chunks 99/123  horizon=60  chunk_id=98
+[2026-08-20 14:07:43] progress  81.3%  sharpe_chunks 100/123  horizon=60  chunk_id=99
+[2026-08-20 14:08:09] progress  82.1%  sharpe_chunks 101/123  horizon=60  chunk_id=100
+[2026-08-20 14:08:36] progress  82.9%  sharpe_chunks 102/123  horizon=60  chunk_id=101
+[2026-08-20 14:09:03] progress  83.7%  sharpe_chunks 103/123  horizon=60  chunk_id=102
+[2026-08-20 14:09:30] progress  84.6%  sharpe_chunks 104/123  horizon=60  chunk_id=103
+[2026-08-20 14:09:59] progress  85.4%  sharpe_chunks 105/123  horizon=60  chunk_id=104
+[2026-08-20 14:10:26] progress  86.2%  sharpe_chunks 106/123  horizon=60  chunk_id=105
+[2026-08-20 14:10:53] progress  87.0%  sharpe_chunks 107/123  horizon=60  chunk_id=106
+[2026-08-20 14:11:21] progress  87.8%  sharpe_chunks 108/123  horizon=60  chunk_id=107
+[2026-08-20 14:11:48] progress  88.6%  sharpe_chunks 109/123  horizon=60  chunk_id=108
+[2026-08-20 14:12:15] progress  89.4%  sharpe_chunks 110/123  horizon=60  chunk_id=109
+[2026-08-20 14:12:42] progress  90.2%  sharpe_chunks 111/123  horizon=60  chunk_id=110
+[2026-08-20 14:13:08] progress  91.1%  sharpe_chunks 112/123  horizon=60  chunk_id=111
+[2026-08-20 14:13:36] progress  91.9%  sharpe_chunks 113/123  horizon=60  chunk_id=112
+[2026-08-20 14:14:03] progress  92.7%  sharpe_chunks 114/123  horizon=60  chunk_id=113
+[2026-08-20 14:14:31] progress  93.5%  sharpe_chunks 115/123  horizon=60  chunk_id=114
+[2026-08-20 14:14:58] progress  94.3%  sharpe_chunks 116/123  horizon=60  chunk_id=115
+[2026-08-20 14:15:25] progress  95.1%  sharpe_chunks 117/123  horizon=60  chunk_id=116
+[2026-08-20 14:15:53] progress  95.9%  sharpe_chunks 118/123  horizon=60  chunk_id=117
+[2026-08-20 14:16:18] progress  96.7%  sharpe_chunks 119/123  horizon=60  chunk_id=118
+[2026-08-20 14:16:46] progress  97.6%  sharpe_chunks 120/123  horizon=60  chunk_id=119
+[2026-08-20 14:17:13] progress  98.4%  sharpe_chunks 121/123  horizon=60  chunk_id=120
+[2026-08-20 14:17:40] progress  99.2%  sharpe_chunks 122/123  horizon=60  chunk_id=121
+[2026-08-20 14:17:58] progress 100.0%  sharpe_chunks 123/123  horizon=60  chunk_id=122
+[2026-08-20 14:17:59] horizon=5 wrote combined summaries /data/kaibiao/data/projects/rpt-re/processed/us/stw_7846_rules/weekly/stw_7846_sharpes.parquet
+[2026-08-20 14:17:59] Traceback (most recent call last):
+[2026-08-20 14:17:59]   File "/home/zkb/rpt-re/scripts/py/08_stw_7846_rules.py", line 636, in <module>
+[2026-08-20 14:17:59]     main()
+[2026-08-20 14:17:59]     ~~~~^^
+[2026-08-20 14:17:59]   File "/home/zkb/rpt-re/scripts/py/08_stw_7846_rules.py", line 630, in main
+[2026-08-20 14:17:59]     run_all(args)
+[2026-08-20 14:17:59]     ~~~~~~~^^^^^^
+[2026-08-20 14:17:59]   File "/home/zkb/rpt-re/scripts/py/08_stw_7846_rules.py", line 520, in run_all
+[2026-08-20 14:17:59]     written.extend(run_backtest(args))
+[2026-08-20 14:17:59]                    ~~~~~~~~~~~~^^^^^^
+[2026-08-20 14:17:59]   File "/home/zkb/rpt-re/scripts/py/08_stw_7846_rules.py", line 475, in run_backtest
+[2026-08-20 14:17:59]     cnn_sharpes = resolve_cnn_sharpes(args, horizon)
+[2026-08-20 14:17:59]   File "/home/zkb/rpt-re/scripts/py/08_stw_7846_rules.py", line 117, in resolve_cnn_sharpes
+[2026-08-20 14:17:59]     sharpes = load_figure8_cnn_sharpes(
+[2026-08-20 14:17:59]         args.market,
+[2026-08-20 14:17:59]     ...<3 lines>...
+[2026-08-20 14:17:59]         log=log,
+[2026-08-20 14:17:59]     )
+[2026-08-20 14:17:59]   File "/home/zkb/rpt-re/src/backtest/stw_io.py", line 251, in load_figure8_cnn_sharpes
+[2026-08-20 14:17:59]     out[scheme] = _hl_sharpe_from_h1_sheet(sheet, tag)
+[2026-08-20 14:17:59]                   ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+[2026-08-20 14:17:59]   File "/home/zkb/rpt-re/src/backtest/stw_io.py", line 221, in _hl_sharpe_from_h1_sheet
+[2026-08-20 14:17:59]     raise KeyError(f"H1 sheet missing column {col}; got {list(sheet.columns)}")
+[2026-08-20 14:17:59] KeyError: "H1 sheet missing column ('Sharpe Ratio', 'DH'); got ['Annualized Return', 'Unnamed: 2', 'Unnamed: 3', 'Unnamed: 4', 'Unnamed: 5', 'Unnamed: 6', 'Unnamed: 7', 'Unnamed: 8', 'Unnamed: 9', 'Unnamed: 10', 'Unnamed: 11', 'Unnamed: 12', 'Annualized Risk', 'Unnamed: 14', 'Unnamed: 15', 'Unnamed: 16', 'Unnamed: 17', 'Unnamed: 18', 'Unnamed: 19', 'Unnamed: 20', 'Unnamed: 21', 'Unnamed: 22', 'Unnamed: 23', 'Unnamed: 24', 'Sharpe Ratio', 'Unnamed: 26', 'Unnamed: 27', 'Unnamed: 28', 'Unnamed: 29', 'Unnamed: 30', 'Unnamed: 31', 'Unnamed: 32', 'Unnamed: 33', 'Unnamed: 34', 'Unnamed: 35', 'Unnamed: 36', 'Annualized Active Return', 'Unnamed: 38', 'Unnamed: 39', 'Unnamed: 40', 'Unnamed: 41', 'Unnamed: 42', 'Unnamed: 43', 'Unnamed: 44', 'Unnamed: 45', 'Unnamed: 46', 'Unnamed: 47', 'Unnamed: 48', 'Annualized Active Risk', 'Unnamed: 50', 'Unnamed: 51', 'Unnamed: 52', 'Unnamed: 53', 'Unnamed: 54', 'Unnamed: 55', 'Unnamed: 56', 'Unnamed: 57', 'Unnamed: 58', 'Unnamed: 59', 'Unnamed: 60', 'Information Ratio', 'Unnamed: 62', 'Unnamed: 63', 'Unnamed: 64', 'Unnamed: 65', 'Unnamed: 66', 'Unnamed: 67', 'Unnamed: 68', 'Unnamed: 69', 'Unnamed: 70', 'Unnamed: 71', 'Unnamed: 72', 'Max Drawdown (Raw)', 'Unnamed: 74', 'Unnamed: 75', 'Unnamed: 76', 'Unnamed: 77', 'Unnamed: 78', 'Unnamed: 79', 'Unnamed: 80', 'Unnamed: 81', 'Unnamed: 82', 'Unnamed: 83', 'Unnamed: 84', 'Max Drawdown (Active)', 'Unnamed: 86', 'Unnamed: 87', 'Unnamed: 88', 'Unnamed: 89', 'Unnamed: 90', 'Unnamed: 91', 'Unnamed: 92', 'Unnamed: 93', 'Unnamed: 94', 'Unnamed: 95', 'Unnamed: 96', 'Turnover (annualized)', 'Unnamed: 98', 'Unnamed: 99', 'Unnamed: 100', 'Unnamed: 101', 'Unnamed: 102', 'Unnamed: 103', 'Unnamed: 104', 'Unnamed: 105', 'Unnamed: 106', 'Unnamed: 107', 'Unnamed: 108']"
+[2026-08-20 14:18:00] ERROR: 08_stw_7846_rules failed (exit 1). See /home/zkb/rpt-re/logs/08_stw_7846_rules/08_stw_7846_rules_20260820_043212.log
