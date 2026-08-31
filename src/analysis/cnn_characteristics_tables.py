@@ -239,10 +239,26 @@ def build_characteristics_month_end_panel(
 
 def cross_section_ranks(df: pd.DataFrame, cols: tuple[str, ...]) -> pd.DataFrame:
     out = df.copy()
-    for d, grp in df.groupby("Date", sort=False):
+    for _, grp in df.groupby("Date", sort=False):
         idx = grp.index
         for col in cols:
             out.loc[idx, col] = grp[col].rank(method="average").to_numpy(dtype=np.float64)
+    return out
+
+
+def cross_section_percentile_ranks(df: pd.DataFrame, cols: tuple[str, ...]) -> pd.DataFrame:
+    """Within each Date, rank / n so regressors lie in (0, 1]."""
+    out = df.copy()
+    for col in cols:
+        out[col] = out[col].astype(np.float64)
+    for _, grp in out.groupby("Date", sort=False):
+        idx = grp.index
+        for col in cols:
+            x = grp[col]
+            n = int(x.notna().sum())
+            if n == 0:
+                continue
+            out.loc[idx, col] = (x.rank(method="average") / n).to_numpy(dtype=np.float64)
     return out
 
 
@@ -440,7 +456,7 @@ def _prepare_vi_panel(
     pcol = _cnn_col(image_days, horizon)
     sub = panel.dropna(subset=[pcol, *TABLE_VI_CHAR_COLS]).copy()
     sub["y"] = (sub[pcol] > 0.5).astype(np.float64)
-    ranked = cross_section_ranks(sub, TABLE_VI_CHAR_COLS)
+    ranked = cross_section_percentile_ranks(sub, TABLE_VI_CHAR_COLS)
     ranked["y"] = sub["y"]
     return ranked
 
@@ -505,9 +521,12 @@ def table_vii_return_logit(
         for col_label, x_cols in specs:
             sub = panel.dropna(subset=["Ret_5d", *x_cols]).copy()
             sub["y"] = (sub["Ret_5d"] > 0.0).astype(np.float64)
-            ranked = cross_section_ranks(sub, x_cols)
-            ranked["y"] = sub["y"]
-            _, means, ts = fama_macbeth_logit(ranked, y_col="y", x_cols=x_cols)
+            char_cols = tuple(c for c in x_cols if c in TABLE_VI_CHAR_COLS)
+            work = (
+                cross_section_percentile_ranks(sub, char_cols) if char_cols else sub
+            )
+            work["y"] = sub["y"]
+            _, means, ts = fama_macbeth_logit(work, y_col="y", x_cols=x_cols)
 
             if pcol in x_cols and pcol in means.index:
                 mean_vals.at["CNN", col_label] = means[pcol]
@@ -518,7 +537,7 @@ def table_vii_return_logit(
                     mean_vals.at[TABLE_V_CHAR_DISPLAY[char], col_label] = means[char]
                     t_stats.at[TABLE_V_CHAR_DISPLAY[char], col_label] = ts[char]
 
-            oos = oos_mcfadden_r2(sub, train_panel, ret_col="Ret_5d", x_cols=x_cols)
+            oos = oos_mcfadden_r2(work, train_panel, ret_col="Ret_5d", x_cols=x_cols)
             mean_vals.at["OOS McFadden R²", col_label] = oos
             t_stats.at["OOS McFadden R²", col_label] = float("nan")
 
@@ -689,9 +708,7 @@ def table_viii_image_logit(
             sub["y"] = (sub[pcol] > 0.5).astype(np.float64)
         else:
             sub["y"] = (sub[ret_col] > 0.0).astype(np.float64)
-        ranked = cross_section_ranks(sub, x_cols)
-        ranked["y"] = sub["y"]
-        _, means, ts = fama_macbeth_logit(ranked, y_col="y", x_cols=x_cols)
+        _, means, ts = fama_macbeth_logit(sub, y_col="y", x_cols=x_cols)
 
         if pcol in x_cols and pcol in means.index:
             mean_vals.at["CNN", col_label] = means[pcol]
@@ -703,7 +720,7 @@ def table_viii_image_logit(
 
         if y_kind == "y_cnn":
             mean_vals.at["McFadden R²", col_label] = pooled_logit_mcfadden(
-                ranked, y_col="y", x_cols=x_cols
+                sub, y_col="y", x_cols=x_cols
             )
             mean_vals.at["OOS McFadden R²", col_label] = float("nan")
         else:
@@ -737,6 +754,14 @@ def write_run_meta(out_dir: Path, market: str) -> Path:
         "vol_window": 21,
         "liquidity_window": 21,
         "table_v_alignment": "month-end; CNN p_up merge_asof backward by PERMNO",
+        "table_vi_vii_regressors": (
+            "characteristics: within-month percentile ranks (rank/n); "
+            "CNN p_up left as probability"
+        ),
+        "table_viii_regressors": (
+            "image min-max / volume max scale; CNN p_up as probability; "
+            "no cross-section ranks"
+        ),
         "display_format": "value + stars + (t)",
     }
     path = out_dir / "run_meta.json"
