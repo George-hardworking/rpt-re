@@ -14,6 +14,7 @@ from analysis.table_format import (
     format_value_only,
     write_display_raw_excel,
 )
+from viz.table_v_correlation import plot_table_v_heatmap
 from backtest.io import load_us_predictions
 from backtest.newey_west import nw_mean_tstat
 from config import (
@@ -742,6 +743,19 @@ def _train_month_end_panel(panel: pd.DataFrame, market: str) -> pd.DataFrame:
     return panel[panel["Date"] <= pd.Timestamp(train_end)].copy()
 
 
+def table_v_frames_from_excel(path: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
+    raw = pd.read_excel(path, sheet_name="raw", index_col=0)
+    val_cols = [c for c in raw.columns if c.endswith("_val")]
+    t_cols = [c for c in raw.columns if c.endswith("_t")]
+    assert val_cols and t_cols
+    mean_vals = raw[val_cols].copy()
+    mean_vals.columns = [c[: -len("_val")] for c in val_cols]
+    t_stats = raw[t_cols].copy()
+    t_stats.columns = [c[: -len("_t")] for c in t_cols]
+    assert list(mean_vals.columns) == list(t_stats.columns)
+    return mean_vals, t_stats
+
+
 def write_run_meta(out_dir: Path, market: str) -> Path:
     sample = market_sample_config(market)
     meta = {
@@ -827,6 +841,22 @@ def run_all_tables(
             raw_t=raw_t,
         )
         written.append(out_path)
+
+    table_v_xlsx = out_dir / "table_v_correlation.xlsx"
+    table_v_png = out_dir / "table_v_correlation.png"
+    if table_v_png.is_file() and not fresh:
+        written.append(table_v_png)
+    else:
+        if fresh and table_v_png.is_file():
+            table_v_png.unlink()
+        mean_vals, t_stats = table_v_frames_from_excel(table_v_xlsx)
+        plot_table_v_heatmap(
+            mean_vals,
+            t_stats,
+            market=market,
+            output_path=table_v_png,
+        )
+        written.append(table_v_png)
 
     written.append(write_run_meta(out_dir, market))
     return written

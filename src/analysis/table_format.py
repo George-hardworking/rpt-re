@@ -32,6 +32,14 @@ def format_value_only(value: float, *, decimals: int = 2) -> str:
     return f"{value:.{decimals}f}"
 
 
+def format_value_stars(value: float, t_stat: float, *, value_decimals: int = 2) -> str:
+    """Format ``-0.34***``; empty string when value is not finite."""
+    if not np.isfinite(value):
+        return ""
+    stars = significance_stars(t_stat) if np.isfinite(t_stat) else ""
+    return f"{value:.{value_decimals}f}{stars}"
+
+
 def build_display_matrix(
     values: pd.DataFrame,
     t_stats: pd.DataFrame,
