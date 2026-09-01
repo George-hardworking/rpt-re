@@ -710,7 +710,12 @@ def table_viii_image_logit(
     for col_label, (y_kind, horizon, x_cols) in zip(col_labels, col_specs):
         pcol = _cnn_col(TABLE_VIII_IMAGE_DAYS, horizon)
         ret_col = f"Ret_{horizon}d"
-        sub = img_panel.dropna(subset=[pcol, ret_col, *x_cols]).copy()
+        # Return-spec CNN-only FM must share the joint sample (image lags observed).
+        if y_kind == "y_ret" and x_cols == (pcol,):
+            drop_cols = (pcol, ret_col, *reg_cols)
+        else:
+            drop_cols = (pcol, ret_col, *x_cols)
+        sub = img_panel.dropna(subset=drop_cols).copy()
         if y_kind == "y_cnn":
             sub["y"] = (sub[pcol] > 0.5).astype(np.float64)
         else:
