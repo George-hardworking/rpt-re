@@ -521,7 +521,12 @@ def table_vii_return_logit(
             (f"I{image_days}_R5_Joint", (pcol,) + TABLE_VI_CHAR_COLS),
         ]
         for col_label, x_cols in specs:
-            sub = panel.dropna(subset=["Ret_5d", *x_cols]).copy()
+            # CNN-only FM must share the joint sample (all chars observed).
+            if x_cols == (pcol,):
+                drop_cols = ("Ret_5d", pcol, *TABLE_VI_CHAR_COLS)
+            else:
+                drop_cols = ("Ret_5d", *x_cols)
+            sub = panel.dropna(subset=drop_cols).copy()
             sub["y"] = (sub["Ret_5d"] > 0.0).astype(np.float64)
             char_cols = tuple(c for c in x_cols if c in TABLE_VI_CHAR_COLS)
             work = (
