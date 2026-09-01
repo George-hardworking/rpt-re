@@ -13,5 +13,6 @@
   "table_v_alignment": "month-end; CNN p_up merge_asof backward by PERMNO",
   "table_vi_vii_regressors": "characteristics: within-month percentile ranks (rank/n); CNN p_up left as probability",
   "table_viii_regressors": "image min-max / volume max scale; CNN p_up as probability; no cross-section ranks",
-  "display_format": "value + stars + (t)"
+  "display_format": "value + stars + (t)",
+  "table_v_sheets": "display (value*** (t)); display_stars (value***); raw"
 }

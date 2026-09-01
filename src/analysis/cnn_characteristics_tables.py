@@ -11,6 +11,7 @@ import pandas as pd
 
 from analysis.table_format import (
     build_display_matrix,
+    build_stars_matrix,
     format_value_only,
     write_display_raw_excel,
 )
@@ -777,6 +778,7 @@ def write_run_meta(out_dir: Path, market: str) -> Path:
             "no cross-section ranks"
         ),
         "display_format": "value + stars + (t)",
+        "table_v_sheets": "display (value*** (t)); display_stars (value***); raw",
     }
     path = out_dir / "run_meta.json"
     path.write_text(json.dumps(meta, indent=2) + "\n")
@@ -829,16 +831,34 @@ def run_all_tables(
     for fname, fn in paths.items():
         out_path = out_dir / fname
         if out_path.is_file() and not fresh:
+            if fname == "table_v_correlation.xlsx":
+                names = pd.ExcelFile(out_path).sheet_names
+                if "display_stars" not in names:
+                    display_existing = pd.read_excel(out_path, sheet_name="display", index_col=0)
+                    mean_vals, t_stats = table_v_frames_from_excel(out_path)
+                    write_display_raw_excel(
+                        out_path,
+                        display=display_existing,
+                        raw_values=mean_vals,
+                        raw_t=t_stats,
+                        stars=build_stars_matrix(mean_vals, t_stats),
+                    )
             written.append(out_path)
             continue
         if fresh and out_path.is_file():
             out_path.unlink()
         display, raw_vals, raw_t = fn(test_panel)
+        stars = (
+            build_stars_matrix(raw_vals, raw_t)
+            if fname == "table_v_correlation.xlsx"
+            else None
+        )
         write_display_raw_excel(
             out_path,
             display=display,
             raw_values=raw_vals,
             raw_t=raw_t,
+            stars=stars,
         )
         written.append(out_path)
 

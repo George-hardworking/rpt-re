@@ -61,12 +61,32 @@ def build_display_matrix(
     return display
 
 
+def build_stars_matrix(
+    values: pd.DataFrame,
+    t_stats: pd.DataFrame,
+    *,
+    value_decimals: int = 2,
+) -> pd.DataFrame:
+    """Element-wise ``format_value_stars`` for aligned value/t frames."""
+    assert values.shape == t_stats.shape
+    stars = pd.DataFrame(index=values.index, columns=values.columns, dtype=object)
+    for row in values.index:
+        for col in values.columns:
+            stars.at[row, col] = format_value_stars(
+                values.at[row, col],
+                t_stats.at[row, col],
+                value_decimals=value_decimals,
+            )
+    return stars
+
+
 def write_display_raw_excel(
     path: Path,
     *,
     display: pd.DataFrame,
     raw_values: pd.DataFrame,
     raw_t: pd.DataFrame,
+    stars: pd.DataFrame | None = None,
 ) -> Path:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -77,6 +97,8 @@ def write_display_raw_excel(
         raw[f"{col}_t"] = raw_t[col]
     with pd.ExcelWriter(tmp, engine="openpyxl") as writer:
         display.to_excel(writer, sheet_name="display")
+        if stars is not None:
+            stars.to_excel(writer, sheet_name="display_stars")
         raw.to_excel(writer, sheet_name="raw")
     tmp.replace(path)
     return path
